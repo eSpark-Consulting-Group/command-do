@@ -1,33 +1,24 @@
-import {
-  BiryaniWP,
-  Chapati,
-  DalChanaFry,
-  DalMashFry,
-  LayMasala,
-  LaysCheese10,
-  LaysCheese30,
-  TandorRoti,
-  Zinger,
-  ClubSandwich,
-  Beverages,
-  Polao,
-  SevenUp,
-  Nestle,
-} from '../assets/images';
+import { BiryaniWP, Chapati, DalChanaFry, DalMashFry, LayMasala, LaysCheese10, LaysCheese30, TandorRoti, Zinger, ClubSandwich, Pulao, SevenUp, Nestle } from "../assets/images";
 
 export const AllData = [
   {
     name: 'FastFood',
     data: [
       {
-        price: 'Rs:350',
+        price: 350,
         image: Zinger,
-        name: 'Zinger Burger',
+        name: "Zinger Burger",
+        desc : 'Fillet burger with a spicy crunch, veggies, special zinger sauce & served between fresh round bun',
+        qty:0,
+        foodType:"FastFood"
       },
       {
-        price: 'Rs:340',
+        price: 340,
         image: ClubSandwich,
-        name: 'Club Sandwich',
+        name: "Club Sandwich",
+        desc : 'BBQ chicken boti, mayo & creamy sauce',
+        qty:0,
+        foodType:"FastFood"
       },
     ],
   },
@@ -35,14 +26,21 @@ export const AllData = [
     name: 'Biryani',
     data: [
       {
-        price: 'Rs:130 to Rs:170',
+        price: 170,
         image: BiryaniWP,
-        name: 'Biryani',
+        name: "Biryani",
+        desc : 'Fragrant, aromatic and flavorful rice, topped with juicy chicken',
+        qty:0,
+        foodType:"Biryani"
       },
       {
-        price: 'Rs:130 to Rs:170',
-        image: Polao,
-        name: 'Polao',
+        price: 170,
+        image: Pulao,
+        name: "Pulao",
+        desc : 'Delicious and Frangmantic Aroma, with Tasty Traditional Rice and dont forget the meat',
+        qty:0,
+        foodType:"Biryani"
+
       },
     ],
   },
@@ -50,14 +48,22 @@ export const AllData = [
     name: 'Salan',
     data: [
       {
-        price: 'Rs:120',
+        price: 120,
         image: DalChanaFry,
-        name: 'Dal Chana Fry',
+        name: "Dal Chana Fry",
+        desc : 'Traditional cuisine in the various parts of pakistan, eaten with pleasure',
+        qty:0,
+        foodType:"Salan"
+
       },
       {
-        price: 'Rs:140',
+        price: 140,
         image: DalMashFry,
-        name: 'Dal Mash Fry',
+        name: "Dal Mash Fry",
+        desc : 'Traditional cuisine in the various parts of pakistan, eaten with pleasure',
+        qty:0,
+        foodType:"Salan"
+
       },
     ],
   },
@@ -65,14 +71,21 @@ export const AllData = [
     name: 'Roties',
     data: [
       {
-        price: 'Rs:15',
+        price: 15,
         image: Chapati,
-        name: 'Chapati',
+        name: "Chapati",
+        desc : 'Flat and Round at the same time, cheap too.',
+        qty:0,
+        foodType:"Roties"
       },
       {
-        price: 'Rs:20',
+        price: 20,
         image: TandorRoti,
-        name: 'Tandor Roti',
+        name: "Tandor Roti",
+        desc : 'Moist and Steamy, Delicious with Salan Foods.',
+        qty:0,
+        foodType:"Roties"
+
       },
     ],
   },
@@ -80,19 +93,28 @@ export const AllData = [
     name: 'Snacks',
     data: [
       {
-        price: 'Rs:50',
+        price: 50,
         image: LayMasala,
-        name: 'Lay Masala',
+        name: "Lay Masala",
+        desc : 'Crisp and flavorful, Healthy not so much (Masala Flavour)',
+        qty:0,
+        foodType:"Snacks"
       },
       {
-        price: 'Rs:10',
+        price: 10,
         image: LaysCheese10,
-        name: 'Lays Cheese 10',
+        name: "Lays Cheese 10",
+        desc : 'Crisp and flavorful, Healthy not so much (Cheese Flavour)',
+        qty:0,
+        foodType:"Snacks"
       },
       {
-        price: 'Rs:30',
+        price: 30,
         image: LaysCheese30,
-        name: 'Lays Cheese 30',
+        name: "Lays Cheese 30",
+        desc : 'Crisp and flavorful, Healthy not so much (Cheese Flavour)',
+        qty:0,
+        foodType:"Snacks"
       },
     ],
   },
@@ -100,116 +122,21 @@ export const AllData = [
     name: 'Beverages',
     data: [
       {
-        price: 'Rs:30',
+        price: 30,
         image: SevenUp,
-        name: '7up 345ml',
+        name: "7up 345ml",
+        desc : 'Refreshing and cool drink, perfect counter for extereme hot days',
+        qty:0,
+        foodType:"Beverages"
       },
       {
-        price: 'Rs:60',
+        price: 60,
         image: Nestle,
-        name: 'Nestle Apple Nectar 200 ML',
+        name: "Nestle Apple Nectar 200 ML",
+        desc : 'Pleasant Juice Drink, Calm the nerves & senses',
+        qty:0,
+        foodType:"Beverages"
       },
     ],
   },
 ];
-
-export const BiryaniData = {
-  name: 'Biryani',
-  data: [
-    {
-      price: 'Rs:130 to Rs:170',
-      image: BiryaniWP,
-      name: 'Biryani',
-    },
-    {
-      price: 'Rs:130 to Rs:170',
-      image: Polao,
-      name: 'Polao',
-    },
-  ],
-};
-
-export const SnackData = {
-  name: 'Snacks',
-  data: [
-    {
-      price: 'Rs:50',
-      image: LayMasala,
-      name: 'Lay Masala',
-    },
-    {
-      price: 'Rs:10',
-      image: LaysCheese10,
-      name: 'Lays Cheese 10',
-    },
-    {
-      price: 'Rs:30',
-      image: LaysCheese30,
-      name: 'Lays Cheese 30',
-    },
-  ],
-};
-
-export const RotiData = {
-  name: 'Roties',
-  data: [
-    {
-      price: 'Rs:15',
-      image: Chapati,
-      name: 'Chapati',
-    },
-    {
-      price: 'Rs:20',
-      image: TandorRoti,
-      name: 'Tandor Roti',
-    },
-  ],
-};
-
-export const SalanData = {
-  name: 'Salan',
-  data: [
-    {
-      price: 'Rs:120',
-      image: DalChanaFry,
-      name: 'Dal Chana Fry',
-    },
-    {
-      price: 'Rs:140',
-      image: DalMashFry,
-      name: 'Dal Mash Fry',
-    },
-  ],
-};
-
-export const FastFoodData = {
-  name: 'FastFood',
-  data: [
-    {
-      price: 'Rs:350',
-      image: Zinger,
-      name: 'Zinger Burger',
-    },
-    {
-      price: 'Rs:340',
-      image: ClubSandwich,
-      name: 'Club Sandwich',
-    },
-  ],
-};
-
-export const BeveragesData = {
-  name: 'Beverages',
-  data: [
-    {
-      price: 'Rs:30',
-      image: SevenUp,
-      name: '7up 345ml',
-    },
-    {
-      price: 'Rs:60',
-      image: Nestle,
-      name: 'Nestle Apple Nectar 200 ML',
-    },
-  ],
-};
