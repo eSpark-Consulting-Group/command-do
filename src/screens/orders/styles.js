@@ -49,9 +49,13 @@ const styles = StyleSheet.create({
   },
   cardDataText: {
     fontSize: width * 0.04,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   cardDataMoreText: {
-    fontSize: width * 0.03,
+    fontSize: width * 0.024,
+    fontWeight: 'bold',
+    opacity: 0.5,
   },
 });
 

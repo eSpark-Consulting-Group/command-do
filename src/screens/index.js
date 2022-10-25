@@ -7,8 +7,9 @@ import Items from './item';
 import Cart from './cart';
 import OrderConfirm from './orderConfirm';
 import Profile from './profile';
-import Orders from './Orders';
 import ItemList from './items';
+import OrderList from './ordersList';
+import Orders from './orders';
 import Users from './users';
 
 export {
@@ -18,6 +19,7 @@ export {
   Cart,
   OrderConfirm,
   Profile,
+  OrderList,
   Orders,
   ItemList,
   Users,
