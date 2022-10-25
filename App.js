@@ -1,12 +1,15 @@
-import React from 'react'
-import MainStackNavigator from './src/navigation/AppNavigator'
-import { Provider as StoreProvider } from 'react-redux'
-import store from './src/redux/store'
+import React from 'react';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Provider as StoreProvider} from 'react-redux';
+import MainStackNavigator from './src/navigation/AppNavigator';
+import store from './src/redux/store';
 
 export default function App() {
   return (
-    <StoreProvider store={store}>
-      <MainStackNavigator />
-    </StoreProvider>
-  )
+    <SafeAreaProvider>
+      <StoreProvider store={store}>
+        <MainStackNavigator />
+      </StoreProvider>
+    </SafeAreaProvider>
+  );
 }
