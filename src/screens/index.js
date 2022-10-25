@@ -8,7 +8,7 @@ import Cart from './cart';
 import OrderConfirm from './orderConfirm';
 import Profile from './profile';
 import ItemList from './items';
-import Orders from './orders';
+import Orders from './ordersList';
 import Users from './users';
 
 export {
