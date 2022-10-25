@@ -8,5 +8,17 @@ import Cart from './cart';
 import OrderConfirm from './orderConfirm';
 import Profile from './profile';
 import Orders from './Orders';
+import ItemList from './items';
+import Users from './users';
 
-export {Home, Login, Items, Cart, OrderConfirm, Profile, Orders};
+export {
+  Home,
+  Login,
+  Items,
+  Cart,
+  OrderConfirm,
+  Profile,
+  Orders,
+  ItemList,
+  Users,
+};
