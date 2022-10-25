@@ -7,13 +7,16 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "emulate": "react-native run-android --deviceId=emulator-5554"
   },
   "dependencies": {
-    "@react-native-community/checkbox": "^0.5.12",
+    "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/stack": "^6.2.1",
     "@reduxjs/toolkit": "^1.7.0-rc.0",
+    "@rneui/base": "^4.0.0-rc.6",
+    "@rneui/themed": "^4.0.0-rc.6",
     "axios": "^0.27.2",
     "image-picker": "^0.3.1",
     "react": "18.0.0",
