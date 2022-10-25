@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, Dimensions, TouchableOpacity, StatusBar, ScrollView, Image, Pressable } from 'react-native';
 import { Fonts } from '../../utils/fonts';
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { MyText } from "../../components";
 
 
 const { width, height } = Dimensions.get('window');
 
 const IndividualCard = (props) => {
-  const { label, data } = props;
-  console.log(data, 'asdjl');
+  const { label, data, navigation } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const count = useSelector(store => store);
+  const [allData, setAllData] = useState([]);
+
+  useEffect(() => {
+    // if (menuData?.data) {
+    // console.log('asdjl--->', allData?.data);
+    setIsLoading(true)
+    // }
+  }, [allData])
+
+  useEffect(() => {
+    const menuData = count?.cart?.menuItems?.find((item) => item.name === count?.cart?.foodType);
+    // console.log('navigaiton-->', menuData?.data);
+    setAllData(menuData)
+  }, [count?.cart?.foodType, count?.cart])
+
+
+
   return (
+    isLoading &&
     <View style={{ flex: 1, }}>
       <Text style={{
         fontSize: height * .03,
@@ -18,19 +40,20 @@ const IndividualCard = (props) => {
       }}>
         {data.name}
       </Text>
-      <ScrollView style={{ flex: 1, }}>
+      <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
         <View style={{
           padding: height * .02,
-          marginBottom:height * .02
+          marginBottom: height * .02
         }}>
           {/* <ScrollView horizontal> */}
-          {data && data?.data.map((dataItem, dataIndex) => (
+          {allData && allData?.data?.map((dataItem, dataIndex) => (
             <Pressable key={dataIndex} style={{
               paddingHorizontal: height * .01,
               paddingTop: height * .01,
               marginVertical: height * .02
 
-            }} onPress={() => console.log("hello")}>
+            }}
+              onPress={() => navigation.navigate('Item', { foodType: count?.cart?.foodType, item: dataItem })}>
               <View style={{
                 height: height * .25,
                 width: width * .88,
@@ -46,15 +69,10 @@ const IndividualCard = (props) => {
                   backgroundColor: 'white'
                 }} />
               </View>
-              <Text style={{
-                fontSize: height * .022,
-                color: '#000',
-                fontFamily: Fonts.Roboto_Bold,
+              <MyText label={dataItem.name} title style={{
                 marginVertical: height * .005,
                 marginBottom: height * .04
-              }}>
-                {dataItem.name}
-              </Text>
+              }} />
               <View style={{
                 borderColor: '#00000030',
                 borderWidth: height * .001,
@@ -65,14 +83,23 @@ const IndividualCard = (props) => {
                 borderRadius: height * .005,
 
               }}>
-                <Text style={{
-                  fontSize: height * .015,
-                  color: '#000',
-                  fontFamily: Fonts.Roboto_Bold,
-                }}>
-                  {dataItem.price}
-                </Text>
+                <MyText subTitle label={`Rs.${dataItem.price}`} />
               </View>
+              {dataItem.qty != 0 &&
+                <View style={{
+                  height: height * .04,
+                  width: height * .04,
+                  backgroundColor: '#11a79c',
+                  borderRadius: height * 1,
+                  position: 'absolute',
+                  right: height * -.005,
+                  top: height * -.005,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <MyText label={dataItem?.qty > 99 ? '99+' : Number(dataItem.qty)} subTitle style={{ color: '#fff' }} />
+                </View>
+              }
             </Pressable >
           ))}
           {/* </ScrollView> */}
