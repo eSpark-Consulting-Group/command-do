@@ -1,5 +1,5 @@
 // BooksScreen.js
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,48 @@ import {
   StatusBar,
   Image,
 } from 'react-native';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import {CheckBox, Icon} from '@rneui/themed';
+
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {Fonts} from '../../utils/fonts';
 import {Logo} from '../../assets/images';
+import MyText from '../../components/Text';
 
 const {width, height} = Dimensions.get('window');
 
 const Login = ({navigation}) => {
   const count = useSelector(store => store);
+  const [check1, setCheck1] = useState(true);
+  const [check2, setCheck2] = useState(false);
+  const [check3, setCheck3] = useState(false);
 
-  // console.log('count--<>', count);
+  const handleCheck = value => {
+    if (value === '1') {
+      setCheck1(true);
+      setCheck2(false);
+      setCheck3(false);
+    } else if (value === '2') {
+      setCheck1(false);
+      setCheck2(true);
+      setCheck3(false);
+    } else if (value === '3') {
+      setCheck1(false);
+      setCheck2(false);
+      setCheck3(true);
+    }
+  };
+
+  const handleNavigate = (admin, user, rider) => {
+    if (admin) {
+      navigation.navigate('Home_Admin');
+    } else if (user) {
+      navigation.navigate('Home', {name: 'rohail'});
+    } else if (rider) {
+      navigation.navigate('Home', {name: 'rohail'});
+    }
+  };
+
   return (
     <View
       style={{
@@ -93,8 +124,7 @@ const Login = ({navigation}) => {
             alignItems: 'center',
             elevation: height * 0.003,
           }}
-          // onPress={() => navigation.navigate('Home', { name: 'rohail' })}
-          onPress={() => navigation.navigate('Orders')}>
+          onPress={() => handleNavigate(check1, check2, check3)}>
           <Text
             style={{
               fontSize: height * 0.03,
@@ -104,12 +134,105 @@ const Login = ({navigation}) => {
             Login
           </Text>
         </TouchableOpacity>
+        <View
+          style={{
+            // backgroundColor: 'teal',
+            flexDirection: 'row',
+            width: width * 0.8,
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}>
+          <MyText label="Select Role:" style={{textAlignVertical: 'center'}} />
+          <CheckBox
+            title="Admin"
+            checkedIcon={
+              <Icon
+                name="radio-button-checked"
+                type="material"
+                color="#11a79c"
+                size={20}
+                iconStyle={{marginRight: 5}}
+              />
+            }
+            uncheckedIcon={
+              <Icon
+                name="radio-button-unchecked"
+                type="material"
+                color="grey"
+                size={20}
+                iconStyle={{marginRight: 5}}
+              />
+            }
+            textStyle={{fontSize: 12, marginLeft: 0, marginRight: 5}}
+            containerStyle={{padding: 0, alignSelf: 'center'}}
+            checked={check1}
+            onPress={() => handleCheck('1')}
+          />
+          <CheckBox
+            containerStyle={{
+              padding: 0,
+              margin: 0,
+              alignSelf: 'center',
+            }}
+            checkedIcon={
+              <Icon
+                name="radio-button-checked"
+                type="material"
+                color="#11a79c"
+                size={20}
+                iconStyle={{marginRight: 5}}
+              />
+            }
+            uncheckedIcon={
+              <Icon
+                name="radio-button-unchecked"
+                type="material"
+                color="grey"
+                size={20}
+                iconStyle={{marginRight: 5}}
+              />
+            }
+            textStyle={{
+              fontSize: 12,
+              marginLeft: 0,
+              marginRight: 5,
+            }}
+            title="User"
+            checked={check2}
+            onPress={() => handleCheck('2')}
+          />
+          <CheckBox
+            title="Rider"
+            checkedIcon={
+              <Icon
+                name="radio-button-checked"
+                type="material"
+                color="#11a79c"
+                size={20}
+                iconStyle={{marginRight: 5}}
+              />
+            }
+            uncheckedIcon={
+              <Icon
+                name="radio-button-unchecked"
+                type="material"
+                color="grey"
+                size={20}
+                iconStyle={{marginRight: 5}}
+              />
+            }
+            textStyle={{fontSize: 12, marginLeft: 0, marginRight: 5}}
+            containerStyle={{padding: 0, alignSelf: 'center'}}
+            checked={check3}
+            onPress={() => handleCheck('3')}
+          />
+        </View>
       </View>
-
       <View
         style={{
           flex: 1,
-        }}></View>
+        }}
+      />
     </View>
   );
 };
