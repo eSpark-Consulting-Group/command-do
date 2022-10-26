@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ItemList, Orders, Users} from '../screens';
+import {Orders, Users} from '../screens';
+import ItemNavigator from './ItemNavigator';
 import Ion from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -11,7 +12,7 @@ export default function AdminNavigator() {
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen
         name="Items"
-        component={ItemList}
+        component={ItemNavigator}
         options={{
           tabBarIcon: ({color, focused, size}) => (
             <Ion
