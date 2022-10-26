@@ -11,6 +11,7 @@ import ItemList from './items';
 import OrderList from './ordersList';
 import Orders from './orders';
 import Users from './users';
+import AddForm from './items/addForm';
 
 export {
   Home,
@@ -23,4 +24,5 @@ export {
   Orders,
   ItemList,
   Users,
+  AddForm,
 };
