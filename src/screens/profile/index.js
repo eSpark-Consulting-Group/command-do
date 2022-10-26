@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, Dimensions, TouchableWithoutFeedback, TouchableOpacity, StatusBar, ScrollView, Image, Pressable, StyleSheet, Animated } from 'react-native';
 import { Fonts } from '../../utils/fonts';
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from 'react-native-vector-icons/Ionicons';
-import * as Progress from 'react-native-progress';
-import { Delievey } from "../../assets/images";
-import NumericInput from 'react-native-numeric-input'
-import AwesomeAlert from 'react-native-awesome-alerts';
 import { MyText, CustomizeModal } from "../../components";
-import { ProfileImage } from "../../assets/images";
 import { updateProfile } from '../../features/profile/profileSlice';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import styles from './styles';
 
 
 const { width, height } = Dimensions.get('window');
@@ -95,100 +91,7 @@ function Profile({ route, navigation }) {
       },
     };
     const result = await launchCamera(options);
-
-    console.log('Response = ', result);
-    // ImagePicker.showImagePicker(options, (response) => {
-
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //   } else if (response.customButton) {
-    //     console.log('User tapped custom button: ', response.customButton);
-    //     alert(response.customButton);
-    //   } else {
-    //     const source = { uri: response.uri };
-
-    //     // You can also display the image using data:
-    //     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-    //     // alert(JSON.stringify(response));s
-    //     console.log('response', JSON.stringify(response));
-    //     // this.setState({
-    //     //   filePath: response,
-    //     //   fileData: response.data,
-    //     //   fileUri: response.uri
-    //     // });
-    //     setFilePath(response);
-    //     setFileData(response.data);
-    //     setFileUri(response.uri);
-    //   }
-    // });
   }
-
-  // const launchCamera = () => {
-  //   let options = {
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images',
-  //     },
-  //   };
-  //   ImagePicker.launchCamera(options, (response) => {
-  //     console.log('Response = ', response);
-
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else if (response.customButton) {
-  //       console.log('User tapped custom button: ', response.customButton);
-  //       alert(response.customButton);
-  //     } else {
-  //       const source = { uri: response.uri };
-  //       console.log('response', JSON.stringify(response));
-  //       setFilePath(response);
-  //       setFileData(response.data);
-  //       setFileUri(response.uri);
-  //       // this.setState({
-  //       //   filePath: response,
-  //       //   fileData: response.data,
-  //       //   fileUri: response.uri
-  //       // });
-  //     }
-  //   });
-
-  // }
-  // const launchImageLibrary = () => {
-  //   let options = {
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images',
-  //     },
-  //   };
-  //   ImagePicker.launchImageLibrary(options, (response) => {
-  //     console.log('Response = ', response);
-
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else if (response.customButton) {
-  //       console.log('User tapped custom button: ', response.customButton);
-  //       alert(response.customButton);
-  //     } else {
-  //       const source = { uri: response.uri };
-  //       console.log('response', JSON.stringify(response));
-  //       // this.setState({
-  //       //   filePath: response,
-  //       //   fileData: response.data,
-  //       //   fileUri: response.uri
-  //       // });
-  //       setFilePath(response);
-  //       setFileData(response.data);
-  //       setFileUri(response.uri);
-  //     }
-  //   });
-
-  // }
 
   return (
     <ScrollView style={{ height: height * 1, backgroundColor: 'white' }} >
@@ -198,54 +101,19 @@ function Profile({ route, navigation }) {
         navigation={navigation}
         renderData={
           <View style={styles.modalInner}>
-            <TouchableOpacity style={{
-              height: height * .07,
-              width: width * .6,
-              backgroundColor: "#11a79c",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .01,
-              padding: height * .02,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}
+            <TouchableOpacity style={styles.chooseImageButton}
               onPress={chooseImage}
             >
               <Icon name="md-file-tray-outline" size={height * .03} color='#fff' />
               <MyText label={"Choose File"} title style={{ color: "#fff", marginLeft: height * .01 }} />
             </TouchableOpacity>
-            <TouchableOpacity style={{
-              height: height * .07,
-              width: width * .6,
-              backgroundColor: "#11a79c",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .01,
-              padding: height * .02,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-
-            }}
+            <TouchableOpacity style={styles.chooseImageButton}
               onPress={launchCamera}
             >
               <Icon name="camera-outline" size={height * .03} color='#fff' />
               <MyText label={"Launch Camera"} title style={{ color: "#fff", marginLeft: height * .01 }} />
             </TouchableOpacity>
-            <TouchableOpacity style={{
-              height: height * .07,
-              width: width * .6,
-              backgroundColor: "#11a79c",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .01,
-              padding: height * .02,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-
-            }}
+            <TouchableOpacity style={styles.chooseImageButton}
               onPress={launchImageLibrary}
             >
               <Icon name="image-outline" size={height * .03} color='#fff' />
@@ -256,82 +124,23 @@ function Profile({ route, navigation }) {
         } />
 
 
-      <View style={{
-        height: height * .25,
-        width: width * 1,
-        // backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: height * .0005,
-        borderBottomColor: '#00000070'
-      }}>
-        <TouchableOpacity style={{
-          height: height * .05,
-          elevation: height * .003,
-          width: height * .05,
-          backgroundColor: '#11a79c',
-          borderRadius: height * 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          zIndex: 1,
-          left: height * .02,
-          top: height * .02
-        }}
+      <View style={styles.profileContainer}>
+        <TouchableOpacity style={styles.backButtonStyle}
           onPress={() => navigation.goBack()}>
           <View>
             <Icon name="ios-chevron-back-outline" size={height * .03} color='#fff' />
           </View>
         </TouchableOpacity>
-        <View style={{
-          height: height * .15,
-          width: height * .15,
-          backgroundColor: "white",
-          borderRadius: height * 1,
-          elevation: height * .01,
-        }}>
-          <TouchableOpacity style={{
-            height: height * .03,
-            elevation: height * .003,
-            width: height * .03,
-            margin: height * .015,
-            backgroundColor: '#11a79c',
-            borderRadius: height * 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            zIndex: 1,
-            right: height * -.005,
-            top: height * -.005,
-
-          }}
+        <View style={styles.profileBackground}>
+          <TouchableOpacity style={styles.profileImage}
             onPress={() => setIsModal(!isModal)}>
             <View>
               <Icon name="ios-pencil" size={height * .018} color='#fff' />
             </View>
           </TouchableOpacity>
-          <Image source={reduxData?.profile?.image} style={{
-            borderRadius: height * 1,
-            height: height * .15,
-            width: height * .15,
-            backgroundColor: 'white',
-            resizeMode: "contain",
-          }} />
+          <Image source={reduxData?.profile?.image} style={styles.profileImageStyle} />
         </View>
-        <TouchableOpacity style={{
-          height: height * .05,
-          elevation: height * .003,
-          width: height * .05,
-          margin: height * .015,
-          backgroundColor: '#11a79c',
-          borderRadius: height * 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          zIndex: 1,
-          right: height * .0,
-          bottom: height * .0,
-        }}
+        <TouchableOpacity style={styles.editProfileStyle}
           onPress={() => editMode ? saveModeon() : editModeon()}
         >
           <View>
@@ -341,38 +150,15 @@ function Profile({ route, navigation }) {
           </View>
         </TouchableOpacity>
       </View>
-      <View style={{
-        height: height * .75,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center'
-
-      }}>
+      <View style={styles.profileFormStyle}>
         {getData &&
           getData.map((item, index) =>
-            <View key={index} style={{
-              height: height * .15,
-              width: width * .9,
-              backgroundColor: "white",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .015,
-              padding: height * .02,
-              justifyContent: 'center'
-            }}>
-
+            <View key={index} style={styles.profileFormAlign}>
               {/* item.name != "Email" && */}
               <MyText label={item.name} subTitle style={{ color: "#00000060", }} />
               {
                 editMode && item.name != "Email" ?
-                  <TextInput style={{
-                    height: height * .057,
-                    maxWidth: width * .75,
-                    fontFamily: Fonts.Roboto_Medium,
-                    color: 'black',
-                    fontSize: height * .02,
-                    // backgroundColor: 'red'
-                  }}
+                  <TextInput style={styles.profileFormMobileNumber}
                     maxLength={item.name == "Mobile Number" ? 11 : 30}
                     onChangeText={(value) => onChangeNumber(value, index)}
                     value={item.value}
@@ -381,13 +167,9 @@ function Profile({ route, navigation }) {
                   :
                   <MyText label={item.value} title style={{ color: "#11a79c", marginVertical: height * .015 }} />
               }
-
-
             </View>
           )
-
         }
-
       </View>
     </ScrollView >
   );
@@ -396,16 +178,3 @@ function Profile({ route, navigation }) {
 // trash-outline
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  modalInner: {
-    height: height * .3,
-    width: width * .8,
-    backgroundColor: '#fff',
-    borderRadius: height * .005,
-    elevation: height * .003,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
-})
