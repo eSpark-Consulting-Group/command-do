@@ -6,11 +6,19 @@ import IndividualCard from './IndividualCard';
 import CustomizeModal from './Modal';
 import MyText from './Text';
 import DropDownAlert from './DropDownAlert';
+import OrderCard from './OrderCard';
+import OrderListHeader from './OrderListHeader';
+import LineSeparater from './LineSeparater';
+import CollectionModal from './CollectionModal';
 
 export {
-    Cards,
-    IndividualCard,
-    CustomizeModal,
-    MyText,
-    DropDownAlert
+  Cards,
+  IndividualCard,
+  CustomizeModal,
+  MyText,
+  DropDownAlert,
+  OrderCard,
+  OrderListHeader,
+  LineSeparater,
+  CollectionModal,
 };
