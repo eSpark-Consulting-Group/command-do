@@ -16,6 +16,7 @@ import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {Fonts} from '../../utils/fonts';
 import {Logo} from '../../assets/images';
 import MyText from '../../components/Text';
+import styles from './styles';
 
 const {width, height} = Dimensions.get('window');
 
@@ -81,49 +82,19 @@ const Login = ({navigation}) => {
         }}>
         <TextInput
           placeholder="Email"
-          style={{
-            // backgroundColor: 'white',
-            width: width * 0.8,
-            height: height * 0.07,
-            borderRadius: height * 0.005,
-            paddingLeft: height * 0.015,
-            borderWidth: height * 0.001,
-            marginVertical: height * 0.01,
-            fontFamily: Fonts.Roboto_Medium,
-            color: 'black',
-          }}
+          style={styles.inputStyle}
           placeholderTextColor="gray"
           value="rohail@esparkconsultants.com"
         />
         <TextInput
           placeholder="Password"
-          style={{
-            // backgroundColor: 'white',
-            height: height * 0.07,
-            width: width * 0.8,
-            borderRadius: height * 0.005,
-            paddingLeft: height * 0.015,
-            borderWidth: height * 0.001,
-            marginVertical: height * 0.01,
-            fontFamily: Fonts.Roboto_Medium,
-            color: 'black',
-          }}
+          style={styles.inputStyle}
           secureTextEntry
           placeholderTextColor="gray"
           value="assdlkjaslkdjsd"
         />
         <TouchableOpacity
-          style={{
-            backgroundColor: '#11a79c',
-            width: width * 0.8,
-            height: height * 0.07,
-            borderRadius: height * 0.005,
-            paddingLeft: height * 0.015,
-            marginVertical: height * 0.01,
-            justifyContent: 'center',
-            alignItems: 'center',
-            elevation: height * 0.003,
-          }}
+          style={styles.loginButton}
           onPress={() => handleNavigate(check1, check2, check3)}>
           <Text
             style={{
@@ -131,17 +102,11 @@ const Login = ({navigation}) => {
               color: 'white',
               fontFamily: Fonts.Roboto_Black,
             }}>
-            Login
+            Login  
           </Text>
         </TouchableOpacity>
         <View
-          style={{
-            // backgroundColor: 'teal',
-            flexDirection: 'row',
-            width: width * 0.8,
-            alignContent: 'center',
-            justifyContent: 'center',
-          }}>
+          style={styles.radioButtonContainer}>
           <MyText label="Select Role:" style={{textAlignVertical: 'center'}} />
           <CheckBox
             title="Admin"
