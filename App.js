@@ -1,18 +1,31 @@
 import React from 'react';
-import {StatusBar} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import MainStackNavigator from './src/navigation/AppNavigator';
 import {store} from './src/app/store';
-
+import {colors} from './src/theme/index'
+import AppStatusBar from './src/components/AppStatusBar';
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <StatusBar />
-      <Provider store={store}>
-        <MainStackNavigator />
-      </Provider>
-    </SafeAreaProvider>
+    <>
+      <SafeAreaView style={styles.topSafeArea} />
+      <SafeAreaView style={styles.bottomSafeArea}>
+        <AppStatusBar backgroundColor={colors.primary} barStyle="light-content" />
+        <Provider store={store}>
+          <MainStackNavigator />
+        </Provider>
+      </SafeAreaView>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  topSafeArea: {
+      flex: 0, 
+  }, 
+  bottomSafeArea: {
+      flex: 1, 
+      backgroundColor: colors.primary
+  },
+});
