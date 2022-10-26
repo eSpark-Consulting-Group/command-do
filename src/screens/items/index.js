@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useReducer} from 'react';
 import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Icon} from '@rneui/themed';
 
@@ -8,8 +8,28 @@ import {MyCard} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 import {colors} from '../../theme';
 
+let categoryData = [
+  {name: 'All', color: true},
+  {name: 'Salan', color: false},
+  {name: 'Rice', color: false},
+  {name: 'Snacks', color: false},
+  {name: 'Beverages', color: false},
+  {name: 'Desserts', color: false},
+];
+
 export default function Items() {
   const navigation = useNavigation();
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  const handlePress = index => {
+    let temp = [...categoryData];
+    temp.forEach((item, index2) =>
+      index == index2 ? (item.color = true) : (item.color = false),
+    );
+    categoryData = temp;
+    console.log(categoryData);
+    forceUpdate();
+  };
 
   return (
     <View style={styles.container}>
@@ -42,21 +62,33 @@ export default function Items() {
       </View>
       <View style={{width: SCREEN_WIDTH}}>
         <FlatList
-          data={[
-            {name: 'All'},
-            {name: 'Salan'},
-            {name: 'Rice'},
-            {name: 'Snacks'},
-            {name: 'Beverages'},
-            {name: 'Desserts'},
-          ]}
+          data={categoryData}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoryContainer}
           renderItem={({item, index}) => (
-            <MyCard cardStyle={styles.category}>
-              <TouchableOpacity style={{padding: 10}} onPress={() => {}}>
-                <MyText label={item?.name} size={'title'} />
+            <MyCard
+              cardStyle={{
+                ...styles.category,
+                backgroundColor: item.color
+                  ? colors.primary
+                  : colors.background,
+              }}>
+              <TouchableOpacity
+                style={{padding: 10}}
+                onPress={() => {
+                  console.log('touched', item.color);
+                  handlePress(index);
+                }}>
+                <MyText
+                  label={item?.name}
+                  size={'title'}
+                  textStyle={{
+                    color: item.color
+                      ? colors.text_inverse
+                      : colors.text_normal,
+                  }}
+                />
               </TouchableOpacity>
             </MyCard>
           )}
