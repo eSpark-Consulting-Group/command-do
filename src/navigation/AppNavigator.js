@@ -1,7 +1,16 @@
 import * as React from 'react';
+import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Home, Login, Items, Cart, OrderConfirm, Profile, Orders} from '../screens';
+import {
+  Home,
+  Login,
+  Items,
+  Cart,
+  OrderConfirm,
+  Profile,
+  Orders,
+} from '../screens';
 import AdminNavigator from './AdminNavigator';
 
 const Stack = createStackNavigator();
