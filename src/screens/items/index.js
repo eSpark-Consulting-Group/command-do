@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {FlatList, StyleSheet, View, TouchableOpacity, StatusBar} from 'react-native';
 import {Icon} from '@rneui/themed';
 
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../../constants';

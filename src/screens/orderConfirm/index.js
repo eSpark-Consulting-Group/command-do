@@ -58,7 +58,7 @@ function OrderConfirm({route, navigation}) {
 
   return (
     <View style={{height: height * 1, backgroundColor: 'white'}}>
-      <StatusBar barStyle={'dark-content'} backgroundColor="white" />
+      {/* <StatusBar barStyle={'dark-content'} backgroundColor="white" /> */}
       <View style={styles.topCurveView}></View>
 
       <View style={styles.mainContent}>

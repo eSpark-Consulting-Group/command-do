@@ -58,7 +58,6 @@ const Login = ({navigation}) => {
         flex: 1,
         backgroundColor: 'white',
       }}>
-      <StatusBar barStyle={'dark-content'} backgroundColor="white" hidden />
       <View
         style={{
           flex: 1,
