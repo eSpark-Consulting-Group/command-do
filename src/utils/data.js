@@ -1,4 +1,4 @@
-import { BiryaniWP, Chapati, DalChanaFry, DalMashFry, LayMasala, LaysCheese10, LaysCheese30, TandorRoti, Zinger, ClubSandwich, Pulao, SevenUp, Nestle } from "../assets/images";
+import { BiryaniWP, Chapati, DalChanaFry, DalMashFry, LayMasala, LaysCheese10, LaysCheese30, TandorRoti, Zinger, ClubSandwich, Pulao, SevenUp, Nestle, ProfileImage } from "../assets/images";
 
 export const AllData = [
   {
@@ -140,3 +140,11 @@ export const AllData = [
     ],
   },
 ];
+
+export const profileData = {
+  name: 'Rohail',
+  email: 'rohail@esparkconsultants.com',
+  phone: '03161145075',
+  shift: 'Shift C',
+  image: ProfileImage,
+};

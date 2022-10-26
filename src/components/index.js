@@ -10,6 +10,8 @@ import OrderCard from './OrderCard';
 import OrderListHeader from './OrderListHeader';
 import LineSeparater from './LineSeparater';
 import CollectionModal from './CollectionModal';
+import MyCard from './MyCard';
+import GapView from './GapView';
 
 export {
   Cards,
@@ -21,4 +23,6 @@ export {
   OrderListHeader,
   LineSeparater,
   CollectionModal,
+  MyCard,
+  GapView,
 };
