@@ -12,6 +12,7 @@ import OrderList from './ordersList';
 import Orders from './orders';
 import CollectedOrders from './CollectedOrders';
 import Users from './users';
+import AddForm from './items/addForm';
 
 export {
   Home,
@@ -25,4 +26,5 @@ export {
   ItemList,
   Users,
   CollectedOrders,
+  AddForm,
 };
