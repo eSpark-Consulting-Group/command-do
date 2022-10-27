@@ -1,23 +1,21 @@
-import {Input} from '@rneui/themed';
-import React, {useEffect, useRef, useReducer} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from 'react-native';
-import Ionc from 'react-native-vector-icons/Ionicons';
-import {LineSeparater, OrderCard, OrderListHeader} from '../../components';
+import {OrderCard, OrderListHeader} from '../../../components';
 
-export default function CollectedOrders() {
+export default function CollectedOrders({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <OrderListHeader />
       <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{marginBottom: '17%'}}>
+        style={{width: '100%'}}
+        contentContainerStyle={{alignItems: 'center'}}
+        showsVerticalScrollIndicator={false}>
         <OrderCard
           name={'Fahim Uddin'}
           order={[
@@ -61,12 +59,12 @@ export default function CollectedOrders() {
         />
       </ScrollView>
       <TouchableOpacity
+        onPress={() => navigation.navigate('Purchasing_List')}
         style={{
-          position: 'absolute',
-          bottom: '2%',
           width: '95%',
           alignItems: 'center',
           backgroundColor: '#11a79c',
+          marginVertical: 10,
           paddingVertical: 10,
           borderRadius: 10,
         }}>

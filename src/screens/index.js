@@ -10,9 +10,11 @@ import Profile from './profile';
 import ItemList from './items';
 import OrderList from './ordersList';
 import Orders from './orders';
-import CollectedOrders from './CollectedOrders';
+import CollectedOrders from './orders/CollectedOrders';
+import CurrentOrders from './orders/CurrentOrders';
 import Users from './users';
 import AddForm from './items/addForm';
+import PurchasingList from './PurchasingList';
 
 export {
   Home,
@@ -27,4 +29,6 @@ export {
   Users,
   CollectedOrders,
   AddForm,
+  PurchasingList,
+  CurrentOrders,
 };
