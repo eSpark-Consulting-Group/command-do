@@ -33,7 +33,7 @@ export default function OrderCard({
     <View style={styles.cardContainer}>
       <View style={styles.cardInnerContainer}>
         <View style={styles.cardDataContainer}>
-          <MyText label={name} title style={styles.cardDataText} />
+          <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
         </View>
         <View style={styles.cardDataContainer}>
           {order.length > 0 &&
@@ -57,7 +57,6 @@ export default function OrderCard({
           <Text style={styles.cardDataText}>Rs {amount}</Text>
         </View>
         <TouchableOpacity
-          disabled={paid}
           onPress={onCollect}
           style={{
             ...styles.cardDataContainer2,
@@ -67,7 +66,7 @@ export default function OrderCard({
             backgroundColor: '#11a79c',
           }}>
           <Text style={{...styles.cardDataText, color: '#fff'}}>
-            {paid ? 'Paid' : 'Collect'}
+            {paid ? 'Revert' : 'Collect'}
           </Text>
         </TouchableOpacity>
       </View>
