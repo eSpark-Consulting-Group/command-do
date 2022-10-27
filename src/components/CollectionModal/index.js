@@ -9,7 +9,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Overlay} from '@rneui/themed';
 import FA from 'react-native-vector-icons/FontAwesome';
 
-export default function CollectionModal({isVisible, closeModal}) {
+export default function CollectionModal({closeModal, totAmount}) {
   const [amount, setAmount] = useState('');
 
   const inputRef = useRef(null);
@@ -40,7 +40,7 @@ export default function CollectionModal({isVisible, closeModal}) {
       <View style={{alignItems: 'center', marginVertical: 10}}>
         <Text>Amount to be Pay:</Text>
         <Text style={{fontWeight: 'bold', fontSize: 25, color: '#444'}}>
-          RS 250
+          RS {totAmount}
         </Text>
       </View>
       <View
