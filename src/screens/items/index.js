@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Icon} from '@rneui/themed';
 
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../../constants';
-import {GapView, MyText} from '../../components';
+import {GapView, MyHeader, MyText} from '../../components';
 import {MyCard} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 import {colors} from '../../theme';
@@ -33,30 +33,13 @@ export default function Items() {
 
   return (
     <View style={styles.container}>
-      <View style={{...styles.header, backgroundColor: colors.primary}}>
-        <MyText
-          label={'All Items'}
-          size={'subHeading'}
-          textStyle={{
-            fontWeight: 'bold',
-            fontFamily: 'sans-serif-medium',
-            textAlignVertical: 'center',
-            color: colors.text_inverse,
-          }}
-        />
-        <Icon
-          name="search"
-          size={34}
-          color={colors.text_inverse}
-          containerStyle={{alignSelf: 'center'}}
-        />
-      </View>
+      <MyHeader title="All Items" icon="search" />
       <View style={styles.subHeader}>
         <MyText label={'Categories'} size={'subHeading'} />
         <Icon
           name="add"
           onPress={() =>
-            navigation.navigate('Add_Form', {mode: 'add', class: 'category'})
+            navigation.navigate('Add_Form', {mode: 'add', type: 'category'})
           }
         />
       </View>
@@ -99,7 +82,7 @@ export default function Items() {
         <Icon
           name="add"
           onPress={() =>
-            navigation.navigate('Add_Form', {mode: 'add', class: 'item'})
+            navigation.navigate('Add_Form', {mode: 'add', type: 'item'})
           }
         />
       </View>
@@ -160,16 +143,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-  },
-  header: {
-    width: SCREEN_WIDTH,
-    backgroundColor: '#fafafa',
-    padding: 10,
-    paddingHorizontal: 15,
-    elevation: 5,
-    borderRadius: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   subHeader: {
     paddingVertical: 10,
