@@ -12,6 +12,8 @@ import LineSeparater from './LineSeparater';
 import CollectionModal from './CollectionModal';
 import MyCard from './MyCard';
 import GapView from './GapView';
+import PurchasingListHeader from './PurchasingListHeader';
+import PurchasingOrderCard from './PurchasingOrderCard';
 
 export {
   Cards,
@@ -25,4 +27,6 @@ export {
   CollectionModal,
   MyCard,
   GapView,
+  PurchasingListHeader,
+  PurchasingOrderCard,
 };
