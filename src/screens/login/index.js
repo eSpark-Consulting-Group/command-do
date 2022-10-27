@@ -102,12 +102,15 @@ const Login = ({navigation}) => {
               color: 'white',
               fontFamily: Fonts.Roboto_Black,
             }}>
-            Login  
+            Login
           </Text>
         </TouchableOpacity>
-        <View
-          style={styles.radioButtonContainer}>
-          <MyText label="Select Role:" style={{textAlignVertical: 'center'}} />
+        <View style={styles.radioButtonContainer}>
+          <MyText
+            label="Select Role:"
+            textStyle={{textAlignVertical: 'center'}}
+            size="title"
+          />
           <CheckBox
             title="Admin"
             checkedIcon={
