@@ -12,6 +12,9 @@ import {
   Orders,
 } from '../screens';
 import AdminNavigator from './AdminNavigator';
+import RiderNavigator from './RiderNavigator';
+import {Text, View} from 'react-native';
+import {MyText} from '../components';
 
 const Stack = createStackNavigator();
 // 11a79c
@@ -26,7 +29,22 @@ function MainStackNavigator() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item" component={Items} />
         <Stack.Screen name="Cart" component={Cart} />
-        <Stack.Screen name="Orders" component={Orders} />
+        <Stack.Screen
+          name="Home_Rider"
+          component={RiderNavigator}
+          options={{
+            headerShown: true,
+            header: () => (
+              <View style={{padding: 20, alignItems: 'center'}}>
+                <MyText
+                  label={'Today Orders'}
+                  subHeading
+                  style={{color: '#000000'}}
+                />
+              </View>
+            ),
+          }}
+        />
         <Stack.Screen name="Home_Admin" component={AdminNavigator} />
         <Stack.Screen name="OrderConfirm" component={OrderConfirm} />
         <Stack.Screen name="Profile" component={Profile} />
