@@ -18,6 +18,8 @@ import MyInput from './MyInput';
 import ImageContainer from './ImageContainer';
 import BottomButton from './BottomButton';
 import CstmDropDown from './CstmDropDown';
+import PurchasingListHeader from './PurchasingListHeader';
+import PurchasingOrderCard from './PurchasingOrderCard';
 
 export {
   Cards,
@@ -37,4 +39,6 @@ export {
   ImageContainer,
   BottomButton,
   CstmDropDown,
+  PurchasingListHeader,
+  PurchasingOrderCard,
 };
