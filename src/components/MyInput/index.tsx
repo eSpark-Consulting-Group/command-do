@@ -5,14 +5,16 @@ import {SCREEN_HEIGHT} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
 
-export default function MyInput({label}: {label: string}) {
+export default function MyInput({label}: {label?: string}) {
   return (
-    <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
-      <MyText
-        label={label}
-        size={SCREEN_HEIGHT * 0.028}
-        textStyle={{paddingBottom: 10}}
-      />
+    <View style={{padding: label ? 10 : 0, flex: 1}}>
+      {label && (
+        <MyText
+          label={label}
+          size={SCREEN_HEIGHT * 0.028}
+          textStyle={{paddingBottom: 10}}
+        />
+      )}
       <TextInput
         placeholder="Enter Text in TextInput"
         underlineColorAndroid="transparent"

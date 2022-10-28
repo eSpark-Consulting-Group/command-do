@@ -21,6 +21,7 @@ import CstmDropDown from './CstmDropDown';
 import PurchasingListHeader from './PurchasingListHeader';
 import PurchasingOrderCard from './PurchasingOrderCard';
 import TouchRipple from './TouchRipple';
+import SearchBar from './SearchBar';
 
 export {
   Cards,
@@ -43,4 +44,5 @@ export {
   PurchasingListHeader,
   PurchasingOrderCard,
   TouchRipple,
+  SearchBar,
 };

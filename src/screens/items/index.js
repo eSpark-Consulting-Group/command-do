@@ -1,11 +1,11 @@
 import React, {useState, useReducer} from 'react';
 import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {Icon} from '@rneui/themed';
 
 import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../../constants';
 import {GapView, MyHeader, MyText} from '../../components';
 import {MyCard} from '../../components';
-import {useNavigation} from '@react-navigation/native';
 import {colors} from '../../theme';
 
 let categoryData = [
