@@ -12,6 +12,7 @@ export default function MyHeader({
   title,
   icon,
   leftIcon,
+  onPressLeft,
   onPressRight,
 }: {
   headerStyle?: ViewStyle;
@@ -19,6 +20,7 @@ export default function MyHeader({
   title: string;
   icon?: string;
   leftIcon?: string;
+  onPressLeft?: () => void;
   onPressRight?: () => void;
 }) {
   return (
@@ -34,7 +36,7 @@ export default function MyHeader({
           size={28}
           color={colors.text_inverse}
           iconStyle={{padding: 0}}
-          onPress={onPressRight}
+          onPress={onPressLeft}
           containerStyle={{
             alignSelf: 'center',
             marginRight: 10,
@@ -57,6 +59,7 @@ export default function MyHeader({
             name={icon!!}
             size={34}
             color={colors.text_inverse}
+            onPress={onPressRight}
             containerStyle={{alignSelf: 'center'}}
           />
         </View>

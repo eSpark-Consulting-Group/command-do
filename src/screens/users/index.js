@@ -1,3 +1,4 @@
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Divider} from '@rneui/themed';
 import React from 'react';
 import {StyleSheet, Text, View, SectionList} from 'react-native';
@@ -5,9 +6,16 @@ import {MyHeader, MyText} from '../../components';
 import {colors} from '../../theme';
 
 export default function Users() {
+  const navigation = useNavigation();
+  const route = useRoute();
+
   return (
     <View style={styles.container}>
-      <MyHeader title="All Users" icon="add" />
+      <MyHeader
+        title="All Users"
+        icon="add"
+        onPressRight={() => navigation.navigate('Add_Form_User', {mode: 'add'})}
+      />
       <SectionList
         sections={[
           {

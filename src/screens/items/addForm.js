@@ -27,7 +27,7 @@ export default function AddForm() {
           <MyHeader
             title="Add Category"
             leftIcon="arrow-back"
-            onPressRight={() => navigation.goBack()}
+            onPressLeft={() => navigation.goBack()}
           />
           <View style={{paddingHorizontal: 10}}>
             <MySubHeader title="Add Category Details" />
@@ -50,7 +50,7 @@ export default function AddForm() {
           <MyHeader
             title="Add Item"
             leftIcon="arrow-back"
-            onPressRight={() => navigation.goBack()}
+            onPressLeft={() => navigation.goBack()}
           />
           <ScrollView style={{paddingHorizontal: 10}}>
             <MySubHeader title="Select Category" divider />
@@ -77,7 +77,8 @@ export default function AddForm() {
         </View>
       );
     }
-  } else if (mode === 'edit') {
+  }
+  if (mode === 'edit') {
     if (type === 'category') {
       return (
         <View>
