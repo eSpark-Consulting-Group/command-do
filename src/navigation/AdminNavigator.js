@@ -1,8 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Orders, Users} from '../screens';
+import {Orders} from '../screens';
 import ItemNavigator from './ItemNavigator';
+import UserNavigator from './AdminUserNavigator';
 import Ion from 'react-native-vector-icons/Ionicons';
 import {colors} from '../theme';
 
@@ -43,7 +44,7 @@ export default function AdminNavigator() {
       />
       <Tab.Screen
         name="Users"
-        component={Users}
+        component={UserNavigator}
         options={{
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: 'grey',
