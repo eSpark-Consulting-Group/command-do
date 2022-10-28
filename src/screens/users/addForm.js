@@ -20,7 +20,7 @@ export default function AddForm() {
   const navigation = useNavigation();
   const route = useRoute();
   const {mode, type} = route?.params;
-  const [check1, setCheck1] = useState(false);
+  const [check1, setCheck1] = useState(true);
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
 
@@ -39,7 +39,7 @@ export default function AddForm() {
           <MyInput label="Email Address" />
           <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
             <MyText
-              label={'Select Roles'}
+              label={'Roles'}
               size={SCREEN_HEIGHT * 0.028}
               textStyle={{paddingBottom: 10}}
             />
@@ -99,6 +99,78 @@ export default function AddForm() {
     );
   }
   if (mode === 'edit') {
+    return (
+      <View style={{flex: 1, backgroundColor: colors.background}}>
+        <MyHeader
+          title="Edit User"
+          leftIcon="arrow-back"
+          onPressLeft={() => navigation.goBack()}
+        />
+        <ScrollView style={{paddingHorizontal: 10}}>
+          <MySubHeader title="Edit User Details" divider />
+          <MyInput label="First Name" />
+          <MyInput label="Last Name" />
+          <MyInput label="Email Address" />
+          <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+            <MyText
+              label={'Roles'}
+              size={SCREEN_HEIGHT * 0.028}
+              textStyle={{paddingBottom: 10}}
+            />
+            <View style={{flexDirection: 'row'}}>
+              <CheckBox
+                title="Admin"
+                checked={check1}
+                checkedColor={colors.primary}
+                textStyle={{
+                  fontSize: 12,
+                  marginLeft: 0,
+                  marginRight: 5,
+                  fontFamily: 'sans-serif-medium',
+                }}
+                containerStyle={{padding: 0, alignSelf: 'center'}}
+                onPress={() => setCheck1(!check1)}
+              />
+              <CheckBox
+                title="User"
+                checked={check2}
+                checkedColor={colors.primary}
+                textStyle={{
+                  fontSize: 12,
+                  marginLeft: 0,
+                  marginRight: 5,
+                  fontFamily: 'sans-serif-medium',
+                }}
+                containerStyle={{padding: 0, alignSelf: 'center'}}
+                onPress={() => setCheck2(!check2)}
+              />
+              <CheckBox
+                title="Rider"
+                checked={check3}
+                checkedColor={colors.primary}
+                textStyle={{
+                  fontSize: 12,
+                  marginLeft: 0,
+                  marginRight: 5,
+                  fontFamily: 'sans-serif-medium',
+                }}
+                containerStyle={{padding: 0, alignSelf: 'center'}}
+                onPress={() => setCheck3(!check3)}
+              />
+            </View>
+          </View>
+        </ScrollView>
+        <View style={{height: 60}}>
+          <BottomButton
+            label="Add User"
+            count={0}
+            totalCount={1}
+            enabled={false}
+            onPress={() => console.log('Done')}
+          />
+        </View>
+      </View>
+    );
   }
 }
 

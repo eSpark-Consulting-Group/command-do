@@ -5,6 +5,7 @@ import {Icon} from '@rneui/themed';
 import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
+import GapView from '../GapView';
 
 export default function MyHeader({
   headerStyle,
@@ -35,20 +36,25 @@ export default function MyHeader({
           name={leftIcon!!}
           size={28}
           color={colors.text_inverse}
-          iconStyle={{padding: 0}}
+          style={{padding: 5}}
           onPress={onPressLeft}
           containerStyle={{
+            borderRadius: 100,
             alignSelf: 'center',
-            marginRight: 10,
+            right: 5,
+          }}
+          pressableProps={{
+            android_ripple: {borderless: true, color: '#f5f5f533'},
           }}
         />
       )}
+      {!leftIcon && <GapView mode="horizontal" length={1} />}
       <MyText
         label={title}
-        size={'subHeading'}
+        size={'heading'}
         textStyle={{
           fontWeight: 'bold',
-          fontFamily: 'sans-serif-medium',
+          fontFamily: 'monospace',
           textAlignVertical: 'center',
           color: colors.text_inverse,
         }}
@@ -58,9 +64,13 @@ export default function MyHeader({
           <Icon
             name={icon!!}
             size={34}
+            style={{padding: 5}}
+            containerStyle={{borderRadius: 100, alignSelf: 'center'}}
+            pressableProps={{
+              android_ripple: {borderless: true, color: '#f5f5f533'},
+            }}
             color={colors.text_inverse}
             onPress={onPressRight}
-            containerStyle={{alignSelf: 'center'}}
           />
         </View>
       )}
