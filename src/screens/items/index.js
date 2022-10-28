@@ -33,15 +33,59 @@ export default function Items() {
 
   return (
     <View style={styles.container}>
-      <MyHeader title="All Items" icon="search" />
+      <MyHeader
+        title="All Items"
+        icon="search"
+        onPressRight={() => navigation.navigate('SearchItem')}
+      />
       <View style={styles.subHeader}>
-        <MyText label={'Categories'} size={'subHeading'} />
-        <Icon
-          name="add"
-          onPress={() =>
-            navigation.navigate('Add_Form', {mode: 'add', type: 'category'})
-          }
+        <MyText
+          label={'Categories'}
+          size={'subHeading'}
+          textStyle={{alignSelf: 'center'}}
         />
+        <View
+          style={{
+            flex: 1,
+            alignSelf: 'center',
+            flexDirection: 'row-reverse',
+          }}>
+          <Icon
+            name="add"
+            style={{
+              textAlignVertical: 'center',
+              padding: 10,
+            }}
+            containerStyle={{borderRadius: 100}}
+            pressableProps={{
+              android_ripple: {borderless: false, color: '#8f8f8f33'},
+            }}
+            onPress={() =>
+              navigation.navigate('Add_Form', {mode: 'add', type: 'category'})
+            }
+          />
+          {!categoryData[0].color && (
+            <>
+              <Icon
+                name="edit"
+                style={{
+                  textAlignVertical: 'center',
+                  padding: 10,
+                }}
+                containerStyle={{borderRadius: 100}}
+                pressableProps={{
+                  android_ripple: {borderless: false, color: '#8f8f8f33'},
+                }}
+                onPress={() =>
+                  navigation.navigate('Add_Form', {
+                    mode: 'edit',
+                    type: 'category',
+                  })
+                }
+              />
+            </>
+          )}
+        </View>
       </View>
       <View style={{width: SCREEN_WIDTH}}>
         <FlatList
@@ -78,13 +122,32 @@ export default function Items() {
         />
       </View>
       <View style={styles.subHeader}>
-        <MyText label={'Items'} size={'subHeading'} />
-        <Icon
-          name="add"
-          onPress={() =>
-            navigation.navigate('Add_Form', {mode: 'add', type: 'item'})
-          }
+        <MyText
+          label={'Items'}
+          size={'subHeading'}
+          textStyle={{alignSelf: 'center'}}
         />
+        <View
+          style={{
+            flex: 1,
+            alignSelf: 'center',
+            flexDirection: 'row-reverse',
+          }}>
+          <Icon
+            name="add"
+            style={{
+              textAlignVertical: 'center',
+              padding: 10,
+            }}
+            containerStyle={{borderRadius: 100}}
+            pressableProps={{
+              android_ripple: {borderless: false, color: '#8f8f8f33'},
+            }}
+            onPress={() =>
+              navigation.navigate('Add_Form', {mode: 'add', type: 'item'})
+            }
+          />
+        </View>
       </View>
       <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
         <FlatList
@@ -127,8 +190,21 @@ export default function Items() {
                   textStyle={{alignSelf: 'center'}}
                 />
                 <GapView mode="horizontal" length={15} />
-                <MyCard cardStyle={{padding: 5, borderRadius: 100}}>
-                  <Icon name="edit" />
+                <MyCard cardStyle={{borderRadius: 100}}>
+                  <Icon
+                    name="edit"
+                    style={{padding: 5}}
+                    containerStyle={{borderRadius: 100}}
+                    pressableProps={{
+                      android_ripple: {borderless: true, color: '#8f8f8f33'},
+                    }}
+                    onPress={() =>
+                      navigation.navigate('Add_Form', {
+                        mode: 'edit',
+                        type: 'item',
+                      })
+                    }
+                  />
                 </MyCard>
               </View>
             </MyCard>
@@ -148,7 +224,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     width: SCREEN_WIDTH,
   },
   categoryContainer: {

@@ -1,8 +1,14 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Divider} from '@rneui/themed';
 import React from 'react';
-import {StyleSheet, Text, View, SectionList} from 'react-native';
-import {MyHeader, MyText} from '../../components';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SectionList,
+  TouchableOpacity,
+} from 'react-native';
+import {MyHeader, MyText, TouchRipple} from '../../components';
 import {colors} from '../../theme';
 
 export default function Users() {
@@ -44,10 +50,15 @@ export default function Users() {
           },
         ]}
         renderItem={({item}) => (
-          <View>
-            <MyText textStyle={styles.item} label={item} />
+          <>
+            <TouchRipple
+              onPress={() => {
+                navigation.navigate('Add_Form_User', {mode: 'edit'});
+              }}>
+              <MyText textStyle={styles.item} label={item} />
+            </TouchRipple>
             <Divider color={colors.background} />
-          </View>
+          </>
         )}
         SectionSeparatorComponent={() => <Divider width={1} />}
         renderSectionHeader={({section}) => (

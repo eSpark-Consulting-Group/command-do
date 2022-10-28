@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {SCREEN_HEIGHT} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
 
@@ -35,12 +36,12 @@ export default function BottomButton({
         {/* <View /> */}
         <MyText
           label={label}
-          size={'subHeading'}
+          size={SCREEN_HEIGHT * 0.032}
           textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
         />
         <MyText
           label={`${count}/${totalCount}`}
-          size={'subHeading'}
+          size={SCREEN_HEIGHT * 0.032}
           textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
         />
       </TouchableOpacity>

@@ -20,6 +20,7 @@ import BottomButton from './BottomButton';
 import CstmDropDown from './CstmDropDown';
 import PurchasingListHeader from './PurchasingListHeader';
 import PurchasingOrderCard from './PurchasingOrderCard';
+import TouchRipple from './TouchRipple';
 
 export {
   Cards,
@@ -41,4 +42,5 @@ export {
   CstmDropDown,
   PurchasingListHeader,
   PurchasingOrderCard,
+  TouchRipple,
 };
