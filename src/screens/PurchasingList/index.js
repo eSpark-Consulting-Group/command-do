@@ -1,11 +1,15 @@
+import React, {useState} from 'react';
 import {
+  PermissionsAndroid,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import {Icon} from '@rneui/themed';
+
 import {SCREEN_WIDTH} from '../../constants';
 import {
   LineSeparater,
@@ -14,15 +18,55 @@ import {
   PurchasingOrderCard,
 } from '../../components';
 import {colors} from '../../theme';
-import {Icon} from '@rneui/themed';
+import {pdfHtml} from '../../utils/purchasingpdf';
 
 export default function PurchasingList({navigation}) {
+  const [filePath, setFilePath] = useState('');
+
+  const fileName = 'PurchasingList';
+  const arr = Array(16).fill('a');
+
+  const isPermitted = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Write Permission',
+            message: 'App needs access to Storage data',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        alert('Write permission err', err);
+        return false;
+      }
+    } else {
+      return true;
+    }
+  };
+
+  const createPDF = async () => {
+    if (await isPermitted()) {
+      let options = {
+        //Content to print
+        html: pdfHtml(arr),
+        //File Name
+        fileName: fileName,
+        //File directory
+        directory: 'Documents',
+      };
+      let file = await RNHTMLtoPDF.convert(options);
+      console.log(file.filePath);
+      setFilePath(file.filePath);
+    }
+  };
+
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <View
         style={{
           width: SCREEN_WIDTH,
-          backgroundColor: '#fafafa',
           padding: 10,
           paddingHorizontal: 15,
           elevation: 5,
@@ -105,10 +149,9 @@ export default function PurchasingList({navigation}) {
       </ScrollView>
 
       <TouchableOpacity
+        onPress={createPDF}
         style={{
           width: '95%',
-          // position: 'absolute',
-          // bottom: '0%',
           alignItems: 'center',
           backgroundColor: '#11a79c',
           marginVertical: 10,
