@@ -5,9 +5,22 @@ import {SCREEN_HEIGHT} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
 
-export default function MyInput({label}: {label?: string}) {
+export default function MyInput({
+  label,
+  value,
+  handleChangeText,
+}: {
+  label?: string;
+  value?: string;
+  handleChangeText?: (text: string) => void;
+}) {
+  const containerStyles = {
+    padding: label ? 10 : 0,
+    flex: label ? 0 : 1,
+  };
+
   return (
-    <View style={{padding: label ? 10 : 0, flex: 1}}>
+    <View style={containerStyles}>
       {label && (
         <MyText
           label={label}
@@ -16,6 +29,8 @@ export default function MyInput({label}: {label?: string}) {
         />
       )}
       <TextInput
+        value={value}
+        onChangeText={handleChangeText}
         placeholder="Enter Text in TextInput"
         underlineColorAndroid="transparent"
         style={styles.TextInputStyleClass}

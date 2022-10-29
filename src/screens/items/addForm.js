@@ -29,11 +29,11 @@ export default function AddForm() {
             leftIcon="arrow-back"
             onPressLeft={() => navigation.goBack()}
           />
-          <View style={{paddingHorizontal: 10}}>
+          <ScrollView style={{paddingHorizontal: 10}}>
             <MySubHeader title="Add Category Details" />
             <MyInput label="Name" />
             <ImageContainer />
-          </View>
+          </ScrollView>
           <BottomButton
             label="Add Category"
             count={0}
@@ -87,11 +87,11 @@ export default function AddForm() {
             leftIcon="arrow-back"
             onPressLeft={() => navigation.goBack()}
           />
-          <View style={{paddingHorizontal: 10}}>
+          <ScrollView style={{paddingHorizontal: 10}}>
             <MySubHeader title="Add Category Details" />
             <MyInput label="Name" />
             <ImageContainer />
-          </View>
+          </ScrollView>
           <BottomButton
             label="Add Category"
             count={0}

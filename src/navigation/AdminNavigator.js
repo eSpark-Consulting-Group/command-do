@@ -21,7 +21,7 @@ export default function AdminNavigator() {
           tabBarIcon: ({color, focused, size}) => (
             <Ion
               name={focused ? 'fast-food' : 'fast-food-outline'}
-              color={colors.primary}
+              color={focused ? colors.primary : 'grey'}
               size={size}
             />
           ),
@@ -36,7 +36,7 @@ export default function AdminNavigator() {
           tabBarIcon: ({color, focused, size}) => (
             <Ion
               name={focused ? 'receipt' : 'receipt-outline'}
-              color={colors.primary}
+              color={focused ? colors.primary : 'grey'}
               size={size}
             />
           ),
@@ -51,7 +51,7 @@ export default function AdminNavigator() {
           tabBarIcon: ({color, focused, size}) => (
             <Ion
               name={focused ? 'person' : 'person-outline'}
-              color={colors.primary}
+              color={focused ? colors.primary : 'grey'}
               size={size}
             />
           ),

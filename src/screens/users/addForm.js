@@ -4,9 +4,6 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
   BottomButton,
-  CstmDropDown,
-  GapView,
-  ImageContainer,
   MyHeader,
   MyInput,
   MySubHeader,
