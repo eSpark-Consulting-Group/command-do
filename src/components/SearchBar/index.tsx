@@ -13,12 +13,16 @@ export default function SearchBar({
   leftIcon,
   onPressLeft,
   onPressRight,
+  value,
+  handleChangeText,
 }: {
   headerStyle?: ViewStyle;
   icon?: string;
   leftIcon?: string;
   onPressLeft?: () => void;
   onPressRight?: () => void;
+  value?: string;
+  handleChangeText?: (text: string) => void;
 }) {
   return (
     <View
@@ -45,7 +49,7 @@ export default function SearchBar({
         />
       )}
       {!leftIcon && <GapView mode="horizontal" length={1} />}
-      <MyInput />
+      <MyInput value={value} handleChangeText={handleChangeText} />
       {icon && (
         <View style={{flexDirection: 'row-reverse'}}>
           <Icon
