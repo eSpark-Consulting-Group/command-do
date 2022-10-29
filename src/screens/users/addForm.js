@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Alert} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
@@ -20,6 +20,19 @@ export default function AddForm() {
   const [check1, setCheck1] = useState(true);
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
+
+  const handleDeleteUser = () => {
+    Alert.alert('Delete User', 'User will be permenantly deleted.', [
+      {
+        text: 'Ok',
+        style: 'default',
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  };
 
   if (mode === 'add') {
     return (
@@ -102,6 +115,9 @@ export default function AddForm() {
           title="Edit User"
           leftIcon="arrow-back"
           onPressLeft={() => navigation.goBack()}
+          rightIconType="foundation"
+          icon="trash"
+          onPressRight={() => handleDeleteUser()}
         />
         <ScrollView style={{paddingHorizontal: 10}}>
           <MySubHeader title="Edit User Details" divider />
