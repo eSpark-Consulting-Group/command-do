@@ -1,5 +1,3 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {Divider} from '@rneui/themed';
 import React from 'react';
 import {
   StyleSheet,
@@ -8,6 +6,9 @@ import {
   SectionList,
   TouchableOpacity,
 } from 'react-native';
+import {Divider, FAB} from '@rneui/themed';
+import {useNavigation, useRoute} from '@react-navigation/native';
+
 import {MyHeader, MyText, TouchRipple} from '../../components';
 import {colors} from '../../theme';
 
@@ -49,15 +50,17 @@ export default function Users() {
             ],
           },
         ]}
+        style={{paddingTop: 3}}
         renderItem={({item}) => (
           <>
             <TouchRipple
+              darkRipple
               onPress={() => {
                 navigation.navigate('Add_Form_User', {mode: 'edit'});
               }}>
               <MyText textStyle={styles.item} label={item} />
             </TouchRipple>
-            <Divider color={colors.background} />
+            <Divider />
           </>
         )}
         SectionSeparatorComponent={() => <Divider width={1} />}
@@ -66,6 +69,15 @@ export default function Users() {
         )}
         keyExtractor={(item, index) => index}
       />
+      <FAB
+        onPress={() => console.log('s')}
+        icon={{
+          name: 'add',
+          color: colors.background,
+        }}
+        color={colors.primary}
+        placement="right"
+      />
     </View>
   );
 }
@@ -73,7 +85,7 @@ export default function Users() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.background,
   },
   sectionHeader: {
     paddingTop: 2,
@@ -82,12 +94,12 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     fontSize: 22,
     fontWeight: 'bold',
-    color: colors.primary,
-    backgroundColor: '#ffffff',
+    color: colors.text_inverse,
+    backgroundColor: colors.primary,
     elevation: 1,
   },
   item: {
-    color: colors.text_inverse,
+    color: colors.text_normal,
     padding: 10,
     fontSize: 18,
     height: 44,
