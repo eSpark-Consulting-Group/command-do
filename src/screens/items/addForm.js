@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Alert} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
@@ -19,6 +19,32 @@ export default function AddForm() {
   const route = useRoute();
   const {mode, type} = route?.params;
   const [catToggle, setCatToggle] = useState(false);
+
+  const handleDeleteCategory = () => {
+    Alert.alert('Delete Category', 'Category will be permenantly deleted.', [
+      {
+        text: 'Ok',
+        style: 'default',
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  };
+
+  const handleDeleteItem = () => {
+    Alert.alert('Delete Item', 'Item will be permenantly deleted.', [
+      {
+        text: 'Ok',
+        style: 'default',
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
+  };
 
   if (mode === 'add') {
     if (type === 'category') {
@@ -83,17 +109,20 @@ export default function AddForm() {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
           <MyHeader
-            title="Add Category"
+            title="Edit Category"
             leftIcon="arrow-back"
             onPressLeft={() => navigation.goBack()}
+            rightIconType="foundation"
+            icon="trash"
+            onPressRight={() => handleDeleteCategory()}
           />
           <ScrollView style={{paddingHorizontal: 10}}>
-            <MySubHeader title="Add Category Details" />
+            <MySubHeader title="Edit Category Details" />
             <MyInput label="Name" />
             <ImageContainer />
           </ScrollView>
           <BottomButton
-            label="Add Category"
+            label="Edit Category"
             count={0}
             totalCount={1}
             enabled={true}
@@ -109,6 +138,9 @@ export default function AddForm() {
             title="Add Item"
             leftIcon="arrow-back"
             onPressLeft={() => navigation.goBack()}
+            rightIconType="foundation"
+            icon="trash"
+            onPressRight={() => handleDeleteItem()}
           />
           <ScrollView style={{paddingHorizontal: 10}}>
             <MySubHeader title="Select Category" divider />
