@@ -15,6 +15,7 @@ export default function MyHeader({
   leftIcon,
   onPressLeft,
   onPressRight,
+  rightIconType,
 }: {
   headerStyle?: ViewStyle;
   children?: React.ReactNode;
@@ -23,6 +24,7 @@ export default function MyHeader({
   leftIcon?: string;
   onPressLeft?: () => void;
   onPressRight?: () => void;
+  rightIconType?: string;
 }) {
   return (
     <View
@@ -63,8 +65,14 @@ export default function MyHeader({
         <View style={{flex: 1, flexDirection: 'row-reverse'}}>
           <Icon
             name={icon!!}
-            size={34}
-            style={{padding: 5}}
+            size={30}
+            type={rightIconType}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 50,
+              width: 50,
+            }}
             containerStyle={{borderRadius: 100, alignSelf: 'center'}}
             pressableProps={{
               android_ripple: {borderless: true, color: '#f5f5f533'},
@@ -81,10 +89,8 @@ export default function MyHeader({
 const styles = StyleSheet.create({
   header: {
     width: SCREEN_WIDTH,
-    backgroundColor: '#fafafa',
     padding: 10,
     elevation: 5,
-    borderRadius: 2,
     flexDirection: 'row',
   },
 });
