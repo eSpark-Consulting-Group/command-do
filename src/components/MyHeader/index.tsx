@@ -1,0 +1,96 @@
+import React from 'react';
+import {StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {Icon} from '@rneui/themed';
+
+import {SCREEN_WIDTH} from '../../constants';
+import {colors} from '../../theme';
+import MyText from '../Text';
+import GapView from '../GapView';
+
+export default function MyHeader({
+  headerStyle,
+  children,
+  title,
+  icon,
+  leftIcon,
+  onPressLeft,
+  onPressRight,
+  rightIconType,
+}: {
+  headerStyle?: ViewStyle;
+  children?: React.ReactNode;
+  title: string;
+  icon?: string;
+  leftIcon?: string;
+  onPressLeft?: () => void;
+  onPressRight?: () => void;
+  rightIconType?: string;
+}) {
+  return (
+    <View
+      style={{
+        ...styles.header,
+        backgroundColor: colors.primary,
+        ...headerStyle,
+      }}>
+      {leftIcon && (
+        <Icon
+          name={leftIcon!!}
+          size={28}
+          color={colors.text_inverse}
+          style={{padding: 5}}
+          onPress={onPressLeft}
+          containerStyle={{
+            borderRadius: 100,
+            alignSelf: 'center',
+            right: 5,
+          }}
+          pressableProps={{
+            android_ripple: {borderless: true, color: '#f5f5f533'},
+          }}
+        />
+      )}
+      {!leftIcon && <GapView mode="horizontal" length={1} />}
+      <MyText
+        label={title}
+        size={'heading'}
+        textStyle={{
+          fontWeight: 'bold',
+          fontFamily: 'monospace',
+          textAlignVertical: 'center',
+          color: colors.text_inverse,
+        }}
+      />
+      {icon && (
+        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
+          <Icon
+            name={icon!!}
+            size={30}
+            type={rightIconType}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 50,
+              width: 50,
+            }}
+            containerStyle={{borderRadius: 100, alignSelf: 'center'}}
+            pressableProps={{
+              android_ripple: {borderless: true, color: '#f5f5f533'},
+            }}
+            color={colors.text_inverse}
+            onPress={onPressRight}
+          />
+        </View>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: {
+    width: SCREEN_WIDTH,
+    padding: 10,
+    elevation: 5,
+    flexDirection: 'row',
+  },
+});
