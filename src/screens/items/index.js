@@ -1,10 +1,16 @@
 import React, {useState, useReducer} from 'react';
 import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Icon} from '@rneui/themed';
+import {Icon, SpeedDial} from '@rneui/themed';
 
-import {SCREEN_WIDTH, SCREEN_HEIGHT} from '../../constants';
-import {GapView, MyHeader, MyText} from '../../components';
+import {SCREEN_WIDTH} from '../../constants';
+import {
+  GapView,
+  MyHeader,
+  MySubHeader,
+  MyText,
+  TouchRipple,
+} from '../../components';
 import {MyCard} from '../../components';
 import {colors} from '../../theme';
 
@@ -20,6 +26,7 @@ let categoryData = [
 export default function Items() {
   const navigation = useNavigation();
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [visible, setVisible] = useState(false);
 
   const handlePress = index => {
     let temp = [...categoryData];
@@ -38,11 +45,11 @@ export default function Items() {
         icon="search"
         onPressRight={() => navigation.navigate('SearchItem')}
       />
-      <View style={styles.subHeader}>
+      <View style={{...styles.subHeader}}>
         <MyText
           label={'Categories'}
           size={'subHeading'}
-          textStyle={{alignSelf: 'center'}}
+          textStyle={{alignSelf: 'center', paddingVertical: 10}}
         />
         <View
           style={{
@@ -50,39 +57,27 @@ export default function Items() {
             alignSelf: 'center',
             flexDirection: 'row-reverse',
           }}>
-          <Icon
-            name="add"
-            style={{
-              textAlignVertical: 'center',
-              padding: 10,
-            }}
-            containerStyle={{borderRadius: 100}}
-            pressableProps={{
-              android_ripple: {borderless: false, color: '#8f8f8f33'},
-            }}
-            onPress={() =>
-              navigation.navigate('Add_Form', {mode: 'add', type: 'category'})
-            }
-          />
           {!categoryData[0].color && (
             <>
-              <Icon
-                name="edit"
-                style={{
-                  textAlignVertical: 'center',
-                  padding: 10,
-                }}
-                containerStyle={{borderRadius: 100}}
-                pressableProps={{
-                  android_ripple: {borderless: false, color: '#8f8f8f33'},
-                }}
-                onPress={() =>
-                  navigation.navigate('Add_Form', {
-                    mode: 'edit',
-                    type: 'category',
-                  })
-                }
-              />
+              <MyCard cardStyle={{borderRadius: 100}}>
+                <Icon
+                  name="edit"
+                  style={{
+                    textAlignVertical: 'center',
+                    padding: 10,
+                  }}
+                  containerStyle={{borderRadius: 100}}
+                  pressableProps={{
+                    android_ripple: {borderless: true, color: '#8f8f8f33'},
+                  }}
+                  onPress={() =>
+                    navigation.navigate('Add_Form', {
+                      mode: 'edit',
+                      type: 'category',
+                    })
+                  }
+                />
+              </MyCard>
             </>
           )}
         </View>
@@ -125,29 +120,8 @@ export default function Items() {
         <MyText
           label={'Items'}
           size={'subHeading'}
-          textStyle={{alignSelf: 'center'}}
+          textStyle={{alignSelf: 'center', paddingVertical: 10}}
         />
-        <View
-          style={{
-            flex: 1,
-            alignSelf: 'center',
-            flexDirection: 'row-reverse',
-          }}>
-          <Icon
-            name="add"
-            style={{
-              textAlignVertical: 'center',
-              padding: 10,
-            }}
-            containerStyle={{borderRadius: 100}}
-            pressableProps={{
-              android_ripple: {borderless: false, color: '#8f8f8f33'},
-            }}
-            onPress={() =>
-              navigation.navigate('Add_Form', {mode: 'add', type: 'item'})
-            }
-          />
-        </View>
       </View>
       <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
         <FlatList
@@ -165,52 +139,76 @@ export default function Items() {
           contentContainerStyle={styles.itemContainer}
           renderItem={({item, index}) => (
             <MyCard cardStyle={styles.item}>
-              <View style={{flexDirection: 'row'}}>
-                <View
-                  style={{
-                    height: 50,
-                    width: 50,
-                    backgroundColor: 'teal',
-                  }}
-                />
-                <GapView mode="horizontal" />
-                <View style={{alignSelf: 'center'}}>
-                  <MyText label={item?.name} size={'title'} />
-                  <MyText
-                    label={item?.category}
-                    size={'title'}
-                    textStyle={{opacity: 0.6}}
-                  />
-                </View>
-              </View>
-              <View style={{alignSelf: 'center', flexDirection: 'row'}}>
-                <MyText
-                  label={`Rs. ${item?.amount}`}
-                  size={'title'}
-                  textStyle={{alignSelf: 'center'}}
-                />
-                <GapView mode="horizontal" length={15} />
-                <MyCard cardStyle={{borderRadius: 100}}>
-                  <Icon
-                    name="edit"
-                    style={{padding: 5}}
-                    containerStyle={{borderRadius: 100}}
-                    pressableProps={{
-                      android_ripple: {borderless: true, color: '#8f8f8f33'},
+              <TouchRipple
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  padding: 10,
+                }}
+                darkRipple
+                onPress={() =>
+                  navigation.navigate('Add_Form', {
+                    mode: 'edit',
+                    type: 'item',
+                  })
+                }>
+                <View style={{flexDirection: 'row'}}>
+                  <View
+                    style={{
+                      height: 50,
+                      width: 50,
+                      backgroundColor: 'teal',
                     }}
-                    onPress={() =>
-                      navigation.navigate('Add_Form', {
-                        mode: 'edit',
-                        type: 'item',
-                      })
-                    }
                   />
-                </MyCard>
-              </View>
+                  <GapView mode="horizontal" />
+                  <View style={{alignSelf: 'center'}}>
+                    <MyText label={item?.name} size={'title'} />
+                    <MyText
+                      label={item?.category}
+                      size={'title'}
+                      textStyle={{opacity: 0.6}}
+                    />
+                  </View>
+                </View>
+                <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                  <MyText
+                    label={`Rs. ${item?.amount}`}
+                    size={'title'}
+                    textStyle={{alignSelf: 'center'}}
+                  />
+                  <GapView mode="horizontal" length={15} />
+                </View>
+              </TouchRipple>
             </MyCard>
           )}
         />
       </View>
+      <SpeedDial
+        isOpen={visible}
+        color={colors.primary}
+        icon={{name: 'add', color: '#fff'}}
+        openIcon={{name: 'close', color: '#fff'}}
+        onOpen={() => setVisible(!visible)}
+        onClose={() => setVisible(!visible)}>
+        <SpeedDial.Action
+          icon={{name: 'add', color: '#fff'}}
+          color={colors.primary}
+          title="Add Category"
+          onPress={() => {
+            navigation.navigate('Add_Form', {mode: 'add', type: 'category'});
+            setVisible(false);
+          }}
+        />
+        <SpeedDial.Action
+          icon={{name: 'add', color: '#fff'}}
+          color={colors.primary}
+          title="Add Item"
+          onPress={() => {
+            navigation.navigate('Add_Form', {mode: 'add', type: 'item'});
+            setVisible(false);
+          }}
+        />
+      </SpeedDial>
     </View>
   );
 }
@@ -221,9 +219,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   subHeader: {
+    flexDirection: 'row',
     paddingVertical: 10,
     paddingHorizontal: 10,
-    flexDirection: 'row',
     width: SCREEN_WIDTH,
   },
   categoryContainer: {
@@ -237,10 +235,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   item: {
-    padding: 10,
     marginVertical: 10,
     marginHorizontal: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
 });
