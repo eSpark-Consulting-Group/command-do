@@ -31,44 +31,83 @@ export default function OrderCard({
 }) {
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.cardInnerContainer}>
-        <View style={styles.cardDataContainer}>
-          <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
-        </View>
-        <View style={styles.cardDataContainer}>
-          {order.length > 0 &&
-            order.map(
-              (item, index) =>
-                index < 2 && (
-                  <Text key={index} style={styles.cardDataText}>
-                    {item.qty}x {item.item}
-                  </Text>
-                ),
-            )}
-          {order.length > 2 && (
-            <TouchableOpacity>
-              <Text style={styles.cardDataMoreText}>(tap to see more)</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-      <View style={styles.cardInnerContainer}>
-        <View style={styles.cardDataContainer2}>
-          <Text style={styles.cardDataText}>Rs {amount}</Text>
-        </View>
+      <View
+        style={{
+          ...styles.cardInnerContainer,
+          padding: 5,
+          borderBottomWidth: 1,
+        }}>
+        <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
         <TouchableOpacity
           onPress={onCollect}
           style={{
             ...styles.cardDataContainer2,
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#11a79c',
-            backgroundColor: '#11a79c',
+            borderRadius: 5,
+            backgroundColor: '#14D6C7',
+            elevation: 5,
+            paddingVertical: 2,
           }}>
           <Text style={{...styles.cardDataText, color: '#fff'}}>
             {paid ? 'Revert' : 'Collect'}
           </Text>
         </TouchableOpacity>
+      </View>
+      <View style={{borderBottomWidth: 1, padding: 5}}>
+        <View style={{...styles.cardInnerContainer, marginBottom: 4}}>
+          <MyText
+            label={'Order'}
+            size={'title'}
+            textStyle={{fontWeight: 'bold'}}
+          />
+          <MyText
+            label={'Quantity'}
+            size={'title'}
+            textStyle={{fontWeight: 'bold'}}
+          />
+        </View>
+        {order.length > 0 &&
+          order.map((item, index) => (
+            <View
+              key={index}
+              style={{
+                ...styles.cardInnerContainer,
+                paddingVertical: 2,
+              }}>
+              <MyText
+                label={item.item}
+                size={'subTitle'}
+                textStyle={{fontWeight: 'bold'}}
+              />
+              <MyText
+                label={item.qty}
+                size={'subTitle'}
+                textStyle={{
+                  fontWeight: 'bold',
+                  width: width * 0.12,
+                  textAlign: 'center',
+                }}
+              />
+            </View>
+          ))}
+      </View>
+      <View
+        style={{
+          ...styles.cardInnerContainer,
+          padding: 5,
+        }}>
+        <MyText
+          label={'Total'}
+          size={'title'}
+          textStyle={{fontWeight: 'bold'}}
+        />
+        <MyText
+          label={'Rs. 2000'}
+          size={'title'}
+          textStyle={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
+        />
       </View>
     </View>
   );
@@ -76,8 +115,6 @@ export default function OrderCard({
 
 const styles = StyleSheet.create({
   cardContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     width: width * 0.95,
     paddingVertical: 5,
     borderRadius: 5,
@@ -88,6 +125,7 @@ const styles = StyleSheet.create({
   },
   cardInnerContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   cardDataContainer: {

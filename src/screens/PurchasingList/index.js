@@ -24,7 +24,7 @@ export default function PurchasingList({navigation}) {
   const [filePath, setFilePath] = useState('');
 
   const fileName = 'PurchasingList';
-  const arr = Array(16).fill('a');
+  const arr = Array(19).fill('a');
 
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
@@ -99,6 +99,16 @@ export default function PurchasingList({navigation}) {
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
+          totalAmount={3500}
+        />
+        <PurchasingOrderCard
+          itemName="Chicken Biryani"
+          qty={2}
+          totalAmount={20}
+        />
+        <PurchasingOrderCard
+          itemName="Chicken Biryani"
+          qty={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
@@ -148,6 +158,22 @@ export default function PurchasingList({navigation}) {
         />
       </ScrollView>
 
+      <View
+        onPress={createPDF}
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingTop: 5,
+          paddingHorizontal: 20,
+          borderRadius: 10,
+          borderTopWidth: 1,
+          borderColor: '#00000042',
+        }}>
+        <Text style={{fontWeight: '600', fontSize: 18}}>Total</Text>
+        <Text style={{fontWeight: '600', fontSize: 18}}>Rs. 2040</Text>
+      </View>
       <TouchableOpacity
         onPress={createPDF}
         style={{
