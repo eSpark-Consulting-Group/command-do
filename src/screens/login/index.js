@@ -120,7 +120,11 @@ const Login = ({navigation}) => {
           </Text>
         </TouchableOpacity>
         <View style={styles.radioButtonContainer}>
-          <MyText label="Select Role:" style={{textAlignVertical: 'center'}} />
+          <MyText
+            label="Select Role:"
+            textStyle={{textAlignVertical: 'center'}}
+            size="title"
+          />
           <CheckBox
             title="Admin"
             checkedIcon={
