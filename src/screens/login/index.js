@@ -48,7 +48,7 @@ const Login = ({navigation}) => {
     } else if (user) {
       navigation.navigate('Home', {name: 'rohail'});
     } else if (rider) {
-      navigation.navigate('Orders');
+      navigation.navigate('Home_Rider');
     }
   };
 
