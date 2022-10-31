@@ -135,7 +135,7 @@ export default function AddForm() {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
           <MyHeader
-            title="Add Item"
+            title="Edit Item"
             leftIcon="arrow-back"
             onPressLeft={() => navigation.goBack()}
             rightIconType="foundation"
@@ -150,7 +150,7 @@ export default function AddForm() {
               type="category"
               handleToggle={() => setCatToggle(!catToggle)}
             />
-            <MySubHeader title="Add Item Details" divider />
+            <MySubHeader title="Edit Item Details" divider />
             <MyInput label="Name" />
             <MyInput label="Price" />
             <ImageContainer />
