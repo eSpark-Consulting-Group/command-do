@@ -8,7 +8,7 @@ const FontSize = {
   heading: height * 0.045,
   subHeading: height * 0.03,
   title: height * 0.02,
-  subTitle: height * 0.18,
+  subTitle: height * 0.018,
   default: height * 0.015,
 };
 
@@ -17,7 +17,7 @@ const MyText = ({
   size = 'default',
   textStyle,
 }: {
-  label?: string;
+  label?: string | number;
   size?: 'heading' | 'subHeading' | 'title' | 'subTitle' | 'default' | number;
   textStyle?: TextStyle;
 }) => {

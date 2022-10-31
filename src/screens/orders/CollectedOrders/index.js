@@ -5,10 +5,18 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {OrderCard, OrderListHeader} from '../../../components';
 
 export default function CollectedOrders({navigation}) {
+  const finishCollection = () => {
+    Alert.alert('Confirmation', 'Are you sure you want to Finish Collection?', [
+      {text: 'Yes', onPress: () => navigation.navigate('Purchasing_List')},
+      {text: 'No', style: 'cancel'},
+    ]);
+  };
+
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <OrderListHeader />
@@ -59,7 +67,7 @@ export default function CollectedOrders({navigation}) {
         />
       </ScrollView>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Purchasing_List')}
+        onPress={finishCollection}
         style={{
           width: '95%',
           alignItems: 'center',
