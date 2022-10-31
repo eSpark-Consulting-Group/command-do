@@ -1,9 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Orders, Users} from '../screens';
+import {Orders} from '../screens';
 import ItemNavigator from './ItemNavigator';
+import UserNavigator from './AdminUserNavigator';
 import Ion from 'react-native-vector-icons/Ionicons';
+import {colors} from '../theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,10 +16,12 @@ export default function AdminNavigator() {
         name="Items"
         component={ItemNavigator}
         options={{
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: 'grey',
           tabBarIcon: ({color, focused, size}) => (
             <Ion
               name={focused ? 'fast-food' : 'fast-food-outline'}
-              color={color}
+              color={focused ? colors.primary : 'grey'}
               size={size}
             />
           ),
@@ -27,10 +31,12 @@ export default function AdminNavigator() {
         name="Orders"
         component={Orders}
         options={{
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: 'grey',
           tabBarIcon: ({color, focused, size}) => (
             <Ion
               name={focused ? 'receipt' : 'receipt-outline'}
-              color={color}
+              color={focused ? colors.primary : 'grey'}
               size={size}
             />
           ),
@@ -38,12 +44,14 @@ export default function AdminNavigator() {
       />
       <Tab.Screen
         name="Users"
-        component={Users}
+        component={UserNavigator}
         options={{
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: 'grey',
           tabBarIcon: ({color, focused, size}) => (
             <Ion
               name={focused ? 'person' : 'person-outline'}
-              color={color}
+              color={focused ? colors.primary : 'grey'}
               size={size}
             />
           ),

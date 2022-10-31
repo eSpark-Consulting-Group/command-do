@@ -15,6 +15,8 @@ import CurrentOrders from './orders/CurrentOrders';
 import Users from './users';
 import AddForm from './items/addForm';
 import PurchasingList from './PurchasingList';
+import AddFormUser from './users/addForm';
+import SearchScreen from './items/SearchScreen';
 
 export {
   Home,
@@ -31,4 +33,6 @@ export {
   AddForm,
   PurchasingList,
   CurrentOrders,
+  AddFormUser,
+  SearchScreen,
 };
