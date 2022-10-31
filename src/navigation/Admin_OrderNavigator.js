@@ -1,6 +1,10 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+
 import {OrderList} from '../screens';
+import FilterScreen from '../screens/ordersList/Filters';
+import OrderDetails from '../screens/ordersList/OrderDetails';
+import UserList from '../screens/ordersList/UserList';
 
 const Stack = createStackNavigator();
 function OrderNavigator() {
@@ -10,7 +14,13 @@ function OrderNavigator() {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="OrderList" component={OrderList} />
+      <Stack.Group
+        screenOptions={{animationEnabled: true, presentation: 'modal'}}>
+        <Stack.Screen name="OrderList" component={OrderList} />
+        <Stack.Screen name="Filters" component={FilterScreen} />
+        <Stack.Screen name="UserList" component={UserList} />
+      </Stack.Group>
+      <Stack.Screen name="Order_Details" component={OrderDetails} />
     </Stack.Navigator>
   );
 }
