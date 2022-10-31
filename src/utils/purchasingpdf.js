@@ -26,8 +26,7 @@ export const pdfHtml = arr => {
           <p style="font-weight: bold; font-size: large">Amount</p>
         </div>
         </div>
-        <div style="width: 90%; border: 1px solid black">
-          <!-- <p>Hello</p> -->
+        <div style="width: 90%; border: 1px solid black; margin-bottom: 10px">
         </div>
         ${arr
           .map(
@@ -37,10 +36,11 @@ export const pdfHtml = arr => {
         flex-direction: row;
         align-items: center;
         width: 90vw;
-        height: 4vh;
+        height: 3.18vh;
         margin-top: 5px;
         margin-bottom: 5px;
-        background-color: aliceblue;
+        // background-color: #C5FAF5;
+        background-color: #E1FDFA;
         border-radius: 12px;
         box-shadow: 2px 2px 5px #11a79c;
       ">
@@ -52,7 +52,7 @@ export const pdfHtml = arr => {
         justify-content: center;
         height: 100%
       ">
-      <div style="border: 2px solid #000; width: 20%; height: 35%" /></div>
+      <div style="border: 2px solid #000; width: 15%; height: 35%" /></div>
     </div>
     <div style="width: 45vw; text-align: left; padding-left: 1vw">
       <p style="font-weight: bold">Chicken Biryani</p>
@@ -73,8 +73,11 @@ export const pdfHtml = arr => {
           style="
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
-            width: 80%;
+            justify-content: space-between;
+            width: 75%;
+            height: 2vh;
+            align-items: center;
+            margin-top: 5px
           ">
           <p style="font-weight: bold; font-size: large">Total</p>
           <p style="font-weight: bold; font-size: large">Rs. 4050</p>
