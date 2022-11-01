@@ -15,7 +15,6 @@ function BookScreen() {
         flex: 1,
         backgroundColor: 'white',
       }}>
-      <StatusBar barStyle={'dark-content'} backgroundColor='white' />
       <View
         style={{
           flex: .5,
