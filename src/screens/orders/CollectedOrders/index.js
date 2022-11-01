@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  FlatList,
 } from 'react-native';
 import {OrderCard, OrderListHeader} from '../../../components';
+import {orders} from '../../../utils/data';
 
 export default function CollectedOrders({navigation}) {
   const finishCollection = () => {
@@ -17,55 +19,44 @@ export default function CollectedOrders({navigation}) {
     ]);
   };
 
+  const revertOrder = id => {
+    let index = orders.findIndex(obj => obj.id == id);
+    orders[index].paid = false;
+  };
+
+  const revertConfirmation = id => {
+    Alert.alert(
+      'Confirmation',
+      'Are you sure you want to revert the Collection?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => revertOrder(id),
+        },
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+      ],
+    );
+  };
+
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
-      <OrderListHeader />
-      <ScrollView
-        style={{width: '100%'}}
-        contentContainerStyle={{alignItems: 'center'}}
-        showsVerticalScrollIndicator={false}>
-        <OrderCard
-          name={'Fahim Uddin'}
-          order={[
-            {item: 'Andy Wala Burger', qty: 2},
-            {item: 'Banana Shake', qty: 1},
-            {item: 'Biryani', qty: 1},
-          ]}
-          amount={300}
-          paid={true}
-        />
-        <OrderCard
-          name={'Fahim Uddin'}
-          order={[
-            {item: 'Andy Wala Burger', qty: 2},
-            {item: 'Banana Shake', qty: 1},
-            {item: 'Biryani', qty: 1},
-          ]}
-          amount={300}
-          paid={true}
-        />
-
-        <OrderCard
-          name={'Fahim Uddin'}
-          order={[
-            {item: 'Andy Wala Burger', qty: 2},
-            {item: 'Banana Shake', qty: 1},
-            {item: 'Biryani', qty: 1},
-          ]}
-          amount={300}
-          paid={true}
-        />
-        <OrderCard
-          name={'Fahim Uddin'}
-          order={[
-            {item: 'Andy Wala Burger', qty: 2},
-            {item: 'Banana Shake', qty: 1},
-            {item: 'Biryani', qty: 1},
-          ]}
-          amount={300}
-          paid={true}
-        />
-      </ScrollView>
+      <FlatList
+        data={orders}
+        renderItem={({item}) =>
+          item.paid && (
+            <OrderCard
+              name={item.name}
+              order={item.orders}
+              amount={item.amount}
+              paid={item.paid}
+              onRevert={() => revertConfirmation(item.id)}
+            />
+          )
+        }
+      />
       <TouchableOpacity
         onPress={finishCollection}
         style={{
