@@ -23,7 +23,6 @@ import {colors} from '../../theme';
 export default function OrdersList() {
   const navigation = useNavigation();
   const [isModal, setIsModal] = useState(false);
-  const [filterLabel, setFilterLabel] = useState('By Date');
 
   const isModalVisible = () => {
     LayoutAnimation.configureNext({
