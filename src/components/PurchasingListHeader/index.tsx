@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.5,
     paddingLeft: SCREEN_WIDTH * 0.02,
   },
-  headerTitleContainer2: {width: SCREEN_WIDTH * 0.18, alignItems: 'center'},
+  headerTitleContainer2: {width: SCREEN_WIDTH * 0.2, alignItems: 'center'},
   headerTitle: {
     fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',
