@@ -57,7 +57,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
   const reactNativeLogo = 'https://reactnative.dev/docs/assets/favicon.png';
 
   const [queueSize, setQueueSize] = useState(0);
-  let dropDownAlertRef = useRef();
+  let dropDownAlertRef: any = useRef();
 
   const _onProgrammaticClose = () => {
     dropDownAlertRef.closeAction();
