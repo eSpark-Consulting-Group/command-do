@@ -19,9 +19,7 @@ const {width, height} = Dimensions.get('window');
 
 function OrderConfirm({route, navigation}) {
   const [isTick, setIsTick] = useState(false);
-  const [getData, setGetData] = useState({});
   const dispatch = useDispatch();
-  const count = useSelector(store => store);
   const [progressText, setProgresText] = useState('Cart');
   const [progress, setProgress] = useState(0.7);
   const [animatedValue, setAnimatedValue] = useState(
@@ -81,7 +79,7 @@ function OrderConfirm({route, navigation}) {
               />
             </Animated.View>
             <Progress.Circle
-              size={height * 0.11}
+              size={height * 0.12}
               progress={progress}
               thickness={height * 0.005}
               color="#11a79c"

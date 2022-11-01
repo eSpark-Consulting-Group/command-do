@@ -204,8 +204,8 @@ function Cart({ route, navigation }) {
                       />
                     }
                     <TouchableOpacity style={styles.qtyButtonContainer} onPress={() => onHandleEditQty(index)} >
-                      <MyText label={item.qty} title style={{ margin: height * .01, marginLeft: height * .015, }} />
-                      <Icon name="caret-down" size={height * .02} color='#000' style={{ paddingRight: height * .005 }} />
+                      <MyText label={item.qty} />
+                      <Icon name="caret-down" size={height * .02} color='#000' style={{ paddingRight: height * .005, left: height * .005 }} />
                     </TouchableOpacity>
                     <View style={{
                       elevation: height * .003,
@@ -245,7 +245,7 @@ function Cart({ route, navigation }) {
               }}
               onPress={() => navigation.goBack()}
             >
-              <MyText label={'Add more Items 😋'} title style={{ color: '#11a79c' }} />
+              <MyText label={'Add more Items 😋'} title textStyle={{ color: '#11a79c', textDecorationLine: 'underline' }} />
             </TouchableOpacity>
           </View>
           <View style={styles.footerContainer}>
@@ -263,6 +263,7 @@ function Cart({ route, navigation }) {
                   justifyContent: 'center',
                   alignItems: 'center',
                   elevation: height * .003,
+                  marginVertical: height * .009,
                 }}
                 onPress={() => isShowAlert(true)}
               >
@@ -379,7 +380,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: height * .001,
     borderRadius: height * .005,
-    // padding: height * .01,
+    padding: height * .007,
+
   },
   deleteItem: {
     height: height * .03,
