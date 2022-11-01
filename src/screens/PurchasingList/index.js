@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {Icon} from '@rneui/themed';
+import {showMessage} from 'react-native-flash-message';
 
 import {SCREEN_WIDTH} from '../../constants';
 import {
@@ -47,18 +48,33 @@ export default function PurchasingList({navigation}) {
   };
 
   const createPDF = async () => {
+    let currDateTime =
+      new Date().toISOString().slice(0, 10) +
+      '_' +
+      new Date().toLocaleTimeString().replace(/:/g, '');
+
     if (await isPermitted()) {
       let options = {
         //Content to print
         html: pdfHtml(arr),
         //File Name
-        fileName: fileName,
+        fileName: fileName + currDateTime,
         //File directory
-        directory: 'Documents',
+        directory: 'eSpark Lunch',
       };
-      let file = await RNHTMLtoPDF.convert(options);
-      console.log(file.filePath);
-      setFilePath(file.filePath);
+      try {
+        let file = await RNHTMLtoPDF.convert(options);
+        showMessage({
+          message: 'PDF Generated Successfully',
+          description: 'to: ' + file.filePath.slice(19),
+          type: 'success',
+          icon: 'auto',
+        });
+        console.log(file.filePath.slice(19));
+        setFilePath(file.filePath);
+      } catch (error) {
+        console.log('err', error);
+      }
     }
   };
 
@@ -159,7 +175,6 @@ export default function PurchasingList({navigation}) {
       </ScrollView>
 
       <View
-        onPress={createPDF}
         style={{
           flexDirection: 'row',
           width: '100%',

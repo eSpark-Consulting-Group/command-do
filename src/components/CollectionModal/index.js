@@ -9,7 +9,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Overlay} from '@rneui/themed';
 import FA from 'react-native-vector-icons/FontAwesome';
 
-export default function CollectionModal({closeModal, totAmount}) {
+export default function CollectionModal({closeModal, totAmount, onCollected}) {
   const [amount, setAmount] = useState('');
 
   const inputRef = useRef(null);
@@ -85,12 +85,12 @@ export default function CollectionModal({closeModal, totAmount}) {
         </View>
       </View>
       <TouchableOpacity
-        onPress={closeModal}
-        disabled={amount == '' ? true : false}
+        onPress={onCollected}
+        disabled={amount >= totAmount ? false : true}
         style={{
           width: '100%',
           alignItems: 'center',
-          backgroundColor: amount == '' ? '#ccc' : '#11a79c',
+          backgroundColor: amount >= totAmount ? '#11a79c' : '#ccc',
           paddingVertical: 5,
           borderRadius: 10,
         }}>
