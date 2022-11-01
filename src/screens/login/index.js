@@ -47,14 +47,14 @@ const Login = ({navigation}) => {
 
   const handleNavigate = async (admin, user, rider) => {
     try {
-      const user = await LoginUser({
+      const userData = await LoginUser({
         variables: {
           email: 'mraza@esparkconsultants.com',
           password: '$%T9!^wkx4aST',
           fcmToken: 'send fcm token here',
         },
       });
-      console.log('user login successfully', user.data)
+      console.log('user login successfully', userData.data);
       if (admin) {
         navigation.navigate('Home_Admin');
       } else if (user) {
