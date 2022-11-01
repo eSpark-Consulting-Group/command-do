@@ -181,7 +181,6 @@ function Items({route, navigation}) {
         title="Warning"
       />
       <View style={styles.mainContainer}>
-        <StatusBar hidden backgroundColor="white" />
         <View style={styles.itemImageContainer}>
           <ImageBackground
             source={getData.image}
