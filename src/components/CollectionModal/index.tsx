@@ -4,6 +4,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  InputAccessoryViewProps,
+  NativeMethods,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {Overlay} from '@rneui/themed';
@@ -12,7 +14,7 @@ import FA from 'react-native-vector-icons/FontAwesome';
 export default function CollectionModal({closeModal, totAmount}) {
   const [amount, setAmount] = useState('');
 
-  const inputRef = useRef(null);
+  const inputRef: any = useRef();
   const onFocusHandler = () => {
     setTimeout(() => {
       inputRef.current && inputRef.current.focus();
