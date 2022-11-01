@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
-import {CollectionModal, OrderCard, OrderListHeader} from '../../../components';
-import {orders} from '../../../utils/data';
+import {CollectionModal, OrderCard} from '../../../components';
+import {collectAmouunt} from '../../../features/riderOrders/riderOrderSlice';
 
 export default function CurrentOrders({navigation}) {
+  const reduxData = useSelector(store => store);
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
@@ -21,8 +24,7 @@ export default function CurrentOrders({navigation}) {
   };
 
   const onCollection = () => {
-    let index = orders.findIndex(obj => obj.id == id);
-    orders[index].paid = true;
+    dispatch(collectAmouunt(id));
     setShowModal(false);
     setAmount('');
   };
@@ -30,7 +32,7 @@ export default function CurrentOrders({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <FlatList
-        data={orders}
+        data={reduxData.riderOrder.orders}
         style={{width: '100%'}}
         contentContainerStyle={{alignItems: 'center'}}
         renderItem={({item}) =>
