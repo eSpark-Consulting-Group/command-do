@@ -16,6 +16,7 @@ export default function MyHeader({
   onPressLeft,
   onPressRight,
   rightIconType,
+  leftIconType,
 }: {
   headerStyle?: ViewStyle;
   children?: React.ReactNode;
@@ -25,6 +26,7 @@ export default function MyHeader({
   onPressLeft?: () => void;
   onPressRight?: () => void;
   rightIconType?: string;
+  leftIconType?: string;
 }) {
   return (
     <View
@@ -36,9 +38,15 @@ export default function MyHeader({
       {leftIcon && (
         <Icon
           name={leftIcon!!}
+          type={leftIconType}
           size={28}
           color={colors.text_inverse}
-          style={{padding: 5}}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 50,
+            width: 50,
+          }}
           onPress={onPressLeft}
           containerStyle={{
             borderRadius: 100,
