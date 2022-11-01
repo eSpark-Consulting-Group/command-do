@@ -95,7 +95,7 @@ export default function FilterScreen() {
         }}
       />
       <DatePicker
-        style={{display: 'none'}}
+        // style={{display: 'none'}}
         isVisible={show}
         onConfirm={value => setShow(false)}
         customStyles={{
