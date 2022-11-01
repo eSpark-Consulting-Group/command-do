@@ -27,7 +27,7 @@ const MyText = ({
         {
           fontSize: FontSize[size!!] ?? size,
           color: '#000',
-          fontFamily: 'monospace',
+          fontFamily: 'Poppins-Regular',
         },
         textStyle,
       ]}>
