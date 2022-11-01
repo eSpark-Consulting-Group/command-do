@@ -17,7 +17,7 @@ const MyText = ({
   size = 'default',
   textStyle,
 }: {
-  label?: string;
+  label?: string | number;
   size?: 'heading' | 'subHeading' | 'title' | 'subTitle' | 'default' | number;
   textStyle?: TextStyle;
 }) => {
