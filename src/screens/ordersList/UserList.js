@@ -2,49 +2,107 @@ import React, {useState} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-import {GapView, MyHeader, MyText} from '../../components';
+import {GapView, MyHeader, MyText, TouchRipple} from '../../components';
 import {colors} from '../../theme';
+import {CheckBox, Icon} from '@rneui/themed';
 
 export default function UserList() {
   const navigation = useNavigation();
 
   const [orderFilterFields, setOrderFilterFields] = useState([
-    {label: 'Select Type', selection: 'Please Select', onPress: () => {}},
-    {label: 'Select Range', selection: 'Range', onPress: () => {}},
+    {
+      label: 'No User',
+      selected: true,
+    },
+    {
+      label: 'Wirad Ali',
+      selected: false,
+    },
+    {
+      label: 'Faraz Uddin',
+      selected: false,
+    },
+    {
+      label: 'Mudassir Ali',
+      selected: false,
+    },
   ]);
 
-  const handleSecondField = () => {};
+  const handlePressUser = (item, index) => {
+    let tempArr = [...orderFilterFields];
+    tempArr[index].selected = true;
+    tempArr.map((item, ind) =>
+      index !== ind ? (item.selected = false) : true,
+    );
+    setOrderFilterFields(tempArr);
+  };
+
+  const MyCheckBox = ({selected}) => {
+    return (
+      <CheckBox
+        containerStyle={{
+          padding: 0,
+          margin: 0,
+          backgroundColor: 'transparent',
+          alignSelf: 'center',
+        }}
+        checkedIcon={
+          <Icon
+            name="radio-button-checked"
+            type="material"
+            color={colors.primary}
+            size={20}
+            iconStyle={{marginRight: 5}}
+          />
+        }
+        uncheckedIcon={
+          <Icon
+            name="radio-button-unchecked"
+            type="material"
+            color="grey"
+            size={20}
+            iconStyle={{marginRight: 5}}
+          />
+        }
+        textStyle={{
+          fontSize: 12,
+          marginLeft: 0,
+          marginRight: 5,
+        }}
+        checked={selected}
+      />
+    );
+  };
 
   return (
     <View style={styles.container}>
       <MyHeader
-        title="Filters"
+        title="Users"
         icon="checkmark"
         rightIconType="ionicon"
-        leftIcon="filter-remove-outline"
-        leftIconType="material-community"
+        leftIcon="arrow-back"
         onPressLeft={() => {
           navigation.goBack();
         }}
         onPressRight={() => {
-          navigation.goBack();
+          navigation.navigate('Filters', {userList: orderFilterFields});
         }}
       />
       <FlatList
         data={orderFilterFields}
-        style={styles.listContainer}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <View style={styles.listItem}>
-            <MyText
-              label={item.label}
-              textStyle={{textAlignVertical: 'center'}}
-              size={16}
-            />
-            <MyText
-              label={item.selection}
-              textStyle={{textAlignVertical: 'center'}}
-              size="title"
-            />
+            <TouchRipple
+              style={styles.listContainer}
+              darkRipple
+              onPress={() => handlePressUser(item, index)}>
+              <MyText
+                label={item.label}
+                textStyle={{textAlignVertical: 'center'}}
+                size={16}
+              />
+              <MyCheckBox selected={item.selected} />
+            </TouchRipple>
           </View>
         )}
       />
@@ -58,16 +116,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   listContainer: {
-    // marginTop: 5,
-    // backgroundColor: 'teal',
-  },
-  listItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    elevation: 3,
     padding: 10,
     paddingVertical: 20,
+  },
+  listItem: {
+    backgroundColor: '#fff',
+    elevation: 3,
+
     marginVertical: 8,
   },
 });
