@@ -21,12 +21,14 @@ export default function OrderCard({
   amount,
   order = [],
   onCollect,
+  onRevert,
   paid,
 }: {
   name: string;
   amount: number;
   order: orderListType[];
   onCollect: () => void;
+  onRevert: () => void;
   paid: false;
 }) {
   return (
@@ -39,7 +41,7 @@ export default function OrderCard({
         }}>
         <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
         <TouchableOpacity
-          onPress={onCollect}
+          onPress={paid ? onRevert : onCollect}
           style={{
             ...styles.cardDataContainer2,
             borderRadius: 5,

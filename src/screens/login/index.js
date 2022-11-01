@@ -17,6 +17,8 @@ import {Fonts} from '../../utils/fonts';
 import {Logo} from '../../assets/images';
 import MyText from '../../components/Text';
 import styles from './styles';
+import {useLazyQuery} from '@apollo/client';
+import {LOGIN_USER} from '../../graphQl/query/user.query';
 
 const {width, height} = Dimensions.get('window');
 
@@ -26,6 +28,7 @@ const Login = ({navigation}) => {
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
 
+  const [LoginUser, {data, error, loading}] = useLazyQuery(LOGIN_USER);
   const handleCheck = value => {
     if (value === '1') {
       setCheck1(true);
@@ -42,13 +45,25 @@ const Login = ({navigation}) => {
     }
   };
 
-  const handleNavigate = (admin, user, rider) => {
-    if (admin) {
-      navigation.navigate('Home_Admin');
-    } else if (user) {
-      navigation.navigate('Home', {name: 'rohail'});
-    } else if (rider) {
-      navigation.navigate('Home_Rider');
+  const handleNavigate = async (admin, user, rider) => {
+    try {
+      const userData = await LoginUser({
+        variables: {
+          email: 'mraza@esparkconsultants.com',
+          password: '$%T9!^wkx4aST',
+          fcmToken: 'send fcm token here',
+        },
+      });
+      console.log('user login successfully', userData.data);
+      if (admin) {
+        navigation.navigate('Home_Admin');
+      } else if (user) {
+        navigation.navigate('Home', {name: 'rohail'});
+      } else if (rider) {
+        navigation.navigate('Home_Rider');
+      }
+    } catch (error) {
+      console.log('login error', error);
     }
   };
 
@@ -58,7 +73,6 @@ const Login = ({navigation}) => {
         flex: 1,
         backgroundColor: 'white',
       }}>
-      <StatusBar barStyle={'dark-content'} backgroundColor="white" hidden />
       <View
         style={{
           flex: 1,
@@ -102,12 +116,15 @@ const Login = ({navigation}) => {
               color: 'white',
               fontFamily: Fonts.Roboto_Black,
             }}>
-            Login  
+            Login
           </Text>
         </TouchableOpacity>
-        <View
-          style={styles.radioButtonContainer}>
-          <MyText label="Select Role:" style={{textAlignVertical: 'center'}} />
+        <View style={styles.radioButtonContainer}>
+          <MyText
+            label="Select Role:"
+            textStyle={{textAlignVertical: 'center'}}
+            size="title"
+          />
           <CheckBox
             title="Admin"
             checkedIcon={
