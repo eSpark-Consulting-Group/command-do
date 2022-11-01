@@ -1,30 +1,24 @@
 import React from 'react';
 import {
   View,
-  Text,
-  TextInput,
   Dimensions,
-  TouchableOpacity,
-  StatusBar,
   ScrollView,
   Image,
   Pressable,
 } from 'react-native';
-import {Fonts} from '../../utils/fonts';
-import {MyText} from '../../components';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import {MyText} from '..';
+import { useSelector } from 'react-redux';
 
 const {width, height} = Dimensions.get('window');
 
 const Cards = props => {
   const {label, data, navigation} = props;
-  const count = useSelector(store => store);
+  const cart = useSelector((store: any) => store.cart);
 
-  // console.log('menuItems--->', count?.cart?.menuItems);
   return (
     <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-      {count?.cart?.menuItems &&
-        count?.cart?.menuItems.map((item, index) => (
+      {cart?.menuItems &&
+        cart?.menuItems.map((item, index) => (
           <View
             key={index}
             style={{
@@ -34,8 +28,10 @@ const Cards = props => {
             }}>
             <MyText
               label={item.name}
-              subHeading
-              style={{marginVertical: height * 0.02}}
+              textStyle={{
+                fontSize: height * 0.03,
+                color: '#000',
+              }}
             />
             <View
               style={{
@@ -44,7 +40,6 @@ const Cards = props => {
               }}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {item?.data.map((dataItem, dataIndex) => (
-                  // console.log(dataItem),
                   <Pressable
                     key={dataIndex}
                     style={{
@@ -89,18 +84,17 @@ const Cards = props => {
                           }}>
                           <MyText
                             label={
-                              dataItem?.qty > 99 ? '99+' : Number(dataItem.qty)
+                              dataItem?.qty > 99
+                                ? '99+'
+                                : Number(dataItem.qty).toString()
                             }
-                            subTitle
-                            style={{color: '#fff'}}
                           />
                         </View>
                       )}
                     </View>
                     <MyText
                       label={dataItem.name}
-                      title
-                      style={{marginVertical: height * 0.01}}
+                      textStyle={{marginTop: height * 0.02}}
                     />
                     <View
                       style={{
@@ -112,7 +106,7 @@ const Cards = props => {
                         left: height * 0.01,
                         borderRadius: height * 0.005,
                       }}>
-                      <MyText subTitle label={`Rs.${dataItem.price}`} />
+                      <MyText label={`Rs.${dataItem.price}`} />
                     </View>
                   </Pressable>
                 ))}
