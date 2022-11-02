@@ -74,7 +74,7 @@ function Profile({route, navigation}) {
       phone: profileUpdate[3].value,
     };
     dispatch(updateProfile(profileChangeData));
-    // setIndex(5)
+    // setIndex(5)`
   };
 
   const onChangeNumber = (value, index) => {

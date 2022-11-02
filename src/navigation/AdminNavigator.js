@@ -1,10 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Orders} from '../screens';
-import ItemNavigator from './ItemNavigator';
-import UserNavigator from './AdminUserNavigator';
 import Ion from 'react-native-vector-icons/Ionicons';
+
+import ItemNavigator from './Admin_ItemNavigator';
+import UserNavigator from './Admin_UserNavigator';
+import OrderNavigator from './Admin_OrderNavigator';
 import {colors} from '../theme';
 
 const Tab = createBottomTabNavigator();
@@ -29,7 +30,7 @@ export default function AdminNavigator() {
       />
       <Tab.Screen
         name="Orders"
-        component={Orders}
+        component={OrderNavigator}
         options={{
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: 'grey',
