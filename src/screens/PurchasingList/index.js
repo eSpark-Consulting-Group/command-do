@@ -20,6 +20,7 @@ import {
 } from '../../components';
 import {colors} from '../../theme';
 import {pdfHtml} from '../../utils/purchasingpdf';
+import {orders} from '../../utils/data';
 
 export default function PurchasingList({navigation}) {
   const [filePath, setFilePath] = useState('');
@@ -48,6 +49,41 @@ export default function PurchasingList({navigation}) {
   };
 
   const createPDF = async () => {
+    let order = {
+      status: true,
+      message: 'Order Summary',
+      totalAmount: 600,
+      data: [
+        {
+          item: {
+            name: 'Chicken Biryani',
+            id: 1,
+          },
+          amount: 170,
+          quantity: 1,
+          itemId: 1,
+        },
+        {
+          item: {
+            name: 'Chicken Pulao',
+            id: 2,
+          },
+          amount: 170,
+          quantity: 1,
+          itemId: 2,
+        },
+        {
+          item: {
+            name: 'Sada Biryani',
+            id: 3,
+          },
+          amount: 260,
+          quantity: 2,
+          itemId: 3,
+        },
+      ],
+    };
+
     let currDateTime =
       new Date().toISOString().slice(0, 10) +
       '_' +
@@ -56,7 +92,7 @@ export default function PurchasingList({navigation}) {
     if (await isPermitted()) {
       let options = {
         //Content to print
-        html: pdfHtml(arr),
+        html: pdfHtml(order),
         //File Name
         fileName: fileName + currDateTime,
         //File directory

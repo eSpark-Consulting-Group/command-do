@@ -10,6 +10,8 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 import {Overlay} from '@rneui/themed';
 import FA from 'react-native-vector-icons/FontAwesome';
+import MyText from '../Text';
+import {colors} from '../../theme';
 
 export default function CollectionModal({closeModal, totAmount, onCollected}) {
   const [amount, setAmount] = useState('');
@@ -40,10 +42,11 @@ export default function CollectionModal({closeModal, totAmount, onCollected}) {
         </TouchableOpacity>
       </View>
       <View style={{alignItems: 'center', marginVertical: 10}}>
-        <Text>Amount to be Pay:</Text>
-        <Text style={{fontWeight: 'bold', fontSize: 25, color: '#444'}}>
-          RS {totAmount}
-        </Text>
+        <MyText label={'Amount to be Pay:'} />
+        <MyText
+          label={'Rs. ' + totAmount}
+          textStyle={{fontWeight: 'bold', fontSize: 25, color: '#444'}}
+        />
       </View>
       <View
         style={{
@@ -55,7 +58,7 @@ export default function CollectionModal({closeModal, totAmount, onCollected}) {
           padding: 10,
           marginVertical: 20,
         }}>
-        <Text>How much amount is collected?</Text>
+        <MyText label={'How much amount is collected?'} />
         <View
           style={{
             flexDirection: 'row',
@@ -92,13 +95,18 @@ export default function CollectionModal({closeModal, totAmount, onCollected}) {
         style={{
           width: '100%',
           alignItems: 'center',
-          backgroundColor: amount >= totAmount ? '#11a79c' : '#ccc',
+          backgroundColor: amount >= totAmount ? colors.primary : '#ccc',
           paddingVertical: 5,
           borderRadius: 10,
         }}>
-        <Text style={{fontWeight: '700', fontSize: 25, color: '#fff'}}>
-          Collected
-        </Text>
+        <MyText
+          label={'Collected'}
+          textStyle={{
+            fontFamily: 'Poppins-Bold',
+            fontSize: 25,
+            color: colors.text_inverse,
+          }}
+        />
       </TouchableOpacity>
     </Overlay>
   );
