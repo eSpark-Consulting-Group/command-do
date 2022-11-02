@@ -16,11 +16,22 @@ export default function FilterScreen() {
 
   const [date, setDate] = useState(moment());
   const [show, setShow] = useState(false);
-  const [dateState, setDateState] = useState({
+  const [selectDate, setSelectDate] = useState({
     startDate: null,
     endDate: null,
-    date: moment(),
   });
+  const [orderFilterFields, setOrderFilterFields] = useState([
+    {
+      label: 'Select Date/Range',
+      onPress: () => {
+        setShow(!show);
+      },
+    },
+    {
+      label: 'Select User',
+      onPress: () => handleSecondField(),
+    },
+  ]);
 
   useUpdateEffect(() => {
     if (route.params !== undefined) {
@@ -46,19 +57,6 @@ export default function FilterScreen() {
     setOrderFilterFields(tempArr);
   };
 
-  const [orderFilterFields, setOrderFilterFields] = useState([
-    {
-      label: 'Select Date/Range',
-      onPress: () => {
-        setShow(!show);
-      },
-    },
-    {
-      label: 'Select User',
-      onPress: () => handleSecondField(),
-    },
-  ]);
-
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
@@ -75,8 +73,26 @@ export default function FilterScreen() {
     navigation.navigate('UserList');
   };
 
-  const handlePassValue = () => {
-    return true;
+  const handleRangeDates = ({startDate, endDate}) => {
+    if (startDate !== undefined || endDate !== undefined) {
+      const endDateFormat = moment(endDate).utc(true);
+      const startDateFormat = moment(startDate).utc(true);
+      setSelectDate({startDate, endDate});
+      console.log(endDateFormat);
+      console.log(startDateFormat);
+      handleChangeLabel(startDate, endDate);
+    }
+    setShow(false);
+  };
+
+  const handleChangeLabel = (sd, ed) => {
+    const startD = moment(sd).utc(true).toISOString().split('T');
+    const endD = moment(ed).utc(true).toISOString().split('T');
+    let tempArr = [...orderFilterFields];
+    console.log('sd', startD[0]);
+    console.log('ed', endD[0]);
+    tempArr[0]['label'] = `${startD[0].toString()} - ${endD[0].toString()}`;
+    setOrderFilterFields(tempArr);
   };
 
   return (
@@ -97,18 +113,27 @@ export default function FilterScreen() {
       <DatePicker
         // style={{display: 'none'}}
         isVisible={show}
-        onConfirm={value => setShow(false)}
+        onConfirm={value => handleRangeDates(value)}
+        closeModal={() => setShow(false)}
+        markText={'Select Date Range'}
+        ButtonText={'Confirm'}
+        selectedBgColor={colors.primary}
         customStyles={{
           placeholderText: {fontSize: 20}, // placeHolder style
-          headerStyle: {}, // title container style
-          headerMarkTitle: {}, // title mark style
+          headerStyle: {
+            backgroundColor: colors.primary,
+          }, // title container style
+          headerMarkTitle: {
+            fontSize: 26,
+            color: colors.background,
+            opacity: 1,
+          }, // title mark style
           headerDateTitle: {}, // title Date style
           contentInput: {}, //content text container style
           contentText: {}, //after selected text Style
         }} // optional
-        centerAlign // optional text will align center or not
-        allowFontScaling={false} // optional
-        placeholder={'Apr 27, 2018 → Jul 10, 2018'}
+        // centerAlign // optional text will align center or not
+        // allowFontScaling={false} // optional
         mode={'range'}
       />
       {/* {show && (
@@ -159,10 +184,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  listContainer: {
-    // marginTop: 5,
-    // backgroundColor: 'teal',
-  },
+  listContainer: {},
   listItem: {
     backgroundColor: '#fff',
     elevation: 3,
