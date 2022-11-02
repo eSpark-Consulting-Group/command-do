@@ -1,4 +1,4 @@
-export const pdfHtml = arr => {
+export const pdfHtml = order => {
   return `<div
         style="
           display: flex;
@@ -28,9 +28,9 @@ export const pdfHtml = arr => {
         </div>
         <div style="width: 90%; border: 1px solid black; margin-bottom: 10px">
         </div>
-        ${arr
+        ${order.data
           .map(
-            () => `<div
+            item => `<div
         style="
         display: flex;
         flex-direction: row;
@@ -55,13 +55,13 @@ export const pdfHtml = arr => {
       <div style="border: 2px solid #000; width: 15%; height: 35%" /></div>
     </div>
     <div style="width: 45vw; text-align: left; padding-left: 1vw">
-      <p style="font-weight: bold">Chicken Biryani</p>
+      <p style="font-weight: bold">${item.item.name}</p>
     </div>
     <div style="width: 18vw; align-items: center">
-      <p style="font-weight: bold">2</p>
+      <p style="font-weight: bold">${item.quantity}</p>
     </div>
     <div style="width: 18vw; align-items: center">
-      <p style="font-weight: bold">Rs. 340</p>
+      <p style="font-weight: bold">Rs. ${item.amount}</p>
     </div>
       </div>`,
           )
@@ -80,7 +80,9 @@ export const pdfHtml = arr => {
             margin-top: 5px
           ">
           <p style="font-weight: bold; font-size: large">Total</p>
-          <p style="font-weight: bold; font-size: large">Rs. 4050</p>
+          <p style="font-weight: bold; font-size: large">Rs. ${
+            order.totalAmount
+          }</p>
         </div>
       </div>
       `;
