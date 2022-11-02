@@ -198,7 +198,7 @@ function Items({route, navigation}) {
         </View>
         <View style={styles.itemDetailContainer}>
           <View style={styles.subHeadingContainer}>
-            <MyText label={getData.name} subHeading />
+            <MyText label={getData.name} textStyle={{fontSize: height * 0.03}} />
             {(editData?.length == 0 ? animateToNumber != 0 : editMode != 0) ? (
               <View style={styles.numericBtnContainer}>
                 <TouchableOpacity
@@ -243,8 +243,8 @@ function Items({route, navigation}) {
             />
           </View>
           <View style={{width: '100%', marginTop: height * 0.02}}>
-            <MyText label={'Amount'} title />
-            <MyText label={getData.price} subTitle style={{color: 'gray'}} />
+            <MyText label={'Amount'} textStyle={{fontSize: height * 0.025}} />
+            <MyText label={getData.price} textStyle={{fontSize: height * 0.025}} />
           </View>
           <View
             style={{
