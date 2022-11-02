@@ -8,8 +8,10 @@ import {
   FlatList,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {OrderCard} from '../../../components';
+import {MyText, OrderCard} from '../../../components';
+import {SCREEN_HEIGHT} from '../../../constants';
 import {revertCollection} from '../../../features/riderOrders/riderOrderSlice';
+import {colors} from '../../../theme';
 
 export default function CollectedOrders({navigation}) {
   const reduxData = useSelector(store => store);
@@ -28,6 +30,7 @@ export default function CollectedOrders({navigation}) {
   };
 
   const revertConfirmation = id => {
+    console.log();
     Alert.alert(
       'Confirmation',
       'Are you sure you want to revert the Collection?',
@@ -47,33 +50,49 @@ export default function CollectedOrders({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <FlatList
-        data={orders}
+        data={orders.some(val => val.status == 'PAID') ? orders : []}
         renderItem={({item}) =>
-          item.paid && (
+          item.status == 'PAID' && (
             <OrderCard
-              name={item.name}
-              order={item.orders}
-              amount={item.amount}
-              paid={item.paid}
+              name={item.User.firstName + ' ' + item.User.lastName}
+              amount={item.totalAmount}
+              order={item.OrderItems}
+              paid={item.status}
               onRevert={() => revertConfirmation(item.id)}
             />
           )
         }
+        ListEmptyComponent={
+          <View
+            style={{
+              width: '100%',
+              height: SCREEN_HEIGHT * 0.6,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <MyText label={'No Orders Collected Yet'} size={'subHeading'} />
+          </View>
+        }
       />
       <TouchableOpacity
         onPress={finishCollection}
-        disabled={!orders.some(val => val.paid == true)}
+        disabled={!orders.some(val => val.status == 'PAID')}
         style={{
           width: '95%',
           alignItems: 'center',
-          backgroundColor: orders.some(val => val.paid == true)
-            ? '#11a79c'
+          backgroundColor: orders.some(val => val.status == 'PAID')
+            ? colors.primary
             : '#ccc',
           marginVertical: 10,
           paddingVertical: 10,
           borderRadius: 10,
         }}>
-        <Text style={{fontWeight: 'bold', fontSize: 22, color: '#fff'}}>
+        <Text
+          style={{
+            fontFamily: 'Poppins-Bold',
+            fontSize: 22,
+            color: colors.text_inverse,
+          }}>
           Finish Collection
         </Text>
       </TouchableOpacity>
