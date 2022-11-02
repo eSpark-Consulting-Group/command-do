@@ -12,16 +12,22 @@ import {
 } from 'react-native';
 import {Fonts} from '../../utils/fonts';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import {MyText} from '../../components';
+import {MyText} from '..';
 
 const {width, height} = Dimensions.get('window');
 
+type Item = {
+  name: string;
+  image: any;
+  price: number;
+  qty: number;
+};
 const IndividualCard = props => {
   const {label, data, navigation} = props;
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const count = useSelector(store => store);
-  const [allData, setAllData] = useState([]);
+  const count = useSelector((store: any) => store);
+  const [allData, setAllData] = useState<any>([]);
 
   useEffect(() => {
     // if (menuData?.data) {
@@ -41,15 +47,14 @@ const IndividualCard = props => {
   return (
     isLoading && (
       <View style={{flex: 1}}>
-        <Text
-          style={{
+        <MyText
+          label={data.name}
+          textStyle={{
             fontSize: height * 0.03,
             color: '#000',
-            fontFamily: Fonts.Roboto_Bold,
             margin: height * 0.02,
-          }}>
-          {data.name}
-        </Text>
+          }}
+        />
         <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
           <View
             style={{
@@ -58,13 +63,13 @@ const IndividualCard = props => {
             }}>
             {/* <ScrollView horizontal> */}
             {allData &&
-              allData?.data?.map((dataItem, dataIndex) => (
+              allData?.data?.map((dataItem: Item, dataIndex) => (
                 <Pressable
                   key={dataIndex}
                   style={{
                     paddingHorizontal: height * 0.01,
-                    paddingTop: height * 0.01,
-                    marginVertical: height * 0.02,
+                    marginVertical: dataIndex != 0 ? height * 0.04 : 0,
+                    marginBottom: dataIndex == 0 ? height * 0.04 : 0,
                   }}
                   onPress={() =>
                     navigation.navigate('Item', {
@@ -92,10 +97,9 @@ const IndividualCard = props => {
                   </View>
                   <MyText
                     label={dataItem.name}
-                    title
-                    style={{
-                      marginVertical: height * 0.005,
-                      marginBottom: height * 0.04,
+                    textStyle={{
+                      marginVertical: height * 0.02,
+                      left: height * 0.01,
                     }}
                   />
                   <View
@@ -104,11 +108,11 @@ const IndividualCard = props => {
                       borderWidth: height * 0.001,
                       padding: height * 0.005,
                       position: 'absolute',
-                      bottom: 0,
-                      left: height * 0.01,
+                      bottom: -(height * 0.03),
+                      left: height * 0.02,
                       borderRadius: height * 0.005,
                     }}>
-                    <MyText subTitle label={`Rs.${dataItem.price}`} />
+                    <MyText label={`Rs.${dataItem.price}`} />
                   </View>
                   {dataItem.qty != 0 && (
                     <View
@@ -125,10 +129,10 @@ const IndividualCard = props => {
                       }}>
                       <MyText
                         label={
-                          dataItem?.qty > 99 ? '99+' : Number(dataItem.qty)
+                          dataItem?.qty > 99
+                            ? '99+'
+                            : Number(dataItem.qty).toString()
                         }
-                        subTitle
-                        style={{color: '#fff'}}
                       />
                     </View>
                   )}

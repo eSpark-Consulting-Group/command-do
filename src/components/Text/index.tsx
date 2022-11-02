@@ -17,7 +17,7 @@ const MyText = ({
   size = 'default',
   textStyle,
 }: {
-  label?: string;
+  label?: string | number;
   size?: 'heading' | 'subHeading' | 'title' | 'subTitle' | 'default' | number;
   textStyle?: TextStyle;
 }) => {
@@ -27,7 +27,7 @@ const MyText = ({
         {
           fontSize: FontSize[size!!] ?? size,
           color: '#000',
-          fontFamily: 'monospace',
+          fontFamily: 'Poppins-Regular',
         },
         textStyle,
       ]}>
