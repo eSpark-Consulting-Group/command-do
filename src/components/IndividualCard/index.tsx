@@ -48,7 +48,7 @@ const IndividualCard = props => {
     isLoading && (
       <View style={{flex: 1}}>
         <MyText
-          label={data.name}
+          label={data?.length > 0 ? data[0].Category?.name : ""}
           textStyle={{
             fontSize: height * 0.03,
             color: '#000',
@@ -62,8 +62,8 @@ const IndividualCard = props => {
               marginBottom: height * 0.02,
             }}>
             {/* <ScrollView horizontal> */}
-            {allData &&
-              allData?.data?.map((dataItem: Item, dataIndex) => (
+            {data?.length > 0 &&
+              data?.map((dataItem: Item, dataIndex) => (
                 <Pressable
                   key={dataIndex}
                   style={{
@@ -73,7 +73,7 @@ const IndividualCard = props => {
                   }}
                   onPress={() =>
                     navigation.navigate('Item', {
-                      foodType: count?.cart?.foodType,
+                      foodType: dataItem?.name,
                       item: dataItem,
                     })
                   }>
@@ -86,7 +86,7 @@ const IndividualCard = props => {
                       elevation: height * 0.003,
                     }}>
                     <Image
-                      source={dataItem.image}
+                      source={{uri: dataItem?.image}}
                       style={{
                         borderRadius: height * 0.02,
                         height: height * 0.25,
@@ -96,7 +96,7 @@ const IndividualCard = props => {
                     />
                   </View>
                   <MyText
-                    label={dataItem.name}
+                    label={dataItem?.name}
                     textStyle={{
                       marginVertical: height * 0.02,
                       left: height * 0.01,
@@ -112,9 +112,9 @@ const IndividualCard = props => {
                       left: height * 0.02,
                       borderRadius: height * 0.005,
                     }}>
-                    <MyText label={`Rs.${dataItem.price}`} />
+                    <MyText label={`Rs.${dataItem?.price}`} />
                   </View>
-                  {dataItem.qty != 0 && (
+                  {/* {dataItem.qty != 0 && (
                     <View
                       style={{
                         height: height * 0.04,
@@ -131,11 +131,11 @@ const IndividualCard = props => {
                         label={
                           dataItem?.qty > 99
                             ? '99+'
-                            : Number(dataItem.qty).toString()
+                            : Number(dataItem?.qty).toString()
                         }
                       />
                     </View>
-                  )}
+                  )} */}
                 </Pressable>
               ))}
             {/* </ScrollView> */}
