@@ -34,3 +34,52 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const UPDATE_USER = gql`
+  mutation UpdateProfile(
+    $updateProfileId: Int!
+    $role: ROLES
+    $firstName: String
+    $lastName: String
+    $avatar: String
+    $dob: Date
+    $phoneNumber: String
+    $country: String
+    $city: String
+  ) {
+    updateProfile(
+      id: $updateProfileId
+      role: $role
+      firstName: $firstName
+      lastName: $lastName
+      avatar: $avatar
+      dob: $dob
+      phoneNumber: $phoneNumber
+      country: $country
+      city: $city
+    ) {
+      status
+      message
+      data {
+        id
+        email
+        firstName
+        lastName
+        userName
+        avatar
+        dob
+        phoneNumber
+        country
+        city
+        role
+        password
+        resetToken
+        status
+        isVerified
+        fcmToken
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;

@@ -10,6 +10,7 @@ import Profile from './profile';
 import ItemList from './items';
 import OrderList from './ordersList';
 import Orders from './orders';
+import MoneyReturn from './MoneyReturn';
 import CollectedOrders from './orders/CollectedOrders';
 import CurrentOrders from './orders/CurrentOrders';
 import Users from './users';
@@ -27,6 +28,7 @@ export {
   Profile,
   OrderList,
   Orders,
+  MoneyReturn,
   ItemList,
   Users,
   CollectedOrders,
