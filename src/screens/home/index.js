@@ -258,7 +258,7 @@ function Home({route, navigation}) {
           {selectedCategory?.id == 0 ? (
             <Cards data={items || []} navigation={navigation} />
           ) : (
-            <IndividualCard data={allData} navigation={navigation} />
+            <IndividualCard data={items || []} navigation={navigation} />
           )}
         </View>
         <TouchableOpacity
