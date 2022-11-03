@@ -69,17 +69,3 @@ index f349b97..c99f783 100644
                    customStyles={customStyles}
                    markText={this.props.markText}
                    onDatesChange={this.onDatesChange}
-diff --git a/node_modules/react-native-date-ranges/src/DateRange.js b/node_modules/react-native-date-ranges/src/DateRange.js
-index c9f6e3b..d5d179c 100644
---- a/node_modules/react-native-date-ranges/src/DateRange.js
-+++ b/node_modules/react-native-date-ranges/src/DateRange.js
-@@ -116,6 +116,9 @@ export default class DateRange extends Component {
-       selectState: "monthAndDate"
-     });
-   };
-+
-+  
-+
-   changeYear = itemValue => {
-     this.setState({ selectedYear: itemValue });
-     this.setState({

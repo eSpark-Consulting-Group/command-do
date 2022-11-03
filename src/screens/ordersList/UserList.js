@@ -9,6 +9,7 @@ import {CheckBox, Icon} from '@rneui/themed';
 export default function UserList() {
   const navigation = useNavigation();
 
+  const [selectedUser, setSelectedUser] = useState(null);
   const [orderFilterFields, setOrderFilterFields] = useState([
     {
       label: 'No User',
@@ -34,6 +35,7 @@ export default function UserList() {
     tempArr.map((item, ind) =>
       index !== ind ? (item.selected = false) : true,
     );
+    setSelectedUser(item);
     setOrderFilterFields(tempArr);
   };
 
@@ -85,7 +87,10 @@ export default function UserList() {
           navigation.goBack();
         }}
         onPressRight={() => {
-          navigation.navigate('Filters', {userList: orderFilterFields});
+          navigation.navigate('Filters', {
+            userList: orderFilterFields,
+            user: selectedUser,
+          });
         }}
       />
       <FlatList
