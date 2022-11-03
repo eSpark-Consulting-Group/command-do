@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import {Divider, Icon} from '@rneui/themed';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
   CustomizeModal,
@@ -20,23 +20,102 @@ import {
 } from '../../components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
+import useUpdateEffect from '../../utils/hooks/useUpdateEffect';
 
 export default function OrdersList() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const condition =
+    route?.params?.filterInfo?.userInfo === undefined ||
+    route?.params?.filterInfo?.userInfo === null;
   const [isModal, setIsModal] = useState(false);
 
-  const isModalVisible = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
-    setIsModal(!isModal);
+  useUpdateEffect(() => {
+    if (route.params !== undefined) {
+      console.log('qqqqqq', route.params);
+    }
+  }, [route.params]);
+
+  const RenderDatewise = ({item}) => {
+    return (
+      <MyCard cardStyle={styles.item}>
+        <TouchRipple
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+          darkRipple
+          onPress={() => navigation.navigate('Order_Details', {mode: 'date'})}>
+          <View>
+            <MyText
+              label="Rider"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.rider} textStyle={{textAlign: 'center'}} />
+          </View>
+          <View>
+            <MyText
+              label="Orders Placed"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.orders} textStyle={{textAlign: 'center'}} />
+          </View>
+          <View>
+            <MyText
+              label="Lunch Amount"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.amount} textStyle={{textAlign: 'center'}} />
+          </View>
+        </TouchRipple>
+      </MyCard>
+    );
+  };
+
+  const RenderUserwise = ({item}) => {
+    return (
+      <MyCard cardStyle={styles.item}>
+        <TouchRipple
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+          darkRipple
+          onPress={() =>
+            navigation.navigate('Order_Details', {
+              mode: condition ? 'date' : 'user',
+              userDetails: route?.params?.filterInfo?.userInfo,
+            })
+          }>
+          <View>
+            <MyText
+              label="Order Holder"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.user.name} textStyle={{textAlign: 'center'}} />
+          </View>
+          <View>
+            <MyText
+              label="Paid/Lunch"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <View style={{flexDirection: 'row'}}>
+              <MyText
+                label={`Rs. ${item.user.paidAmount}`}
+                textStyle={{textAlign: 'center'}}
+              />
+              <MyText label={`/`} textStyle={{textAlign: 'center'}} />
+              <MyText
+                label={`${item.user.lunchAmount}`}
+                textStyle={{textAlign: 'center'}}
+              />
+            </View>
+          </View>
+        </TouchRipple>
+      </MyCard>
+    );
   };
 
   return (
@@ -54,50 +133,49 @@ export default function OrdersList() {
         sections={[
           {
             title: '31 October 2022',
-            data: [{rider: 'Harison', orders: 36, amount: 2000}],
+            data: [
+              {
+                rider: 'Harison',
+                orders: 36,
+                amount: 2000,
+                user: {name: 'Wirad Ali', lunchAmount: 200, paidAmount: 500},
+              },
+            ],
           },
           {
             title: '30 October 2022',
-            data: [{rider: 'Harison', orders: 31, amount: 1500}],
+            data: [
+              {
+                rider: 'Harison',
+                orders: 31,
+                amount: 1500,
+                user: {name: 'Faraz Uddin', lunchAmount: 500, paidAmount: 500},
+              },
+            ],
           },
           {
             title: '29 October 2022',
-            data: [{rider: 'Harison', orders: 32, amount: 1000}],
+            data: [
+              {
+                rider: 'Harison',
+                orders: 32,
+                amount: 1000,
+                user: {
+                  name: 'Mudassir Ali',
+                  lunchAmount: 250,
+                  paidAmount: 1000,
+                },
+              },
+            ],
           },
         ]}
-        renderItem={({item}) => (
-          <MyCard cardStyle={styles.item}>
-            <TouchRipple
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 10,
-              }}
-              darkRipple
-              onPress={() =>
-                navigation.navigate('Order_Details', {mode: 'date'})
-              }>
-              <View>
-                <MyText label="Rider" textStyle={{textAlign: 'center'}} />
-                <MyText label={item.rider} textStyle={{textAlign: 'center'}} />
-              </View>
-              <View>
-                <MyText
-                  label="Orders Placed"
-                  textStyle={{textAlign: 'center'}}
-                />
-                <MyText label={item.orders} textStyle={{textAlign: 'center'}} />
-              </View>
-              <View>
-                <MyText
-                  label="Lunch Amount"
-                  textStyle={{textAlign: 'center'}}
-                />
-                <MyText label={item.amount} textStyle={{textAlign: 'center'}} />
-              </View>
-            </TouchRipple>
-          </MyCard>
-        )}
+        renderItem={({item}) =>
+          condition ? (
+            <RenderDatewise item={item} />
+          ) : (
+            <RenderUserwise item={item} />
+          )
+        }
         SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
         renderSectionHeader={({section}) => (
           <MyText textStyle={styles.sectionHeader} label={section.title} />
