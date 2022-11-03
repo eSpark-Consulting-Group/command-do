@@ -41,6 +41,7 @@ const {width, height} = Dimensions.get('window');
 function Home({route, navigation}) {
   const childFunc = useRef(null);
   const reduxData = useSelector(store => store);
+  console.log('REDUX DATA', reduxData?.userInfo?.userData);
   const [isModal, setIsModal] = useState(false);
   const [press, setPress] = useState(false);
   const [foodName, setFoodName] = useState([
@@ -205,10 +206,8 @@ function Home({route, navigation}) {
         }
       />
 
-      <View
-        style={styles.mainContainer}>
-        <View
-          style={styles.headerContainer}>
+      <View style={styles.mainContainer}>
+        <View style={styles.headerContainer}>
           <TouchableOpacity style={{}} onPress={() => setIsModal(!isModal)}>
             <Icon
               name="person-circle-outline"
@@ -217,7 +216,7 @@ function Home({route, navigation}) {
             />
           </TouchableOpacity>
           <View style={styles.headerCenterComponentStyle}>
-            <TouchableOpacity style={{}}>
+            <TouchableOpacity>
               <Icon name="search" size={height * 0.03} color="black" />
             </TouchableOpacity>
             <MyText
@@ -226,7 +225,7 @@ function Home({route, navigation}) {
               style={{color: '#000000', fontSize: height * 0.025}}
             />
           </View>
-          <TouchableOpacity style={{}}>
+          <TouchableOpacity>
             <Icon name="wallet-sharp" size={height * 0.035} color="#11a79c90" />
           </TouchableOpacity>
         </View>
@@ -236,12 +235,14 @@ function Home({route, navigation}) {
             justifyContent: 'center',
             paddingHorizontal: height * 0.02,
           }}>
-          <MyText label={`Hi, ${reduxData?.profile?.name}`} heading />
+          <MyText
+            label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
+            heading
+          />
           <MyText label="Good Evening! 🙋‍♂️" subHeading />
           <MyText label="" title />
         </View>
-        <View
-          style={styles.categoryContainer}>
+        <View style={styles.categoryContainer}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {foodName.map((item, index) => (
               <TouchableOpacity
@@ -261,10 +262,7 @@ function Home({route, navigation}) {
                 }}
                 onPress={() => isSelect(index)}>
                 {item.logo && (
-                  <Image
-                    source={item.logo}
-                    style={styles.categoryImage}
-                  />
+                  <Image source={item.logo} style={styles.categoryImage} />
                 )}
                 <MyText
                   label={item.name}
@@ -291,8 +289,7 @@ function Home({route, navigation}) {
           onPress={_onSelect}>
           <Icon name="cart-outline" size={height * 0.035} color="white" />
           {reduxData?.cart?.amount != 0 && (
-            <View
-              style={styles.cartAmountStyle}>
+            <View style={styles.cartAmountStyle}>
               <MyText
                 label={
                   reduxData?.cart?.amount > 99 ? '99+' : reduxData?.cart?.amount

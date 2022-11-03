@@ -8,10 +8,10 @@ import {
   View,
 } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {Icon} from '@rneui/themed';
+import {Icon, SpeedDial} from '@rneui/themed';
 import {showMessage} from 'react-native-flash-message';
 
-import {SCREEN_WIDTH} from '../../constants';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
 import {
   LineSeparater,
   MyText,
@@ -24,6 +24,7 @@ import {orders} from '../../utils/data';
 
 export default function PurchasingList({navigation}) {
   const [filePath, setFilePath] = useState('');
+  const [visible, setVisible] = useState(false);
 
   const fileName = 'PurchasingList';
   const arr = Array(19).fill('a');
@@ -115,7 +116,7 @@ export default function PurchasingList({navigation}) {
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ffffff'}}>
       <View
         style={{
           width: SCREEN_WIDTH,
@@ -225,20 +226,41 @@ export default function PurchasingList({navigation}) {
         <Text style={{fontWeight: '600', fontSize: 18}}>Total</Text>
         <Text style={{fontWeight: '600', fontSize: 18}}>Rs. 2040</Text>
       </View>
-      <TouchableOpacity
-        onPress={createPDF}
+      <View
         style={{
           width: '95%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          backgroundColor: '#11a79c',
           marginVertical: 10,
-          paddingVertical: 10,
-          borderRadius: 10,
         }}>
-        <Text style={{fontWeight: '600', fontSize: 22, color: '#fff'}}>
-          Generate PDF
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={createPDF}
+          style={{
+            width: '15%',
+            alignItems: 'center',
+            backgroundColor: '#11a79c',
+            height: SCREEN_HEIGHT * 0.08,
+            justifyContent: 'center',
+            borderRadius: 10,
+          }}>
+          <Icon name="print" color={'#fff'} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('MoneyReturn')}
+          style={{
+            width: '80%',
+            alignItems: 'center',
+            backgroundColor: '#11a79c',
+            height: SCREEN_HEIGHT * 0.08,
+            justifyContent: 'center',
+            borderRadius: 10,
+          }}>
+          <Text style={{fontWeight: '600', fontSize: 22, color: '#fff'}}>
+            Order Purchased
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
