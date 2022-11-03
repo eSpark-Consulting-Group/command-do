@@ -107,7 +107,12 @@ export default function FilterScreen() {
           navigation.goBack();
         }}
         onPressRight={() => {
-          navigation.goBack();
+          navigation.navigate('OrderList', {
+            filterInfo: {
+              dateRange: selectDate,
+              userInfo: route?.params?.user ?? null,
+            },
+          });
         }}
       />
       <DatePicker
