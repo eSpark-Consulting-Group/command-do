@@ -12,7 +12,7 @@ import {colors} from '../../theme';
 const Tab = createMaterialTopTabNavigator();
 
 export default function Orders() {
-  const [GetAllOrders, {data}] = useLazyQuery(ALL_ORDERS);
+  const [GetAllOrders] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchOrders = async () => {

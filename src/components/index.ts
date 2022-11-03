@@ -22,6 +22,7 @@ import PurchasingListHeader from './PurchasingListHeader';
 import PurchasingOrderCard from './PurchasingOrderCard';
 import TouchRipple from './TouchRipple';
 import SearchBar from './SearchBar';
+import MoneyReturnCard from './MoneyReturnCard';
 
 export {
   Cards,
@@ -45,4 +46,5 @@ export {
   PurchasingOrderCard,
   TouchRipple,
   SearchBar,
+  MoneyReturnCard,
 };

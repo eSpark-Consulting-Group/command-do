@@ -7,6 +7,9 @@ export default function PurchasingListHeader() {
   return (
     <>
       <View style={styles.headerTitlesContainer}>
+        <View style={styles.headerTitleContainer1}>
+          <Text style={styles.headerTitle}>Done</Text>
+        </View>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Item</Text>
         </View>
@@ -30,10 +33,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   headerTitleContainer: {
-    width: SCREEN_WIDTH * 0.5,
-    paddingLeft: SCREEN_WIDTH * 0.02,
+    width: '50%',
+    paddingLeft: '2%',
   },
-  headerTitleContainer2: {width: SCREEN_WIDTH * 0.2, alignItems: 'center'},
+  headerTitleContainer1: {width: '13%', alignItems: 'center'},
+  headerTitleContainer2: {width: '18%', alignItems: 'center'},
   headerTitle: {
     fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',
