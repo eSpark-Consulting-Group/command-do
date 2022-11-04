@@ -35,6 +35,9 @@ import {
 import {changeType} from '../../features/cart/cartSlice';
 import {initialDataUpdate} from '../../features/profile/profileSlice';
 import styles from './styles';
+import { useLazyQuery } from '@apollo/client';
+import { GET_ALL_CATEGORIES, GET_ALL_CATEGORIES_WITH_ITEMS } from '../../graphQl/query/categories.query';
+import { GET_ALL_ITEMS } from '../../graphQl/query/item.query';
 
 const {width, height} = Dimensions.get('window');
 
@@ -43,76 +46,47 @@ function Home({route, navigation}) {
   const reduxData = useSelector(store => store);
   const [isModal, setIsModal] = useState(false);
   const [press, setPress] = useState(false);
-  const [foodName, setFoodName] = useState([
-    {
-      name: 'All',
-      selected: true,
-      data: AllData,
-    },
-    {
-      name: 'Biryani',
-      selected: false,
-      logo: Biryani,
-      data: AllData[1],
-    },
-    {
-      name: 'Salan',
-      selected: false,
-      logo: Karahi,
-      data: AllData[2],
-    },
-    {
-      name: 'Roties',
-      selected: false,
-      logo: Roti,
-      data: AllData[3],
-    },
-    {
-      name: 'FastFood',
-      selected: false,
-      logo: FastFood,
-      data: AllData[0],
-    },
-    {
-      name: 'Snacks',
-      selected: false,
-      logo: Snacks,
-      data: AllData[4],
-    },
-    {
-      name: 'Beverages',
-      selected: false,
-      logo: Beverages,
-      data: AllData[5],
-    },
-  ]);
+  
   const [allData, setAllData] = useState([]);
-  const [checkTab, setCheckTab] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState({name: "All", image: null, id: 0})
 
+  const [LoadCategories, {data: categoriesData}] = useLazyQuery(GET_ALL_CATEGORIES)
+  const [LoadCategoriesWithItem, {data: categoriesWithItemData}] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS)
+  const [LoadItems, {data: itemData, refetch: refetchItems}] = useLazyQuery(GET_ALL_ITEMS)
+  const categories = categoriesData?.getAllCategories?.data
+  const items = selectedCategory?.id == 0 ? categoriesWithItemData?.getAllCategories?.data : itemData?.getAllItems?.data
   if (Platform.OS === 'android') {
     // UIManager.setLayoutAnimationEnabledExperimental(true);
   }
   const dispatch = useDispatch();
 
-  const isSelect = index => {
-    var isFalseArray = [...foodName];
-    foodName.map((item, indexx) => {
-      if (indexx == index) {
-        [...isFalseArray, (isFalseArray[indexx].selected = true)];
-        setAllData(item.data);
-        setCheckTab(item.name);
-        dispatch(changeType(item.name));
-      } else {
-        [...isFalseArray, (isFalseArray[indexx].selected = false)];
-      }
-    });
-    setFoodName(isFalseArray);
-  };
-
   useEffect(() => {
-    setAllData(foodName[0].data);
+    LoadCategories()
+    LoadCategoriesWithItem()
+    LoadItems()
     dispatch(initialDataUpdate(profileData));
   }, []);
+
+  const isSelect = item => {
+    setSelectedCategory(item)
+    if(item?.id == 0 ) {
+      LoadItems({
+        variables: {
+          where: {
+            categoryId: undefined
+          }
+        }
+      })
+    }else {
+      LoadItems({
+        variables: {
+          where: {
+            categoryId: item?.id
+          }
+        }
+      })
+    }
+  };
 
   const _onSelect = () => {
     if (reduxData?.cart?.amount == 0) {
@@ -122,7 +96,8 @@ function Home({route, navigation}) {
       navigation.navigate('Cart');
     }
   };
-  const isModalVisible = () => {
+
+   const isModalVisible = () => {
     LayoutAnimation.configureNext({
       duration: 300,
       create: {
@@ -141,6 +116,7 @@ function Home({route, navigation}) {
     setIsModal(!isModal);
   };
 
+  // console.log("items", items)
   return (
     <View
       style={{
@@ -242,15 +218,15 @@ function Home({route, navigation}) {
         </View>
         <View
           style={styles.categoryContainer}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {foodName.map((item, index) => (
+         {categories && <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {[{name: "All", image: null, id: 0} ,...categories]?.map((item, index) => (
               <TouchableOpacity
                 key={index}
                 style={{
-                  backgroundColor: item.selected ? '#11a79c' : 'white',
-                  elevation: item.selected ? height * 0.003 : 0,
+                  backgroundColor: selectedCategory?.id == item?.id ? '#11a79c' : 'white',
+                  elevation: selectedCategory?.id == item?.id ? height * 0.003 : 0,
                   paddingHorizontal: item.logo ? height * 0.01 : height * 0.02,
-                  borderWidth: item.selected ? 0 : height * 0.001,
+                  borderWidth: selectedCategory?.id == item?.id ? 0 : height * 0.001,
                   paddingVertical: height * 0.005,
                   borderColor: '#00000030',
                   marginHorizontal: height * 0.005,
@@ -259,30 +235,30 @@ function Home({route, navigation}) {
                   justifyContent: 'flex-start',
                   alignItems: 'center',
                 }}
-                onPress={() => isSelect(index)}>
-                {item.logo && (
+                onPress={() => isSelect(item)}>
+                {item.image && (
                   <Image
-                    source={item.logo}
+                    source={{uri: item?.image}}
                     style={styles.categoryImage}
                   />
                 )}
                 <MyText
-                  label={item.name}
+                  label={item?.name}
                   title
                   style={{color: item.selected ? '#fff' : '#000'}}
                 />
               </TouchableOpacity>
             ))}
-          </ScrollView>
+          </ScrollView>}
         </View>
         <View
           style={{
             flex: 4,
           }}>
-          {checkTab == 'All' ? (
-            <Cards data={allData} navigation={navigation} />
+          {selectedCategory?.id == 0 ? (
+            <Cards data={items || []} navigation={navigation} />
           ) : (
-            <IndividualCard data={allData} navigation={navigation} />
+            <IndividualCard data={items || []} navigation={navigation} />
           )}
         </View>
         <TouchableOpacity
