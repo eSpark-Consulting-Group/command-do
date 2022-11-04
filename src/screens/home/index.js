@@ -41,7 +41,6 @@ const {width, height} = Dimensions.get('window');
 function Home({route, navigation}) {
   const childFunc = useRef(null);
   const reduxData = useSelector(store => store);
-  console.log('REDUX DATA', reduxData?.userInfo?.userData);
   const [isModal, setIsModal] = useState(false);
   const [press, setPress] = useState(false);
   const [foodName, setFoodName] = useState([
