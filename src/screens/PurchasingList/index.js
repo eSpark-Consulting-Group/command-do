@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  FlatList,
   PermissionsAndroid,
   ScrollView,
   StyleSheet,
@@ -25,9 +26,10 @@ import {orders} from '../../utils/data';
 export default function PurchasingList({navigation}) {
   const [filePath, setFilePath] = useState('');
   const [visible, setVisible] = useState(false);
+  const [check, setCheck] = useState(false);
 
   const fileName = 'PurchasingList';
-  const arr = Array(19).fill('a');
+  const arr = Array(5).fill({check: false});
 
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
@@ -145,71 +147,110 @@ export default function PurchasingList({navigation}) {
           containerStyle={{alignSelf: 'center'}}
         />
       </View>
-      <PurchasingListHeader />
-      <ScrollView
+      <PurchasingListHeader onAllCheck={val => setCheck(val)} />
+      <FlatList
+        data={arr}
+        renderItem={({item, index}) => (
+          <PurchasingOrderCard
+            itemName="Chicken Biryani"
+            qty={2}
+            totalAmount={3500}
+            checked={item.check}
+            onCheck={val => {
+              // console.log('ARR', arr, index);
+              arr[index].check = val;
+            }}
+          />
+        )}
+      />
+      {/* <ScrollView
         style={{width: '100%'}}
         contentContainerStyle={{alignItems: 'center'}}>
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={3500}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={20}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
           qty={2}
           totalAmount={350}
+          checked={check}
+          onCheck={val => setCheck(val)}
         />
-      </ScrollView>
+      </ScrollView> */}
 
       <View
         style={{
