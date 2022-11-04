@@ -13,6 +13,7 @@ import {
 import {Fonts} from '../../utils/fonts';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {MyText} from '..';
+import { NotFound } from '../../assets/images';
 
 const {width, height} = Dimensions.get('window');
 
@@ -62,7 +63,7 @@ const IndividualCard = props => {
               marginBottom: height * 0.02,
             }}>
             {/* <ScrollView horizontal> */}
-            {data?.length > 0 &&
+            {data?.length > 0 ?
               data?.map((dataItem: Item, dataIndex) => (
                 <Pressable
                   key={dataIndex}
@@ -137,7 +138,11 @@ const IndividualCard = props => {
                     </View>
                   )} */}
                 </Pressable>
-              ))}
+              )) : 
+              <View>
+                 <Image source={NotFound} style={{height:  height/2.4, width: width - 30}} />
+              </View>
+              }
             {/* </ScrollView> */}
           </View>
         </ScrollView>

@@ -97,7 +97,7 @@ function Home({route, navigation}) {
     }
   };
 
-  const isModalVisible = () => {
+   const isModalVisible = () => {
     LayoutAnimation.configureNext({
       duration: 300,
       create: {
