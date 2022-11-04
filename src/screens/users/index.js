@@ -79,7 +79,7 @@ export default function Users() {
               <Ionicons
                 name="ios-exit"
                 size={SCREEN_HEIGHT * 0.025}
-                color="#11a79c"
+                color={colors.primary}
                 style={styles.btnIcon}
               />
               <MyText
