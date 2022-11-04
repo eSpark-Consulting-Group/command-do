@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
-import {CollectionModal, OrderCard, OrderListHeader} from '../../../components';
-import {orders} from '../../../utils/data';
+import {CollectionModal, MyText, OrderCard} from '../../../components';
+import {SCREEN_HEIGHT} from '../../../constants';
+import {collectAmouunt} from '../../../features/riderOrders/riderOrderSlice';
 
 export default function CurrentOrders({navigation}) {
+  const dispatch = useDispatch();
+  const reduxData = useSelector(store => store);
+  let orders = reduxData.riderOrder.orders;
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
@@ -21,8 +26,7 @@ export default function CurrentOrders({navigation}) {
   };
 
   const onCollection = () => {
-    let index = orders.findIndex(obj => obj.id == id);
-    orders[index].paid = true;
+    dispatch(collectAmouunt(id));
     setShowModal(false);
     setAmount('');
   };
@@ -30,19 +34,30 @@ export default function CurrentOrders({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <FlatList
-        data={orders}
+        data={orders.some(val => val.status == 'UNPAID') ? orders : []}
         style={{width: '100%'}}
         contentContainerStyle={{alignItems: 'center'}}
         renderItem={({item}) =>
-          !item.paid && (
+          item.status == 'UNPAID' && (
             <OrderCard
-              name={item.name}
-              amount={item.amount}
-              order={item.orders}
-              paid={item.paid}
-              onCollect={() => openOverlay(item.amount, item.id)}
+              name={item.User.firstName + ' ' + item.User.lastName}
+              amount={item.totalAmount}
+              order={item.OrderItems}
+              paid={item.status}
+              onCollect={() => openOverlay(item.totalAmount, item.id)}
             />
           )
+        }
+        ListEmptyComponent={
+          <View
+            style={{
+              width: '100%',
+              height: SCREEN_HEIGHT * 0.6,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <MyText label={'No Orders'} size={'subHeading'} />
+          </View>
         }
       />
       {showModal && (
