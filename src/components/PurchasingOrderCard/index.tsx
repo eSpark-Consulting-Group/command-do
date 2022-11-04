@@ -9,19 +9,27 @@ export default function PurchasingOrderCard({
   itemName,
   qty,
   totalAmount,
+  checked,
+  onCheck,
 }: {
   itemName: string;
   qty: number;
   totalAmount: number;
+  checked: boolean;
+  onCheck: (val: boolean) => void;
 }) {
-  const [check, setCheck] = useState(false);
+  // const [check, setCheck] = useState(false);
+
+  const onChecked = () => {
+    onCheck(!checked);
+  };
 
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardDataContainer1}>
         <CheckBox
-          checked={check}
-          onPress={() => setCheck(!check)}
+          checked={checked}
+          onPress={onChecked}
           checkedColor={colors.primary}
           containerStyle={{height: SCREEN_HEIGHT * 0.06}}
         />
@@ -44,17 +52,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingHorizontal: 10,
+    paddingHorizontal: SCREEN_WIDTH * 0.02,
     paddingVertical: 0,
-    width: '95%',
+    width: SCREEN_WIDTH * 0.95,
     marginVertical: 5,
     height: SCREEN_HEIGHT * 0.06,
     borderRadius: 10,
     elevation: 2,
   },
-  cardDataContainer: {width: '50%', paddingLeft: '2%'},
+  cardDataContainer: {width: '48%', paddingLeft: '2%'},
   cardDataContainer1: {width: '12%', alignItems: 'center'},
-  cardDataContainer2: {width: '18%', alignItems: 'center'},
+  cardDataContainer2: {width: '20%', alignItems: 'center'},
   cardDataText: {
     fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',
