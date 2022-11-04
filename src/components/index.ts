@@ -23,6 +23,7 @@ import PurchasingOrderCard from './PurchasingOrderCard';
 import TouchRipple from './TouchRipple';
 import SearchBar from './SearchBar';
 import MoneyReturnCard from './MoneyReturnCard';
+import OrderHistoryCard from './OrderHistoryCard';
 
 export {
   Cards,
@@ -47,4 +48,5 @@ export {
   TouchRipple,
   SearchBar,
   MoneyReturnCard,
+  OrderHistoryCard,
 };

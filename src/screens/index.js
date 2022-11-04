@@ -18,6 +18,7 @@ import AddForm from './items/addForm';
 import PurchasingList from './PurchasingList';
 import AddFormUser from './users/addForm';
 import SearchScreen from './items/SearchScreen';
+import OrderHistory from './OrderHistory';
 
 export {
   Home,
@@ -37,4 +38,5 @@ export {
   CurrentOrders,
   AddFormUser,
   SearchScreen,
+  OrderHistory,
 };
