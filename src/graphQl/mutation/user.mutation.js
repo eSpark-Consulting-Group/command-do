@@ -72,11 +72,6 @@ export const UPDATE_USER = gql`
         country
         city
         role
-        password
-        resetToken
-        status
-        isVerified
-        fcmToken
         createdAt
         updatedAt
       }

@@ -22,6 +22,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styles from './styles';
 import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
 import {UPDATE_USER} from '../../graphQl/mutation/user.mutation';
+import {useMutation} from '@apollo/client';
 
 const {width, height} = Dimensions.get('window');
 
@@ -54,7 +55,7 @@ function Profile({route, navigation}) {
   const [fileData, setFileData] = useState('');
   const [fileUri, setFileUri] = useState('');
 
-  const [UpdateProfile] = useLazyQuery(UPDATE_USER);
+  const [UpdateProfile] = useMutation(UPDATE_USER);
 
   // useEffect(() => {
   //   // console.log("timer--->",timer);
@@ -70,7 +71,7 @@ function Profile({route, navigation}) {
     setEditMode(true);
   };
 
-  const saveModeon = index => {
+  const saveModeon = async index => {
     setEditMode(false);
     console.log('Save mode');
     const profileUpdate = [...getData];
@@ -82,8 +83,12 @@ function Profile({route, navigation}) {
       phoneNumber: profileUpdate[3].value,
       avatar: userData?.avatar,
     };
+    const updateUser = await UpdateProfile({
+      variables: data,
+    });
+    const updatedData = updateUser.data.updateProfile.data;
+    dispatch(updateUserDetails(updatedData));
 
-    dispatch(updateUserDetails(data));
     // const profileUpdate = [...getData];
     // const profileChangeData = {
     //   name: profileUpdate[0].value,
