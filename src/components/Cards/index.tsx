@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {MyText} from '..';
 import { useSelector } from 'react-redux';
+import { NotFound } from '../../assets/images';
 
 const {width, height} = Dimensions.get('window');
 
@@ -21,7 +22,7 @@ const Cards = props => {
   return (
     <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
       {data?.length > 0 &&
-        data?.map((item, index) => (
+        data?.filter(value => value?.Item?.length > 0).map((item, index) => (
           <View
             key={index}
             style={{
@@ -121,7 +122,7 @@ const Cards = props => {
                 showsHorizontalScrollIndicator={false}
                 ListEmptyComponent={
                   <View>
-                    <MyText label={"Item not found"} />
+                    <Image source={NotFound} style={{height:  height/2.7, width: width - 30}} />
                   </View>
                 }
               />
