@@ -9,12 +9,10 @@ const userInfoSlice = createSlice({
   initialState,
   reducers: {
     getUserDetails: (state, action) => {
-      console.log('Action', action.payload.data);
       state.userData = action.payload.data;
     },
     updateUserDetails: (state, action) => {
-      console.log('Action', action.payload);
-      // state.userData = action.payload.data;
+      state.userData = action.payload;
     },
   },
 });
