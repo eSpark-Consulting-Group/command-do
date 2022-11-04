@@ -8,34 +8,114 @@ import {
   View,
 } from 'react-native';
 import {Divider, Icon} from '@rneui/themed';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
   CustomizeModal,
   GapView,
+  MyCard,
   MyHeader,
   MyText,
   TouchRipple,
 } from '../../components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
+import useUpdateEffect from '../../utils/hooks/useUpdateEffect';
 
 export default function OrdersList() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const condition =
+    route?.params?.filterInfo?.userInfo === undefined ||
+    route?.params?.filterInfo?.userInfo === null;
   const [isModal, setIsModal] = useState(false);
 
-  const isModalVisible = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
-    setIsModal(!isModal);
+  useUpdateEffect(() => {
+    if (route.params !== undefined) {
+      console.log('qqqqqq', route.params);
+    }
+  }, [route.params]);
+
+  const RenderDatewise = ({item}) => {
+    return (
+      <MyCard cardStyle={styles.item}>
+        <TouchRipple
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+          darkRipple
+          onPress={() => navigation.navigate('Order_Details', {mode: 'date'})}>
+          <View>
+            <MyText
+              label="Rider"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.rider} textStyle={{textAlign: 'center'}} />
+          </View>
+          <View>
+            <MyText
+              label="Orders Placed"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.orders} textStyle={{textAlign: 'center'}} />
+          </View>
+          <View>
+            <MyText
+              label="Lunch Amount"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.amount} textStyle={{textAlign: 'center'}} />
+          </View>
+        </TouchRipple>
+      </MyCard>
+    );
+  };
+
+  const RenderUserwise = ({item}) => {
+    return (
+      <MyCard cardStyle={styles.item}>
+        <TouchRipple
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+          darkRipple
+          onPress={() =>
+            navigation.navigate('Order_Details', {
+              mode: condition ? 'date' : 'user',
+              userDetails: route?.params?.filterInfo?.userInfo,
+            })
+          }>
+          <View>
+            <MyText
+              label="Order Holder"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText label={item.user.name} textStyle={{textAlign: 'center'}} />
+          </View>
+          <View>
+            <MyText
+              label="Paid/Lunch"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <View style={{flexDirection: 'row'}}>
+              <MyText
+                label={`Rs. ${item.user.paidAmount}`}
+                textStyle={{textAlign: 'center'}}
+              />
+              <MyText label={`/`} textStyle={{textAlign: 'center'}} />
+              <MyText
+                label={`${item.user.lunchAmount}`}
+                textStyle={{textAlign: 'center'}}
+              />
+            </View>
+          </View>
+        </TouchRipple>
+      </MyCard>
+    );
   };
 
   return (
@@ -52,29 +132,53 @@ export default function OrdersList() {
       <SectionList
         sections={[
           {
-            title: '29 October 2022',
-            data: ['ALTERED'],
+            title: '31 October 2022',
+            data: [
+              {
+                rider: 'Harison',
+                orders: 36,
+                amount: 2000,
+                user: {name: 'Wirad Ali', lunchAmount: 200, paidAmount: 500},
+              },
+            ],
           },
           {
             title: '30 October 2022',
-            data: ['BEST MEN'],
+            data: [
+              {
+                rider: 'Harison',
+                orders: 31,
+                amount: 1500,
+                user: {name: 'Faraz Uddin', lunchAmount: 500, paidAmount: 500},
+              },
+            ],
           },
           {
-            title: '31 October 2022',
-            data: ['CARTEL'],
+            title: '29 October 2022',
+            data: [
+              {
+                rider: 'Harison',
+                orders: 32,
+                amount: 1000,
+                user: {
+                  name: 'Mudassir Ali',
+                  lunchAmount: 250,
+                  paidAmount: 1000,
+                },
+              },
+            ],
           },
         ]}
-        renderItem={({item}) => (
-          <>
-            <TouchRipple darkRipple onPress={() => {}}>
-              <MyText textStyle={styles.item} label={item} />
-            </TouchRipple>
-            <Divider />
-          </>
-        )}
-        SectionSeparatorComponent={() => <Divider width={1} />}
+        renderItem={({item}) =>
+          condition ? (
+            <RenderDatewise item={item} />
+          ) : (
+            <RenderUserwise item={item} />
+          )
+        }
+        SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
         renderSectionHeader={({section}) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
+          <MyText textStyle={styles.sectionHeader} label={section.title} />
         )}
         keyExtractor={(item, index) => index}
       />
@@ -118,13 +222,6 @@ const styles = StyleSheet.create({
     elevation: SCREEN_HEIGHT * 0.003,
     justifyContent: 'center',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    padding: SCREEN_HEIGHT * 0.01,
-    borderBottomWidth: SCREEN_HEIGHT * 0.0005,
-    borderBottomColor: '#00000050',
-  },
   btnIcon: {
     paddingRight: SCREEN_HEIGHT * 0.01,
   },
@@ -140,9 +237,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   item: {
-    color: colors.text_normal,
-    padding: 10,
-    fontSize: 18,
-    height: 44,
+    marginVertical: 10,
+    marginHorizontal: 2,
   },
 });
