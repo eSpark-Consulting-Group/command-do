@@ -23,13 +23,26 @@ import {colors} from '../../theme';
 import {pdfHtml} from '../../utils/purchasingpdf';
 import {orders} from '../../utils/data';
 
+let arr = [
+  {check: false},
+  {check: false},
+  {check: false},
+  {check: false},
+  {check: false},
+];
+
 export default function PurchasingList({navigation}) {
   const [filePath, setFilePath] = useState('');
   const [visible, setVisible] = useState(false);
-  const [check, setCheck] = useState(false);
+  const [check, setCheck] = useState([
+    {check: false},
+    {check: false},
+    {check: false},
+    {check: false},
+    {check: false},
+  ]);
 
   const fileName = 'PurchasingList';
-  const arr = Array(5).fill({check: false});
 
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
@@ -147,18 +160,27 @@ export default function PurchasingList({navigation}) {
           containerStyle={{alignSelf: 'center'}}
         />
       </View>
-      <PurchasingListHeader onAllCheck={val => setCheck(val)} />
+      <PurchasingListHeader
+        onAllCheck={val =>
+          check.map((item, index) => {
+            let update = [...check];
+            update[index].check = !update[index].check;
+            setCheck(update);
+          })
+        }
+      />
       <FlatList
-        data={arr}
+        data={check}
         renderItem={({item, index}) => (
           <PurchasingOrderCard
             itemName="Chicken Biryani"
             qty={2}
             totalAmount={3500}
             checked={item.check}
-            onCheck={val => {
-              // console.log('ARR', arr, index);
-              arr[index].check = val;
+            onCheck={() => {
+              let update = [...check];
+              update[index].check = !update[index].check;
+              setCheck(update);
             }}
           />
         )}
