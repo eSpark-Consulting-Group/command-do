@@ -183,7 +183,7 @@ function Items({route, navigation}) {
       <View style={styles.mainContainer}>
         <View style={styles.itemImageContainer}>
           <ImageBackground
-            source={getData.image}
+            source={{uri: getData.image}}
             style={styles.imageBackground}>
             <TouchableOpacity
               style={styles?.itemImageBackIcon}
@@ -235,13 +235,13 @@ function Items({route, navigation}) {
               </TouchableOpacity>
             )}
           </View>
-          <View style={{width: '100%', marginTop: height * 0.02}}>
+          {/* <View style={{width: '100%', marginTop: height * 0.02}}>
             <MyText
               label={getData.desc}
               subTitle
               style={{color: 'gray', width: width * 0.7}}
             />
-          </View>
+          </View> */}
           <View style={{width: '100%', marginTop: height * 0.02}}>
             <MyText label={'Amount'} textStyle={{fontSize: height * 0.025}} />
             <MyText label={getData.price} textStyle={{fontSize: height * 0.025}} />
