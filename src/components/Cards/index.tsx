@@ -5,9 +5,11 @@ import {
   ScrollView,
   Image,
   Pressable,
+  FlatList,
 } from 'react-native';
 import {MyText} from '..';
 import { useSelector } from 'react-redux';
+import { NotFound } from '../../assets/images';
 
 const {width, height} = Dimensions.get('window');
 
@@ -15,10 +17,12 @@ const Cards = props => {
   const {label, data, navigation} = props;
   const cart = useSelector((store: any) => store.cart);
 
+  console.log("data", data);
+  
   return (
     <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-      {cart?.menuItems &&
-        cart?.menuItems.map((item, index) => (
+      {data?.length > 0 &&
+        data?.filter(value => value?.Item?.length > 0).map((item, index) => (
           <View
             key={index}
             style={{
@@ -27,7 +31,7 @@ const Cards = props => {
               marginBottom: data.length == index + 1 ? height * 0.04 : 0,
             }}>
             <MyText
-              label={item.name}
+              label={item?.name}
               textStyle={{
                 fontSize: height * 0.03,
                 color: '#000',
@@ -38,9 +42,12 @@ const Cards = props => {
                 flex: 1,
                 flexDirection: 'row',
               }}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {item?.data.map((dataItem, dataIndex) => (
-                  <Pressable
+             
+              <FlatList 
+                data={item?.Item || []}
+                renderItem={({item: dataItem, index: dataIndex}) => {
+                  return (
+                    <Pressable
                     key={dataIndex}
                     style={{
                       paddingHorizontal: height * 0.01,
@@ -48,7 +55,7 @@ const Cards = props => {
                     }}
                     onPress={() =>
                       navigation.navigate('Item', {
-                        foodType: item.name,
+                        foodType: dataItem?.name,
                         item: dataItem,
                       })
                     }>
@@ -61,7 +68,7 @@ const Cards = props => {
                         elevation: width * 0.003,
                       }}>
                       <Image
-                        source={dataItem.image}
+                        source={{uri: dataItem?.image}}
                         style={{
                           borderRadius: height * 0.02,
                           height: height * 0.25,
@@ -69,7 +76,7 @@ const Cards = props => {
                           backgroundColor: 'white',
                         }}
                       />
-                      {dataItem.qty != 0 && (
+                      {/* {dataItem?.qty != 0 && (
                         <View
                           style={{
                             height: height * 0.04,
@@ -86,14 +93,14 @@ const Cards = props => {
                             label={
                               dataItem?.qty > 99
                                 ? '99+'
-                                : Number(dataItem.qty).toString()
+                                : Number(dataItem?.qty).toString()
                             }
                           />
                         </View>
-                      )}
+                      )} */}
                     </View>
                     <MyText
-                      label={dataItem.name}
+                      label={dataItem?.name}
                       textStyle={{marginTop: height * 0.02}}
                     />
                     <View
@@ -106,11 +113,19 @@ const Cards = props => {
                         left: height * 0.01,
                         borderRadius: height * 0.005,
                       }}>
-                      <MyText label={`Rs.${dataItem.price}`} />
+                      <MyText label={`Rs.${dataItem?.price}`} />
                     </View>
                   </Pressable>
-                ))}
-              </ScrollView>
+                  )
+                }}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                ListEmptyComponent={
+                  <View>
+                    <Image source={NotFound} style={{height:  height/2.7, width: width - 30}} />
+                  </View>
+                }
+              />
             </View>
           </View>
         ))}

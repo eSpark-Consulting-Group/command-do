@@ -12,7 +12,7 @@ import SevenUp from "./7up.png";
 import Nestle from "./nestle.png";
 import Logo from "./Logo.png";
 import Delievey from "./Delievey.png";
-
+import NotFound from "./NotFound.png";
 // JPG
 import BiryaniWP from "./BiryaniWP.jpg";
 import Pulao from "./Polao.jpg";
@@ -56,5 +56,6 @@ export {
   Delievey,
   OrderDone,
   TickGif,
-  ProfileImage
+  ProfileImage,
+  NotFound
 };
