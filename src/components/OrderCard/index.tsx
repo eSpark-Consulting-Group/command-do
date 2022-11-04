@@ -13,7 +13,7 @@ const {width, height} = Dimensions.get('window');
 
 type orderListType = {
   item: string;
-  qty: number;
+  quantity: number;
 };
 
 export default function OrderCard({
@@ -81,7 +81,7 @@ export default function OrderCard({
                 textStyle={{fontWeight: 'bold'}}
               />
               <MyText
-                label={item.qty}
+                label={item.quantity}
                 size={'subTitle'}
                 textStyle={{
                   fontWeight: 'bold',

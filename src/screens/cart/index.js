@@ -28,6 +28,7 @@ function Cart({ route, navigation }) {
   const count = useSelector(store => store);
 	const [press, setPress] = useState(false);
 
+  console.log("count count", count?.cart?.cartItems);
 
   useEffect(() => {
     // console.log("count", count);
@@ -50,7 +51,7 @@ function Cart({ route, navigation }) {
     var makeTotal = 0;
     if (count?.cart?.cartItems) {
       count?.cart?.cartItems.map((item, index) => {
-        makeTotal = makeTotal + item.price * item.qty;
+        makeTotal = makeTotal + item.price * item.quantity;
       })
     }
     setTotal(makeTotal)
@@ -82,7 +83,7 @@ function Cart({ route, navigation }) {
       setIsEditQty(false)
     } else {
       var changeData = { ...item };
-      changeData.qty = value;
+      changeData.quantity = value;
       setGetData(changeData);
     }
   }
@@ -169,13 +170,11 @@ function Cart({ route, navigation }) {
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
               {count?.cart?.cartItems &&
                 count?.cart?.cartItems.map((item, index) => (
-
-                  // console.log(item),
                   <TouchableOpacity activeOpacity={.7} style={styles.cartItemInner} key={index}
                     onPress={() => navigation.navigate('Item', { foodType: item.foodType, item: item })}>
                     {(isEditQty && isIndexSame == index) &&
                       <NumericInput
-                        value={Number(item.qty)}
+                        value={Number(item.quantity)}
                         onChange={value => addToCart(item, value)}
                         maxValue={999}
                         // onLimitReached={(isMax, msg) => console.log(isMax, msg)}
@@ -204,7 +203,7 @@ function Cart({ route, navigation }) {
                       />
                     }
                     <TouchableOpacity style={styles.qtyButtonContainer} onPress={() => onHandleEditQty(index)} >
-                      <MyText label={item.qty} />
+                      <MyText label={item.quantity} />
                       <Icon name="caret-down" size={height * .02} color='#000' style={{ paddingRight: height * .005, left: height * .005 }} />
                     </TouchableOpacity>
                     <View style={{
@@ -217,7 +216,7 @@ function Cart({ route, navigation }) {
                     }}>
 
                       <Image
-                        source={item.image}
+                        source={{uri: item.image}}
                         style={{
                           height: height * .08,
                           width: height * .1,
@@ -227,7 +226,7 @@ function Cart({ route, navigation }) {
                       />
                     </View>
                     <MyText label={item.name} title style={{ color: "#11a79c", width: height * .13, }} />
-                    <MyText label={`Rs.${item.price * item.qty}`} title style={{ textAlign: 'right', position: 'absolute', right: height * 0, width: height * .1, flexWrap: 'wrap' }} />
+                    <MyText label={` Rs.${item.price * item.quantity}`} title style={{ textAlign: 'right', position: 'absolute', right: height * 0, width: height * .1, flexWrap: 'wrap' }} />
                     <TouchableOpacity style={styles.deleteItem} onPress={() => addToCart(item, 0)} >
                       <Icon name="md-trash-outline" size={height * .02} color='#fff' />
                     </TouchableOpacity>

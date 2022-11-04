@@ -17,8 +17,6 @@ const Cards = props => {
   const {label, data, navigation} = props;
   const cart = useSelector((store: any) => store.cart);
 
-  console.log("data", data);
-  
   return (
     <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
       {data?.length > 0 &&
@@ -46,6 +44,8 @@ const Cards = props => {
               <FlatList 
                 data={item?.Item || []}
                 renderItem={({item: dataItem, index: dataIndex}) => {
+                  var cartItem = cart?.cartItems?.find((value) => value?.id == dataItem?.id)
+                  
                   return (
                     <Pressable
                     key={dataIndex}
@@ -76,7 +76,7 @@ const Cards = props => {
                           backgroundColor: 'white',
                         }}
                       />
-                      {/* {dataItem?.qty != 0 && (
+                      {(cartItem != undefined && cartItem?.quantity != 0) && (
                         <View
                           style={{
                             height: height * 0.04,
@@ -91,13 +91,13 @@ const Cards = props => {
                           }}>
                           <MyText
                             label={
-                              dataItem?.qty > 99
+                              cartItem?.quantity > 99
                                 ? '99+'
-                                : Number(dataItem?.qty).toString()
+                                : Number(cartItem?.quantity).toString()
                             }
                           />
                         </View>
-                      )} */}
+                      )}
                     </View>
                     <MyText
                       label={dataItem?.name}
