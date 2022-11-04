@@ -1,6 +1,6 @@
-import { Dimensions, StyleSheet } from "react-native";
+import {Dimensions, StyleSheet} from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -15,26 +15,26 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   modalInner: {
-    height: height * .2,
-    width: width * .3,
+    height: height * 0.2,
+    width: width * 0.3,
     position: 'absolute',
     backgroundColor: '#fff',
-    borderRadius: height * .005,
+    borderRadius: height * 0.005,
     zIndex: 1,
-    top: height * .035,
-    left: height * .03,
-    elevation: height * .003,
-    justifyContent: 'center'
+    top: height * 0.035,
+    left: height * 0.03,
+    elevation: height * 0.003,
+    justifyContent: 'center',
   },
   buttonContainer: {
-    flexDirection: "row",
-    alignItems: 'flex-end',
-    padding: height * .01,
-    borderBottomWidth: height * .0005,
-    borderBottomColor: '#00000050'
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: height * 0.01,
+    borderBottomWidth: height * 0.0005,
+    borderBottomColor: '#00000050',
   },
   btnIcon: {
-    paddingRight: height * .01,
+    paddingRight: height * 0.01,
   },
   headerContainer: {
     flex: 0.5,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: height * 0.015,
-  }, 
+  },
   headerCenterComponentStyle: {flexDirection: 'row', alignItems: 'flex-end'},
   categoryContainer: {
     flex: 0.5,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: height * 0.005,
-  }
+  },
 });
 
 export default styles;

@@ -9,6 +9,7 @@ import {
   OrderConfirm,
   Profile,
   Orders,
+  OrderHistory,
 } from '../screens';
 import AdminNavigator from './AdminNavigator';
 import RiderNavigator from './RiderNavigator';
@@ -32,6 +33,7 @@ function MainStackNavigator() {
         <Stack.Screen name="Home_Admin" component={AdminNavigator} />
         <Stack.Screen name="OrderConfirm" component={OrderConfirm} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="OrderHistory" component={OrderHistory} />
       </Stack.Navigator>
     </NavigationContainer>
   );
