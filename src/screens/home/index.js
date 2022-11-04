@@ -11,6 +11,7 @@ import {
   LayoutAnimation,
   UIManager,
   Platform,
+  ActivityIndicator
 } from 'react-native';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {
@@ -50,9 +51,9 @@ function Home({route, navigation}) {
   const [allData, setAllData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({name: "All", image: null, id: 0})
 
-  const [LoadCategories, {data: categoriesData}] = useLazyQuery(GET_ALL_CATEGORIES)
-  const [LoadCategoriesWithItem, {data: categoriesWithItemData}] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS)
-  const [LoadItems, {data: itemData, refetch: refetchItems}] = useLazyQuery(GET_ALL_ITEMS)
+  const [LoadCategories, {data: categoriesData, loading: LoadCategoriesLoading}] = useLazyQuery(GET_ALL_CATEGORIES)
+  const [LoadCategoriesWithItem, {data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading}] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS)
+  const [LoadItems, {data: itemData, refetch: refetchItems, loading: LoadItemsLoading}] = useLazyQuery(GET_ALL_ITEMS)
   const categories = categoriesData?.getAllCategories?.data
   const items = selectedCategory?.id == 0 ? categoriesWithItemData?.getAllCategories?.data : itemData?.getAllItems?.data
   if (Platform.OS === 'android') {
@@ -116,7 +117,7 @@ function Home({route, navigation}) {
     setIsModal(!isModal);
   };
 
-  // console.log("items", items)
+  // console.log("loading", LoadItemsLoading, LoadCategoriesLoading, LoadCategoriesWithItemLoading)
   return (
     <View
       style={{
@@ -203,7 +204,7 @@ function Home({route, navigation}) {
             />
           </View>
           <TouchableOpacity style={{}}>
-            <Icon name="wallet-sharp" size={height * 0.035} color="#11a79c90" />
+            {/* <Icon name="wallet-sharp" size={height * 0.035} color="#11a79c90" /> */}
           </TouchableOpacity>
         </View>
         <View
@@ -251,6 +252,7 @@ function Home({route, navigation}) {
             ))}
           </ScrollView>}
         </View>
+        {!(LoadItemsLoading && LoadCategoriesLoading && LoadCategoriesWithItemLoading) ?
         <View
           style={{
             flex: 4,
@@ -259,8 +261,12 @@ function Home({route, navigation}) {
             <Cards data={items || []} navigation={navigation} />
           ) : (
             <IndividualCard data={items || []} navigation={navigation} />
-          )}
+          )}          
         </View>
+        :
+        <View style={{flex: 4, top: height/4}}>
+          <ActivityIndicator size={30} />
+        </View>}
         <TouchableOpacity
           style={styles.cartContainerStyle}
           disabled={reduxData?.cart?.amount == 0 && press}
