@@ -18,10 +18,11 @@ import { NotFound } from '../../assets/images';
 const {width, height} = Dimensions.get('window');
 
 type Item = {
+  id: number;
   name: string;
   image: any;
   price: number;
-  qty: number;
+  quantity: number;
 };
 const IndividualCard = props => {
   const {label, data, navigation} = props;
@@ -29,7 +30,7 @@ const IndividualCard = props => {
   const dispatch = useDispatch();
   const count = useSelector((store: any) => store);
   const [allData, setAllData] = useState<any>([]);
-
+  const cart = useSelector((store: any) => store.cart);
   useEffect(() => {
     // if (menuData?.data) {
     // console.log('asdjl--->', allData?.data);
@@ -64,7 +65,9 @@ const IndividualCard = props => {
             }}>
             {/* <ScrollView horizontal> */}
             {data?.length > 0 ?
-              data?.map((dataItem: Item, dataIndex) => (
+              data?.map((dataItem: Item, dataIndex) => {
+                var cartItem = cart?.cartItems?.find((value) => value?.id == dataItem?.id)
+              return(
                 <Pressable
                   key={dataIndex}
                   style={{
@@ -115,30 +118,30 @@ const IndividualCard = props => {
                     }}>
                     <MyText label={`Rs.${dataItem?.price}`} />
                   </View>
-                  {/* {dataItem.qty != 0 && (
-                    <View
-                      style={{
-                        height: height * 0.04,
-                        width: height * 0.04,
-                        backgroundColor: '#11a79c',
-                        borderRadius: height * 1,
-                        position: 'absolute',
-                        right: height * -0.005,
-                        top: height * -0.005,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <MyText
-                        label={
-                          dataItem?.qty > 99
-                            ? '99+'
-                            : Number(dataItem?.qty).toString()
-                        }
-                      />
-                    </View>
-                  )} */}
+                  {(cartItem != undefined && cartItem?.quantity != 0) && (
+                        <View
+                          style={{
+                            height: height * 0.04,
+                            width: height * 0.04,
+                            backgroundColor: '#11a79c',
+                            borderRadius: height * 1,
+                            position: 'absolute',
+                            right: height * -0.005,
+                            top: height * -0.005,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <MyText
+                            label={
+                              cartItem?.quantity > 99
+                                ? '99+'
+                                : Number(cartItem?.quantity).toString()
+                            }
+                          />
+                        </View>
+                      )}
                 </Pressable>
-              )) : 
+              )}) : 
               <View>
                  <Image source={NotFound} style={{height:  height/2.4, width: width - 30}} />
               </View>

@@ -114,62 +114,62 @@ export default function PurchasingList({navigation}) {
         contentContainerStyle={{alignItems: 'center'}}>
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={3500}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={20}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
         <PurchasingOrderCard
           itemName="Chicken Biryani"
-          qty={2}
+          quantity={2}
           totalAmount={350}
         />
       </ScrollView>
