@@ -171,7 +171,9 @@ function Home({route, navigation}) {
               />
               <MyText label={'Setting'} title style={{color: '#00000080'}} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => goToNavigation('OrderHistory')}>
               <Icon
                 name="ios-newspaper"
                 size={height * 0.025}
