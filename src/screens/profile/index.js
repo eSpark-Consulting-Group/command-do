@@ -20,27 +20,31 @@ import {MyText, CustomizeModal} from '../../components';
 import {updateProfile} from '../../features/profile/profileSlice';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styles from './styles';
+import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
+import {UPDATE_USER} from '../../graphQl/mutation/user.mutation';
+import {useMutation} from '@apollo/client';
 
 const {width, height} = Dimensions.get('window');
 
 function Profile({route, navigation}) {
   const reduxData = useSelector(store => store);
+  const userData = reduxData?.userInfo?.userData;
   const [getData, setGetData] = useState([
     {
-      name: 'Name',
-      value: reduxData?.profile?.name,
+      name: 'First Name',
+      value: userData?.firstName,
+    },
+    {
+      name: 'Last Name',
+      value: userData?.lastName,
     },
     {
       name: 'Email',
-      value: reduxData?.profile?.email,
-    },
-    {
-      name: 'Shift',
-      value: reduxData?.profile?.shift,
+      value: userData?.email,
     },
     {
       name: 'Mobile Number',
-      value: reduxData?.profile?.phone,
+      value: userData?.phoneNumber ?? 'N/A',
     },
   ]);
   const dispatch = useDispatch();
@@ -51,29 +55,47 @@ function Profile({route, navigation}) {
   const [fileData, setFileData] = useState('');
   const [fileUri, setFileUri] = useState('');
 
-  useEffect(() => {
-    // console.log("timer--->",timer);
-    const profileUpdate = [...getData];
-    profileUpdate[0].value = reduxData?.profile?.name;
-    profileUpdate[1].value = reduxData?.profile?.email;
-    profileUpdate[2].value = reduxData?.profile?.shift;
-    profileUpdate[3].value = reduxData?.profile?.phone;
-    setGetData(profileUpdate);
-  }, [reduxData?.profile]);
+  const [UpdateProfile] = useMutation(UPDATE_USER);
+
+  // useEffect(() => {
+  //   // console.log("timer--->",timer);
+  //   const profileUpdate = [...getData];
+  //   profileUpdate[0].value = reduxData?.profile?.name;
+  //   profileUpdate[1].value = reduxData?.profile?.email;
+  //   profileUpdate[2].value = reduxData?.profile?.shift;
+  //   profileUpdate[3].value = reduxData?.profile?.phone;
+  //   setGetData(profileUpdate);
+  // }, [reduxData?.profile]);
 
   const editModeon = () => {
     setEditMode(true);
   };
 
-  const saveModeon = index => {
+  const saveModeon = async index => {
     setEditMode(false);
+    console.log('Save mode');
     const profileUpdate = [...getData];
-    const profileChangeData = {
-      name: profileUpdate[0].value,
-      shift: profileUpdate[2].value,
-      phone: profileUpdate[3].value,
+    const data = {
+      updateProfileId: userData?.id,
+      role: userData?.role,
+      firstName: profileUpdate[0].value,
+      lastName: profileUpdate[1].value,
+      phoneNumber: profileUpdate[3].value,
+      avatar: userData?.avatar,
     };
-    dispatch(updateProfile(profileChangeData));
+    const updateUser = await UpdateProfile({
+      variables: data,
+    });
+    const updatedData = updateUser.data.updateProfile.data;
+    dispatch(updateUserDetails(updatedData));
+
+    // const profileUpdate = [...getData];
+    // const profileChangeData = {
+    //   name: profileUpdate[0].value,
+    //   shift: profileUpdate[2].value,
+    //   phone: profileUpdate[3].value,
+    // };
+    // dispatch(updateProfile(profileChangeData));
     // setIndex(5)`
   };
 
@@ -170,7 +192,7 @@ function Profile({route, navigation}) {
             </View>
           </TouchableOpacity>
           <Image
-            source={reduxData?.profile?.image}
+            source={userData?.avatar ?? reduxData?.profile?.image}
             style={styles.profileImageStyle}
           />
         </View>

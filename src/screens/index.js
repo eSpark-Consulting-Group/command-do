@@ -10,6 +10,7 @@ import Profile from './profile';
 import ItemList from './items';
 import OrderList from './ordersList';
 import Orders from './orders';
+import MoneyReturn from './MoneyReturn';
 import CollectedOrders from './orders/CollectedOrders';
 import CurrentOrders from './orders/CurrentOrders';
 import Users from './users';
@@ -17,6 +18,7 @@ import AddForm from './items/addForm';
 import PurchasingList from './PurchasingList';
 import AddFormUser from './users/addForm';
 import SearchScreen from './items/SearchScreen';
+import OrderHistory from './OrderHistory';
 
 export {
   Home,
@@ -27,6 +29,7 @@ export {
   Profile,
   OrderList,
   Orders,
+  MoneyReturn,
   ItemList,
   Users,
   CollectedOrders,
@@ -35,4 +38,5 @@ export {
   CurrentOrders,
   AddFormUser,
   SearchScreen,
+  OrderHistory,
 };
