@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  FlatList,
   PermissionsAndroid,
   ScrollView,
   StyleSheet,
@@ -8,23 +9,39 @@ import {
   View,
 } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {Icon} from '@rneui/themed';
+import {Icon, SpeedDial} from '@rneui/themed';
 import {showMessage} from 'react-native-flash-message';
 
-import {SCREEN_WIDTH} from '../../../constants';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {
   MyText,
   PurchasingListHeader,
   PurchasingOrderCard,
-} from '../../../components';
+} from '../../components';
 import {colors} from '../../../theme';
 import {pdfHtml} from '../../../utils/purchasingpdf';
+import {orders} from '../../../utils/data';
+
+let arr = [
+  {check: false},
+  {check: false},
+  {check: false},
+  {check: false},
+  {check: false},
+];
 
 export default function PurchasingList({navigation}) {
   const [filePath, setFilePath] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [check, setCheck] = useState([
+    {check: false},
+    {check: false},
+    {check: false},
+    {check: false},
+    {check: false},
+  ]);
 
   const fileName = 'PurchasingList';
-  const arr = Array(19).fill('a');
 
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
@@ -47,6 +64,41 @@ export default function PurchasingList({navigation}) {
   };
 
   const createPDF = async () => {
+    let order = {
+      status: true,
+      message: 'Order Summary',
+      totalAmount: 600,
+      data: [
+        {
+          item: {
+            name: 'Chicken Biryani',
+            id: 1,
+          },
+          amount: 170,
+          quantity: 1,
+          itemId: 1,
+        },
+        {
+          item: {
+            name: 'Chicken Pulao',
+            id: 2,
+          },
+          amount: 170,
+          quantity: 1,
+          itemId: 2,
+        },
+        {
+          item: {
+            name: 'Sada Biryani',
+            id: 3,
+          },
+          amount: 260,
+          quantity: 2,
+          itemId: 3,
+        },
+      ],
+    };
+
     let currDateTime =
       new Date().toISOString().slice(0, 10) +
       '_' +
@@ -55,7 +107,7 @@ export default function PurchasingList({navigation}) {
     if (await isPermitted()) {
       let options = {
         //Content to print
-        html: pdfHtml(arr),
+        html: pdfHtml(order),
         //File Name
         fileName: fileName + currDateTime,
         //File directory
@@ -78,7 +130,7 @@ export default function PurchasingList({navigation}) {
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ffffff'}}>
       <View
         style={{
           width: SCREEN_WIDTH,
@@ -107,72 +159,31 @@ export default function PurchasingList({navigation}) {
           containerStyle={{alignSelf: 'center'}}
         />
       </View>
-      <PurchasingListHeader />
-      <ScrollView
-        style={{width: '100%'}}
-        contentContainerStyle={{alignItems: 'center'}}>
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={3500}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={20}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-        <PurchasingOrderCard
-          itemName="Chicken Biryani"
-          qty={2}
-          totalAmount={350}
-        />
-      </ScrollView>
-
+      <PurchasingListHeader
+        onAllCheck={val =>
+          check.map((item, index) => {
+            let update = [...check];
+            update[index].check = !update[index].check;
+            setCheck(update);
+          })
+        }
+      />
+      <FlatList
+        data={check}
+        renderItem={({item, index}) => (
+          <PurchasingOrderCard
+            itemName="Chicken Biryani"
+            qty={2}
+            totalAmount={3500}
+            checked={item.check}
+            onCheck={() => {
+              let update = [...check];
+              update[index].check = !update[index].check;
+              setCheck(update);
+            }}
+          />
+        )}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -188,20 +199,41 @@ export default function PurchasingList({navigation}) {
         <Text style={{fontWeight: '600', fontSize: 18}}>Total</Text>
         <Text style={{fontWeight: '600', fontSize: 18}}>Rs. 2040</Text>
       </View>
-      <TouchableOpacity
-        onPress={createPDF}
+      <View
         style={{
           width: '95%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          backgroundColor: '#11a79c',
           marginVertical: 10,
-          paddingVertical: 10,
-          borderRadius: 10,
         }}>
-        <Text style={{fontWeight: '600', fontSize: 22, color: '#fff'}}>
-          Generate PDF
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={createPDF}
+          style={{
+            width: '15%',
+            alignItems: 'center',
+            backgroundColor: '#11a79c',
+            height: SCREEN_HEIGHT * 0.08,
+            justifyContent: 'center',
+            borderRadius: 10,
+          }}>
+          <Icon name="print" color={'#fff'} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('MoneyReturn')}
+          style={{
+            width: '80%',
+            alignItems: 'center',
+            backgroundColor: '#11a79c',
+            height: SCREEN_HEIGHT * 0.08,
+            justifyContent: 'center',
+            borderRadius: 10,
+          }}>
+          <Text style={{fontWeight: '600', fontSize: 22, color: '#fff'}}>
+            Order Purchased
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

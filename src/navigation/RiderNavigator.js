@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import {Icon} from '@rneui/themed';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {MoneyReturn, Orders, PurchasingList} from '../screens';
 
 import {Orders, PurchasingList} from '../screens';
 import {MyText} from '../components';
@@ -26,8 +27,7 @@ function RiderNavigator() {
             <View
               style={{
                 width: SCREEN_WIDTH,
-                backgroundColor: '#fafafa',
-                padding: 10,
+                padding: 5,
                 paddingHorizontal: 15,
                 elevation: 5,
                 borderRadius: 2,
@@ -39,8 +39,7 @@ function RiderNavigator() {
                 label={'Today Orders'}
                 size={'subHeading'}
                 textStyle={{
-                  fontWeight: 'bold',
-                  fontFamily: 'sans-serif-medium',
+                  fontFamily: 'Poppins-Bold',
                   textAlignVertical: 'center',
                   color: colors.text_inverse,
                 }}
@@ -56,6 +55,7 @@ function RiderNavigator() {
         }}
       />
       <Stack.Screen name="Purchasing_List" component={PurchasingList} />
+      <Stack.Screen name="MoneyReturn" component={MoneyReturn} />
     </Stack.Navigator>
   );
 }
