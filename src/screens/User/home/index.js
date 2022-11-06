@@ -11,6 +11,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useLazyQuery} from '@apollo/client';
 
 import {
   Cards,
@@ -27,6 +28,11 @@ import {
 } from '../../../graphQl/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQl/query/item.query';
 import styles from './styles';
+import {
+  GET_ALL_CATEGORIES,
+  GET_ALL_CATEGORIES_WITH_ITEMS,
+} from '../../../graphQl/query/categories.query';
+import {GET_ALL_ITEMS} from '../../../graphQl/query/item.query';
 
 const {width, height} = Dimensions.get('window');
 
@@ -157,7 +163,9 @@ function Home({route, navigation}) {
               />
               <MyText label={'Setting'} title style={{color: '#00000080'}} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => goToNavigation('OrderHistory')}>
               <Icon
                 name="ios-newspaper"
                 size={height * 0.025}
@@ -191,7 +199,7 @@ function Home({route, navigation}) {
             />
           </TouchableOpacity>
           <View style={styles.headerCenterComponentStyle}>
-            <TouchableOpacity style={{}}>
+            <TouchableOpacity>
               <Icon name="search" size={height * 0.03} color="black" />
             </TouchableOpacity>
             <MyText
@@ -200,7 +208,7 @@ function Home({route, navigation}) {
               style={{color: '#000000', fontSize: height * 0.025}}
             />
           </View>
-          <TouchableOpacity style={{}}>
+          <TouchableOpacity>
             <Icon name="wallet-sharp" size={height * 0.035} color="#11a79c90" />
           </TouchableOpacity>
         </View>
@@ -210,7 +218,10 @@ function Home({route, navigation}) {
             justifyContent: 'center',
             paddingHorizontal: height * 0.02,
           }}>
-          <MyText label={`Hi, ${reduxData?.profile?.name}`} heading />
+          <MyText
+            label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
+            heading
+          />
           <MyText label="Good Evening! 🙋‍♂️" subHeading />
           <MyText label="" title />
         </View>
