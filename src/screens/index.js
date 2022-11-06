@@ -21,6 +21,9 @@ import Orders from './Rider/orders';
 import CollectedOrders from './Rider/orders/CollectedOrders';
 import CurrentOrders from './Rider/orders/CurrentOrders';
 import PurchasingList from './Rider/PurchasingList';
+import MoneyReturn from './MoneyReturn';
+
+import OrderHistory from './OrderHistory';
 
 export {
   Home,
@@ -31,6 +34,7 @@ export {
   Profile,
   OrderList,
   Orders,
+  MoneyReturn,
   ItemList,
   Users,
   CollectedOrders,
@@ -39,4 +43,5 @@ export {
   CurrentOrders,
   AddFormUser,
   SearchScreen,
+  OrderHistory,
 };

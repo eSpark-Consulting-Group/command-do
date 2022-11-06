@@ -11,16 +11,20 @@ import {
 import {useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import {CheckBox, Icon} from '@rneui/themed';
+import {useLazyQuery} from '@apollo/client';
 
 import {Fonts} from '../../../utils/fonts';
 import {Logo} from '../../../assets/images';
 import MyText from '../../../components/Text';
 import {LOGIN_USER} from '../../../graphQl/query/user.query';
 import styles from './styles';
+import {LOGIN_USER} from '../../../graphQl/query/user.query';
+import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 
 const {width, height} = Dimensions.get('window');
 
 const Login = ({navigation}) => {
+  const dispatch = useDispatch();
   const count = useSelector(store => store);
   const [check1, setCheck1] = useState(true);
   const [check2, setCheck2] = useState(false);
@@ -47,11 +51,13 @@ const Login = ({navigation}) => {
     try {
       const userData = await LoginUser({
         variables: {
-          email: 'mraza@esparkconsultants.com',
-          password: '$%T9!^wkx4aST',
+          email: 'wirad@esparkconsultants.com',
+          password: 'D^nx)z(nR99g8',
           fcmToken: 'send fcm token here',
         },
       });
+
+      dispatch(getUserDetails(userData.data.loginUser));
       console.log('user login successfully', userData.data);
       if (admin) {
         navigation.navigate('Home_Admin');
