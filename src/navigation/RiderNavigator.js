@@ -1,13 +1,13 @@
 import * as React from 'react';
+import {View} from 'react-native';
+import {Icon} from '@rneui/themed';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Orders, PurchasingList} from '../screens';
 
-import {View} from 'react-native';
+import {Orders, PurchasingList} from '../screens';
 import {MyText} from '../components';
 import {SCREEN_WIDTH} from '../constants';
 import {colors} from '../theme';
-import {Icon} from '@rneui/themed';
 
 const Stack = createStackNavigator();
 // 11a79c

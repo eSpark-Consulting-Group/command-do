@@ -1,24 +1,18 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
   TextInput,
   Dimensions,
-  TouchableWithoutFeedback,
   TouchableOpacity,
-  StatusBar,
   ScrollView,
   Image,
-  Pressable,
-  StyleSheet,
-  Animated,
 } from 'react-native';
-import {Fonts} from '../../utils/fonts';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 import {MyText, CustomizeModal} from '../../components';
 import {updateProfile} from '../../features/profile/profileSlice';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import styles from './styles';
 
 const {width, height} = Dimensions.get('window');
@@ -44,15 +38,10 @@ function Profile({route, navigation}) {
     },
   ]);
   const dispatch = useDispatch();
-  // const [press, setPress] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [isModal, setIsModal] = useState(false);
-  const [filePath, setFilePath] = useState('');
-  const [fileData, setFileData] = useState('');
-  const [fileUri, setFileUri] = useState('');
 
   useEffect(() => {
-    // console.log("timer--->",timer);
     const profileUpdate = [...getData];
     profileUpdate[0].value = reduxData?.profile?.name;
     profileUpdate[1].value = reduxData?.profile?.email;
@@ -183,7 +172,6 @@ function Profile({route, navigation}) {
               size={height * 0.025}
               color="#fff"
             />
-            {/* <Icon name={"ios-pencil"} size={height * .025} color='#fff' /> */}
           </View>
         </TouchableOpacity>
       </View>
@@ -191,7 +179,6 @@ function Profile({route, navigation}) {
         {getData &&
           getData.map((item, index) => (
             <View key={index} style={styles.profileFormAlign}>
-              {/* item.name != "Email" && */}
               <MyText label={item.name} subTitle style={{color: '#00000060'}} />
               {editMode && item.name != 'Email' ? (
                 <TextInput
