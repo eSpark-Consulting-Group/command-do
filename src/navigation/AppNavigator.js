@@ -1,22 +1,12 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {
-  Home,
-  Login,
-  Items,
-  Cart,
-  OrderConfirm,
-  Profile,
-  Orders,
-} from '../screens';
+
+import {Home, Login, Items, Cart, OrderConfirm, Profile} from '../screens';
 import AdminNavigator from './AdminNavigator';
 import RiderNavigator from './RiderNavigator';
-import {View} from 'react-native';
-import {MyText} from '../components';
 
 const Stack = createStackNavigator();
-// 11a79c
 function MainStackNavigator() {
   return (
     <NavigationContainer>
