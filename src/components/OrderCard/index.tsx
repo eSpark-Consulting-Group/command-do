@@ -27,6 +27,7 @@ type orderListType = {
 export default function OrderCard({
   name,
   amount,
+  paidAmount,
   order = [],
   onCollect,
   onRevert,
@@ -34,6 +35,7 @@ export default function OrderCard({
 }: {
   name: string;
   amount: number;
+  paidAmount: number;
   order: orderListType[];
   onCollect: () => void;
   onRevert: () => void;
@@ -107,7 +109,7 @@ export default function OrderCard({
           padding: 5,
         }}>
         <MyText
-          label={'Total'}
+          label={'Total Amount'}
           size={'title'}
           textStyle={{fontFamily: 'Poppins-Bold'}}
         />
@@ -120,6 +122,27 @@ export default function OrderCard({
           }}
         />
       </View>
+      {paid == 'PAID' && (
+        <View
+          style={{
+            ...styles.cardInnerContainer,
+            paddingHorizontal: 5,
+          }}>
+          <MyText
+            label={'Paid Amount'}
+            size={'title'}
+            textStyle={{fontFamily: 'Poppins-Bold'}}
+          />
+          <MyText
+            label={'Rs. ' + paidAmount}
+            size={'title'}
+            textStyle={{
+              fontFamily: 'Poppins-Bold',
+              textAlign: 'center',
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 }

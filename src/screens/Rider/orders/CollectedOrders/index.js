@@ -59,6 +59,7 @@ export default function CollectedOrders({navigation}) {
               amount={item.totalAmount}
               order={item.OrderItems}
               paid={item.status}
+              paidAmount={item?.paidAmount}
               onRevert={() => revertConfirmation(item.id)}
             />
           )
