@@ -1,11 +1,11 @@
 // import { TypeofTypeAnnotation } from "@babel/types";
-import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counter-slice";
+import {configureStore} from '@reduxjs/toolkit';
+import counterReducer from '../features/counter/counter-slice';
 
 export const store = configureStore({
-    reducer: {
-        counter: counterReducer,
-    },
+  reducer: {
+    counter: counterReducer,
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;
