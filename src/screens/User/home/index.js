@@ -28,6 +28,7 @@ import {
 } from '../../../graphQl/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQl/query/item.query';
 import styles from './styles';
+import { colors } from '../../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -263,7 +264,7 @@ function Home({route, navigation}) {
         </View>
         :
         <View style={{flex: 4, top: height/4}}>
-          <ActivityIndicator size={30} />
+          <ActivityIndicator size={30} color={colors.primary} />
         </View>}
         <TouchableOpacity
           style={styles.cartContainerStyle}
