@@ -24,8 +24,8 @@ import {initialDataUpdate} from '../../../features/profile/profileSlice';
 import {
   GET_ALL_CATEGORIES,
   GET_ALL_CATEGORIES_WITH_ITEMS,
-} from '../../../graphQl/query/categories.query';
-import {GET_ALL_ITEMS} from '../../../graphQl/query/item.query';
+} from '../../../graphQL/query/categories.query';
+import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import styles from './styles';
 
 const {width, height} = Dimensions.get('window');
@@ -253,8 +253,11 @@ function Home({route, navigation}) {
                     )}
                     <MyText
                       label={item?.name}
-                      title
-                      style={{color: item.selected ? '#fff' : '#000'}}
+                      size={'title'}
+                      textStyle={{
+                        color:
+                          selectedCategory?.id == item?.id ? '#fff' : '#000',
+                      }}
                     />
                   </TouchableOpacity>
                 ),

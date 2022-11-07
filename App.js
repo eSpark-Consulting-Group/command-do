@@ -8,7 +8,7 @@ import {store} from './src/app/store';
 import {colors} from './src/theme/index';
 import AppStatusBar from './src/components/AppStatusBar';
 import {ApolloProvider} from '@apollo/client';
-import {client} from './src/graphQl';
+import {client} from './src/graphQL';
 export default function App() {
   return (
     <>
