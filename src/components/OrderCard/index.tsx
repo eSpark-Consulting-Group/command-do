@@ -1,3 +1,4 @@
+import {type} from 'os';
 import React from 'react';
 import {
   Dimensions,
@@ -6,13 +7,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {colors} from '../../theme';
 
 import MyText from '../Text';
 
 const {width, height} = Dimensions.get('window');
+type itemData = {
+  name: string;
+  price: number;
+  id: number;
+};
 
 type orderListType = {
-  item: string;
+  Item: itemData;
   quantity: number;
 };
 
@@ -29,7 +36,7 @@ export default function OrderCard({
   order: orderListType[];
   onCollect: () => void;
   onRevert: () => void;
-  paid: false;
+  paid: string;
 }) {
   return (
     <View style={styles.cardContainer}>
@@ -41,17 +48,18 @@ export default function OrderCard({
         }}>
         <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
         <TouchableOpacity
-          onPress={paid ? onRevert : onCollect}
+          onPress={paid == 'UNPAID' ? onCollect : onRevert}
           style={{
             ...styles.cardDataContainer2,
             borderRadius: 5,
-            backgroundColor: '#14D6C7',
+            backgroundColor: colors.primary,
             elevation: 5,
-            paddingVertical: 2,
+            paddingVertical: 1,
           }}>
-          <Text style={{...styles.cardDataText, color: '#fff'}}>
-            {paid ? 'Revert' : 'Collect'}
-          </Text>
+          <MyText
+            label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
+            textStyle={{...styles.cardDataText, color: '#fff'}}
+          />
         </TouchableOpacity>
       </View>
       <View style={{borderBottomWidth: 1, padding: 5}}>
@@ -59,12 +67,12 @@ export default function OrderCard({
           <MyText
             label={'Order'}
             size={'title'}
-            textStyle={{fontWeight: 'bold'}}
+            textStyle={{fontFamily: 'Poppins-Bold'}}
           />
           <MyText
             label={'Quantity'}
             size={'title'}
-            textStyle={{fontWeight: 'bold'}}
+            textStyle={{fontFamily: 'Poppins-Bold'}}
           />
         </View>
         {order.length > 0 &&
@@ -76,15 +84,15 @@ export default function OrderCard({
                 paddingVertical: 2,
               }}>
               <MyText
-                label={item.item}
+                label={item.Item.name}
                 size={'subTitle'}
-                textStyle={{fontWeight: 'bold'}}
+                textStyle={{fontFamily: 'Poppins-Bold'}}
               />
               <MyText
                 label={item.quantity}
                 size={'subTitle'}
                 textStyle={{
-                  fontWeight: 'bold',
+                  fontFamily: 'Poppins-Bold',
                   width: width * 0.12,
                   textAlign: 'center',
                 }}
@@ -100,13 +108,13 @@ export default function OrderCard({
         <MyText
           label={'Total'}
           size={'title'}
-          textStyle={{fontWeight: 'bold'}}
+          textStyle={{fontFamily: 'Poppins-Bold'}}
         />
         <MyText
-          label={'Rs. 2000'}
+          label={'Rs. ' + amount}
           size={'title'}
           textStyle={{
-            fontWeight: 'bold',
+            fontFamily: 'Poppins-Bold',
             textAlign: 'center',
           }}
         />
@@ -140,12 +148,12 @@ const styles = StyleSheet.create({
   },
   cardDataText: {
     fontSize: width * 0.04,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     textAlign: 'center',
   },
   cardDataMoreText: {
     fontSize: width * 0.024,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     opacity: 0.5,
   },
 });
