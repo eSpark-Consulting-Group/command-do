@@ -1,18 +1,46 @@
-import React, {useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {useLazyQuery} from '@apollo/client';
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {CollectionModal, MyText, OrderCard} from '../../../../components';
 import {SCREEN_HEIGHT} from '../../../../constants';
-import {collectAmouunt} from '../../../../features/riderOrders/riderOrderSlice';
+import {
+  collectAmouunt,
+  getOrders,
+} from '../../../../features/riderOrders/riderOrderSlice';
+import {ALL_ORDERS} from '../../../../graphQL/query/orders.query';
+import {colors} from '../../../../theme';
 
 export default function CurrentOrders({navigation}) {
+  const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
   const reduxData = useSelector(store => store);
   let orders = reduxData.riderOrder.orders;
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const orders = await GetAllOrders({
+        variables: {
+          createdAt:
+            'Tue Nov 01 2022 18:55:20 GMT+0500 (Pakistan Standard Time)',
+        },
+      });
+      dispatch(getOrders(orders.data.getAllOrders.data));
+    };
+    fetchOrders()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
 
   const openOverlay = (val, id) => {
     setShowModal(true);
@@ -49,15 +77,25 @@ export default function CurrentOrders({navigation}) {
           )
         }
         ListEmptyComponent={
-          <View
-            style={{
-              width: '100%',
-              height: SCREEN_HEIGHT * 0.6,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <MyText label={'No Orders'} size={'subHeading'} />
-          </View>
+          loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.7,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                height: SCREEN_HEIGHT * 0.6,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MyText label={'No Orders'} size={'subHeading'} />
+            </View>
+          )
         }
       />
       {showModal && (
