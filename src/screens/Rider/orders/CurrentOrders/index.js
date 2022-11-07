@@ -15,7 +15,7 @@ import {
   collectAmouunt,
   getOrders,
 } from '../../../../features/riderOrders/riderOrderSlice';
-import {ALL_ORDERS} from '../../../../graphQl/query/orders.query';
+import {ALL_ORDERS} from '../../../../graphQL/query/orders.query';
 import {colors} from '../../../../theme';
 
 export default function CurrentOrders({navigation}) {

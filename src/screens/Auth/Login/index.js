@@ -16,7 +16,7 @@ import {CheckBox, Icon} from '@rneui/themed';
 import {Fonts} from '../../../utils/fonts';
 import {Logo} from '../../../assets/images';
 import MyText from '../../../components/Text';
-import {LOGIN_USER} from '../../../graphQl/query/user.query';
+import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
 
