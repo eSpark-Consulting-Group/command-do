@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
-import {MyHeader, OrderHistoryCard} from '../../components';
+
+import {MyHeader, OrderHistoryCard} from '../../../components';
 
 export default function OrderHistory() {
   return (

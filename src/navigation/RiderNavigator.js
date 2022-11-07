@@ -5,7 +5,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {MoneyReturn, Orders, PurchasingList} from '../screens';
 
-import {Orders, PurchasingList} from '../screens';
 import {MyText} from '../components';
 import {SCREEN_WIDTH} from '../constants';
 import {colors} from '../theme';
