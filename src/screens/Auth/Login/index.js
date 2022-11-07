@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
@@ -15,7 +16,7 @@ import {CheckBox, Icon} from '@rneui/themed';
 import {Fonts} from '../../../utils/fonts';
 import {Logo} from '../../../assets/images';
 import MyText from '../../../components/Text';
-import {LOGIN_USER} from '../../../graphQl/query/user.query';
+import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
 
@@ -28,7 +29,10 @@ const Login = ({navigation}) => {
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
 
-  const [LoginUser, {data, error, loading}] = useLazyQuery(LOGIN_USER);
+  const [LoginUser, {loading: userLoader}] = useLazyQuery(LOGIN_USER, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
   const handleCheck = value => {
     if (value === '1') {
       setCheck1(true);
@@ -54,9 +58,8 @@ const Login = ({navigation}) => {
           fcmToken: 'send fcm token here',
         },
       });
-
+      console.log('user login successfully', userData.loading);
       dispatch(getUserDetails(userData.data.loginUser));
-      console.log('user login successfully', userData.data);
       if (admin) {
         navigation.navigate('Home_Admin');
       } else if (user) {
@@ -112,14 +115,18 @@ const Login = ({navigation}) => {
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => handleNavigate(check1, check2, check3)}>
-          <Text
-            style={{
-              fontSize: height * 0.03,
-              color: 'white',
-              fontFamily: Fonts.Roboto_Black,
-            }}>
-            Login
-          </Text>
+          {userLoader ? (
+            <ActivityIndicator size={'large'} color="white" />
+          ) : (
+            <Text
+              style={{
+                fontSize: height * 0.03,
+                color: 'white',
+                fontFamily: Fonts.Roboto_Black,
+              }}>
+              Login
+            </Text>
+          )}
         </TouchableOpacity>
         <View style={styles.radioButtonContainer}>
           <MyText

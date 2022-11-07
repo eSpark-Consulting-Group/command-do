@@ -12,6 +12,7 @@ import {colors} from '../../theme';
 import MyText from '../Text';
 
 const {width, height} = Dimensions.get('window');
+
 type itemData = {
   name: string;
   price: number;
