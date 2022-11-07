@@ -15,7 +15,7 @@ import {MyText, CustomizeModal} from '../../components';
 import {updateProfile} from '../../features/profile/profileSlice';
 import styles from './styles';
 import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
-import {UPDATE_USER} from '../../graphQl/mutation/user.mutation';
+import {UPDATE_USER} from '../../graphQL/mutation/user.mutation';
 import {useMutation} from '@apollo/client';
 
 const {width, height} = Dimensions.get('window');

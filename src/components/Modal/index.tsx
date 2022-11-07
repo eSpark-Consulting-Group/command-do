@@ -61,28 +61,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalInner: {
-    height: height * 0.2,
-    width: width * 0.3,
-    position: 'absolute',
-    backgroundColor: '#fff',
-    borderRadius: height * 0.005,
-    zIndex: 1,
-    top: height * 0.035,
-    left: height * 0.03,
-    elevation: height * 0.003,
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    padding: height * 0.01,
-    borderBottomWidth: height * 0.0005,
-    borderBottomColor: '#00000050',
-  },
-  btnIcon: {
-    paddingRight: height * 0.01,
-  },
 });
 
 export default CustomizeModal;
