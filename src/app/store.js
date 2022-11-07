@@ -12,3 +12,7 @@ export const store = configureStore({
     userInfo: userInfoSlice,
   },
 });
+
+export const initialState = {
+  count: 0,
+};
