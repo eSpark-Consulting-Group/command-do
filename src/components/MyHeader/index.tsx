@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {StyleSheet, Text, TextStyle, View, ViewStyle} from 'react-native';
 import {Icon} from '@rneui/themed';
 
 import {SCREEN_WIDTH} from '../../constants';
@@ -9,6 +9,7 @@ import GapView from '../GapView';
 
 export default function MyHeader({
   headerStyle,
+  titleStyle,
   children,
   title,
   icon,
@@ -16,8 +17,10 @@ export default function MyHeader({
   onPressLeft,
   onPressRight,
   rightIconType,
+  leftIconType,
 }: {
   headerStyle?: ViewStyle;
+  titleStyle?: TextStyle;
   children?: React.ReactNode;
   title: string;
   icon?: string;
@@ -25,6 +28,7 @@ export default function MyHeader({
   onPressLeft?: () => void;
   onPressRight?: () => void;
   rightIconType?: string;
+  leftIconType?: string;
 }) {
   return (
     <View
@@ -36,9 +40,15 @@ export default function MyHeader({
       {leftIcon && (
         <Icon
           name={leftIcon!!}
+          type={leftIconType}
           size={28}
           color={colors.text_inverse}
-          style={{padding: 5}}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 50,
+            width: 50,
+          }}
           onPress={onPressLeft}
           containerStyle={{
             borderRadius: 100,
@@ -59,6 +69,7 @@ export default function MyHeader({
           fontFamily: 'monospace',
           textAlignVertical: 'center',
           color: colors.text_inverse,
+          ...titleStyle,
         }}
       />
       {icon && (

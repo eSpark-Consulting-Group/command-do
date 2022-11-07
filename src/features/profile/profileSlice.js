@@ -18,7 +18,6 @@ const profileSlice = createSlice({
       state.shift = action.payload.shift;
       state.phone = action.payload.phone;
       state.image = action.payload.image;
-      // console.log(action);
     },
     updateProfile: (state, action) => {
       state.name = action.payload.name;
