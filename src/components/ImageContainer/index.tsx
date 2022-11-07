@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import {Button} from '@rneui/themed';
 
 import {SCREEN_HEIGHT} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
+import {TouchRipple} from '../';
 
 export default function ImageContainer() {
   return (
@@ -27,27 +27,27 @@ export default function ImageContainer() {
             borderRadius: 5,
           }}
         />
-        <Button
-          title="Upload Image"
-          buttonStyle={{
-            backgroundColor: colors.background,
-            padding: 5,
-          }}
-          titleStyle={{
-            color: '#000000',
-            fontFamily: 'sans-serif-medium',
-          }}
-          containerStyle={{
-            marginHorizontal: 20,
-            borderRadius: 10,
-            borderWidth: 2,
-            borderColor: colors.primary,
-            elevation: 5,
-          }}
-        />
+        <TouchRipple darkRipple style={styles.btnStyle}>
+          <MyText
+            label={'Upload Image'}
+            textStyle={{color: colors.text_normal, textAlignVertical: 'center'}}
+          />
+        </TouchRipple>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  btnStyle: {
+    marginHorizontal: 20,
+    backgroundColor: colors.background,
+    padding: 5,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

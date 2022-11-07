@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {AddForm, ItemList, SearchScreen} from '../screens';
+import {AddFormItem, ItemList, SearchScreen} from '../screens';
 
 const Stack = createStackNavigator();
 function ItemNavigator() {
@@ -15,7 +15,7 @@ function ItemNavigator() {
         <Stack.Screen name="ItemList" component={ItemList} />
         <Stack.Screen name="SearchItem" component={SearchScreen} />
       </Stack.Group>
-      <Stack.Screen name="Add_Form" component={AddForm} />
+      <Stack.Screen name="Add_Form" component={AddFormItem} />
     </Stack.Navigator>
   );
 }
