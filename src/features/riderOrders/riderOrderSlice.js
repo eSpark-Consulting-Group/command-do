@@ -19,9 +19,10 @@ const riderOrderSlice = createSlice({
     },
     collectAmouunt: (state, action) => {
       console.log('Action', action.payload);
-      let index = state.orders.findIndex(obj => obj.id == action.payload);
+      let index = state.orders.findIndex(obj => obj.id == action.payload.id);
       state.orders[index].status = 'PAID';
-      console.log('Updated', state.orders[index]);
+      state.orders[index].paidAmount = action.payload.amount;
+      console.log('Updated Order', state.orders[index]);
     },
     revertCollection: (state, action) => {
       console.log('Action', action.payload);
