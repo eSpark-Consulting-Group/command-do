@@ -93,7 +93,7 @@ export default function CollectionModal({closeModal, totAmount, onCollected}) {
           </View>
         </View>
         <TouchableOpacity
-          onPress={onCollected}
+          onPress={() => onCollected(amount)}
           disabled={amount >= totAmount ? false : true}
           style={{
             width: '100%',
