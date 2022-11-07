@@ -11,7 +11,6 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useLazyQuery} from '@apollo/client';
 
 import {
   Cards,
@@ -28,11 +27,6 @@ import {
 } from '../../../graphQl/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQl/query/item.query';
 import styles from './styles';
-import {
-  GET_ALL_CATEGORIES,
-  GET_ALL_CATEGORIES_WITH_ITEMS,
-} from '../../../graphQl/query/categories.query';
-import {GET_ALL_ITEMS} from '../../../graphQl/query/item.query';
 
 const {width, height} = Dimensions.get('window');
 

@@ -8,18 +8,16 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import {CheckBox, Icon} from '@rneui/themed';
-import {useLazyQuery} from '@apollo/client';
 
 import {Fonts} from '../../../utils/fonts';
 import {Logo} from '../../../assets/images';
 import MyText from '../../../components/Text';
 import {LOGIN_USER} from '../../../graphQl/query/user.query';
-import styles from './styles';
-import {LOGIN_USER} from '../../../graphQl/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
+import styles from './styles';
 
 const {width, height} = Dimensions.get('window');
 
