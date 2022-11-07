@@ -1,9 +1,9 @@
-import {Icon} from '@rneui/themed';
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import {MoneyReturnCard, MyText} from '../../components';
-import {SCREEN_WIDTH} from '../../constants';
-import {colors} from '../../theme';
+
+import {MoneyReturnCard, MyText} from '../../../components';
+import {SCREEN_WIDTH} from '../../../constants';
+import {colors} from '../../../theme';
 
 export default function MoneyReturn({navigation}) {
   const [filePath, setFilePath] = useState('');

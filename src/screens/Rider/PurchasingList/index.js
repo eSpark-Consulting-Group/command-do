@@ -17,7 +17,7 @@ import {
   MyText,
   PurchasingListHeader,
   PurchasingOrderCard,
-} from '../../components';
+} from '../../../components';
 import {colors} from '../../../theme';
 import {pdfHtml} from '../../../utils/purchasingpdf';
 import {orders} from '../../../utils/data';
