@@ -124,7 +124,7 @@ export default function OrderHistoryCard({
       <View
         style={{
           ...styles.cardInnerContainer,
-          padding: 5,
+          paddingHorizontal: 5,
         }}>
         <MyText
           label={'Paid Amount'}

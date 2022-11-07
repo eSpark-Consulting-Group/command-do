@@ -1,9 +1,13 @@
+/**
+ * @params Wirad's Code!
+ * This code is used for riderFunctions for redux
+ */
+
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   orders: [],
 };
-
 const riderOrderSlice = createSlice({
   name: 'riderOrder',
   initialState,
