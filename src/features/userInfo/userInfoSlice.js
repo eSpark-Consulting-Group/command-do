@@ -14,9 +14,13 @@ const userInfoSlice = createSlice({
     updateUserDetails: (state, action) => {
       state.userData = action.payload;
     },
+    createUser: (state, action) => {
+      state.userData = action.payload;
+    },
   },
 });
 
-export const {getUserDetails, updateUserDetails} = userInfoSlice.actions;
+export const {getUserDetails, updateUserDetails, createUser} =
+  userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
