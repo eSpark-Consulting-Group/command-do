@@ -4,7 +4,7 @@ import CollectedOrders from './CollectedOrders';
 import CurrentOrders from './CurrentOrders';
 import PurchasingList from '../PurchasingList';
 import {useLazyQuery} from '@apollo/client';
-import {ALL_ORDERS} from '../../graphQl/query/orders.query';
+import {ALL_ORDERS} from '../../graphQL/query/orders.query';
 import {useDispatch} from 'react-redux';
 import {getOrders} from '../../features/riderOrders/riderOrderSlice';
 import {colors} from '../../theme';
