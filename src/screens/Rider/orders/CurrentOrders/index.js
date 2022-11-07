@@ -53,8 +53,9 @@ export default function CurrentOrders({navigation}) {
     setId(null);
   };
 
-  const onCollection = () => {
-    dispatch(collectAmouunt(id));
+  const onCollection = amount => {
+    console.log('Amount', amount);
+    dispatch(collectAmouunt({id, amount}));
     setShowModal(false);
     setAmount('');
   };
@@ -103,7 +104,7 @@ export default function CurrentOrders({navigation}) {
           isVisible={showModal}
           totAmount={amount}
           closeModal={closeOverlay}
-          onCollected={onCollection}
+          onCollected={amount => onCollection(amount)}
         />
       )}
     </View>
