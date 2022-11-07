@@ -29,7 +29,7 @@ import {
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import styles from './styles';
 import { colors } from '../../../theme';
-
+import { logout } from '../../../features/userInfo/userInfoSlice';
 const {width, height} = Dimensions.get('window');
 
 function Home({route, navigation}) {
@@ -105,6 +105,9 @@ function Home({route, navigation}) {
     setIsModal(!isModal);
   };
 
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
   // console.log("loading", LoadItemsLoading, LoadCategoriesLoading, LoadCategoriesWithItemLoading)
   return (
     <View
@@ -159,7 +162,7 @@ function Home({route, navigation}) {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.buttonContainer, {borderBottomWidth: height * 0}]}
-              onPress={() => goToNavigation('Login')}>
+              onPress={() => logoutHandler()}>
               <Icon
                 name="ios-exit"
                 size={height * 0.025}
