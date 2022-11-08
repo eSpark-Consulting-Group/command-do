@@ -41,15 +41,15 @@ function Items({route, navigation}) {
 
   useEffect(() => {
     // console.log('count?.cart?.cartItems---->', count?.cart?.cartItems);
-    // console.log(getData.qty = animateToNumber, 'animateToNumber');
+    // console.log(getData.quantity = animateToNumber, 'animateToNumber');
     // setAllData(foodName[0].data)
     var data = [];
     // console.log(count?.cart, 'count');
     // const checkCountData =
     data = count?.cart?.cartItems.filter(item => item?.name === getData.name);
     setEditData(data);
-    setEditMode(data.length != 0 ? data[0]?.qty : 0);
-    setAnimateToNumber(data.length != 0 ? data[0]?.qty : 0);
+    setEditMode(data.length != 0 ? data[0]?.quantity : 0);
+    setAnimateToNumber(data.length != 0 ? data[0]?.quantity : 0);
     // console.log(editData?.length == 0 ? animateToNumber === editMode : animateToNumber == 0, 'animateToNumber');
   }, [count]);
 
@@ -99,7 +99,7 @@ function Items({route, navigation}) {
   const addToCart = value => {
     // console.log('value---->', value);
     var changeData = {...getData};
-    changeData.qty = value;
+    changeData.quantity = value;
     setGetData(changeData);
   };
 
@@ -203,7 +203,7 @@ function Items({route, navigation}) {
                 <TextInput
                   style={styles.quantityInput}
                   onChangeText={onChangeNumber}
-                  value={editMode.toString()}
+                  value={editMode?.toString()}
                   textAlign="center"
                   keyboardType="numeric"
                 />
@@ -254,7 +254,7 @@ function Items({route, navigation}) {
                 'Please let us know if you are alergic to anything or if we need to avoid anything'
               }
               subTitle
-              style={{color: 'gray', width: width * 0.7}}
+              textStyle={{color: 'gray', width: width * 0.7}}
             />
           </View>
           <View

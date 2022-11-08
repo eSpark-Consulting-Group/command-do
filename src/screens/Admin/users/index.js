@@ -25,7 +25,7 @@ import {profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {GET_ALL_USERS} from '../../../graphQL/query/user.query';
-import {getAllUsers} from '../../../features/userInfo/userInfoSlice';
+import {getAllUsers, logout} from '../../../features/userInfo/userInfoSlice';
 
 const sampleData = [
   {
@@ -105,6 +105,9 @@ export default function Users() {
       console.log('error while fetching', e);
     }
   };
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <View style={styles.container}>
@@ -127,7 +130,7 @@ export default function Users() {
               <MyText
                 label={'Profile'}
                 title
-                style={{color: colors.text_normal}}
+                textStyle={{color: colors.text_normal}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -135,7 +138,7 @@ export default function Users() {
                 styles.buttonContainer,
                 {borderBottomWidth: SCREEN_HEIGHT * 0},
               ]}
-              onPress={() => goToNavigation('Login')}>
+              onPress={() => logoutHandler()}>
               <Ionicons
                 name="ios-exit"
                 size={SCREEN_HEIGHT * 0.025}
@@ -145,7 +148,7 @@ export default function Users() {
               <MyText
                 label={'Log out'}
                 title
-                style={{color: colors.text_normal}}
+                textStyle={{color: colors.text_normal}}
               />
             </TouchableOpacity>
           </View>

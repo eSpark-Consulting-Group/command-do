@@ -8,6 +8,7 @@ import {
   Image,
   StyleSheet,
   Animated,
+  ActivityIndicator,
 } from 'react-native';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import * as Progress from 'react-native-progress';
@@ -16,9 +17,12 @@ import NumericInput from 'react-native-numeric-input';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {Fonts} from '../../../utils/fonts';
-import {addItem, increase} from '../../../features/cart/cartSlice';
+import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
 import {Delievey} from '../../../assets/images';
 import {MyText, DropDownAlert} from '../../../components';
+import {useMutation} from '@apollo/client';
+import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
+import {colors} from '../../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -38,7 +42,8 @@ function Cart({route, navigation}) {
   const dispatch = useDispatch();
   const count = useSelector(store => store);
   const [press, setPress] = useState(false);
-
+  const userData = useSelector(store => store?.userInfo?.userData);
+  const [CreateOrder, {loading, error}] = useMutation(PLACE_ORDER);
   useEffect(() => {
     // console.log("count", count);
     setTimeout(() => {
@@ -59,13 +64,13 @@ function Cart({route, navigation}) {
     var makeTotal = 0;
     if (count?.cart?.cartItems) {
       count?.cart?.cartItems.map((item, index) => {
-        makeTotal = makeTotal + item.price * item.qty;
+        makeTotal = makeTotal + item.price * item.quantity;
       });
     }
     setTotal(makeTotal);
-    if (count?.cart?.cartItems.length == 0) {
-      navigation.goBack();
-    }
+    // if (count?.cart?.cartItems.length == 0) {
+    //   navigation.goBack();
+    // }
   }, [count?.cart?.cartItems]);
 
   useEffect(() => {
@@ -91,7 +96,7 @@ function Cart({route, navigation}) {
       setIsEditQty(false);
     } else {
       var changeData = {...item};
-      changeData.qty = value;
+      changeData.quantity = value;
       setGetData(changeData);
     }
   };
@@ -110,9 +115,32 @@ function Cart({route, navigation}) {
     }
   }, [getData]);
 
-  const handleShowAlert = () => {
+  const handleShowAlert = async () => {
     isShowAlert(false);
-    navigation.navigate('OrderConfirm');
+    const cartItems = count?.cart?.cartItems?.map(val => {
+      return {
+        itemId: val?.id,
+        quantity: val?.quantity,
+        amount: val?.quantity * val?.price,
+        note: val?.note || '',
+      };
+    });
+
+    try {
+      await CreateOrder({
+        variables: {
+          input: {
+            userId: userData?.id,
+            totalAmount: total,
+            items: cartItems,
+          },
+        },
+      });
+      navigation.navigate('OrderConfirm');
+      dispatch(clearCart());
+    } catch (error) {
+      console.log('CreateOrder error', error);
+    }
   };
 
   return (
@@ -135,7 +163,7 @@ function Cart({route, navigation}) {
               <MyText
                 label={'Check your menu'}
                 subTitle
-                style={{color: '#00000060'}}
+                textStyle={{color: '#00000060'}}
               />
             </View>
             <View style={styles.headerProgressContiner}>
@@ -148,7 +176,7 @@ function Cart({route, navigation}) {
                 <MyText
                   label={progressText}
                   subTitle
-                  style={{color: '#00000080'}}
+                  textStyle={{color: '#00000080'}}
                 />
               </Animated.View>
               <Progress.Circle
@@ -178,7 +206,7 @@ function Cart({route, navigation}) {
               <MyText
                 label={`We are waiting for your order!`}
                 subTitle
-                style={{color: '#00000060'}}
+                textStyle={{color: '#00000060'}}
               />
             </View>
           </View>
@@ -199,7 +227,7 @@ function Cart({route, navigation}) {
                     }>
                     {isEditQty && isIndexSame == index && (
                       <NumericInput
-                        value={Number(item.qty)}
+                        value={Number(item.quantity)}
                         onChange={value => addToCart(item, value)}
                         maxValue={999}
                         // onLimitReached={(isMax, msg) => console.log(isMax, msg)}
@@ -233,7 +261,7 @@ function Cart({route, navigation}) {
                     <TouchableOpacity
                       style={styles.qtyButtonContainer}
                       onPress={() => onHandleEditQty(index)}>
-                      <MyText label={item.qty} />
+                      <MyText label={item.quantity} />
                       <Icon
                         name="caret-down"
                         size={height * 0.02}
@@ -254,7 +282,7 @@ function Cart({route, navigation}) {
                         borderRadius: height * 0.015,
                       }}>
                       <Image
-                        source={item.image}
+                        source={{uri: item.image}}
                         style={{
                           height: height * 0.08,
                           width: height * 0.1,
@@ -266,12 +294,12 @@ function Cart({route, navigation}) {
                     <MyText
                       label={item.name}
                       title
-                      style={{color: '#11a79c', width: height * 0.13}}
+                      textStyle={{color: '#11a79c', width: height * 0.13}}
                     />
                     <MyText
-                      label={`Rs.${item.price * item.qty}`}
+                      label={`Rs.${item.price * item.quantity}`}
                       title
-                      style={{
+                      textStyle={{
                         textAlign: 'right',
                         position: 'absolute',
                         right: height * 0,
@@ -313,6 +341,7 @@ function Cart({route, navigation}) {
             </View>
             <View style={styles.ProceedToCheckOut}>
               <TouchableOpacity
+                disabled={count?.cart?.cartItems.length == 0}
                 style={{
                   backgroundColor: '#11a79c',
                   height: height * 0.06,
@@ -323,12 +352,18 @@ function Cart({route, navigation}) {
                   elevation: height * 0.003,
                   marginVertical: height * 0.009,
                 }}
-                onPress={() => isShowAlert(true)}>
-                <MyText
-                  label={'Proceed to checkout'}
-                  title
-                  style={{color: 'white'}}
-                />
+                onPress={() => {
+                  isShowAlert(true);
+                }}>
+                {!loading ? (
+                  <MyText
+                    label={count?.cart?.cartItems?.length != 0 ? 'Proceed to checkout' : 'Please add item into cart'}
+                    title
+                    textStyle={{color: 'white'}}
+                  />
+                ) : (
+                  <ActivityIndicator size="large" color={colors.text_inverse} />
+                )}
               </TouchableOpacity>
               <AwesomeAlert
                 show={showAlert}

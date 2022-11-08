@@ -113,7 +113,7 @@ function Profile({route, navigation}) {
               <MyText
                 label={'Choose File'}
                 title
-                style={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{color: '#fff', marginLeft: height * 0.01}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -123,7 +123,7 @@ function Profile({route, navigation}) {
               <MyText
                 label={'Launch Camera'}
                 title
-                style={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{color: '#fff', marginLeft: height * 0.01}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -133,7 +133,7 @@ function Profile({route, navigation}) {
               <MyText
                 label={'Choose in gallery'}
                 title
-                style={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{color: '#fff', marginLeft: height * 0.01}}
               />
             </TouchableOpacity>
           </View>
@@ -181,7 +181,7 @@ function Profile({route, navigation}) {
         {getData &&
           getData.map((item, index) => (
             <View key={index} style={styles.profileFormAlign}>
-              <MyText label={item.name} subTitle style={{color: '#00000060'}} />
+              <MyText label={item.name} subTitle textStyle={{color: '#00000060'}} />
               {editMode && item.name != 'Email' ? (
                 <TextInput
                   style={styles.profileFormMobileNumber}
@@ -196,7 +196,7 @@ function Profile({route, navigation}) {
                 <MyText
                   label={item.value}
                   title
-                  style={{color: '#11a79c', marginVertical: height * 0.015}}
+                  textStyle={{color: '#11a79c', marginVertical: height * 0.015}}
                 />
               )}
             </View>
