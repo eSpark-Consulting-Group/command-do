@@ -7,13 +7,13 @@ import {colors} from '../../theme';
 
 export default function PurchasingOrderCard({
   itemName,
-  qty,
+  quantity,
   totalAmount,
   checked,
   onCheck,
 }: {
   itemName: string;
-  qty: number;
+  quantity: number;
   totalAmount: number;
   checked: boolean;
   onCheck: (val: boolean) => void;
@@ -38,7 +38,7 @@ export default function PurchasingOrderCard({
         <Text style={styles.cardDataText}>{itemName}</Text>
       </View>
       <View style={styles.cardDataContainer2}>
-        <Text style={styles.cardDataText}>{qty}</Text>
+        <Text style={styles.cardDataText}>{quantity}</Text>
       </View>
       <View style={styles.cardDataContainer2}>
         <Text style={styles.cardDataText}>Rs. {totalAmount}</Text>
