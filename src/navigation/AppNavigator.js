@@ -22,7 +22,7 @@ function MainStackNavigator() {
   const initialRouteName = ROLES[userData?.role] || 'Login';
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={{colors: {background: '#fff'}}}>
       <Stack.Navigator
         initialRouteName={initialRouteName}
         screenOptions={{
