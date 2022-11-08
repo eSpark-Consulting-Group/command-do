@@ -22,7 +22,7 @@ import CollectedOrders from './Rider/orders/CollectedOrders';
 import CurrentOrders from './Rider/orders/CurrentOrders';
 import PurchasingList from './Rider/PurchasingList';
 import MoneyReturn from './Rider/MoneyReturn';
-import OrderHistory from './Rider/OrderHistory';
+import OrderHistory from './User/OrderHistory';
 
 export {
   Home,
