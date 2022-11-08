@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: height * 0.015,
   },
-  headerCenterComponentStyle: {flexDirection: 'row', alignItems: 'flex-end'},
+  headerCenterComponentStyle: {flexDirection: 'row',},
   categoryContainer: {
     flex: 0.5,
     justifyContent: 'space-between',

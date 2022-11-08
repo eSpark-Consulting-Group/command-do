@@ -4,11 +4,13 @@ import {Provider} from 'react-redux';
 import FlashMessage from 'react-native-flash-message';
 
 import MainStackNavigator from './src/navigation/AppNavigator';
-import {store} from './src/app/store';
+import Store from './src/app/store';
 import {colors} from './src/theme/index';
 import AppStatusBar from './src/components/AppStatusBar';
 import {ApolloProvider} from '@apollo/client';
 import {client} from './src/graphQL';
+import {PersistGate} from 'redux-persist/integration/react';
+
 export default function App() {
   return (
     <>
@@ -19,9 +21,11 @@ export default function App() {
           barStyle="light-content"
         />
         <ApolloProvider client={client}>
-          <Provider store={store}>
-            <MainStackNavigator />
-            <FlashMessage position="top" />
+          <Provider store={Store.store}>
+            <PersistGate loading={null} persistor={Store.persistor}>
+              <MainStackNavigator />
+              <FlashMessage position="top" />
+            </PersistGate>
           </Provider>
         </ApolloProvider>
       </SafeAreaView>

@@ -127,7 +127,7 @@ function Cart({ route, navigation }) {
             </TouchableOpacity>
             <View style={styles.headerText}>
               <MyText label={'Cart'} subHeading />
-              <MyText label={'Check your menu'} subTitle style={{ color: '#00000060' }} />
+              <MyText label={'Check your menu'} subTitle textStyle={{ color: '#00000060' }} />
             </View>
             <View style={styles.headerProgressContiner}>
               <Animated.View useNativeDriver={true} style={{
@@ -163,7 +163,7 @@ function Cart({ route, navigation }) {
             />
             <View style={styles.headerText}>
               <MyText label={'Hurry up 😀'} subHeading />
-              <MyText label={`We are waiting for your order!`} subTitle style={{ color: '#00000060' }} />
+              <MyText label={`We are waiting for your order!`} subTitle textStyle={{ color: '#00000060' }} />
             </View>
           </View>
           <View style={styles.cartItemContainer}>
@@ -225,8 +225,8 @@ function Cart({ route, navigation }) {
                         }}
                       />
                     </View>
-                    <MyText label={item.name} title style={{ color: "#11a79c", width: height * .13, }} />
-                    <MyText label={` Rs.${item.price * item.quantity}`} title style={{ textAlign: 'right', position: 'absolute', right: height * 0, width: height * .1, flexWrap: 'wrap' }} />
+                    <MyText label={item.name} title textStyle={{ color: "#11a79c", width: height * .13, }} />
+                    <MyText label={` Rs.${item.price * item.quantity}`} title textStyle={{ textAlign: 'right', position: 'absolute', right: height * 0, width: height * .1, flexWrap: 'wrap' }} />
                     <TouchableOpacity style={styles.deleteItem} onPress={() => addToCart(item, 0)} >
                       <Icon name="md-trash-outline" size={height * .02} color='#fff' />
                     </TouchableOpacity>

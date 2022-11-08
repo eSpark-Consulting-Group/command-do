@@ -21,7 +21,6 @@ function MainStackNavigator() {
   const userData = useSelector(store => store?.userInfo?.userData);
   const initialRouteName = ROLES[userData?.role] || 'Login';
 
-  console.log('userData userData', initialRouteName);
   return (
     <NavigationContainer>
       <Stack.Navigator
