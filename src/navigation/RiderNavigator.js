@@ -12,12 +12,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {CustomizeModal, MyHeader, MyText} from '../components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../constants';
 import {colors} from '../theme';
+import { logout } from '../features/userInfo/userInfoSlice';
+import { useDispatch } from 'react-redux';
 
 const Stack = createStackNavigator();
 // 11a79c
 function RiderNavigator({navigation}) {
   const [isModal, setIsModal] = useState(false);
-
+  const dispatch = useDispatch()
   const isModalVisible = () => {
     LayoutAnimation.configureNext({
       duration: 300,
@@ -36,6 +38,11 @@ function RiderNavigator({navigation}) {
     navigation.navigate(navigate);
     setIsModal(!isModal);
   };
+
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
+
 
   return (
     <Stack.Navigator
@@ -74,7 +81,7 @@ function RiderNavigator({navigation}) {
                       <MyText
                         label={'Profile'}
                         title
-                        style={{color: colors.text_normal}}
+                        textStyle={{color: colors.text_normal}}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -82,7 +89,7 @@ function RiderNavigator({navigation}) {
                         styles.buttonContainer,
                         {borderBottomWidth: SCREEN_HEIGHT * 0},
                       ]}
-                      onPress={() => goToNavigation('Login')}>
+                      onPress={() => logoutHandler()}>
                       <Ionicons
                         name="ios-exit"
                         size={SCREEN_HEIGHT * 0.025}
@@ -92,7 +99,7 @@ function RiderNavigator({navigation}) {
                       <MyText
                         label={'Log out'}
                         title
-                        style={{color: colors.text_normal}}
+                        textStyle={{color: colors.text_normal}}
                       />
                     </TouchableOpacity>
                   </View>

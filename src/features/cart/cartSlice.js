@@ -62,16 +62,6 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartItems = [];
-      AllData?.map((allItems, index) => {
-        // if (allItems.name === data.foodType) {
-          allItems.data.map((menuItem, menuIndex) => {
-            // if (menuItem.name === data.name) {
-              state.menuItems[index].data[menuIndex].quantity = 0;
-              // console.log('check item--->', state.menuItems[index].data[menuIndex].quantity);
-            // }
-          })
-        // }
-      });
       state.amount = 0;
     },
     removeItem: (state, action) => {

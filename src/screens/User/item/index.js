@@ -203,7 +203,7 @@ function Items({route, navigation}) {
                 <TextInput
                   style={styles.quantityInput}
                   onChangeText={onChangeNumber}
-                  value={editMode.toString()}
+                  value={editMode?.toString()}
                   textAlign="center"
                   keyboardType="numeric"
                 />
@@ -254,7 +254,7 @@ function Items({route, navigation}) {
                 'Please let us know if you are alergic to anything or if we need to avoid anything'
               }
               subTitle
-              style={{color: 'gray', width: width * 0.7}}
+              textStyle={{color: 'gray', width: width * 0.7}}
             />
           </View>
           <View

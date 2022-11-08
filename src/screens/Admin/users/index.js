@@ -77,7 +77,7 @@ export default function Users() {
               <MyText
                 label={'Profile'}
                 title
-                style={{color: colors.text_normal}}
+                textStyle={{color: colors.text_normal}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -95,7 +95,7 @@ export default function Users() {
               <MyText
                 label={'Log out'}
                 title
-                style={{color: colors.text_normal}}
+                textStyle={{color: colors.text_normal}}
               />
             </TouchableOpacity>
           </View>
