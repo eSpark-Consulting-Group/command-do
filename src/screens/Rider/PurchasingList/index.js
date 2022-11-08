@@ -173,7 +173,7 @@ export default function PurchasingList({navigation}) {
         renderItem={({item, index}) => (
           <PurchasingOrderCard
             itemName="Chicken Biryani"
-            qty={2}
+            quantity={2}
             totalAmount={3500}
             checked={item.check}
             onCheck={() => {
