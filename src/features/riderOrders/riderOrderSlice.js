@@ -22,13 +22,14 @@ const riderOrderSlice = createSlice({
       let index = state.orders.findIndex(obj => obj.id == action.payload.id);
       state.orders[index].status = 'PAID';
       state.orders[index].paidAmount = action.payload.amount;
-      console.log('Updated Order', state.orders[index]);
+      state.orders[index].riderId = action.payload.riderId;
     },
     revertCollection: (state, action) => {
       console.log('Action', action.payload);
       let index = state.orders.findIndex(obj => obj.id == action.payload);
       state.orders[index].status = 'UNPAID';
-      // console.log(action);
+      state.orders[index].paidAmount = 0;
+      delete state.orders[index].riderId;
     },
   },
 });
