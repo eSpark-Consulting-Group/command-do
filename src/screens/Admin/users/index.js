@@ -22,6 +22,7 @@ import {colors} from '../../../theme';
 import {profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
+import { logout } from '../../../features/userInfo/userInfoSlice';
 
 export default function Users() {
   const navigation = useNavigation();
@@ -52,6 +53,10 @@ export default function Users() {
     setIsModal(!isModal);
   };
 
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
+
   return (
     <View style={styles.container}>
       <CustomizeModal
@@ -72,7 +77,7 @@ export default function Users() {
               <MyText
                 label={'Profile'}
                 title
-                style={{color: colors.text_normal}}
+                textStyle={{color: colors.text_normal}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -80,7 +85,7 @@ export default function Users() {
                 styles.buttonContainer,
                 {borderBottomWidth: SCREEN_HEIGHT * 0},
               ]}
-              onPress={() => goToNavigation('Login')}>
+              onPress={() => logoutHandler()}>
               <Ionicons
                 name="ios-exit"
                 size={SCREEN_HEIGHT * 0.025}
@@ -90,7 +95,7 @@ export default function Users() {
               <MyText
                 label={'Log out'}
                 title
-                style={{color: colors.text_normal}}
+                textStyle={{color: colors.text_normal}}
               />
             </TouchableOpacity>
           </View>
