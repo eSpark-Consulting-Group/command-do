@@ -14,7 +14,6 @@ import {PersistGate} from 'redux-persist/integration/react';
 export default function App() {
   return (
     <>
-      <SafeAreaView style={styles.topSafeArea} />
       <SafeAreaView style={styles.bottomSafeArea}>
         <AppStatusBar
           backgroundColor={colors.primary}
@@ -34,11 +33,8 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  topSafeArea: {
-    flex: 0,
-  },
   bottomSafeArea: {
     flex: 1,
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
   },
 });
