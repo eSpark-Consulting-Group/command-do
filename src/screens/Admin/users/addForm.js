@@ -74,19 +74,21 @@ export default function AddForm() {
   };
 
   const handleRoleCheck = role => {
-    switch (role) {
-      case 'ADMIN':
-        setCheck1(true);
-        return;
-      case 'USER':
-        setCheck2(true);
-        return;
-      case 'RIDER':
-        setCheck3(true);
-        return;
-      default:
-        break;
-    }
+    role.map(item => {
+      switch (item) {
+        case 'ADMIN':
+          setCheck1(true);
+          return;
+        case 'USER':
+          setCheck2(true);
+          return;
+        case 'RIDER':
+          setCheck3(true);
+          return;
+        default:
+          break;
+      }
+    });
   };
 
   if (mode === 'add') {
@@ -167,6 +169,8 @@ export default function AddForm() {
   if (mode === 'edit') {
     return (
       <View style={{flex: 1, backgroundColor: colors.background}}>
+        <OverlayLoader show={userLoader} />
+
         <MyHeader
           title="Edit User"
           leftIcon="arrow-back"
