@@ -14,6 +14,7 @@ import {showMessage} from 'react-native-flash-message';
 
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {
+  MyHeader,
   MyText,
   PurchasingListHeader,
   PurchasingOrderCard,
@@ -365,7 +366,11 @@ export default function PurchasingList({navigation}) {
 
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ffffff'}}>
-      <View
+      <MyHeader
+        title="Purchasing List"
+        titleStyle={{fontFamily: 'Poppins-Bold'}}
+      />
+      {/* <View
         style={{
           width: SCREEN_WIDTH,
           padding: 10,
@@ -386,13 +391,7 @@ export default function PurchasingList({navigation}) {
             color: colors.text_inverse,
           }}
         />
-        <Icon
-          name="search"
-          size={34}
-          color={colors.text_inverse}
-          containerStyle={{alignSelf: 'center'}}
-        />
-      </View>
+      </View> */}
       <PurchasingListHeader
         checked={!check.some(item => item.check == false)}
         onAllCheck={val => {
