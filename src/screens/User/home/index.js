@@ -138,7 +138,7 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Profile'} title style={{color: '#00000080'}} />
+              <MyText label={'Profile'} title textStyle={{color: '#00000080'}} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonContainer}>
               <Icon
@@ -147,7 +147,7 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Setting'} title style={{color: '#00000080'}} />
+              <MyText label={'Setting'} title textStyle={{color: '#00000080'}} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonContainer}
@@ -158,7 +158,7 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Order'} title style={{color: '#00000080'}} />
+              <MyText label={'Order'} title textStyle={{color: '#00000080'}} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.buttonContainer, {borderBottomWidth: height * 0}]}
@@ -169,7 +169,7 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Log out'} title style={{color: '#00000080'}} />
+              <MyText label={'Log out'} title textStyle={{color: '#00000080'}} />
             </TouchableOpacity>
           </View>
         }
@@ -190,8 +190,7 @@ function Home({route, navigation}) {
             </TouchableOpacity>
             <MyText
               label={"What's your order?🍔"}
-              subHeading
-              style={{color: '#000000', fontSize: height * 0.025}}
+              textStyle={{color: '#000000', fontSize: height * 0.024}}
             />
           </View>
           <TouchableOpacity style={{}}>
@@ -284,7 +283,7 @@ function Home({route, navigation}) {
                   reduxData?.cart?.amount > 99 ? '99+' : reduxData?.cart?.amount
                 }
                 subTitle
-                style={{color: '#000'}}
+                textStyle={{color: '#000'}}
               />
             </View>
           )}

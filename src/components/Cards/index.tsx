@@ -16,7 +16,8 @@ const {width, height} = Dimensions.get('window');
 const Cards = props => {
   const {label, data, navigation} = props;
   const cart = useSelector((store: any) => store.cart);
-
+  console.log("cart cart", cart);
+  
   return (
     <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
       {data?.length > 0 &&
