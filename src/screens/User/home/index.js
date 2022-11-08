@@ -32,11 +32,12 @@ const {width, height} = Dimensions.get('window');
 
 function Home({route, navigation}) {
   const childFunc = useRef(null);
+
   const reduxData = useSelector(store => store);
+  const dispatch = useDispatch();
+
   const [isModal, setIsModal] = useState(false);
   const [press, setPress] = useState(false);
-
-  const [allData, setAllData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({
     name: 'All',
     image: null,
@@ -50,15 +51,12 @@ function Home({route, navigation}) {
   );
   const [LoadItems, {data: itemData, refetch: refetchItems}] =
     useLazyQuery(GET_ALL_ITEMS);
+
   const categories = categoriesData?.getAllCategories?.data;
   const items =
     selectedCategory?.id == 0
       ? categoriesWithItemData?.getAllCategories?.data
       : itemData?.getAllItems?.data;
-  if (Platform.OS === 'android') {
-    // UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
-  const dispatch = useDispatch();
 
   useEffect(() => {
     LoadCategories();

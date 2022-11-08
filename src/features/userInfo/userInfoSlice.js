@@ -17,10 +17,13 @@ const userInfoSlice = createSlice({
     createUser: (state, action) => {
       state.userData = action.payload;
     },
+    getAllUsers: (state, action) => {
+      state.userData = action.payload;
+    },
   },
 });
 
-export const {getUserDetails, updateUserDetails, createUser} =
+export const {getUserDetails, updateUserDetails, createUser, getAllUsers} =
   userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

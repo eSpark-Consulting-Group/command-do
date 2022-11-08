@@ -23,3 +23,35 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const GET_ALL_USERS = gql`
+  query Query {
+    getAllUsers {
+      message
+      data {
+        alphabet
+        record {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`;
+
+export const GET_USER_DETAIL = gql`
+  query Query($id: Int) {
+    getUserById(id: $id) {
+      message
+      status
+      error
+      data {
+        firstName
+        lastName
+        email
+        role
+      }
+    }
+  }
+`;
