@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -22,25 +23,30 @@ export default function CurrentOrders({navigation}) {
   const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
   const reduxData = useSelector(store => store);
+  let riderId = reduxData?.userInfo?.userData.id;
   let orders = reduxData.riderOrder.orders;
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      const orders = await GetAllOrders({
-        variables: {
-          createdAt:
-            'Tue Nov 01 2022 18:55:20 GMT+0500 (Pakistan Standard Time)',
-        },
-      });
-      dispatch(getOrders(orders.data.getAllOrders.data));
-    };
+    console.log('Date', new Date().toString());
     fetchOrders()
       // make sure to catch any error
       .catch(console.error);
   }, []);
+
+  const fetchOrders = async () => {
+    const orders = await GetAllOrders({
+      variables: {
+        getOrderInput: {
+          createdAt: '2022-11-06T16:08:34.323Z',
+        },
+      },
+    });
+    dispatch(getOrders(orders.data.getAllOrders.data));
+    console.log('orders.data', orders.data.getAllOrders.data);
+  };
 
   const openOverlay = (val, id) => {
     setShowModal(true);
@@ -55,7 +61,7 @@ export default function CurrentOrders({navigation}) {
 
   const onCollection = amount => {
     console.log('Amount', amount);
-    dispatch(collectAmouunt({id, amount}));
+    dispatch(collectAmouunt({id, amount, riderId}));
     setShowModal(false);
     setAmount('');
   };
@@ -66,6 +72,9 @@ export default function CurrentOrders({navigation}) {
         data={orders.some(val => val.status == 'UNPAID') ? orders : []}
         style={{width: '100%'}}
         contentContainerStyle={{alignItems: 'center'}}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={fetchOrders} />
+        }
         renderItem={({item}) =>
           item.status == 'UNPAID' && (
             <OrderCard
@@ -81,7 +90,7 @@ export default function CurrentOrders({navigation}) {
           loading ? (
             <View
               style={{
-                height: SCREEN_HEIGHT * 0.7,
+                height: SCREEN_HEIGHT * 0.6,
                 justifyContent: 'center',
               }}>
               <ActivityIndicator size={'large'} color={colors.primary} />

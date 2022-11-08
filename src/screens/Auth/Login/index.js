@@ -54,7 +54,7 @@ const Login = ({navigation}) => {
       const userData = await LoginUser({
         variables: {
           email: 'wirad@esparkconsultants.com',
-          password: 'D^nx)z(nR99g8',
+          password: '123456789',
           fcmToken: 'send fcm token here',
         },
       });
@@ -116,7 +116,7 @@ const Login = ({navigation}) => {
           style={styles.loginButton}
           onPress={() => handleNavigate(check1, check2, check3)}>
           {userLoader ? (
-            <ActivityIndicator size={'large'} color="white" />
+            <ActivityIndicator size={30} color="white" />
           ) : (
             <Text
               style={{
