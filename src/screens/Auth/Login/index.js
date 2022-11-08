@@ -1,5 +1,5 @@
 // BooksScreen.js
-import React, {useState} from 'react';
+import React, {useState, useRef, createRef} from 'react';
 import {
   View,
   Text,
@@ -19,20 +19,24 @@ import MyText from '../../../components/Text';
 import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
+import { showMessage } from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
-  const count = useSelector(store => store);
   const [check1, setCheck1] = useState(true);
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
+
+  const emailRef = useRef("wirad@esparkconsultants.com");
+  const passRef = useRef("123456789");
 
   const [LoginUser, {loading: userLoader}] = useLazyQuery(LOGIN_USER, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
+
   const handleCheck = value => {
     if (value === '1') {
       setCheck1(true);
@@ -49,23 +53,22 @@ const Login = ({navigation}) => {
     }
   };
 
+  console.log("emailRef", emailRef?.current, passRef.current)
   const handleNavigate = async (admin, user, rider) => {
     try {
       const userData = await LoginUser({
         variables: {
-          email: 'wirad@esparkconsultants.com',
-          password: 'D^nx)z(nR99g8',
+          email: emailRef.current,
+          password: passRef.current,
           fcmToken: 'send fcm token here',
         },
       });
-      console.log('user login successfully', userData.loading);
-      dispatch(getUserDetails(userData.data.loginUser));
-      if (admin) {
-        navigation.navigate('Home_Admin');
-      } else if (user) {
-        navigation.navigate('Home', {name: 'rohail'});
-      } else if (rider) {
-        navigation.navigate('Home_Rider');
+      console.log('user login successfully', userData.data);
+      if(userData.data?.loginUser?.status) {
+        dispatch(getUserDetails(userData.data.loginUser));
+        showMessage({message: userData.data?.loginUser?.message, type:"success", icon: 'auto'})
+      }else {
+        showMessage({message: userData.data?.loginUser?.message, type:"danger", icon: 'auto'})
       }
     } catch (error) {
       console.log('login error', error);
@@ -100,17 +103,21 @@ const Login = ({navigation}) => {
           alignItems: 'center',
         }}>
         <TextInput
+          onChangeText={text => {
+            emailRef.current = text
+          }}
           placeholder="Email"
           style={styles.inputStyle}
           placeholderTextColor="gray"
-          value="rohail@esparkconsultants.com"
         />
         <TextInput
+          onChangeText={text => {
+            passRef.current = text
+          }}
           placeholder="Password"
           style={styles.inputStyle}
           secureTextEntry
           placeholderTextColor="gray"
-          value="assdlkjaslkdjsd"
         />
         <TouchableOpacity
           style={styles.loginButton}
