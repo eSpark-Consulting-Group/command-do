@@ -19,10 +19,9 @@ import {ROLES} from '../constants';
 const Stack = createStackNavigator();
 function MainStackNavigator() {
   const userData = useSelector(store => store?.userInfo?.userData);
-  const initialRouteName = ROLES[userData?.role] || 'Login';
-
+  const initialRouteName = ROLES[userData?.selected] || 'Login';
   return (
-    <NavigationContainer theme={{colors: {background: '#fff'}}}>
+    <NavigationContainer>
       <Stack.Navigator
         initialRouteName={initialRouteName}
         screenOptions={{
@@ -32,13 +31,13 @@ function MainStackNavigator() {
           <Stack.Screen name="Login" component={Login} />
         ) : (
           <>
-            {userData?.role == 'USER' && (
+            {userData?.selected == 'USER' && (
               <Stack.Screen name="Home" component={Home} />
             )}
-            {userData?.role == 'RIDER' && (
+            {userData?.selected == 'RIDER' && (
               <Stack.Screen name="Home_Rider" component={RiderNavigator} />
             )}
-            {userData?.role == 'ADMIN' && (
+            {userData?.selected == 'ADMIN' && (
               <Stack.Screen name="Home_Admin" component={AdminNavigator} />
             )}
             <Stack.Screen name="Item" component={Items} />
