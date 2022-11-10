@@ -44,23 +44,23 @@ export default function OrderDetails() {
           </View>
           <FlatList
             data={[
-              {item: 'Chicken Biryani', qty: '3'},
-              {item: 'Sada Biryani', qty: '2'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Salad', qty: '1'},
+              {item: 'Chicken Biryani', quantity: '3'},
+              {item: 'Sada Biryani', quantity: '2'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Salad', quantity: '1'},
             ]}
             renderItem={({item, index}) => (
               <View style={styles.listContent}>
@@ -72,7 +72,7 @@ export default function OrderDetails() {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <MyText label={`x ${item.qty}`} size={18} />
+                  <MyText label={`x ${item.quantity}`} size={18} />
                 </View>
               </View>
             )}
@@ -164,9 +164,9 @@ export default function OrderDetails() {
           </View>
           <FlatList
             data={[
-              {item: 'Bhatti Naan', qty: '3'},
-              {item: 'Salad', qty: '1'},
-              {item: 'Pepsi (200ml)', qty: '1'},
+              {item: 'Bhatti Naan', quantity: '3'},
+              {item: 'Salad', quantity: '1'},
+              {item: 'Pepsi (200ml)', quantity: '1'},
             ]}
             renderItem={({item, index}) => (
               <View style={styles.listContent}>
@@ -178,7 +178,7 @@ export default function OrderDetails() {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <MyText label={`x ${item.qty}`} size={18} />
+                  <MyText label={`x ${item.quantity}`} size={18} />
                 </View>
               </View>
             )}

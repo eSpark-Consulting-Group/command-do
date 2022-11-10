@@ -12,6 +12,9 @@ import {
   MyCard,
 } from '../../../components';
 import {colors} from '../../../theme';
+import {handleCountReducer} from '../../../reducers/userReducer';
+import {initialState} from '../../../app/store';
+import OverlayLoader from '../../../components/OverlayLoader';
 
 let categoryData = [
   {name: 'All', color: true},
@@ -27,6 +30,11 @@ export default function Items() {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [visible, setVisible] = useState(false);
 
+  // const [count, dispatchCount] = useReducer(
+  //   handleCountReducer,
+  //   initialState.count,
+  // );
+
   const handlePress = index => {
     let temp = [...categoryData];
     temp.forEach((item, index2) =>
@@ -37,10 +45,15 @@ export default function Items() {
     forceUpdate();
   };
 
+  // const handleIncreament = () => {
+  //   dispatchCount({type: 'increment'});
+  // };
+
   return (
     <View style={styles.container}>
+      <OverlayLoader show={false} />
       <MyHeader
-        title="All Items"
+        title={'All Items'}
         icon="search"
         onPressRight={() => navigation.navigate('SearchItem')}
       />
