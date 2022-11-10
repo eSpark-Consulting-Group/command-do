@@ -30,6 +30,8 @@ export default function OrderHistoryCard({
   onCollect,
   onRevert,
   paid,
+  paidAmount,
+  remainingAmount,
 }: {
   name: string;
   amount: number;
@@ -37,6 +39,8 @@ export default function OrderHistoryCard({
   onCollect: () => void;
   onRevert: () => void;
   paid: string;
+  paidAmount: number;
+  remainingAmount: number;
 }) {
   return (
     <View style={styles.cardContainer}>
@@ -47,22 +51,20 @@ export default function OrderHistoryCard({
           borderBottomWidth: 1,
         }}>
         <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
-        <TouchableOpacity
-          onPress={paid == 'UNPAID' ? onCollect : onRevert}
-          disabled={paid == 'UNPAID' ? false : true}
+        <View
           style={{
             ...styles.cardDataContainer2,
             borderRadius: 5,
-            backgroundColor: paid == 'UNPAID' ? colors.primary : '#e30202',
+            backgroundColor: remainingAmount < 1 ? '#e30202' : colors.primary,
             elevation: 5,
             paddingHorizontal: 3,
             paddingVertical: 1,
           }}>
           <MyText
-            label={paid == 'UNPAID' ? 'Receive' : 'Received'}
+            label={remainingAmount < 1 ? 'Not Received' : 'Received'}
             textStyle={{...styles.cardDataText, color: '#fff'}}
           />
-        </TouchableOpacity>
+        </View>
       </View>
       <View style={{borderBottomWidth: 1, padding: 5}}>
         <View style={{...styles.cardInnerContainer, marginBottom: 4}}>
@@ -132,7 +134,7 @@ export default function OrderHistoryCard({
           textStyle={{fontFamily: 'Poppins-Bold'}}
         />
         <MyText
-          label={'Rs. ' + amount}
+          label={'Rs. ' + paidAmount}
           size={'title'}
           textStyle={{
             fontFamily: 'Poppins-Bold',
