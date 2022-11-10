@@ -25,7 +25,7 @@ function Items({route, navigation}) {
   const childFunc = React.useRef(null);
   const qtyWarn = React.useRef(null);
   const count = useSelector(store => store);
-  const [getData, setGetData] = useState(getRouteData.item);
+  const [getData, setGetData] = useState(getRouteData?.item);
   const [editData, setEditData] = useState([]);
   const [editMode, setEditMode] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -46,7 +46,7 @@ function Items({route, navigation}) {
     var data = [];
     // console.log(count?.cart, 'count');
     // const checkCountData =
-    data = count?.cart?.cartItems.filter(item => item?.name === getData.name);
+    data = count?.cart?.cartItems.filter(item => item?.name === getData?.name);
     setEditData(data);
     setEditMode(data.length != 0 ? data[0]?.quantity : 0);
     setAnimateToNumber(data.length != 0 ? data[0]?.quantity : 0);
@@ -174,7 +174,7 @@ function Items({route, navigation}) {
       <View style={styles.mainContainer}>
         <View style={styles.itemImageContainer}>
           <ImageBackground
-            source={{uri: getData.image}}
+            source={{uri: getData?.image}}
             style={styles.imageBackground}>
             <TouchableOpacity
               style={styles?.itemImageBackIcon}
@@ -190,7 +190,7 @@ function Items({route, navigation}) {
         <View style={styles.itemDetailContainer}>
           <View style={styles.subHeadingContainer}>
             <MyText
-              label={getData.name}
+              label={getData?.name}
               textStyle={{fontSize: height * 0.03}}
             />
             {(editData?.length == 0 ? animateToNumber != 0 : editMode != 0) ? (
@@ -239,7 +239,7 @@ function Items({route, navigation}) {
           <View style={{width: '100%', marginTop: height * 0.02}}>
             <MyText label={'Amount'} textStyle={{fontSize: height * 0.025}} />
             <MyText
-              label={getData.price}
+              label={getData?.price}
               textStyle={{fontSize: height * 0.025}}
             />
           </View>
