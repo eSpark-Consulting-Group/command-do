@@ -22,9 +22,10 @@ import {colors} from '../../../../theme';
 export default function CurrentOrders({navigation}) {
   const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
-  const reduxData = useSelector(store => store);
-  let riderId = reduxData?.userInfo?.userData.id;
-  let orders = reduxData.riderOrder.orders;
+  const riderOrder = useSelector(store => store.riderOrder);
+  const userData = useSelector(store => store.userInfo?.userData);
+  let riderId = userData?.id;
+  let orders = riderOrder?.orders;
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);

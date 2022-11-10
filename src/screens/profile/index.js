@@ -10,13 +10,13 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {useMutation} from '@apollo/client';
 
 import {MyText, CustomizeModal} from '../../components';
 import {updateProfile} from '../../features/profile/profileSlice';
 import styles from './styles';
 import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
 import {UPDATE_USER} from '../../graphQL/mutation/user.mutation';
-import {useMutation} from '@apollo/client';
 
 const {width, height} = Dimensions.get('window');
 
@@ -47,16 +47,6 @@ function Profile({route, navigation}) {
 
   const [UpdateProfile] = useMutation(UPDATE_USER);
 
-  // useEffect(() => {
-  //   // console.log("timer--->",timer);
-  //   const profileUpdate = [...getData];
-  //   profileUpdate[0].value = reduxData?.profile?.name;
-  //   profileUpdate[1].value = reduxData?.profile?.email;
-  //   profileUpdate[2].value = reduxData?.profile?.shift;
-  //   profileUpdate[3].value = reduxData?.profile?.phone;
-  //   setGetData(profileUpdate);
-  // }, [reduxData?.profile]);
-
   const editModeon = () => {
     setEditMode(true);
   };
@@ -78,20 +68,9 @@ function Profile({route, navigation}) {
     });
     const updatedData = updateUser.data.updateProfile.data;
     dispatch(updateUserDetails(updatedData));
-
-    // const profileUpdate = [...getData];
-    // const profileChangeData = {
-    //   name: profileUpdate[0].value,
-    //   shift: profileUpdate[2].value,
-    //   phone: profileUpdate[3].value,
-    // };
-    // dispatch(updateProfile(profileChangeData));
-    // setIndex(5)`
   };
 
   const onChangeNumber = (value, index) => {
-    // console.log('value---->', value);
-
     var changeData = [...getData];
     changeData[index].value = value;
     setGetData(changeData);
@@ -134,7 +113,7 @@ function Profile({route, navigation}) {
               <MyText
                 label={'Choose File'}
                 title
-                style={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{color: '#fff', marginLeft: height * 0.01}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -144,7 +123,7 @@ function Profile({route, navigation}) {
               <MyText
                 label={'Launch Camera'}
                 title
-                style={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{color: '#fff', marginLeft: height * 0.01}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -154,7 +133,7 @@ function Profile({route, navigation}) {
               <MyText
                 label={'Choose in gallery'}
                 title
-                style={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{color: '#fff', marginLeft: height * 0.01}}
               />
             </TouchableOpacity>
           </View>
@@ -202,7 +181,7 @@ function Profile({route, navigation}) {
         {getData &&
           getData.map((item, index) => (
             <View key={index} style={styles.profileFormAlign}>
-              <MyText label={item.name} subTitle style={{color: '#00000060'}} />
+              <MyText label={item.name} subTitle textStyle={{color: '#00000060'}} />
               {editMode && item.name != 'Email' ? (
                 <TextInput
                   style={styles.profileFormMobileNumber}
@@ -217,7 +196,7 @@ function Profile({route, navigation}) {
                 <MyText
                   label={item.value}
                   title
-                  style={{color: '#11a79c', marginVertical: height * 0.015}}
+                  textStyle={{color: '#11a79c', marginVertical: height * 0.015}}
                 />
               )}
             </View>

@@ -24,7 +24,7 @@ export const AllData = [
         image: Zinger,
         name: 'Zinger Burger',
         desc: 'Fillet burger with a spicy crunch, veggies, special zinger sauce & served between fresh round bun',
-        qty: 0,
+        quantity: 0,
         foodType: 'FastFood',
       },
       {
@@ -32,7 +32,7 @@ export const AllData = [
         image: ClubSandwich,
         name: 'Club Sandwich',
         desc: 'BBQ chicken boti, mayo & creamy sauce',
-        qty: 0,
+        quantity: 0,
         foodType: 'FastFood',
       },
     ],
@@ -45,7 +45,7 @@ export const AllData = [
         image: BiryaniWP,
         name: 'Biryani',
         desc: 'Fragrant, aromatic and flavorful rice, topped with juicy chicken',
-        qty: 0,
+        quantity: 0,
         foodType: 'Biryani',
       },
       {
@@ -53,7 +53,7 @@ export const AllData = [
         image: Pulao,
         name: 'Pulao',
         desc: 'Delicious and Frangmantic Aroma, with Tasty Traditional Rice and dont forget the meat',
-        qty: 0,
+        quantity: 0,
         foodType: 'Biryani',
       },
     ],
@@ -66,7 +66,7 @@ export const AllData = [
         image: DalChanaFry,
         name: 'Dal Chana Fry',
         desc: 'Traditional cuisine in the various parts of pakistan, eaten with pleasure',
-        qty: 0,
+        quantity: 0,
         foodType: 'Salan',
       },
       {
@@ -74,7 +74,7 @@ export const AllData = [
         image: DalMashFry,
         name: 'Dal Mash Fry',
         desc: 'Traditional cuisine in the various parts of pakistan, eaten with pleasure',
-        qty: 0,
+        quantity: 0,
         foodType: 'Salan',
       },
     ],
@@ -87,7 +87,7 @@ export const AllData = [
         image: Chapati,
         name: 'Chapati',
         desc: 'Flat and Round at the same time, cheap too.',
-        qty: 0,
+        quantity: 0,
         foodType: 'Roties',
       },
       {
@@ -95,7 +95,7 @@ export const AllData = [
         image: TandorRoti,
         name: 'Tandor Roti',
         desc: 'Moist and Steamy, Delicious with Salan Foods.',
-        qty: 0,
+        quantity: 0,
         foodType: 'Roties',
       },
     ],
@@ -108,7 +108,7 @@ export const AllData = [
         image: LayMasala,
         name: 'Lay Masala',
         desc: 'Crisp and flavorful, Healthy not so much (Masala Flavour)',
-        qty: 0,
+        quantity: 0,
         foodType: 'Snacks',
       },
       {
@@ -116,7 +116,7 @@ export const AllData = [
         image: LaysCheese10,
         name: 'Lays Cheese 10',
         desc: 'Crisp and flavorful, Healthy not so much (Cheese Flavour)',
-        qty: 0,
+        quantity: 0,
         foodType: 'Snacks',
       },
       {
@@ -124,7 +124,7 @@ export const AllData = [
         image: LaysCheese30,
         name: 'Lays Cheese 30',
         desc: 'Crisp and flavorful, Healthy not so much (Cheese Flavour)',
-        qty: 0,
+        quantity: 0,
         foodType: 'Snacks',
       },
     ],
@@ -137,7 +137,7 @@ export const AllData = [
         image: SevenUp,
         name: '7up 345ml',
         desc: 'Refreshing and cool drink, perfect counter for extereme hot days',
-        qty: 0,
+        quantity: 0,
         foodType: 'Beverages',
       },
       {
@@ -145,7 +145,7 @@ export const AllData = [
         image: Nestle,
         name: 'Nestle Apple Nectar 200 ML',
         desc: 'Pleasant Juice Drink, Calm the nerves & senses',
-        qty: 0,
+        quantity: 0,
         foodType: 'Beverages',
       },
     ],
@@ -168,11 +168,11 @@ export let orders = [
     orders: [
       {
         item: 'Chicken Biryani',
-        qty: 2,
+        quantity: 2,
       },
       {
         item: 'Salad',
-        qty: 1,
+        quantity: 1,
       },
     ],
     paid: false,
@@ -184,11 +184,11 @@ export let orders = [
     orders: [
       {
         item: 'Chicken Biryani',
-        qty: 2,
+        quantity: 2,
       },
       {
         item: 'Egg Burger',
-        qty: 2,
+        quantity: 2,
       },
     ],
     paid: false,
@@ -200,11 +200,11 @@ export let orders = [
     orders: [
       {
         item: 'Salad',
-        qty: 1,
+        quantity: 1,
       },
       {
         item: 'Raita',
-        qty: 1,
+        quantity: 1,
       },
     ],
     paid: false,
@@ -216,11 +216,11 @@ export let orders = [
     orders: [
       {
         item: 'Kebab',
-        qty: 4,
+        quantity: 4,
       },
       {
         item: 'Chapati',
-        qty: 4,
+        quantity: 4,
       },
     ],
     paid: false,
@@ -232,7 +232,7 @@ export let orders = [
     orders: [
       {
         item: 'Sadi biryani',
-        qty: 1,
+        quantity: 1,
       },
     ],
     paid: true,
