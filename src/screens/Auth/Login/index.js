@@ -1,5 +1,5 @@
 // BooksScreen.js
-import React, {useState} from 'react';
+import React, {useState, useRef, createRef} from 'react';
 import {
   View,
   Text,
@@ -19,53 +19,55 @@ import MyText from '../../../components/Text';
 import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
-  const count = useSelector(store => store);
-  const [check1, setCheck1] = useState(true);
-  const [check2, setCheck2] = useState(false);
-  const [check3, setCheck3] = useState(false);
+  const [selectedRole, setselectedRole] = useState('ADMIN');
+
+  const emailRef = useRef('mraza@esparkconsultants.com');
+  const passRef = useRef('123456789');
 
   const [LoginUser, {loading: userLoader}] = useLazyQuery(LOGIN_USER, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
-  const handleCheck = value => {
-    if (value === '1') {
-      setCheck1(true);
-      setCheck2(false);
-      setCheck3(false);
-    } else if (value === '2') {
-      setCheck1(false);
-      setCheck2(true);
-      setCheck3(false);
-    } else if (value === '3') {
-      setCheck1(false);
-      setCheck2(false);
-      setCheck3(true);
-    }
-  };
 
-  const handleNavigate = async (admin, user, rider) => {
+  console.log('emailRef', emailRef?.current, passRef.current);
+  const handleNavigate = async () => {
     try {
       const userData = await LoginUser({
         variables: {
-          email: 'wirad@esparkconsultants.com',
-          password: '123456789',
+          email: emailRef.current,
+          password: passRef.current,
           fcmToken: 'send fcm token here',
         },
       });
-      console.log('user login successfully', userData.loading);
-      dispatch(getUserDetails(userData.data.loginUser));
-      if (admin) {
-        navigation.navigate('Home_Admin');
-      } else if (user) {
-        navigation.navigate('Home', {name: 'rohail'});
-      } else if (rider) {
-        navigation.navigate('Home_Rider');
+      const obj = {...userData.data.loginUser.data};
+      if (userData.data?.loginUser?.status) {
+        if (userData.data?.loginUser?.data?.role?.includes(selectedRole)) {
+          obj.selected = selectedRole;
+          dispatch(getUserDetails(obj));
+          showMessage({
+            message: userData.data?.loginUser?.message,
+            type: 'success',
+            icon: 'auto',
+          });
+        } else {
+          showMessage({
+            message: 'Email or Password is incorrect or you select wrong role!',
+            type: 'danger',
+            icon: 'auto',
+          });
+        }
+      } else {
+        showMessage({
+          message: userData.data?.loginUser?.message,
+          type: 'danger',
+          icon: 'auto',
+        });
       }
     } catch (error) {
       console.log('login error', error);
@@ -100,21 +102,25 @@ const Login = ({navigation}) => {
           alignItems: 'center',
         }}>
         <TextInput
+          onChangeText={text => {
+            emailRef.current = text;
+          }}
           placeholder="Email"
           style={styles.inputStyle}
           placeholderTextColor="gray"
-          value="rohail@esparkconsultants.com"
         />
         <TextInput
+          onChangeText={text => {
+            passRef.current = text;
+          }}
           placeholder="Password"
           style={styles.inputStyle}
           secureTextEntry
           placeholderTextColor="gray"
-          value="assdlkjaslkdjsd"
         />
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => handleNavigate(check1, check2, check3)}>
+          onPress={() => handleNavigate()}>
           {userLoader ? (
             <ActivityIndicator size={30} color="white" />
           ) : (
@@ -156,8 +162,8 @@ const Login = ({navigation}) => {
             }
             textStyle={{fontSize: 12, marginLeft: 0, marginRight: 5}}
             containerStyle={{padding: 0, alignSelf: 'center'}}
-            checked={check1}
-            onPress={() => handleCheck('1')}
+            checked={selectedRole == 'ADMIN'}
+            onPress={() => setselectedRole('ADMIN')}
           />
           <CheckBox
             containerStyle={{
@@ -189,8 +195,8 @@ const Login = ({navigation}) => {
               marginRight: 5,
             }}
             title="User"
-            checked={check2}
-            onPress={() => handleCheck('2')}
+            checked={selectedRole == 'USER'}
+            onPress={() => setselectedRole('USER')}
           />
           <CheckBox
             title="Rider"
@@ -214,8 +220,8 @@ const Login = ({navigation}) => {
             }
             textStyle={{fontSize: 12, marginLeft: 0, marginRight: 5}}
             containerStyle={{padding: 0, alignSelf: 'center'}}
-            checked={check3}
-            onPress={() => handleCheck('3')}
+            checked={selectedRole == 'RIDER'}
+            onPress={() => setselectedRole('RIDER')}
           />
         </View>
       </View>

@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  userData: {},
-  orders: {},
+  userData: null,
+  orders: null,
 };
 
 const userInfoSlice = createSlice({
@@ -10,7 +10,7 @@ const userInfoSlice = createSlice({
   initialState,
   reducers: {
     getUserDetails: (state, action) => {
-      state.userData = action.payload.data;
+      state.userData = action.payload;
     },
     updateUserDetails: (state, action) => {
       state.userData = action.payload;
@@ -19,10 +19,13 @@ const userInfoSlice = createSlice({
       console.log('Order History', action.payload);
       state.orders = action.payload;
     },
+    logout: (state, action) => {
+      state.userData = null;
+    },
   },
 });
 
-export const {getUserDetails, updateUserDetails, getOrderHistory} =
+export const {getUserDetails, updateUserDetails, getOrderHistory, logout} =
   userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

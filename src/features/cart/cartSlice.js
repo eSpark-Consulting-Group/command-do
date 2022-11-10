@@ -22,19 +22,19 @@ const cartSlice = createSlice({
       if (sameItem.length != 0) {
         state.cartItems.map((item, index) => {
           if (item.name === data.name) {
-            if (data.qty == 0) {
+            if (data.quantity == 0) {
               state.cartItems.splice(index, 1)
-              // console.log(data.qty, '====< data.qty');
+              // console.log(data.quantity, '====< data.quantity');
             } else {
-              state.cartItems[index].qty = data.qty;
+              state.cartItems[index].quantity = data.quantity;
             }
           }
           AllData?.map((allItems, index) => {
             if (allItems.name === data.foodType) {
               allItems.data.map((menuItem, menuIndex) => {
                 if (menuItem.name === data.name) {
-                  state.menuItems[index].data[menuIndex].qty = data.qty;
-                  // console.log('check item--->', state.menuItems[index].data[menuIndex].qty);
+                  state.menuItems[index].data[menuIndex].quantity = data.quantity;
+                  // console.log('check item--->', state.menuItems[index].data[menuIndex].quantity);
                 }
               })
               // console.log('allItems===>', allItems);
@@ -48,8 +48,8 @@ const cartSlice = createSlice({
           if (allItems.name === data.foodType) {
             allItems.data.map((menuItem, menuIndex) => {
               if (menuItem.name === data.name) {
-                state.menuItems[index].data[menuIndex].qty = data.qty;
-                // console.log('check item--->', state.menuItems[index].data[menuIndex].qty);
+                state.menuItems[index].data[menuIndex].quantity = data.quantity;
+                // console.log('check item--->', state.menuItems[index].data[menuIndex].quantity);
               }
             })
           }
@@ -62,16 +62,6 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartItems = [];
-      AllData?.map((allItems, index) => {
-        // if (allItems.name === data.foodType) {
-          allItems.data.map((menuItem, menuIndex) => {
-            // if (menuItem.name === data.name) {
-              state.menuItems[index].data[menuIndex].qty = 0;
-              // console.log('check item--->', state.menuItems[index].data[menuIndex].qty);
-            // }
-          })
-        // }
-      });
       state.amount = 0;
     },
     removeItem: (state, action) => {
@@ -85,7 +75,7 @@ const cartSlice = createSlice({
       var makeTotal = 0;
       if (state?.cartItems) {
         state?.cartItems.map((item, index) => {
-          makeTotal = makeTotal + Number(item.qty);
+          makeTotal = makeTotal + Number(item.quantity);
         })
         state.amount = makeTotal;
       }
