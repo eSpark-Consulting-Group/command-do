@@ -19,7 +19,7 @@ import MyText from '../../../components/Text';
 import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
-import { showMessage } from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -27,16 +27,15 @@ const Login = ({navigation}) => {
   const dispatch = useDispatch();
   const [selectedRole, setselectedRole] = useState('ADMIN');
 
-  const emailRef = useRef("mraza@esparkconsultants.com");
-  const passRef = useRef("123456789");
+  const emailRef = useRef('mraza@esparkconsultants.com');
+  const passRef = useRef('123456789');
 
   const [LoginUser, {loading: userLoader}] = useLazyQuery(LOGIN_USER, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
 
-
-  console.log("emailRef", emailRef?.current, passRef.current)
+  console.log('emailRef', emailRef?.current, passRef.current);
   const handleNavigate = async () => {
     try {
       const userData = await LoginUser({
@@ -46,17 +45,29 @@ const Login = ({navigation}) => {
           fcmToken: 'send fcm token here',
         },
       });
-      const obj = {...userData.data.loginUser.data}
-      if(userData.data?.loginUser?.status) {
-        if(userData.data?.loginUser?.data?.role?.includes(selectedRole)) {
-          obj.selected = selectedRole
+      const obj = {...userData.data.loginUser.data};
+      if (userData.data?.loginUser?.status) {
+        if (userData.data?.loginUser?.data?.role?.includes(selectedRole)) {
+          obj.selected = selectedRole;
           dispatch(getUserDetails(obj));
-          showMessage({message: userData.data?.loginUser?.message, type:"success", icon: 'auto'})
-        }else {
-          showMessage({message: 'Email or Password is incorrect or you select wrong role!', type:"danger", icon: 'auto'})
+          showMessage({
+            message: userData.data?.loginUser?.message,
+            type: 'success',
+            icon: 'auto',
+          });
+        } else {
+          showMessage({
+            message: 'Email or Password is incorrect or you select wrong role!',
+            type: 'danger',
+            icon: 'auto',
+          });
         }
-      }else {
-        showMessage({message: userData.data?.loginUser?.message, type:"danger", icon: 'auto'})
+      } else {
+        showMessage({
+          message: userData.data?.loginUser?.message,
+          type: 'danger',
+          icon: 'auto',
+        });
       }
     } catch (error) {
       console.log('login error', error);
@@ -92,7 +103,7 @@ const Login = ({navigation}) => {
         }}>
         <TextInput
           onChangeText={text => {
-            emailRef.current = text
+            emailRef.current = text;
           }}
           placeholder="Email"
           style={styles.inputStyle}
@@ -100,7 +111,7 @@ const Login = ({navigation}) => {
         />
         <TextInput
           onChangeText={text => {
-            passRef.current = text
+            passRef.current = text;
           }}
           placeholder="Password"
           style={styles.inputStyle}
@@ -111,7 +122,7 @@ const Login = ({navigation}) => {
           style={styles.loginButton}
           onPress={() => handleNavigate()}>
           {userLoader ? (
-            <ActivityIndicator size={'large'} color="white" />
+            <ActivityIndicator size={30} color="white" />
           ) : (
             <Text
               style={{
