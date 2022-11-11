@@ -1,36 +1,20 @@
 import {gql} from '@apollo/client';
 
 export const CREATE_USER = gql`
-  mutation CreateUser(
-    $email: String!
-    $role: ROLES!
-    $fcmToken: String
+  mutation Mutation(
     $firstName: String!
     $lastName: String!
+    $email: String!
+    $role: [ROLES!]!
   ) {
     createUser(
-      email: $email
-      role: $role
-      fcmToken: $fcmToken
       firstName: $firstName
       lastName: $lastName
+      email: $email
+      role: $role
     ) {
-      status
       message
-      data {
-        id
-        email
-        firstName
-        userName
-        lastName
-        avatar
-        dob
-        role
-        phoneNumber
-        country
-        city
-        createdAt
-      }
+      status
     }
   }
 `;
@@ -75,6 +59,35 @@ export const UPDATE_USER = gql`
         createdAt
         updatedAt
       }
+    }
+  }
+`;
+
+export const EDIT_USER = gql`
+  mutation Mutation(
+    $updateProfileId: Int!
+    $role: [ROLES!]
+    $firstName: String
+    $lastName: String
+  ) {
+    updateProfile(
+      id: $updateProfileId
+      role: $role
+      firstName: $firstName
+      lastName: $lastName
+    ) {
+      error
+      message
+      status
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation Mutation($deleteUserId: Int!) {
+    deleteUser(id: $deleteUserId) {
+      message
+      status
     }
   }
 `;
