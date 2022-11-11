@@ -34,7 +34,10 @@ const {width, height} = Dimensions.get('window');
 
 function Home({route, navigation}) {
   const childFunc = useRef(null);
+
   const reduxData = useSelector(store => store);
+  const dispatch = useDispatch();
+
   const [isModal, setIsModal] = useState(false);
   const [press, setPress] = useState(false);
   const [allData, setAllData] = useState([]);
@@ -72,7 +75,6 @@ function Home({route, navigation}) {
   if (Platform.OS === 'android') {
     // UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-  const dispatch = useDispatch();
 
   useEffect(() => {
     LoadCategories();
@@ -261,7 +263,9 @@ function Home({route, navigation}) {
                     key={index}
                     style={{
                       backgroundColor:
-                        selectedCategory?.id == item?.id ? colors.primary : colors.background,
+                        selectedCategory?.id == item?.id
+                          ? colors.primary
+                          : colors.background,
                       elevation:
                         selectedCategory?.id == item?.id ? height * 0.003 : 0,
                       paddingHorizontal: item.logo
