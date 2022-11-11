@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -11,16 +11,16 @@ import {
   UIManager,
   Platform,
 } from 'react-native';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {MyText, DropDownAlert} from '../../../components';
-import {addItem, increase} from '../../../features/cart/cartSlice';
-import {styles} from './styles';
+import { MyText, DropDownAlert } from '../../../components';
+import { addItem, increase } from '../../../features/cart/cartSlice';
+import { styles } from './styles';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-function Items({route, navigation}) {
+function Items({ route, navigation }) {
   const getRouteData = route.params;
   const childFunc = React.useRef(null);
   const qtyWarn = React.useRef(null);
@@ -98,7 +98,7 @@ function Items({route, navigation}) {
 
   const addToCart = value => {
     // console.log('value---->', value);
-    var changeData = {...getData};
+    var changeData = { ...getData };
     changeData.quantity = value;
     setGetData(changeData);
   };
