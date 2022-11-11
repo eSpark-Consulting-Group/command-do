@@ -23,3 +23,28 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const CHANGE_PASS = gql`
+  mutation ChangePassword(
+    $currentPassword: String!
+    $newPassword: String!
+    $changePasswordId: Int!
+  ) {
+    changePassword(
+      currentPassword: $currentPassword
+      newPassword: $newPassword
+      id: $changePasswordId
+    ) {
+      status
+      data {
+        password
+        id
+        email
+        firstName
+        lastName
+        avatar
+      }
+      message
+    }
+  }
+`;
