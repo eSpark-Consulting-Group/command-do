@@ -45,6 +45,9 @@ export default function AddForm() {
   };
 
   if (mode === 'add') {
+    {
+      //* Add Category
+    }
     if (type === 'category') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
@@ -67,6 +70,9 @@ export default function AddForm() {
           />
         </View>
       );
+    }
+    {
+      //* Add Item
     }
     if (type === 'item') {
       return (
@@ -102,6 +108,9 @@ export default function AddForm() {
       );
     }
   }
+  {
+    //* Edit Category
+  }
   if (mode === 'edit') {
     if (type === 'category') {
       return (
@@ -129,6 +138,9 @@ export default function AddForm() {
         </View>
       );
     }
+    {
+      //* Edit Item
+    }
     if (type === 'item') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
@@ -155,7 +167,7 @@ export default function AddForm() {
           </ScrollView>
           <View style={{height: 60}}>
             <BottomButton
-              label="Add An Item"
+              label="Edit Item"
               count={0}
               totalCount={2}
               enabled={false}

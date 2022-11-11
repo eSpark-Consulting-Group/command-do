@@ -12,6 +12,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useLazyQuery} from '@apollo/client';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {
   CustomizeModal,
@@ -52,21 +53,26 @@ export default function Users() {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const [LoadAllUsers, {loading: userLoader}] = useLazyQuery(GET_ALL_USERS, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network',
-  });
+  const [LoadAllUsers, {loading: userLoader, refetch, error}] = useLazyQuery(
+    GET_ALL_USERS,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-and-network',
+    },
+  );
 
-  const reduxData = useSelector(store => store);
+  // const reduxData = useSelector(store => store);
   const dispatch = useDispatch();
 
   const [isModal, setIsModal] = useState(false);
   const [userList, setUserList] = useState([]);
 
-  useEffect(() => {
-    getUsers();
-    dispatch(initialDataUpdate(profileData));
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getUsers();
+      dispatch(initialDataUpdate(profileData));
+    }, [refetch]),
+  );
 
   const isModalVisible = () => {
     LayoutAnimation.configureNext({
@@ -91,7 +97,7 @@ export default function Users() {
     try {
       const getUsers = await LoadAllUsers();
       console.log('===>>', JSON.stringify(getUsers?.data?.getAllUsers?.data));
-      dispatch(getAllUsers(getUsers?.data?.getAllUsers?.data));
+      // dispatch(getAllUsers(getUsers?.data?.getAllUsers?.data));
       const userData = getUsers?.data?.getAllUsers?.data.reduce((acc, curr) => {
         acc.push({
           title: curr.alphabet,
@@ -100,11 +106,12 @@ export default function Users() {
         return acc;
       }, []);
       setUserList(userData);
-      console.log('reduxData', reduxData?.userInfo?.userData);
+      // console.log('reduxData', reduxData?.userInfo?.userData);
     } catch (e) {
       console.log('error while fetching', e);
     }
   };
+
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -191,7 +198,12 @@ export default function Users() {
         keyExtractor={(item, index) => index}
       />
       <FAB
-        onPress={() => navigation.navigate('Add_Form_User', {mode: 'add'})}
+        onPress={() =>
+          navigation.navigate('Add_Form_User', {
+            mode: 'add',
+            userInfo: {id: null},
+          })
+        }
         icon={{
           name: 'add',
           color: colors.background,
