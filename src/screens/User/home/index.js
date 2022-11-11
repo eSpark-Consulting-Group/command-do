@@ -46,15 +46,24 @@ function Home({route, navigation}) {
   const [
     LoadCategories,
     {data: categoriesData, loading: LoadCategoriesLoading},
-  ] = useLazyQuery(GET_ALL_CATEGORIES);
+  ] = useLazyQuery(GET_ALL_CATEGORIES, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
   const [
     LoadCategoriesWithItem,
     {data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading},
-  ] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS);
+  ] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
   const [
     LoadItems,
     {data: itemData, refetch: refetchItems, loading: LoadItemsLoading},
-  ] = useLazyQuery(GET_ALL_ITEMS);
+  ] = useLazyQuery(GET_ALL_ITEMS, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
   const categories = categoriesData?.getAllCategories?.data;
   const items =
     selectedCategory?.id == 0
@@ -160,7 +169,9 @@ function Home({route, navigation}) {
                 textStyle={{color: '#00000080'}}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => goToNavigation('ChangePassword')}>
               <Icon
                 name="settings-sharp"
                 size={height * 0.025}
@@ -213,7 +224,10 @@ function Home({route, navigation}) {
             />
           </TouchableOpacity>
           <View style={styles.headerCenterComponentStyle}>
-            <TouchableOpacity onPress={() => navigation.navigate('SearchItem')}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('SearchItem', {navigateTo: 'Item'})
+              }>
               <Icon name="search" size={height * 0.03} color="black" />
             </TouchableOpacity>
             <MyText

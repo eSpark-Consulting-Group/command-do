@@ -11,6 +11,7 @@ import {
   Orders,
   OrderHistory,
   SearchItem,
+  ChangePassword,
 } from '../screens';
 import AdminNavigator from './AdminNavigator';
 import RiderNavigator from './RiderNavigator';
@@ -47,6 +48,7 @@ function MainStackNavigator() {
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="OrderHistory" component={OrderHistory} />
             <Stack.Screen name="SearchItem" component={SearchItem} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
           </>
         )}
       </Stack.Navigator>
