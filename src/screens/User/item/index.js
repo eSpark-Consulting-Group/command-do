@@ -156,160 +156,161 @@ function Items({route, navigation}) {
   };
 
   return (
-    <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-      <DropDownAlert
-        childFunc={childFunc}
-        setPress={checkSetPress}
-        message={`Your cart is empty\nPlease add some items in your cart.`}
-        type="info"
-        title="Warning"
-      />
-      <DropDownAlert
-        childFunc={qtyWarn}
-        setPress={checkSetPress}
-        message={'Woah! you have reached the limit!!!'}
-        type="info"
-        title="Warning"
-      />
-      <View style={styles.mainContainer}>
-        <View style={styles.itemImageContainer}>
-          <ImageBackground
-            source={{uri: getData?.image}}
-            style={styles.imageBackground}>
-            <TouchableOpacity
-              style={styles?.itemImageBackIcon}
-              onPress={() => navigation.goBack()}>
-              <Icon
-                name="ios-chevron-back-outline"
-                size={height * 0.03}
-                color="#11a79cc7"
-              />
-            </TouchableOpacity>
-          </ImageBackground>
-        </View>
-        <View style={styles.itemDetailContainer}>
-          <View style={styles.subHeadingContainer}>
-            <MyText
-              label={getData?.name}
-              textStyle={{fontSize: height * 0.03}}
-            />
-            {(editData?.length == 0 ? animateToNumber != 0 : editMode != 0) ? (
-              <View style={styles.numericBtnContainer}>
-                <TouchableOpacity
-                  style={styles.removeNumericButton}
-                  onPress={removeQty}>
-                  <Icon name="remove" size={height * 0.03} color="white" />
-                </TouchableOpacity>
-                <TextInput
-                  style={styles.quantityInput}
-                  onChangeText={onChangeNumber}
-                  value={editMode?.toString()}
-                  textAlign="center"
-                  keyboardType="numeric"
+    <>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <DropDownAlert
+          childFunc={childFunc}
+          setPress={checkSetPress}
+          message={`Your cart is empty\nPlease add some items in your cart.`}
+          type="info"
+          title="Warning"
+        />
+        <DropDownAlert
+          childFunc={qtyWarn}
+          setPress={checkSetPress}
+          message={'Woah! you have reached the limit!!!'}
+          type="info"
+          title="Warning"
+        />
+        <View style={styles.mainContainer}>
+          <View style={styles.itemImageContainer}>
+            <ImageBackground
+              source={{ uri: getData?.image }}
+              style={styles.imageBackground}>
+              <TouchableOpacity
+                style={styles?.itemImageBackIcon}
+                onPress={() => navigation.goBack()}>
+                <Icon
+                  name="ios-chevron-back-outline"
+                  size={height * 0.03}
+                  color="#11a79cc7"
                 />
+              </TouchableOpacity>
+            </ImageBackground>
+          </View>
+          <View style={styles.itemDetailContainer}>
+            <View style={styles.subHeadingContainer}>
+              <MyText
+                label={getData?.name}
+                textStyle={{ fontSize: height * 0.03 }}
+              />
+              {(editData?.length == 0 ? animateToNumber != 0 : editMode != 0) ? (
+                <View style={styles.numericBtnContainer}>
+                  <TouchableOpacity
+                    style={styles.removeNumericButton}
+                    onPress={removeQty}>
+                    <Icon name="remove" size={height * 0.03} color="white" />
+                  </TouchableOpacity>
+                  <TextInput
+                    style={styles.quantityInput}
+                    onChangeText={onChangeNumber}
+                    value={editMode?.toString()}
+                    textAlign="center"
+                    keyboardType="numeric"
+                  />
+                  <TouchableOpacity
+                    style={styles.addNumericButton}
+                    onPress={addQty}>
+                    <Icon name="add" size={height * 0.03} color="white" />
+                  </TouchableOpacity>
+                </View>
+              ) : (
                 <TouchableOpacity
-                  style={styles.addNumericButton}
+                  style={{
+                    borderRadius: height * 1,
+                    backgroundColor: '#11a79c',
+                    elevation: 3,
+                    height: height * 0.05,
+                    width: height * 0.05,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
                   onPress={addQty}>
                   <Icon name="add" size={height * 0.03} color="white" />
                 </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  borderRadius: height * 1,
-                  backgroundColor: '#11a79c',
-                  elevation: 3,
-                  height: height * 0.05,
-                  width: height * 0.05,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={addQty}>
-                <Icon name="add" size={height * 0.03} color="white" />
-              </TouchableOpacity>
-            )}
-          </View>
-          {/* <View style={{width: '100%', marginTop: height * 0.02}}>
-            <MyText
-              label={getData.desc}
-              subTitle
-              style={{color: 'gray', width: width * 0.7}}
-            />
-          </View> */}
-          <View style={{width: '100%', marginTop: height * 0.02}}>
-            <MyText label={'Amount'} textStyle={{fontSize: height * 0.025}} />
-            <MyText
-              label={getData?.price}
-              textStyle={{fontSize: height * 0.025}}
-            />
-          </View>
-          <View
-            style={{
-              width: '100%',
-              marginTop: height * 0.02,
-            }}>
-            <MyText label={'Special Instruction'} title />
-            <MyText
-              label={
-                'Please let us know if you are alergic to anything or if we need to avoid anything'
-              }
-              subTitle
-              textStyle={{color: 'gray', width: width * 0.7}}
-            />
-          </View>
-          <View
-            style={{
-              width: '100%',
-            }}>
-            <TextInput
-              placeholder="e.g no mayo"
-              style={styles.noteStyle}
-              textAlignVertical="top"
-              multiline={true}
-              numberOfLines={8}
-              placeholderTextColor="gray"
-            />
-          </View>
-
-          <View
-            style={{
-              width: '100%',
-              position: 'absolute',
-              bottom: height * 0.0,
-            }}>
-            <TouchableOpacity
-              disabled={count?.cart?.amount == 0 && press}
-              style={styles.cartButtonStyle}
-              onPress={_onSelect}>
-              {count?.cart?.amount != 0 && (
-                <View style={styles.cartCountStyle}>
-                  <MyText
-                    label={
-                      count?.cart?.amount > 99 ? '99+' : count?.cart?.amount
-                    }
-                    subTitle
-                    style={{
-                      color: 'white',
-                    }}
-                  />
-                </View>
               )}
-              <MyText label={'Check You Cart'} title style={{color: 'white'}} />
-              <Icon
-                name="cart-outline"
-                size={height * 0.03}
-                color="#fff"
-                style={{
-                  position: 'absolute',
-                  right: height * 0.01,
-                  transform: [{scaleX: -1}],
-                }}
+            </View>
+            {/* <View style={{width: '100%', marginTop: height * 0.02}}>
+              <MyText
+                label={getData.desc}
+                subTitle
+                style={{color: 'gray', width: width * 0.7}}
               />
-            </TouchableOpacity>
+            </View> */}
+            <View style={{ width: '100%', marginTop: height * 0.02 }}>
+              <MyText label={'Amount'} textStyle={{ fontSize: height * 0.025 }} />
+              <MyText
+                label={getData?.price}
+                textStyle={{ fontSize: height * 0.025 }}
+              />
+            </View>
+            <View
+              style={{
+                width: '100%',
+                marginTop: height * 0.02,
+              }}>
+              <MyText label={'Special Instruction'} title />
+              <MyText
+                label={
+                  'Please let us know if you are alergic to anything or if we need to avoid anything'
+                }
+                subTitle
+                textStyle={{ color: 'gray', width: width * 0.7 }}
+              />
+            </View>
+            <View
+              style={{
+                width: '100%',
+              }}>
+              <TextInput
+                placeholder="e.g no mayo"
+                style={styles.noteStyle}
+                textAlignVertical="top"
+                multiline={true}
+                numberOfLines={8}
+                placeholderTextColor="gray"
+              />
+            </View>
           </View>
         </View>
+      </ScrollView>
+      <View
+        style={{
+          width: '100%',
+          position: 'absolute',
+          bottom: 0,
+        }}>
+        <TouchableOpacity
+          disabled={count?.cart?.amount == 0 && press}
+          style={styles.cartButtonStyle}
+          onPress={_onSelect}>
+          {count?.cart?.amount != 0 && (
+            <View style={styles.cartCountStyle}>
+              <MyText
+                label={
+                  count?.cart?.amount > 99 ? '99+' : count?.cart?.amount
+                }
+                subTitle
+                style={{
+                  color: 'white',
+                }}
+              />
+            </View>
+          )}
+          <MyText label={'Checkout Cart'} title style={{ color: 'white' }} />
+          <Icon
+            name="cart-outline"
+            size={height * 0.03}
+            color="#fff"
+            style={{
+              position: 'absolute',
+              right: height * 0.01,
+              transform: [{ scaleX: -1 }],
+            }}
+          />
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </>
   );
 }
 
