@@ -7,7 +7,7 @@ import {SearchBar, TouchRipple} from '../../../components';
 import {ALL_ITEMS, SEARCH_ITEMS} from '../../../graphQL/query/item.query';
 import {useLazyQuery} from '@apollo/client';
 
-export default function SearchItem() {
+export default function SearchItem({route}) {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [lunchItems, setLunchItems] = useState([]);
@@ -59,7 +59,7 @@ export default function SearchItem() {
             <TouchRipple
               rippleColor="#bdbdbd40"
               onPress={() =>
-                navigation.navigate('Item', {
+                navigation.navigate(route.params.navigateTo, {
                   foodType: item?.name,
                   item: item,
                 })
