@@ -7,6 +7,8 @@ import Login from './Auth/Login';
 import Items from './User/item';
 import Cart from './User/cart';
 import OrderConfirm from './User/orderConfirm';
+import SearchItem from './User/home/SearchItem';
+import ChangePassword from './User/ChangePassword';
 
 import Profile from './profile';
 
@@ -43,4 +45,6 @@ export {
   AddFormUser,
   SearchScreen,
   OrderHistory,
+  SearchItem,
+  ChangePassword,
 };

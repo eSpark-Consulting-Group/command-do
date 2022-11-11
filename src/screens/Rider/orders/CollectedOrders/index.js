@@ -91,7 +91,7 @@ export default function CollectedOrders({navigation}) {
       />
       <TouchableOpacity
         onPress={finishCollection}
-        disabled={!orders.some(val => val.status == 'PAID')}
+        // disabled={!orders.some(val => val.status == 'PAID')}
         style={{
           width: '95%',
           alignItems: 'center',
