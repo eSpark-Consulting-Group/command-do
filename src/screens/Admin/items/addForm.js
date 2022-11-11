@@ -11,6 +11,7 @@ import {
   MySubHeader,
 } from '../../../components';
 import {colors} from '../../../theme';
+import { uploadImage } from '../../../utils/helperFunctions';
 
 export default function AddForm() {
   const navigation = useNavigation();
@@ -151,7 +152,10 @@ export default function AddForm() {
             <MySubHeader title="Edit Item Details" divider />
             <MyInput label="Name" />
             <MyInput label="Price" />
-            <ImageContainer />
+            <ImageContainer onImageChange={(image) => {
+              uploadImage(image)
+              .then(fireUrl => console.log("fireUrl fireUrl", fireUrl))
+            }} />
           </ScrollView>
           <View style={{height: 60}}>
             <BottomButton
