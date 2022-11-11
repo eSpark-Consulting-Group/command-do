@@ -7,7 +7,7 @@ import {
   Image,
   LayoutAnimation,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
@@ -28,8 +28,8 @@ import {
 } from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import styles from './styles';
-import { colors } from '../../../theme';
-import { logout } from '../../../features/userInfo/userInfoSlice';
+import {colors} from '../../../theme';
+import {logout} from '../../../features/userInfo/userInfoSlice';
 const {width, height} = Dimensions.get('window');
 
 function Home({route, navigation}) {
@@ -38,12 +38,28 @@ function Home({route, navigation}) {
   const [isModal, setIsModal] = useState(false);
   const [press, setPress] = useState(false);
   const [allData, setAllData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState({name: "All", image: null, id: 0})
-  const [LoadCategories, {data: categoriesData, loading: LoadCategoriesLoading}] = useLazyQuery(GET_ALL_CATEGORIES)
-  const [LoadCategoriesWithItem, {data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading}] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS)
-  const [LoadItems, {data: itemData, refetch: refetchItems, loading: LoadItemsLoading}] = useLazyQuery(GET_ALL_ITEMS)
-  const categories = categoriesData?.getAllCategories?.data
-  const items = selectedCategory?.id == 0 ? categoriesWithItemData?.getAllCategories?.data : itemData?.getAllItems?.data
+  const [selectedCategory, setSelectedCategory] = useState({
+    name: 'All',
+    image: null,
+    id: 0,
+  });
+  const [
+    LoadCategories,
+    {data: categoriesData, loading: LoadCategoriesLoading},
+  ] = useLazyQuery(GET_ALL_CATEGORIES);
+  const [
+    LoadCategoriesWithItem,
+    {data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading},
+  ] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS);
+  const [
+    LoadItems,
+    {data: itemData, refetch: refetchItems, loading: LoadItemsLoading},
+  ] = useLazyQuery(GET_ALL_ITEMS);
+  const categories = categoriesData?.getAllCategories?.data;
+  const items =
+    selectedCategory?.id == 0
+      ? categoriesWithItemData?.getAllCategories?.data
+      : itemData?.getAllItems?.data;
   if (Platform.OS === 'android') {
     // UIManager.setLayoutAnimationEnabledExperimental(true);
   }
@@ -106,8 +122,8 @@ function Home({route, navigation}) {
   };
 
   const logoutHandler = () => {
-    dispatch(logout())
-  }
+    dispatch(logout());
+  };
   // console.log("loading", LoadItemsLoading, LoadCategoriesLoading, LoadCategoriesWithItemLoading)
   return (
     <View
@@ -138,7 +154,11 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Profile'} title textStyle={{color: '#00000080'}} />
+              <MyText
+                label={'Profile'}
+                title
+                textStyle={{color: '#00000080'}}
+              />
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonContainer}>
               <Icon
@@ -147,7 +167,11 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Setting'} title textStyle={{color: '#00000080'}} />
+              <MyText
+                label={'Change Password'}
+                title
+                textStyle={{color: '#00000080'}}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonContainer}
@@ -169,7 +193,11 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Log out'} title textStyle={{color: '#00000080'}} />
+              <MyText
+                label={'Log out'}
+                title
+                textStyle={{color: '#00000080'}}
+              />
             </TouchableOpacity>
           </View>
         }
@@ -185,7 +213,7 @@ function Home({route, navigation}) {
             />
           </TouchableOpacity>
           <View style={styles.headerCenterComponentStyle}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('SearchItem')}>
               <Icon name="search" size={height * 0.03} color="black" />
             </TouchableOpacity>
             <MyText
@@ -256,21 +284,26 @@ function Home({route, navigation}) {
             </ScrollView>
           )}
         </View>
-        {!(LoadItemsLoading && LoadCategoriesLoading && LoadCategoriesWithItemLoading) ?
-        <View
-          style={{
-            flex: 4,
-          }}>
-          {selectedCategory?.id == 0 ? (
-            <Cards data={items || []} navigation={navigation} />
-          ) : (
-            <IndividualCard data={items || []} navigation={navigation} />
-          )}          
-        </View>
-        :
-        <View style={{flex: 4, top: height/4}}>
-          <ActivityIndicator size={30} color={colors.primary} />
-        </View>}
+        {!(
+          LoadItemsLoading &&
+          LoadCategoriesLoading &&
+          LoadCategoriesWithItemLoading
+        ) ? (
+          <View
+            style={{
+              flex: 4,
+            }}>
+            {selectedCategory?.id == 0 ? (
+              <Cards data={items || []} navigation={navigation} />
+            ) : (
+              <IndividualCard data={items || []} navigation={navigation} />
+            )}
+          </View>
+        ) : (
+          <View style={{flex: 4, top: height / 4}}>
+            <ActivityIndicator size={30} color={colors.primary} />
+          </View>
+        )}
         <TouchableOpacity
           style={styles.cartContainerStyle}
           disabled={reduxData?.cart?.amount == 0 && press}

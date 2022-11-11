@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   modalInner: {
-    height: height * 0.2,
+    height: height * 0.24,
     width: width * 0.3,
     position: 'absolute',
     backgroundColor: '#fff',
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: height * 0.015,
   },
-  headerCenterComponentStyle: {flexDirection: 'row',},
+  headerCenterComponentStyle: {flexDirection: 'row'},
   categoryContainer: {
     flex: 0.5,
     justifyContent: 'space-between',
