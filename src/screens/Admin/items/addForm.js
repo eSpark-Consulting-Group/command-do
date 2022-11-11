@@ -11,6 +11,7 @@ import {
   MySubHeader,
 } from '../../../components';
 import {colors} from '../../../theme';
+import {uploadImage} from '../../../utils/helperFunctions';
 
 export default function AddForm() {
   const navigation = useNavigation();
@@ -182,7 +183,14 @@ export default function AddForm() {
               value={fields.price}
               handleChangeText={text => setFields({...fields, price: text})}
             />
-            <ImageContainer />
+            \
+            <ImageContainer
+              onImageChange={image => {
+                uploadImage(image).then(fireUrl =>
+                  console.log('fireUrl fireUrl', fireUrl),
+                );
+              }}
+            />
           </ScrollView>
           <View style={{height: 60}}>
             <BottomButton

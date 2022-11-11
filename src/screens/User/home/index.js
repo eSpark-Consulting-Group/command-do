@@ -46,28 +46,35 @@ function Home({route, navigation}) {
     image: null,
     id: 0,
   });
-
   const [
     LoadCategories,
     {data: categoriesData, loading: LoadCategoriesLoading},
-  ] = useLazyQuery(GET_ALL_CATEGORIES);
+  ] = useLazyQuery(GET_ALL_CATEGORIES, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
   const [
     LoadCategoriesWithItem,
     {data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading},
-  ] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS);
+  ] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
   const [
     LoadItems,
     {data: itemData, refetch: refetchItems, loading: LoadItemsLoading},
-  ] = useLazyQuery(GET_ALL_ITEMS);
-
+  ] = useLazyQuery(GET_ALL_ITEMS, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
   const categories = categoriesData?.getAllCategories?.data;
   const items =
     selectedCategory?.id == 0
       ? categoriesWithItemData?.getAllCategories?.data
       : itemData?.getAllItems?.data;
-  // if (Platform.OS === 'android') {
-  //   // UIManager.setLayoutAnimationEnabledExperimental(true);
-  // }
+  if (Platform.OS === 'android') {
+    // UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 
   useEffect(() => {
     LoadCategories();
@@ -164,7 +171,9 @@ function Home({route, navigation}) {
                 textStyle={{color: '#00000080'}}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => goToNavigation('ChangePassword')}>
               <Icon
                 name="settings-sharp"
                 size={height * 0.025}
@@ -172,7 +181,7 @@ function Home({route, navigation}) {
                 style={styles.btnIcon}
               />
               <MyText
-                label={'Setting'}
+                label={'Change Password'}
                 title
                 textStyle={{color: '#00000080'}}
               />
@@ -217,7 +226,10 @@ function Home({route, navigation}) {
             />
           </TouchableOpacity>
           <View style={styles.headerCenterComponentStyle}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('SearchItem', {navigateTo: 'Item'})
+              }>
               <Icon name="search" size={height * 0.03} color="black" />
             </TouchableOpacity>
             <MyText
@@ -251,7 +263,9 @@ function Home({route, navigation}) {
                     key={index}
                     style={{
                       backgroundColor:
-                        selectedCategory?.id == item?.id ? '#11a79c' : 'white',
+                        selectedCategory?.id == item?.id
+                          ? colors.primary
+                          : colors.background,
                       elevation:
                         selectedCategory?.id == item?.id ? height * 0.003 : 0,
                       paddingHorizontal: item.logo

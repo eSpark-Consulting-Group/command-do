@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
 import FlashMessage from 'react-native-flash-message';
@@ -10,8 +10,12 @@ import AppStatusBar from './src/components/AppStatusBar';
 import {ApolloProvider} from '@apollo/client';
 import {client} from './src/graphQL';
 import {PersistGate} from 'redux-persist/integration/react';
+import { requestCameraPermission } from './src/utils/helperFunctions';
 
 export default function App() {
+  useEffect(() => {
+    requestCameraPermission()
+  }, [])
   return (
     <>
       <SafeAreaView style={styles.bottomSafeArea}>

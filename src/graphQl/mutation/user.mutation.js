@@ -22,7 +22,7 @@ export const CREATE_USER = gql`
 export const UPDATE_USER = gql`
   mutation UpdateProfile(
     $updateProfileId: Int!
-    $role: ROLES
+    $role: [ROLES!]
     $firstName: String
     $lastName: String
     $avatar: String
