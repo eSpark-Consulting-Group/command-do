@@ -70,94 +70,103 @@ export default function PurchasingList({navigation}) {
       message: 'Order Summary',
       totalAmount: 600,
       data: [
-        // {
-        //   item: {
-        //     name: 'Chicken Biryani',
-        //     id: 1,
-        //   },
-        //   amount: 170,
-        //   quantity: 0,
-        //   itemId: 1,
-        // },
+        {
+          item: {
+            name: 'Chicken Biryani',
+            id: 1,
+          },
+          amount: 170,
+          quantity: 2,
+          itemId: 2,
+        },
         {
           item: {
             name: 'Chicken Pulao',
             id: 2,
           },
           amount: 170,
-          quantity: 1,
-          itemId: 2,
-        },
-        {
-          item: {
-            name: 'Chana Pulao',
-            id: 2,
-          },
-          amount: 100,
-          quantity: 1,
+          quantity: 5,
           itemId: 2,
         },
         // {
         //   item: {
-        //     name: 'Sada Biryani',
-        //     id: 3,
+        //     name: 'Chana Pulao',
+        //     id: 2,
         //   },
-        //   amount: 130,
+        //   amount: 100,
         //   quantity: 0,
-        //   itemId: 3,
+        //   itemId: 2,
         // },
         {
           item: {
-            name: 'Daal Chana Fry',
+            name: 'Sada Biryani',
             id: 3,
           },
-          amount: 120,
-          quantity: 2,
+          amount: 130,
+          quantity: 1,
           itemId: 3,
         },
         {
           item: {
-            name: 'Daal Mash Fry',
+            name: 'Sada Pulao',
             id: 3,
           },
-          amount: 140,
+          amount: 130,
           quantity: 1,
           itemId: 3,
         },
+        // {
+        //   item: {
+        //     name: 'Daal Chana Fry',
+        //     id: 3,
+        //   },
+        //   amount: 120,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
+        // {
+        //   item: {
+        //     name: 'Daal Mash Fry',
+        //     id: 3,
+        //   },
+        //   amount: 140,
+        //   quantity: 1,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Raita',
             id: 3,
           },
           amount: 25,
-          quantity: 4,
+          quantity: 5,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'Dahi',
-            id: 3,
-          },
-          amount: 30,
-          quantity: 1,
-          itemId: 3,
-        },
-        {
-          item: {
-            name: 'Salad',
-            id: 3,
-          },
-          amount: 20,
-          quantity: 1,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Dahi',
+        //     id: 3,
+        //   },
+        //   amount: 30,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
+        // {
+        //   item: {
+        //     name: 'Salad',
+        //     id: 3,
+        //   },
+        //   amount: 20,
+        //   quantity: 1,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Kebab',
             id: 3,
           },
           amount: 40,
-          quantity: 4,
+          quantity: 2,
           itemId: 3,
         },
         {
@@ -166,7 +175,7 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 20,
-          quantity: 5,
+          quantity: 3,
           itemId: 3,
         },
         {
@@ -175,43 +184,52 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 15,
-          quantity: 7,
+          quantity: 2,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'Bhatti Naan',
-            id: 3,
-          },
-          amount: 17,
-          quantity: 4,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Bhatti Naan',
+        //     id: 3,
+        //   },
+        //   amount: 17,
+        //   quantity: 3,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Bhatti Chapati',
             id: 3,
           },
           amount: 17,
-          quantity: 18,
+          quantity: 6,
           itemId: 3,
         },
         {
           item: {
-            name: 'Chocolate Sandwich(Rs. 30 Half roll) ',
+            name: 'French Fries',
             id: 3,
           },
-          amount: 30,
+          amount: 50,
           quantity: 1,
           itemId: 3,
         },
+        // {
+        //   item: {
+        //     name: 'Chocolate Sandwich(Rs. 30 Half roll) ',
+        //     id: 3,
+        //   },
+        //   amount: 30,
+        //   quantity: 2,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Prince biscuit(Rs. 40)',
             id: 3,
           },
           amount: 40,
-          quantity: 4,
+          quantity: 1,
           itemId: 3,
         },
         {
@@ -223,24 +241,24 @@ export default function PurchasingList({navigation}) {
           quantity: 1,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'Lays French(Rs .40)',
-            id: 3,
-          },
-          amount: 40,
-          quantity: 1,
-          itemId: 3,
-        },
-        {
-          item: {
-            name: 'Lays Salt(Rs .40)',
-            id: 3,
-          },
-          amount: 40,
-          quantity: 2,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Lays French(Rs .40)',
+        //     id: 3,
+        //   },
+        //   amount: 40,
+        //   quantity: 1,
+        //   itemId: 3,
+        // },
+        // {
+        //   item: {
+        //     name: 'Lays Salt(Rs .40)',
+        //     id: 3,
+        //   },
+        //   amount: 40,
+        //   quantity: 2,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Wavy bar.b.q(Rs .40)',
@@ -259,15 +277,15 @@ export default function PurchasingList({navigation}) {
           quantity: 1,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'Cheetos(Rs. 30)',
-            id: 3,
-          },
-          amount: 30,
-          quantity: 1,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Cheetos(Rs. 30)',
+        //     id: 3,
+        //   },
+        //   amount: 30,
+        //   quantity: 1,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Slice juice bottle(Rs. 70)',
@@ -277,15 +295,15 @@ export default function PurchasingList({navigation}) {
           quantity: 1,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'Slice mini box(Rs. 40)',
-            id: 3,
-          },
-          amount: 40,
-          quantity: 2,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Slice mini box(Rs. 40)',
+        //     id: 3,
+        //   },
+        //   amount: 40,
+        //   quantity: 2,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Cloud 9 Chocolate(Rs. 10)',
@@ -304,31 +322,40 @@ export default function PurchasingList({navigation}) {
           quantity: 3,
           itemId: 3,
         },
+        // {
+        //   item: {
+        //     name: 'Fanty toffee(Rs. 2)',
+        //     id: 3,
+        //   },
+        //   amount: 2,
+        //   quantity: 6,
+        //   itemId: 3,
+        // },
+        // {
+        //   item: {
+        //     name: 'Mentos(Rs. 100)',
+        //     id: 3,
+        //   },
+        //   amount: 100,
+        //   quantity: 1,
+        //   itemId: 3,
+        // },
+        // {
+        //   item: {
+        //     name: 'Banana Khajoor Shake',
+        //     id: 3,
+        //   },
+        //   amount: 80,
+        //   quantity: 6,
+        //   itemId: 3,
+        // },
         {
           item: {
-            name: 'Fanty toffee(Rs. 2)',
+            name: '7UP 500ml',
             id: 3,
           },
-          amount: 2,
-          quantity: 6,
-          itemId: 3,
-        },
-        {
-          item: {
-            name: 'Mentos(Rs. 100)',
-            id: 3,
-          },
-          amount: 100,
+          amount: 70,
           quantity: 1,
-          itemId: 3,
-        },
-        {
-          item: {
-            name: 'Banana Khajoor Shake',
-            id: 3,
-          },
-          amount: 80,
-          quantity: 3,
           itemId: 3,
         },
       ],

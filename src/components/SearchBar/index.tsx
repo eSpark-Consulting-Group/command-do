@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  ActivityIndicator,
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInputSubmitEditingEventData,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Icon} from '@rneui/themed';
 
 import {SCREEN_WIDTH} from '../../constants';
@@ -15,6 +22,8 @@ export default function SearchBar({
   onPressRight,
   value,
   handleChangeText,
+  onSubmit,
+  Loader,
 }: {
   headerStyle?: ViewStyle;
   icon?: string;
@@ -23,6 +32,8 @@ export default function SearchBar({
   onPressRight?: () => void;
   value?: string;
   handleChangeText?: (text: string) => void;
+  onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
+  Loader: boolean;
 }) {
   return (
     <View
@@ -49,9 +60,13 @@ export default function SearchBar({
         />
       )}
       {!leftIcon && <GapView mode="horizontal" length={1} />}
-      <MyInput value={value} handleChangeText={handleChangeText} />
-      {icon && (
-        <View style={{flexDirection: 'row-reverse'}}>
+      <MyInput
+        value={value}
+        handleChangeText={handleChangeText}
+        onSubmit={onSubmit}
+      />
+      {icon && !Loader && (
+        <View style={{flexDirection: 'row-reverse', width: SCREEN_WIDTH * 0.1}}>
           <Icon
             name={icon!!}
             size={34}
@@ -65,6 +80,14 @@ export default function SearchBar({
             onPress={onPressRight}
           />
         </View>
+      )}
+
+      {Loader && (
+        <ActivityIndicator
+          size={25}
+          style={{padding: 5, width: SCREEN_WIDTH * 0.1}}
+          color={colors.text_inverse}
+        />
       )}
     </View>
   );
