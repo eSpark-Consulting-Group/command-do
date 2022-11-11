@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputSubmitEditingEventData,
+  View,
+} from 'react-native';
 
 import {SCREEN_HEIGHT} from '../../constants';
 import {colors} from '../../theme';
@@ -10,11 +17,13 @@ export default function MyInput({
   value,
   canEdit = true,
   handleChangeText,
+  onSubmit,
 }: {
   label?: string;
   value?: string;
   canEdit?: boolean;
   handleChangeText?: (text: string) => void;
+  onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
 }) {
   const containerStyles = {
     padding: label ? 10 : 0,
@@ -32,6 +41,7 @@ export default function MyInput({
       )}
       <TextInput
         value={value}
+        onSubmitEditing={onSubmit}
         onChangeText={handleChangeText}
         placeholder="Enter Text in TextInput"
         editable={canEdit}
