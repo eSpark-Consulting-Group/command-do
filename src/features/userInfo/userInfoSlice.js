@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   userData: null,
+  orders: null,
 };
 
 const userInfoSlice = createSlice({
@@ -20,6 +21,10 @@ const userInfoSlice = createSlice({
     getAllUsers: (state, action) => {
       state.userData = action.payload;
     },
+    getOrderHistory: (state, action) => {
+      console.log('Order History', action.payload);
+      state.orders = action.payload;
+    },
     logout: (state, action) => {
       state.userData = null;
     },
@@ -31,6 +36,7 @@ export const {
   updateUserDetails,
   createUser,
   getAllUsers,
+  getOrderHistory,
   logout,
 } = userInfoSlice.actions;
 
