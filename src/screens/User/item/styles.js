@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
     // marginLeft: height * .01
   },
   itemDetailContainer: {
-    height: height * 0.65,
+    height: height * 0.61,
     backgroundColor: 'white',
     alignItems: 'center',
     position: 'relative',
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   },
   noteStyle: {
     borderRadius: height * 0.005,
-    padding: height * 0.015,
+    padding: height * 0.03,
     borderWidth: height * 0.001,
     marginVertical: height * 0.02,
     fontFamily: Fonts.Roboto_Medium,
