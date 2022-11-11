@@ -31,7 +31,6 @@ export default function SearchItem() {
         text: text,
       },
     });
-    console.log('Searched Items', searchedItems.data.searchItem.data);
     setLunchItems(searchedItems.data.searchItem.data);
     // const items = [...lunchItems];
     // const filItems = items.filter(item => item.name == text);
@@ -46,7 +45,7 @@ export default function SearchItem() {
         leftIcon="arrow-back"
         icon="close-circle"
         onPressLeft={() => navigation.goBack()}
-        onPressRight={() => setSearch('')}
+        onPressRight={() => updateSearch('')}
         Loader={searchLoading}
       />
 
