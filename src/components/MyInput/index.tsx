@@ -8,10 +8,12 @@ import MyText from '../Text';
 export default function MyInput({
   label,
   value,
+  canEdit = true,
   handleChangeText,
 }: {
   label?: string;
   value?: string;
+  canEdit?: boolean;
   handleChangeText?: (text: string) => void;
 }) {
   const containerStyles = {
@@ -32,6 +34,7 @@ export default function MyInput({
         value={value}
         onChangeText={handleChangeText}
         placeholder="Enter Text in TextInput"
+        editable={canEdit}
         underlineColorAndroid="transparent"
         style={styles.TextInputStyleClass}
       />
