@@ -15,8 +15,16 @@ import {colors} from '../../../theme';
 export default function AddForm() {
   const navigation = useNavigation();
   const route = useRoute();
-  const {mode, type} = route?.params;
+  const {mode, type, itemData} = route?.params;
+
   const [catToggle, setCatToggle] = useState(false);
+  const [fields, setFields] = useState({
+    name: itemData?.name,
+    price: itemData?.price.toString(),
+    image: itemData?.image,
+  });
+
+  console.log('item Selected', itemData);
 
   const handleDeleteCategory = () => {
     Alert.alert('Delete Category', 'Category will be permenantly deleted.', [
@@ -46,7 +54,7 @@ export default function AddForm() {
 
   if (mode === 'add') {
     {
-      //* Add Category
+      //! Add Category
     }
     if (type === 'category') {
       return (
@@ -72,7 +80,7 @@ export default function AddForm() {
       );
     }
     {
-      //* Add Item
+      //! Add Item
     }
     if (type === 'item') {
       return (
@@ -109,7 +117,7 @@ export default function AddForm() {
     }
   }
   {
-    //* Edit Category
+    //! Edit Category
   }
   if (mode === 'edit') {
     if (type === 'category') {
@@ -139,7 +147,7 @@ export default function AddForm() {
       );
     }
     {
-      //* Edit Item
+      //! Edit Item
     }
     if (type === 'item') {
       return (
@@ -155,14 +163,25 @@ export default function AddForm() {
           <ScrollView style={{paddingHorizontal: 10}}>
             <MySubHeader title="Select Category" divider />
             <CstmDropDown
+              defaultValue={itemData?.Category?.name}
               dataSource={['Rice', 'Snacks', 'Salan', 'Beverages', 'Roti']}
               toggleValue={catToggle}
               type="category"
               handleToggle={() => setCatToggle(!catToggle)}
             />
             <MySubHeader title="Edit Item Details" divider />
-            <MyInput label="Name" />
-            <MyInput label="Price" />
+            <MyInput
+              label="Name"
+              value={fields.name}
+              handleChangeText={text => {
+                setFields({...fields, name: text});
+              }}
+            />
+            <MyInput
+              label="Price"
+              value={fields.price}
+              handleChangeText={text => setFields({...fields, price: text})}
+            />
             <ImageContainer />
           </ScrollView>
           <View style={{height: 60}}>
