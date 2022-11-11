@@ -1,5 +1,5 @@
 import storage from '@react-native-firebase/storage'
-import { Platform } from 'react-native'
+import { PermissionsAndroid, Platform } from 'react-native'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export const uploadImage = async image => {
@@ -24,7 +24,6 @@ export const imagePicker = async () => {
     const result = await launchImageLibrary({
       selectionLimit: 1
     });
-    console.log('imagePicker result', result?.assets[0]);
     return result?.assets[0];
   } catch (error) {
     console.log('imagePicker error', error);
@@ -37,10 +36,30 @@ export const cameraPicker = async () => {
       mediaType: 'photo',
       cameraType: 'back'
     });
-    console.log('cameraPicker result', result);
-    return result;
+    return result?.assets[0];
   } catch (error) {
     console.log('cameraPicker error', error);
   }
 };
   
+export const requestCameraPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      {
+        title: "App Camera Permission",
+        message:"App needs access to your camera ",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK"
+      }
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("Camera permission given");
+    } else {
+      console.log("Camera permission denied");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
