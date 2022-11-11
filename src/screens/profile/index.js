@@ -17,6 +17,7 @@ import {updateProfile} from '../../features/profile/profileSlice';
 import styles from './styles';
 import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
 import {UPDATE_USER} from '../../graphQL/mutation/user.mutation';
+import { cameraPicker, imagePicker } from '../../utils/helperFunctions';
 
 const {width, height} = Dimensions.get('window');
 
@@ -104,21 +105,7 @@ function Profile({route, navigation}) {
           <View style={styles.modalInner}>
             <TouchableOpacity
               style={styles.chooseImageButton}
-              onPress={chooseImage}>
-              <Icon
-                name="md-file-tray-outline"
-                size={height * 0.03}
-                color="#fff"
-              />
-              <MyText
-                label={'Choose File'}
-                title
-                textStyle={{color: '#fff', marginLeft: height * 0.01}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.chooseImageButton}
-              onPress={launchCamera}>
+              onPress={cameraPicker}>
               <Icon name="camera-outline" size={height * 0.03} color="#fff" />
               <MyText
                 label={'Launch Camera'}
@@ -128,7 +115,7 @@ function Profile({route, navigation}) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.chooseImageButton}
-              onPress={launchImageLibrary}>
+              onPress={imagePicker}>
               <Icon name="image-outline" size={height * 0.03} color="#fff" />
               <MyText
                 label={'Choose in gallery'}
