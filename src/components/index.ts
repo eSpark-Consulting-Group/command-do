@@ -24,6 +24,7 @@ import TouchRipple from './TouchRipple';
 import SearchBar from './SearchBar';
 import MoneyReturnCard from './MoneyReturnCard';
 import OrderHistoryCard from './OrderHistoryCard';
+import OverlayLoader from './OverlayLoader';
 
 export {
   Cards,
@@ -49,4 +50,5 @@ export {
   SearchBar,
   MoneyReturnCard,
   OrderHistoryCard,
+  OverlayLoader
 };
