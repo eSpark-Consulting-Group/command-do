@@ -133,7 +133,7 @@ function Home({route, navigation}) {
   const logoutHandler = () => {
     dispatch(logout());
   };
-  // console.log("loading", LoadItemsLoading, LoadCategoriesLoading, LoadCategoriesWithItemLoading)
+  console.log('loading', LoadItemsLoading);
   return (
     <View
       style={{
@@ -298,11 +298,13 @@ function Home({route, navigation}) {
             </ScrollView>
           )}
         </View>
-        {!(
-          LoadItemsLoading &&
-          LoadCategoriesLoading &&
-          LoadCategoriesWithItemLoading
-        ) ? (
+        {LoadItemsLoading ||
+        LoadCategoriesLoading ||
+        LoadCategoriesWithItemLoading ? (
+          <View style={{flex: 4, top: height / 4}}>
+            <ActivityIndicator size={30} color={colors.primary} />
+          </View>
+        ) : (
           <View
             style={{
               flex: 4,
@@ -312,10 +314,6 @@ function Home({route, navigation}) {
             ) : (
               <IndividualCard data={items || []} navigation={navigation} />
             )}
-          </View>
-        ) : (
-          <View style={{flex: 4, top: height / 4}}>
-            <ActivityIndicator size={30} color={colors.primary} />
           </View>
         )}
         <TouchableOpacity
