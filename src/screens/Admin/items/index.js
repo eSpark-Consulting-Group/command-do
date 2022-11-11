@@ -1,7 +1,8 @@
-import React, {useState, useReducer} from 'react';
+import React, {useState, useReducer, useCallback} from 'react';
 import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
+import {useLazyQuery} from '@apollo/client';
 
 import {SCREEN_WIDTH} from '../../../constants';
 import {
@@ -15,43 +16,110 @@ import {colors} from '../../../theme';
 import {handleCountReducer} from '../../../reducers/userReducer';
 import {initialState} from '../../../app/store';
 import OverlayLoader from '../../../components/OverlayLoader';
+import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
+import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 
-let categoryData = [
-  {name: 'All', color: true},
-  {name: 'Salan', color: false},
-  {name: 'Rice', color: false},
-  {name: 'Snacks', color: false},
-  {name: 'Beverages', color: false},
-  {name: 'Desserts', color: false},
+const sampleItems = [
+  {name: 'Chicken Biryani', category: 'Rice', amount: 150},
+  {name: 'Sada Biryani', category: 'Rice', amount: 150},
+  {name: 'Chicken Pulao', category: 'Rice', amount: 150},
+  {name: 'Sada Pulao', category: 'Rice', amount: 150},
+  {name: 'Fanta 200ml', category: 'Beverages', amount: 150},
+  {name: 'Lays (50 wala)', category: 'Snacks', amount: 150},
+  {name: 'Anda Gotala', category: 'Salan', amount: 150},
+  {name: 'Chicken Karahi', category: 'Salan', amount: 150},
 ];
 
 export default function Items() {
+  const categoryPrefix = {name: 'All', color: true, id: undefined};
+
   const navigation = useNavigation();
+
+  const [LoadCategories, {loading: categoryLoader, refetch, error}] =
+    useLazyQuery(GET_CATEGORIES_WITH_ID, {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-and-network',
+    });
+  const [
+    LoadItems,
+    {data: itemData, refetch: refetchItems, loading: itemsLoading},
+  ] = useLazyQuery(GET_ALL_ITEMS);
+
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+
   const [visible, setVisible] = useState(false);
+  const [categoryData, setCategoryData] = useState([]);
 
   // const [count, dispatchCount] = useReducer(
   //   handleCountReducer,
   //   initialState.count,
   // );
 
+  useFocusEffect(
+    React.useCallback(() => {
+      LoadItems();
+      getAllCategories();
+    }, [refetch, refetchItems]),
+  );
+
+  const getItems = async selected => {
+    console.log('PPPPBBBB', selected);
+    if (selected?.id == undefined) {
+      await LoadItems({
+        variables: {
+          where: {
+            categoryId: undefined,
+          },
+        },
+      });
+    } else {
+      await LoadItems({
+        variables: {
+          where: {
+            categoryId: selected?.id,
+          },
+        },
+      });
+    }
+  };
+
+  const getAllCategories = async () => {
+    try {
+      const res = await LoadCategories();
+      console.log('===>>', JSON.stringify(res?.data?.getAllCategories));
+      if (res?.data?.getAllCategories?.status) {
+        const {data} = res?.data?.getAllCategories;
+        let newData = data.map(item => ({...item, color: false}));
+        setCategoryData([categoryPrefix, ...newData]);
+        console.log('==xxx>', categoryData);
+      }
+    } catch (e) {
+      console.log('error while fetching', e);
+    }
+  };
+
   const handlePress = index => {
+    let selected = {};
     let temp = [...categoryData];
     temp.forEach((item, index2) =>
       index == index2 ? (item.color = true) : (item.color = false),
     );
-    categoryData = temp;
+    setCategoryData(temp);
+    temp.forEach(item => (item.color ? (selected = item) : null));
     console.log(categoryData);
     forceUpdate();
+    getItems(selected);
   };
 
   // const handleIncreament = () => {
   //   dispatchCount({type: 'increment'});
   // };
 
+  console.log('XXZWASD', itemData?.getAllItems?.data);
+
   return (
     <View style={styles.container}>
-      <OverlayLoader show={false} />
+      <OverlayLoader show={categoryLoader || itemsLoading} />
       <MyHeader
         title={'All Items'}
         icon="search"
@@ -69,7 +137,7 @@ export default function Items() {
             alignSelf: 'center',
             flexDirection: 'row-reverse',
           }}>
-          {!categoryData[0].color && (
+          {categoryData.length !== 0 && !categoryData[0].color && (
             <>
               <MyCard cardStyle={{borderRadius: 100}}>
                 <Icon
@@ -86,6 +154,7 @@ export default function Items() {
                     navigation.navigate('Add_Form', {
                       mode: 'edit',
                       type: 'category',
+                      itemData: {},
                     })
                   }
                 />
@@ -135,66 +204,60 @@ export default function Items() {
           textStyle={{alignSelf: 'center', paddingVertical: 10}}
         />
       </View>
-      <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
-        <FlatList
-          data={[
-            {name: 'Chicken Biryani', category: 'Rice', amount: 150},
-            {name: 'Sada Biryani', category: 'Rice', amount: 150},
-            {name: 'Chicken Pulao', category: 'Rice', amount: 150},
-            {name: 'Sada Pulao', category: 'Rice', amount: 150},
-            {name: 'Fanta 200ml', category: 'Beverages', amount: 150},
-            {name: 'Lays (50 wala)', category: 'Snacks', amount: 150},
-            {name: 'Anda Gotala', category: 'Salan', amount: 150},
-            {name: 'Chicken Karahi', category: 'Salan', amount: 150},
-          ]}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.itemContainer}
-          renderItem={({item, index}) => (
-            <MyCard cardStyle={styles.item}>
-              <TouchRipple
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  padding: 10,
-                }}
-                darkRipple
-                onPress={() =>
-                  navigation.navigate('Add_Form', {
-                    mode: 'edit',
-                    type: 'item',
-                  })
-                }>
-                <View style={{flexDirection: 'row'}}>
-                  <View
-                    style={{
-                      height: 50,
-                      width: 50,
-                      backgroundColor: 'teal',
-                    }}
-                  />
-                  <GapView mode="horizontal" />
-                  <View style={{alignSelf: 'center'}}>
-                    <MyText label={item?.name} size={'title'} />
-                    <MyText
-                      label={item?.category}
-                      size={'title'}
-                      textStyle={{opacity: 0.6}}
+      {itemData?.getAllItems?.data && (
+        <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
+          <FlatList
+            data={itemData?.getAllItems?.data}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.itemContainer}
+            renderItem={({item, index}) => (
+              <MyCard cardStyle={styles.item}>
+                <TouchRipple
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    padding: 10,
+                  }}
+                  darkRipple
+                  onPress={() =>
+                    navigation.navigate('Add_Form', {
+                      mode: 'edit',
+                      type: 'item',
+                      itemData: item,
+                    })
+                  }>
+                  <View style={{flexDirection: 'row'}}>
+                    <View
+                      style={{
+                        height: 50,
+                        width: 50,
+                        backgroundColor: 'teal',
+                      }}
                     />
+                    <GapView mode="horizontal" />
+                    <View style={{alignSelf: 'center'}}>
+                      <MyText label={item?.name} size={'title'} />
+                      <MyText
+                        label={item?.Category?.name}
+                        size={'title'}
+                        textStyle={{opacity: 0.6}}
+                      />
+                    </View>
                   </View>
-                </View>
-                <View style={{alignSelf: 'center', flexDirection: 'row'}}>
-                  <MyText
-                    label={`Rs. ${item?.amount}`}
-                    size={'title'}
-                    textStyle={{alignSelf: 'center'}}
-                  />
-                  <GapView mode="horizontal" length={15} />
-                </View>
-              </TouchRipple>
-            </MyCard>
-          )}
-        />
-      </View>
+                  <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                    <MyText
+                      label={`Rs. ${item?.price}`}
+                      size={'title'}
+                      textStyle={{alignSelf: 'center'}}
+                    />
+                    <GapView mode="horizontal" length={15} />
+                  </View>
+                </TouchRipple>
+              </MyCard>
+            )}
+          />
+        </View>
+      )}
       <SpeedDial
         isOpen={visible}
         color={colors.primary}
