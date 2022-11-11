@@ -13,12 +13,14 @@ const CstmDropDown = ({
   type,
   toggleValue,
   handleToggle,
+  defaultValue = 'Select an Item...',
 }: {
   dataSource: string[];
   handleLabel?: (value: string, type: string) => void;
   type: string;
   toggleValue: boolean;
   handleToggle?: (type: string) => void;
+  defaultValue?: string;
 }) => {
   const [label, setLabel] = useState('');
 
@@ -53,7 +55,7 @@ const CstmDropDown = ({
           }}>
           <View style={styles.dropdownLabelInner}>
             <Text style={{color: colors.text_normal, ...styles.dropDownText}}>
-              {label == '' ? 'Select an Item...' : label}
+              {label == '' ? defaultValue : label}
             </Text>
             {toggleValue ? (
               <MI name="arrow-drop-up" color={colors.text_normal} size={22} />
