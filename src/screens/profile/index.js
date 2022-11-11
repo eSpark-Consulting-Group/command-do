@@ -68,7 +68,7 @@ function Profile({route, navigation}) {
       variables: data,
     });
     const updatedData = updateUser.data.updateProfile.data;
-    dispatch(updateUserDetails(updatedData));
+    dispatch(updateUserDetails({selected: userData?.selected, ...updatedData}));
   };
 
   const onChangeNumber = (value, index) => {
@@ -168,7 +168,11 @@ function Profile({route, navigation}) {
         {getData &&
           getData.map((item, index) => (
             <View key={index} style={styles.profileFormAlign}>
-              <MyText label={item.name} subTitle textStyle={{color: '#00000060'}} />
+              <MyText
+                label={item.name}
+                subTitle
+                textStyle={{color: '#00000060'}}
+              />
               {editMode && item.name != 'Email' ? (
                 <TextInput
                   style={styles.profileFormMobileNumber}
