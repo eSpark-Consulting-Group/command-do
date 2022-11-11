@@ -24,7 +24,6 @@ export const imagePicker = async () => {
     const result = await launchImageLibrary({
       selectionLimit: 1
     });
-    console.log('imagePicker result', result?.assets[0]);
     return result?.assets[0];
   } catch (error) {
     console.log('imagePicker error', error);
@@ -37,8 +36,7 @@ export const cameraPicker = async () => {
       mediaType: 'photo',
       cameraType: 'back'
     });
-    console.log('cameraPicker result', result);
-    return result;
+    return result?.assets[0];
   } catch (error) {
     console.log('cameraPicker error', error);
   }
