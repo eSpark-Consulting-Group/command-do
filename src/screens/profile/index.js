@@ -9,15 +9,13 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useMutation} from '@apollo/client';
 
-import {MyText, CustomizeModal} from '../../components';
-import {updateProfile} from '../../features/profile/profileSlice';
+import {MyText, CustomizeModal, OverlayLoader} from '../../components';
 import styles from './styles';
 import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
 import {UPDATE_USER} from '../../graphQL/mutation/user.mutation';
-import { cameraPicker, imagePicker } from '../../utils/helperFunctions';
+import { cameraPicker, imagePicker, uploadImage } from '../../utils/helperFunctions';
 
 const {width, height} = Dimensions.get('window');
 
@@ -45,6 +43,7 @@ function Profile({route, navigation}) {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [isModal, setIsModal] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const [UpdateProfile] = useMutation(UPDATE_USER);
 
@@ -81,22 +80,30 @@ function Profile({route, navigation}) {
     setIsModal(!isModal);
   };
 
-  async function chooseImage() {
-    let options = {
-      title: 'Select Image',
-      customButtons: [
-        {name: 'customOptionKey', title: 'Choose Photo from Custom Option'},
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    const result = await launchCamera(options);
+  const onImagePicker = async (pickerFunc = imagePicker) => {
+    try {
+      const image = await pickerFunc()
+      setLoader(true)
+      isModalVisible()
+      const url = await uploadImage(image)
+      const updateUser = await UpdateProfile({
+        variables: {
+          updateProfileId: userData?.id,
+          avatar: url,
+        },
+      });
+      const updatedData = updateUser.data.updateProfile.data;
+      dispatch(updateUserDetails({selected: userData?.selected, ...updatedData}));
+      setLoader(false)
+    } catch (error) {
+      isModalVisible()
+      setLoader(false)
+      console.log("error error error", error );
+    }
   }
-
   return (
     <ScrollView style={{height: height * 1, backgroundColor: 'white'}}>
+      <OverlayLoader show={loader} />
       <CustomizeModal
         isVisible={isModal}
         setBackDrop={isModalVisible}
@@ -105,7 +112,7 @@ function Profile({route, navigation}) {
           <View style={styles.modalInner}>
             <TouchableOpacity
               style={styles.chooseImageButton}
-              onPress={cameraPicker}>
+              onPress={() => onImagePicker(cameraPicker)}>
               <Icon name="camera-outline" size={height * 0.03} color="#fff" />
               <MyText
                 label={'Launch Camera'}
@@ -115,7 +122,7 @@ function Profile({route, navigation}) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.chooseImageButton}
-              onPress={imagePicker}>
+              onPress={() => onImagePicker(imagePicker)}>
               <Icon name="image-outline" size={height * 0.03} color="#fff" />
               <MyText
                 label={'Choose in gallery'}
@@ -148,7 +155,7 @@ function Profile({route, navigation}) {
             </View>
           </TouchableOpacity>
           <Image
-            source={userData?.avatar ?? reduxData?.profile?.image}
+            source={{uri: userData?.avatar ?? 'https://www.seekpng.com/png/detail/514-5147412_default-avatar-icon.png'}}
             style={styles.profileImageStyle}
           />
         </View>
