@@ -44,7 +44,7 @@ export default function OrderHistory() {
   return (
     <View style={{alignItems: 'center'}}>
       <MyHeader
-        onPressLeft={() => navigation?.goBack()}
+        onPressLeft={() => navigation?.navigate('Home')}
         leftIcon="arrow-back"
         title="Order History"
         titleStyle={{
