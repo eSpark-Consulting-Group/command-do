@@ -261,7 +261,7 @@ function Home({route, navigation}) {
                     key={index}
                     style={{
                       backgroundColor:
-                        selectedCategory?.id == item?.id ? '#11a79c' : 'white',
+                        selectedCategory?.id == item?.id ? colors.primary : colors.background,
                       elevation:
                         selectedCategory?.id == item?.id ? height * 0.003 : 0,
                       paddingHorizontal: item.logo
