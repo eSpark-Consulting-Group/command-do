@@ -154,6 +154,7 @@ export default function Items() {
                     navigation.navigate('Add_Form', {
                       mode: 'edit',
                       type: 'category',
+                      itemData: {},
                     })
                   }
                 />
@@ -222,6 +223,7 @@ export default function Items() {
                     navigation.navigate('Add_Form', {
                       mode: 'edit',
                       type: 'item',
+                      itemData: item,
                     })
                   }>
                   <View style={{flexDirection: 'row'}}>
