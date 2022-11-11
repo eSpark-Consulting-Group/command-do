@@ -14,6 +14,7 @@ import {showMessage} from 'react-native-flash-message';
 
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {
+  MyHeader,
   MyText,
   PurchasingListHeader,
   PurchasingOrderCard,
@@ -69,15 +70,15 @@ export default function PurchasingList({navigation}) {
       message: 'Order Summary',
       totalAmount: 600,
       data: [
-        {
-          item: {
-            name: 'Chicken Biryani',
-            id: 1,
-          },
-          amount: 170,
-          quantity: 1,
-          itemId: 1,
-        },
+        // {
+        //   item: {
+        //     name: 'Chicken Biryani',
+        //     id: 1,
+        //   },
+        //   amount: 170,
+        //   quantity: 0,
+        //   itemId: 1,
+        // },
         {
           item: {
             name: 'Chicken Pulao',
@@ -89,11 +90,245 @@ export default function PurchasingList({navigation}) {
         },
         {
           item: {
-            name: 'Sada Biryani',
+            name: 'Chana Pulao',
+            id: 2,
+          },
+          amount: 100,
+          quantity: 1,
+          itemId: 2,
+        },
+        // {
+        //   item: {
+        //     name: 'Sada Biryani',
+        //     id: 3,
+        //   },
+        //   amount: 130,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
+        {
+          item: {
+            name: 'Daal Chana Fry',
             id: 3,
           },
-          amount: 260,
+          amount: 120,
           quantity: 2,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Daal Mash Fry',
+            id: 3,
+          },
+          amount: 140,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Raita',
+            id: 3,
+          },
+          amount: 25,
+          quantity: 4,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Dahi',
+            id: 3,
+          },
+          amount: 30,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Salad',
+            id: 3,
+          },
+          amount: 20,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Kebab',
+            id: 3,
+          },
+          amount: 40,
+          quantity: 4,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Naan',
+            id: 3,
+          },
+          amount: 20,
+          quantity: 5,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Chapati',
+            id: 3,
+          },
+          amount: 15,
+          quantity: 7,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Bhatti Naan',
+            id: 3,
+          },
+          amount: 17,
+          quantity: 4,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Bhatti Chapati',
+            id: 3,
+          },
+          amount: 17,
+          quantity: 18,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Chocolate Sandwich(Rs. 30 Half roll) ',
+            id: 3,
+          },
+          amount: 30,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Prince biscuit(Rs. 40)',
+            id: 3,
+          },
+          amount: 40,
+          quantity: 4,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Chocolatto (Rs. 30)',
+            id: 3,
+          },
+          amount: 30,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Lays French(Rs .40)',
+            id: 3,
+          },
+          amount: 40,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Lays Salt(Rs .40)',
+            id: 3,
+          },
+          amount: 40,
+          quantity: 2,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Wavy bar.b.q(Rs .40)',
+            id: 3,
+          },
+          amount: 40,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Slanty Red (Rs .50)',
+            id: 3,
+          },
+          amount: 50,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Cheetos(Rs. 30)',
+            id: 3,
+          },
+          amount: 30,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Slice juice bottle(Rs. 70)',
+            id: 3,
+          },
+          amount: 70,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Slice mini box(Rs. 40)',
+            id: 3,
+          },
+          amount: 40,
+          quantity: 2,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Cloud 9 Chocolate(Rs. 10)',
+            id: 3,
+          },
+          amount: 10,
+          quantity: 2,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Yums(Rs. 10)',
+            id: 3,
+          },
+          amount: 10,
+          quantity: 3,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Fanty toffee(Rs. 2)',
+            id: 3,
+          },
+          amount: 2,
+          quantity: 6,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Mentos(Rs. 100)',
+            id: 3,
+          },
+          amount: 100,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Banana Khajoor Shake',
+            id: 3,
+          },
+          amount: 80,
+          quantity: 3,
           itemId: 3,
         },
       ],
@@ -131,7 +366,11 @@ export default function PurchasingList({navigation}) {
 
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ffffff'}}>
-      <View
+      <MyHeader
+        title="Purchasing List"
+        titleStyle={{fontFamily: 'Poppins-Bold'}}
+      />
+      {/* <View
         style={{
           width: SCREEN_WIDTH,
           padding: 10,
@@ -152,21 +391,31 @@ export default function PurchasingList({navigation}) {
             color: colors.text_inverse,
           }}
         />
-        <Icon
-          name="search"
-          size={34}
-          color={colors.text_inverse}
-          containerStyle={{alignSelf: 'center'}}
-        />
-      </View>
+      </View> */}
       <PurchasingListHeader
-        onAllCheck={val =>
+        checked={!check.some(item => item.check == false)}
+        onAllCheck={val => {
           check.map((item, index) => {
             let update = [...check];
-            update[index].check = !update[index].check;
+            console.log('Val', !val);
+            update[index].check = !val;
             setCheck(update);
-          })
-        }
+          });
+          // if (check.some(item => item.check == false)) {
+          //   check.map((item, index) => {
+          //     let update = [...check];
+          //     update[index].check = true;
+
+          //     setCheck(update);
+          //   });
+          // } else {
+          //   check.map((item, index) => {
+          //     let update = [...check];
+          //     update[index].check = false;
+          //     setCheck(update);
+          //   });
+          // }
+        }}
       />
       <FlatList
         data={check}

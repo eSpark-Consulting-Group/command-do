@@ -20,6 +20,19 @@ export default function CollectedOrders({navigation}) {
   const dispatch = useDispatch();
 
   const finishCollection = () => {
+    let finalOrders = [];
+    orders.map(item => {
+      if (item.status == 'PAID') {
+        finalOrders.push({
+          id: item.id,
+          status: item.status,
+          paidAmount: item.paidAmount,
+          riderId: item.riderId,
+        });
+      }
+    });
+
+    console.log('FInal Order', finalOrders);
     Alert.alert('Confirmation', 'Are you sure you want to Finish Collection?', [
       {text: 'Yes', onPress: () => navigation.navigate('Purchasing_List')},
       {text: 'No', style: 'cancel'},

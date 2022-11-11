@@ -1,4 +1,5 @@
 export const pdfHtml = order => {
+  let total = 0;
   return `<div
         style="
           display: flex;
@@ -29,8 +30,9 @@ export const pdfHtml = order => {
         <div style="width: 90%; border: 1px solid black; margin-bottom: 10px">
         </div>
         ${order.data
-          .map(
-            item => `<div
+          .map(item => {
+            total = total + item.amount * item.quantity;
+            return `<div
         style="
         display: flex;
         flex-direction: row;
@@ -61,10 +63,10 @@ export const pdfHtml = order => {
       <p style="font-weight: bold">${item.quantity}</p>
     </div>
     <div style="width: 18vw; align-items: center">
-      <p style="font-weight: bold">Rs. ${item.amount}</p>
+      <p style="font-weight: bold">Rs. ${item.amount * item.quantity}</p>
     </div>
-      </div>`,
-          )
+      </div>`;
+          })
           .join(' ')}
           <div style="width: 90%; border: 1px solid black; margin-top: 10px">
           <!-- Line Separator -->
@@ -80,9 +82,7 @@ export const pdfHtml = order => {
             margin-top: 5px
           ">
           <p style="font-weight: bold; font-size: large">Total</p>
-          <p style="font-weight: bold; font-size: large">Rs. ${
-            order.totalAmount
-          }</p>
+          <p style="font-weight: bold; font-size: large">Rs. ${total}</p>
         </div>
       </div>
       `;

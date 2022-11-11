@@ -7,14 +7,13 @@ import {colors} from '../../theme';
 
 export default function PurchasingListHeader({
   onAllCheck,
+  checked,
 }: {
   onAllCheck: (val: boolean) => void;
+  checked: boolean;
 }) {
-  const [check, setCheck] = useState(false);
-
   const updateAllCheck = () => {
-    setCheck(!check);
-    onAllCheck(!check);
+    onAllCheck(checked);
   };
 
   return (
@@ -22,7 +21,7 @@ export default function PurchasingListHeader({
       <View style={styles.headerTitlesContainer}>
         <View style={styles.headerTitleContainer1}>
           <CheckBox
-            checked={check}
+            checked={checked}
             onPress={updateAllCheck}
             checkedColor={colors.primary}
             containerStyle={{height: SCREEN_HEIGHT * 0.06}}
