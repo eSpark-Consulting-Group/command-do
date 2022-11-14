@@ -135,7 +135,6 @@ function Home({route, navigation}) {
   const logoutHandler = () => {
     dispatch(logout());
   };
-  console.log('loading', LoadItemsLoading);
   return (
     <View
       style={{
@@ -195,7 +194,7 @@ function Home({route, navigation}) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Order'} title textStyle={{color: '#00000080'}} />
+              <MyText label={'Orders'} title textStyle={{color: '#00000080'}} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.buttonContainer, {borderBottomWidth: height * 0}]}
@@ -251,8 +250,7 @@ function Home({route, navigation}) {
             label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
             heading
           />
-          <MyText label="Good Evening! 🙋‍♂️" subHeading />
-          <MyText label="" title />
+          <MyText label="Good Morning! 🙋‍♂️" subHeading />
         </View>
         <View style={styles.categoryContainer}>
           {categories && (

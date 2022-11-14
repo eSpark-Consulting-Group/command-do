@@ -55,13 +55,24 @@ export default function OrderHistoryCard({
           style={{
             ...styles.cardDataContainer2,
             borderRadius: 5,
-            backgroundColor: remainingAmount < 1 ? '#e30202' : colors.primary,
+            backgroundColor:
+              paidAmount == 0
+                ? '#F0AD4E'
+                : remainingAmount < 1
+                ? '#D9534F'
+                : '#5CB85C',
             elevation: 5,
             paddingHorizontal: 3,
             paddingVertical: 1,
           }}>
           <MyText
-            label={remainingAmount < 1 ? 'Not Received' : 'Received'}
+            label={
+              paidAmount == 0
+                ? 'Not Paid'
+                : remainingAmount < 1
+                ? 'Not Received'
+                : 'Received'
+            }
             textStyle={{...styles.cardDataText, color: '#fff'}}
           />
         </View>
