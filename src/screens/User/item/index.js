@@ -248,6 +248,7 @@ function Items({ route, navigation }) {
               style={{
                 width: '100%',
                 marginTop: height * 0.02,
+                marginBottom: height * 0.01
               }}>
               <MyText label={'Special Instruction'} title />
               <MyText
@@ -291,13 +292,11 @@ function Items({ route, navigation }) {
                   count?.cart?.amount > 99 ? '99+' : count?.cart?.amount
                 }
                 subTitle
-                style={{
-                  color: 'white',
-                }}
+                textStyle={{color: 'white'}}
               />
             </View>
           )}
-          <MyText label={'Checkout Cart'} title style={{ color: 'white' }} />
+          <MyText label={'Checkout Cart'} title textStyle={{color: 'white'}} />
           <Icon
             name="cart-outline"
             size={height * 0.03}
