@@ -11,13 +11,21 @@ import {
   MySubHeader,
 } from '../../../components';
 import {colors} from '../../../theme';
-import { uploadImage } from '../../../utils/helperFunctions';
+import {uploadImage} from '../../../utils/helperFunctions';
 
 export default function AddForm() {
   const navigation = useNavigation();
   const route = useRoute();
-  const {mode, type} = route?.params;
+  const {mode, type, itemData} = route?.params;
+
   const [catToggle, setCatToggle] = useState(false);
+  const [fields, setFields] = useState({
+    name: itemData?.name,
+    price: itemData?.price.toString(),
+    image: itemData?.image,
+  });
+
+  console.log('item Selected', itemData);
 
   const handleDeleteCategory = () => {
     Alert.alert('Delete Category', 'Category will be permenantly deleted.', [
@@ -46,6 +54,9 @@ export default function AddForm() {
   };
 
   if (mode === 'add') {
+    {
+      //! Add Category
+    }
     if (type === 'category') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
@@ -68,6 +79,9 @@ export default function AddForm() {
           />
         </View>
       );
+    }
+    {
+      //! Add Item
     }
     if (type === 'item') {
       return (
@@ -103,6 +117,9 @@ export default function AddForm() {
       );
     }
   }
+  {
+    //! Edit Category
+  }
   if (mode === 'edit') {
     if (type === 'category') {
       return (
@@ -130,6 +147,9 @@ export default function AddForm() {
         </View>
       );
     }
+    {
+      //! Edit Item
+    }
     if (type === 'item') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
@@ -144,22 +164,37 @@ export default function AddForm() {
           <ScrollView style={{paddingHorizontal: 10}}>
             <MySubHeader title="Select Category" divider />
             <CstmDropDown
+              defaultValue={itemData?.Category?.name}
               dataSource={['Rice', 'Snacks', 'Salan', 'Beverages', 'Roti']}
               toggleValue={catToggle}
               type="category"
               handleToggle={() => setCatToggle(!catToggle)}
             />
             <MySubHeader title="Edit Item Details" divider />
-            <MyInput label="Name" />
-            <MyInput label="Price" />
-            <ImageContainer onImageChange={(image) => {
-              uploadImage(image)
-              .then(fireUrl => console.log("fireUrl fireUrl", fireUrl))
-            }} />
+            <MyInput
+              label="Name"
+              value={fields.name}
+              handleChangeText={text => {
+                setFields({...fields, name: text});
+              }}
+            />
+            <MyInput
+              label="Price"
+              value={fields.price}
+              handleChangeText={text => setFields({...fields, price: text})}
+            />
+            \
+            <ImageContainer
+              onImageChange={image => {
+                uploadImage(image).then(fireUrl =>
+                  console.log('fireUrl fireUrl', fireUrl),
+                );
+              }}
+            />
           </ScrollView>
           <View style={{height: 60}}>
             <BottomButton
-              label="Add An Item"
+              label="Edit Item"
               count={0}
               totalCount={2}
               enabled={false}
