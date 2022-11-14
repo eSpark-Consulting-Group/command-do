@@ -183,7 +183,6 @@ export default function AddForm() {
               value={fields.price}
               handleChangeText={text => setFields({...fields, price: text})}
             />
-            \
             <ImageContainer
               onImageChange={image => {
                 uploadImage(image).then(fireUrl =>
