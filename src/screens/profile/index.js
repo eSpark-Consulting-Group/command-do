@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,7 +16,11 @@ import {MyText, CustomizeModal, OverlayLoader} from '../../components';
 import styles from './styles';
 import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
 import {UPDATE_USER} from '../../graphQL/mutation/user.mutation';
-import { cameraPicker, imagePicker, uploadImage } from '../../utils/helperFunctions';
+import {
+  cameraPicker,
+  imagePicker,
+  uploadImage,
+} from '../../utils/helperFunctions';
 
 const {width, height} = Dimensions.get('window');
 
@@ -44,6 +49,7 @@ function Profile({route, navigation}) {
   const [editMode, setEditMode] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [imgLoader, setImgLoader] = useState(true);
 
   const [UpdateProfile] = useMutation(UPDATE_USER);
 
@@ -82,10 +88,10 @@ function Profile({route, navigation}) {
 
   const onImagePicker = async (pickerFunc = imagePicker) => {
     try {
-      const image = await pickerFunc()
-      setLoader(true)
-      isModalVisible()
-      const url = await uploadImage(image)
+      const image = await pickerFunc();
+      setLoader(true);
+      isModalVisible();
+      const url = await uploadImage(image);
       const updateUser = await UpdateProfile({
         variables: {
           updateProfileId: userData?.id,
@@ -93,14 +99,16 @@ function Profile({route, navigation}) {
         },
       });
       const updatedData = updateUser.data.updateProfile.data;
-      dispatch(updateUserDetails({selected: userData?.selected, ...updatedData}));
-      setLoader(false)
+      dispatch(
+        updateUserDetails({selected: userData?.selected, ...updatedData}),
+      );
+      setLoader(false);
     } catch (error) {
-      isModalVisible()
-      setLoader(false)
-      console.log("error error error", error );
+      isModalVisible();
+      setLoader(false);
+      console.log('error error error', error);
     }
-  }
+  };
   return (
     <ScrollView style={{height: height * 1, backgroundColor: 'white'}}>
       <OverlayLoader show={loader} />
@@ -155,8 +163,18 @@ function Profile({route, navigation}) {
             </View>
           </TouchableOpacity>
           <Image
-            source={{uri: userData?.avatar ?? 'https://www.seekpng.com/png/detail/514-5147412_default-avatar-icon.png'}}
+            source={{
+              uri:
+                userData?.avatar ??
+                'https://www.seekpng.com/png/detail/514-5147412_default-avatar-icon.png',
+            }}
+            onLoadStart={() => setImgLoader(true)}
+            onLoadEnd={() => setImgLoader(false)}
             style={styles.profileImageStyle}
+          />
+          <ActivityIndicator
+            style={styles.activityIndicator}
+            animating={imgLoader}
           />
         </View>
         <TouchableOpacity

@@ -17,13 +17,15 @@ import AdminNavigator from './AdminNavigator';
 import RiderNavigator from './RiderNavigator';
 import {useSelector} from 'react-redux';
 import {ROLES} from '../constants';
+import {MyHeader} from '../components';
 
 const Stack = createStackNavigator();
 function MainStackNavigator() {
+  const navigationRef = React.useRef();
   const userData = useSelector(store => store?.userInfo?.userData);
   const initialRouteName = ROLES[userData?.selected] || 'Login';
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         initialRouteName={initialRouteName}
         screenOptions={{
@@ -46,7 +48,23 @@ function MainStackNavigator() {
             <Stack.Screen name="Cart" component={Cart} />
             <Stack.Screen name="OrderConfirm" component={OrderConfirm} />
             <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="OrderHistory" component={OrderHistory} />
+            <Stack.Screen
+              name="OrderHistory"
+              component={OrderHistory}
+              options={{
+                headerShown: true,
+                header: () => (
+                  <MyHeader
+                    onPressLeft={() => navigationRef.current.navigate('Home')}
+                    leftIcon="arrow-back"
+                    title="Order History"
+                    titleStyle={{
+                      fontFamily: 'Poppins-Bold',
+                    }}
+                  />
+                ),
+              }}
+            />
             <Stack.Screen name="SearchItem" component={SearchItem} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
           </>
