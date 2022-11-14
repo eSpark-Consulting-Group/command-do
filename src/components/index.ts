@@ -50,5 +50,5 @@ export {
   SearchBar,
   MoneyReturnCard,
   OrderHistoryCard,
-  OverlayLoader
+  OverlayLoader,
 };
