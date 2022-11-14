@@ -146,7 +146,7 @@ function Cart({route, navigation}) {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
-        <View style={{height: height * 1, backgroundColor: 'white'}}>
+        <View style={{height: height * 0.965, backgroundColor: 'white'}}>
           <DropDownAlert
             childFunc={qtyWarn}
             setPress={() => setPress(false)}
