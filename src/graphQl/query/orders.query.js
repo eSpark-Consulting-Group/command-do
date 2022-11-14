@@ -22,6 +22,7 @@ export const ALL_ORDERS = gql`
           }
           quantity
         }
+        createdAt
       }
       status
       message
