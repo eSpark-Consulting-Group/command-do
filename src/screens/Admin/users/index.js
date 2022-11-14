@@ -9,30 +9,70 @@ import {
 } from 'react-native';
 import {Divider, FAB} from '@rneui/themed';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useLazyQuery} from '@apollo/client';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {
   CustomizeModal,
   MyHeader,
   MyText,
+  OverlayLoader,
   TouchRipple,
 } from '../../../components';
 import {colors} from '../../../theme';
 import {profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
-import { logout } from '../../../features/userInfo/userInfoSlice';
+import {GET_ALL_USERS} from '../../../graphQL/query/user.query';
+import {getAllUsers, logout} from '../../../features/userInfo/userInfoSlice';
+
+const sampleData = [
+  {
+    title: 'A',
+    data: ['ALTERED', 'ABBY', 'ACTION U.S.A.', 'AMUCK', 'ANGUISH'],
+  },
+  {
+    title: 'B',
+    data: [
+      'BEST MEN',
+      'BEYOND JUSTICE',
+      'BLACK GUNN',
+      'BLOOD RANCH',
+      'BEASTIES',
+    ],
+  },
+  {
+    title: 'C',
+    data: ['CARTEL', 'CASTLE OF EVIL', 'CHANCE', 'COP GAME', 'CROSS FIRE'],
+  },
+];
 
 export default function Users() {
   const navigation = useNavigation();
   const route = useRoute();
-  const dispatch = useDispatch();
-  const [isModal, setIsModal] = useState(false);
 
-  useEffect(() => {
-    dispatch(initialDataUpdate(profileData));
-  }, []);
+  const [LoadAllUsers, {loading: userLoader, refetch, error}] = useLazyQuery(
+    GET_ALL_USERS,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-and-network',
+    },
+  );
+
+  // const reduxData = useSelector(store => store);
+  const dispatch = useDispatch();
+
+  const [isModal, setIsModal] = useState(false);
+  const [userList, setUserList] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUsers();
+      dispatch(initialDataUpdate(profileData));
+    }, [refetch]),
+  );
 
   const isModalVisible = () => {
     LayoutAnimation.configureNext({
@@ -53,12 +93,32 @@ export default function Users() {
     setIsModal(!isModal);
   };
 
+  const getUsers = async () => {
+    try {
+      const getUsers = await LoadAllUsers();
+      console.log('===>>', JSON.stringify(getUsers?.data?.getAllUsers?.data));
+      // dispatch(getAllUsers(getUsers?.data?.getAllUsers?.data));
+      const userData = getUsers?.data?.getAllUsers?.data.reduce((acc, curr) => {
+        acc.push({
+          title: curr.alphabet,
+          data: curr.record,
+        });
+        return acc;
+      }, []);
+      setUserList(userData);
+      // console.log('reduxData', reduxData?.userInfo?.userData);
+    } catch (e) {
+      console.log('error while fetching', e);
+    }
+  };
+
   const logoutHandler = () => {
-    dispatch(logout())
-  }
+    dispatch(logout());
+  };
 
   return (
     <View style={styles.container}>
+      <OverlayLoader show={userLoader} />
       <CustomizeModal
         isVisible={isModal}
         setBackDrop={isModalVisible}
@@ -108,53 +168,42 @@ export default function Users() {
         onPressRight={() => setIsModal(true)}
       />
       <SectionList
-        sections={[
-          {
-            title: 'A',
-            data: ['ALTERED', 'ABBY', 'ACTION U.S.A.', 'AMUCK', 'ANGUISH'],
-          },
-          {
-            title: 'B',
-            data: [
-              'BEST MEN',
-              'BEYOND JUSTICE',
-              'BLACK GUNN',
-              'BLOOD RANCH',
-              'BEASTIES',
-            ],
-          },
-          {
-            title: 'C',
-            data: [
-              'CARTEL',
-              'CASTLE OF EVIL',
-              'CHANCE',
-              'COP GAME',
-              'CROSS FIRE',
-            ],
-          },
-        ]}
+        sections={userList ?? []}
         style={{paddingTop: 3}}
-        renderItem={({item}) => (
-          <>
-            <TouchRipple
-              darkRipple
-              onPress={() => {
-                navigation.navigate('Add_Form_User', {mode: 'edit'});
-              }}>
-              <MyText textStyle={styles.item} label={item} />
-            </TouchRipple>
-            <Divider />
-          </>
-        )}
+        renderItem={({item}) => {
+          console.log('item', item);
+          return (
+            <>
+              <TouchRipple
+                darkRipple
+                onPress={() => {
+                  navigation.navigate('Add_Form_User', {
+                    mode: 'edit',
+                    userInfo: {id: item.id},
+                  });
+                }}>
+                <MyText
+                  textStyle={styles.item}
+                  label={item.firstName + ' ' + item.lastName}
+                />
+              </TouchRipple>
+              <Divider />
+            </>
+          );
+        }}
         SectionSeparatorComponent={() => <Divider width={1} />}
-        renderSectionHeader={({section}) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-        )}
+        renderSectionHeader={({section: {title}}) => {
+          return <Text style={styles.sectionHeader}>{title}</Text>;
+        }}
         keyExtractor={(item, index) => index}
       />
       <FAB
-        onPress={() => navigation.navigate('Add_Form_User', {mode: 'add'})}
+        onPress={() =>
+          navigation.navigate('Add_Form_User', {
+            mode: 'add',
+            userInfo: {id: null},
+          })
+        }
         icon={{
           name: 'add',
           color: colors.background,
