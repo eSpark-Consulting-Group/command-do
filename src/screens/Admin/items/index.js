@@ -1,5 +1,5 @@
 import React, {useState, useReducer, useCallback} from 'react';
-import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {FlatList, StyleSheet, View, TouchableOpacity, Image} from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
 import {useLazyQuery} from '@apollo/client';
@@ -19,16 +19,6 @@ import OverlayLoader from '../../../components/OverlayLoader';
 import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 
-const sampleItems = [
-  {name: 'Chicken Biryani', category: 'Rice', amount: 150},
-  {name: 'Sada Biryani', category: 'Rice', amount: 150},
-  {name: 'Chicken Pulao', category: 'Rice', amount: 150},
-  {name: 'Sada Pulao', category: 'Rice', amount: 150},
-  {name: 'Fanta 200ml', category: 'Beverages', amount: 150},
-  {name: 'Lays (50 wala)', category: 'Snacks', amount: 150},
-  {name: 'Anda Gotala', category: 'Salan', amount: 150},
-  {name: 'Chicken Karahi', category: 'Salan', amount: 150},
-];
 
 export default function Items() {
   const categoryPrefix = {name: 'All', color: true, id: undefined};
@@ -40,6 +30,7 @@ export default function Items() {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
     });
+
   const [
     LoadItems,
     {data: itemData, refetch: refetchItems, loading: itemsLoading},
@@ -57,20 +48,17 @@ export default function Items() {
 
   useFocusEffect(
     React.useCallback(() => {
-      LoadItems();
+      LoadItems({
+        variables: undefined
+      });
       getAllCategories();
     }, [refetch, refetchItems]),
   );
 
   const getItems = async selected => {
-    console.log('PPPPBBBB', selected);
     if (selected?.id == undefined) {
       await LoadItems({
-        variables: {
-          where: {
-            categoryId: undefined,
-          },
-        },
+        variables: undefined
       });
     } else {
       await LoadItems({
@@ -86,12 +74,10 @@ export default function Items() {
   const getAllCategories = async () => {
     try {
       const res = await LoadCategories();
-      console.log('===>>', JSON.stringify(res?.data?.getAllCategories));
       if (res?.data?.getAllCategories?.status) {
         const {data} = res?.data?.getAllCategories;
         let newData = data.map(item => ({...item, color: false}));
         setCategoryData([categoryPrefix, ...newData]);
-        console.log('==xxx>', categoryData);
       }
     } catch (e) {
       console.log('error while fetching', e);
@@ -106,7 +92,6 @@ export default function Items() {
     );
     setCategoryData(temp);
     temp.forEach(item => (item.color ? (selected = item) : null));
-    console.log(categoryData);
     forceUpdate();
     getItems(selected);
   };
@@ -114,9 +99,6 @@ export default function Items() {
   // const handleIncreament = () => {
   //   dispatchCount({type: 'increment'});
   // };
-
-  console.log('XXZWASD', itemData?.getAllItems?.data);
-
   return (
     <View style={styles.container}>
       <OverlayLoader show={categoryLoader || itemsLoading} />
@@ -154,7 +136,7 @@ export default function Items() {
                     navigation.navigate('Add_Form', {
                       mode: 'edit',
                       type: 'category',
-                      itemData: {},
+                      itemData: categoryData?.filter(value => value?.color)[0],
                     })
                   }
                 />
@@ -180,7 +162,6 @@ export default function Items() {
               <TouchableOpacity
                 style={{padding: 10}}
                 onPress={() => {
-                  console.log('touched', item.color);
                   handlePress(index);
                 }}>
                 <MyText
@@ -227,7 +208,8 @@ export default function Items() {
                     })
                   }>
                   <View style={{flexDirection: 'row'}}>
-                    <View
+                    <Image
+                      source={{uri: item?.image}}
                       style={{
                         height: 50,
                         width: 50,
