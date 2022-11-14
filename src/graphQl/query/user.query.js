@@ -24,6 +24,38 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const GET_ALL_USERS = gql`
+  query Query {
+    getAllUsers {
+      message
+      data {
+        alphabet
+        record {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`;
+
+export const GET_USER_DETAIL = gql`
+  query Query($id: Int) {
+    getUserById(id: $id) {
+      message
+      status
+      error
+      data {
+        firstName
+        lastName
+        email
+        role
+      }
+    }
+  }
+`;
+
 export const CHANGE_PASS = gql`
   mutation ChangePassword(
     $currentPassword: String!
@@ -36,6 +68,7 @@ export const CHANGE_PASS = gql`
       id: $changePasswordId
     ) {
       status
+      message
       data {
         password
         id
@@ -44,7 +77,6 @@ export const CHANGE_PASS = gql`
         lastName
         avatar
       }
-      message
     }
   }
 `;

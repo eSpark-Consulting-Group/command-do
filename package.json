@@ -8,8 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "emulate": "react-native run-android --deviceId=emulator-5554",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "emulate": "react-native run-android --deviceId=emulator-5554"
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
@@ -29,6 +29,7 @@
     "image-picker": "^0.3.1",
     "moment": "^2.29.4",
     "patch-package": "^6.5.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.0.0",
     "react-native": "^0.69.2",
     "react-native-animated-numbers": "^0.4.1",
