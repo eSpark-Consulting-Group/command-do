@@ -70,22 +70,22 @@ export default function PurchasingList({navigation}) {
       message: 'Order Summary',
       totalAmount: 600,
       data: [
-        {
-          item: {
-            name: 'Chicken Biryani',
-            id: 1,
-          },
-          amount: 170,
-          quantity: 2,
-          itemId: 2,
-        },
+        // {
+        //   item: {
+        //     name: 'Chicken Biryani',
+        //     id: 1,
+        //   },
+        //   amount: 170,
+        //   quantity: 0,
+        //   itemId: 2,
+        // },
         {
           item: {
             name: 'Chicken Pulao',
             id: 2,
           },
           amount: 170,
-          quantity: 5,
+          quantity: 3,
           itemId: 2,
         },
         // {
@@ -97,21 +97,30 @@ export default function PurchasingList({navigation}) {
         //   quantity: 0,
         //   itemId: 2,
         // },
+        // {
+        //   item: {
+        //     name: 'Sada Biryani',
+        //     id: 3,
+        //   },
+        //   amount: 130,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
+        // {
+        //   item: {
+        //     name: 'Sada Pulao',
+        //     id: 3,
+        //   },
+        //   amount: 130,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
         {
           item: {
-            name: 'Sada Biryani',
+            name: 'Karahi',
             id: 3,
           },
-          amount: 130,
-          quantity: 1,
-          itemId: 3,
-        },
-        {
-          item: {
-            name: 'Sada Pulao',
-            id: 3,
-          },
-          amount: 130,
+          amount: 250,
           quantity: 1,
           itemId: 3,
         },
@@ -124,22 +133,22 @@ export default function PurchasingList({navigation}) {
         //   quantity: 0,
         //   itemId: 3,
         // },
-        // {
-        //   item: {
-        //     name: 'Daal Mash Fry',
-        //     id: 3,
-        //   },
-        //   amount: 140,
-        //   quantity: 1,
-        //   itemId: 3,
-        // },
+        {
+          item: {
+            name: 'Daal Mash Fry',
+            id: 3,
+          },
+          amount: 140,
+          quantity: 1,
+          itemId: 3,
+        },
         {
           item: {
             name: 'Raita',
             id: 3,
           },
           amount: 25,
-          quantity: 5,
+          quantity: 4,
           itemId: 3,
         },
         // {
@@ -157,7 +166,7 @@ export default function PurchasingList({navigation}) {
         //     id: 3,
         //   },
         //   amount: 20,
-        //   quantity: 1,
+        //   quantity: 0,
         //   itemId: 3,
         // },
         {
@@ -166,18 +175,18 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 40,
-          quantity: 2,
+          quantity: 4,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'Naan',
-            id: 3,
-          },
-          amount: 20,
-          quantity: 3,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Naan',
+        //     id: 3,
+        //   },
+        //   amount: 20,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Chapati',
@@ -187,40 +196,40 @@ export default function PurchasingList({navigation}) {
           quantity: 2,
           itemId: 3,
         },
-        // {
-        //   item: {
-        //     name: 'Bhatti Naan',
-        //     id: 3,
-        //   },
-        //   amount: 17,
-        //   quantity: 3,
-        //   itemId: 3,
-        // },
+        {
+          item: {
+            name: 'Bhatti Naan',
+            id: 3,
+          },
+          amount: 17,
+          quantity: 3,
+          itemId: 3,
+        },
         {
           item: {
             name: 'Bhatti Chapati',
             id: 3,
           },
           amount: 17,
-          quantity: 6,
+          quantity: 18,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'French Fries',
-            id: 3,
-          },
-          amount: 50,
-          quantity: 1,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'French Fries',
+        //     id: 3,
+        //   },
+        //   amount: 50,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
         // {
         //   item: {
         //     name: 'Chocolate Sandwich(Rs. 30 Half roll) ',
         //     id: 3,
         //   },
         //   amount: 30,
-        //   quantity: 2,
+        //   quantity: 0,
         //   itemId: 3,
         // },
         {
@@ -247,7 +256,7 @@ export default function PurchasingList({navigation}) {
         //     id: 3,
         //   },
         //   amount: 40,
-        //   quantity: 1,
+        //   quantity: 0,
         //   itemId: 3,
         // },
         // {
@@ -256,7 +265,7 @@ export default function PurchasingList({navigation}) {
         //     id: 3,
         //   },
         //   amount: 40,
-        //   quantity: 2,
+        //   quantity: 0,
         //   itemId: 3,
         // },
         {
@@ -265,57 +274,48 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 40,
-          quantity: 1,
+          quantity: 2,
           itemId: 3,
         },
-        {
-          item: {
-            name: 'Slanty Red (Rs .50)',
-            id: 3,
-          },
-          amount: 50,
-          quantity: 1,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Slanty Red (Rs .50)',
+        //     id: 3,
+        //   },
+        //   amount: 50,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
         // {
         //   item: {
         //     name: 'Cheetos(Rs. 30)',
         //     id: 3,
         //   },
         //   amount: 30,
-        //   quantity: 1,
+        //   quantity: 0,
         //   itemId: 3,
         // },
-        {
-          item: {
-            name: 'Slice juice bottle(Rs. 70)',
-            id: 3,
-          },
-          amount: 70,
-          quantity: 1,
-          itemId: 3,
-        },
         // {
         //   item: {
-        //     name: 'Slice mini box(Rs. 40)',
+        //     name: 'Slice juice bottle(Rs. 70)',
         //     id: 3,
         //   },
-        //   amount: 40,
-        //   quantity: 2,
+        //   amount: 70,
+        //   quantity: 0,
         //   itemId: 3,
         // },
         {
           item: {
-            name: 'Cloud 9 Chocolate(Rs. 10)',
+            name: 'Slice mini box(Rs. 40)',
             id: 3,
           },
-          amount: 10,
+          amount: 40,
           quantity: 2,
           itemId: 3,
         },
         {
           item: {
-            name: 'Yums(Rs. 10)',
+            name: 'Cloud 9 Chocolate(Rs. 10)',
             id: 3,
           },
           amount: 10,
@@ -324,11 +324,20 @@ export default function PurchasingList({navigation}) {
         },
         // {
         //   item: {
+        //     name: 'Yums(Rs. 10)',
+        //     id: 3,
+        //   },
+        //   amount: 10,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
+        // {
+        //   item: {
         //     name: 'Fanty toffee(Rs. 2)',
         //     id: 3,
         //   },
         //   amount: 2,
-        //   quantity: 6,
+        //   quantity: 0,
         //   itemId: 3,
         // },
         // {
@@ -337,27 +346,27 @@ export default function PurchasingList({navigation}) {
         //     id: 3,
         //   },
         //   amount: 100,
-        //   quantity: 1,
-        //   itemId: 3,
-        // },
-        // {
-        //   item: {
-        //     name: 'Banana Khajoor Shake',
-        //     id: 3,
-        //   },
-        //   amount: 80,
-        //   quantity: 6,
+        //   quantity: 0,
         //   itemId: 3,
         // },
         {
           item: {
-            name: '7UP 500ml',
+            name: 'Banana Khajoor Shake',
             id: 3,
           },
-          amount: 70,
-          quantity: 1,
+          amount: 80,
+          quantity: 4,
           itemId: 3,
         },
+        // {
+        //   item: {
+        //     name: '7UP 500ml',
+        //     id: 3,
+        //   },
+        //   amount: 70,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
       ],
     };
 
