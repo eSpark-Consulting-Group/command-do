@@ -54,12 +54,14 @@ const Login = ({navigation}) => {
             message: userData.data?.loginUser?.message,
             type: 'success',
             icon: 'auto',
+            duration: 500,
           });
         } else {
           showMessage({
-            message: 'Email or Password is incorrect or you select wrong role!',
+            message: 'This email is not valid for selected role!',
             type: 'danger',
             icon: 'auto',
+            duration: 500,
           });
         }
       } else {

@@ -5,13 +5,14 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  SectionList,
   Text,
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {MyHeader, MyText, OrderHistoryCard} from '../../../components';
-import {SCREEN_HEIGHT} from '../../../constants';
+import {GapView, MyHeader, MyText, OrderHistoryCard} from '../../../components';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {getOrderHistory} from '../../../features/userInfo/userInfoSlice';
 import {ALL_ORDERS} from '../../../graphQL/query/orders.query';
 import {colors} from '../../../theme';
@@ -43,40 +44,38 @@ export default function OrderHistory() {
 
   return (
     <View style={{alignItems: 'center'}}>
-      <MyHeader
-        onPressLeft={() => navigation?.navigate('Home')}
-        leftIcon="arrow-back"
-        title="Order History"
-        titleStyle={{
-          fontFamily: 'Poppins-Bold',
+      <SectionList
+        sections={orderHistory}
+        contentContainerStyle={{
+          paddingVertical: 5,
+          alignItems: 'center',
         }}
-      />
-      <FlatList
-        data={orderHistory}
-        style={{width: '100%', top: SCREEN_HEIGHT * 0.006}}
-        contentContainerStyle={{alignItems: 'center'}}
-        refreshControl={
-          <RefreshControl refreshing={false} onRefresh={fetchOrders} />
-        }
-        renderItem={
-          ({item}) => (
-            <OrderHistoryCard
-              name={item.User.firstName + ' ' + item.User.lastName}
-              amount={item.totalAmount}
-              order={item.OrderItems}
-              paid={item.status}
-              paidAmount={item.paidAmount}
-              remainingAmount={item.remainingAmount}
-            />
-          )
-          // <OrderCard
-          //   name={item.User.firstName + ' ' + item.User.lastName}
-          //   amount={item.totalAmount}
-          //   order={item.OrderItems}
-          //   paid={item.status}
-          //   onCollect={() => openOverlay(item.totalAmount, item.id)}
-          // />
-        }
+        renderItem={({item}) => (
+          <OrderHistoryCard
+            name={item.User.firstName + ' ' + item.User.lastName}
+            amount={item.totalAmount}
+            order={item.OrderItems}
+            paid={item.status}
+            paidAmount={item.paidAmount}
+            remainingAmount={item.remainingAmount}
+          />
+        )}
+        SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
+        renderSectionHeader={({section}) => (
+          <MyText
+            textStyle={{
+              width: SCREEN_WIDTH * 1,
+              textAlign: 'center',
+              // paddingVertical: 2,
+              fontSize: 22,
+              color: colors.text_inverse,
+              backgroundColor: colors.primary,
+              elevation: 1,
+            }}
+            label={section.title}
+          />
+        )}
+        keyExtractor={(item, index) => index}
         ListEmptyComponent={
           loading ? (
             <View
@@ -99,12 +98,6 @@ export default function OrderHistory() {
           )
         }
       />
-      {/* <OrderHistoryCard
-        name="Wirad Ali"
-        amount={250}
-        paid={'PAID'}
-        order={[{Item: {name: 'Chicken Biryani'}, quantity: 2}]}
-      /> */}
     </View>
   );
 }
