@@ -61,13 +61,19 @@ export default function AddForm() {
 
   const handleDeleteUser = () => {
     const _deleteUser = async () => {
-      // const res = await DeleteUser({
-      //   variables: {
-      //     deleteUserId: id,
-      //   },
-      // });
-      // console.log('res =>', res.data);
-      console.log('deleter');
+      const res = await DeleteUser({
+        variables: {
+          deleteUserId: id,
+        },
+      });
+      if (res?.data?.deleteUser?.status) {
+        navigation.goBack();
+        showMessage({
+          message: res?.data?.deleteUser?.message,
+          autoHide: true,
+          type: 'success',
+        });
+      }
     };
     Alert.alert('Delete User', 'User will be permenantly deleted.', [
       {
