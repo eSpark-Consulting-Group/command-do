@@ -80,3 +80,19 @@ export const CHANGE_PASS = gql`
     }
   }
 `;
+export const GET_CURRENT_REMAINING_AMOUNT = gql`
+query GetCurrentRemainingAmount($userId: Int!) {
+  getCurrentRemainingAmount(userId: $userId) {
+    data {
+      id
+      paidAmount
+      remainingAmount
+      totalAmount
+      userId
+    }
+    error
+    message
+    status
+  }
+}
+`;
