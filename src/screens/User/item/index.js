@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -11,16 +11,18 @@ import {
   UIManager,
   Platform,
 } from 'react-native';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { MyText, DropDownAlert } from '../../../components';
-import { addItem, increase } from '../../../features/cart/cartSlice';
-import { styles } from './styles';
+import {MyText, DropDownAlert} from '../../../components';
+import {addItem, increase} from '../../../features/cart/cartSlice';
+import {styles} from './styles';
+import {colors} from '../../../theme';
+import {SCREEN_HEIGHT} from '../../../constants';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-function Items({ route, navigation }) {
+function Items({route, navigation}) {
   const getRouteData = route.params;
   const childFunc = React.useRef(null);
   const qtyWarn = React.useRef(null);
@@ -98,7 +100,7 @@ function Items({ route, navigation }) {
 
   const addToCart = value => {
     // console.log('value---->', value);
-    var changeData = { ...getData };
+    var changeData = {...getData};
     changeData.quantity = value;
     setGetData(changeData);
   };
@@ -157,7 +159,7 @@ function Items({ route, navigation }) {
 
   return (
     <>
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <DropDownAlert
           childFunc={childFunc}
           setPress={checkSetPress}
@@ -175,7 +177,7 @@ function Items({ route, navigation }) {
         <View style={styles.mainContainer}>
           <View style={styles.itemImageContainer}>
             <ImageBackground
-              source={{ uri: getData?.image }}
+              source={{uri: getData?.image}}
               style={styles.imageBackground}>
               <TouchableOpacity
                 style={styles?.itemImageBackIcon}
@@ -192,9 +194,11 @@ function Items({ route, navigation }) {
             <View style={styles.subHeadingContainer}>
               <MyText
                 label={getData?.name}
-                textStyle={{ fontSize: height * 0.03 }}
+                textStyle={{fontSize: height * 0.03}}
               />
-              {(editData?.length == 0 ? animateToNumber != 0 : editMode != 0) ? (
+              {(
+                editData?.length == 0 ? animateToNumber != 0 : editMode != 0
+              ) ? (
                 <View style={styles.numericBtnContainer}>
                   <TouchableOpacity
                     style={styles.removeNumericButton}
@@ -237,17 +241,18 @@ function Items({ route, navigation }) {
                 style={{color: 'gray', width: width * 0.7}}
               />
             </View> */}
-            <View style={{ width: '100%', marginTop: height * 0.02 }}>
-              <MyText label={'Amount'} textStyle={{ fontSize: height * 0.025 }} />
+            <View style={{width: '100%', marginTop: height * 0.02}}>
+              <MyText label={'Amount'} textStyle={{fontSize: height * 0.025}} />
               <MyText
                 label={getData?.price}
-                textStyle={{ fontSize: height * 0.025 }}
+                textStyle={{fontSize: height * 0.025}}
               />
             </View>
             <View
               style={{
                 width: '100%',
                 marginTop: height * 0.02,
+                marginBottom: height * 0.01,
               }}>
               <MyText label={'Special Instruction'} title />
               <MyText
@@ -255,7 +260,7 @@ function Items({ route, navigation }) {
                   'Please let us know if you are alergic to anything or if we need to avoid anything'
                 }
                 subTitle
-                textStyle={{ color: 'gray', width: width * 0.7 }}
+                textStyle={{color: 'gray', width: width * 0.7}}
               />
             </View>
             <View
@@ -287,17 +292,13 @@ function Items({ route, navigation }) {
           {count?.cart?.amount != 0 && (
             <View style={styles.cartCountStyle}>
               <MyText
-                label={
-                  count?.cart?.amount > 99 ? '99+' : count?.cart?.amount
-                }
+                label={count?.cart?.amount > 99 ? '99+' : count?.cart?.amount}
                 subTitle
-                style={{
-                  color: 'white',
-                }}
+                textStyle={{color: 'white'}}
               />
             </View>
           )}
-          <MyText label={'Checkout Cart'} title style={{ color: 'white' }} />
+          <MyText label={'Checkout Cart'} title textStyle={{color: 'white'}} />
           <Icon
             name="cart-outline"
             size={height * 0.03}
@@ -305,7 +306,7 @@ function Items({ route, navigation }) {
             style={{
               position: 'absolute',
               right: height * 0.01,
-              transform: [{ scaleX: -1 }],
+              transform: [{scaleX: -1}],
             }}
           />
         </TouchableOpacity>
