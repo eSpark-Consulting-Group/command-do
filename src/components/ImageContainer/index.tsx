@@ -65,6 +65,7 @@ export default function ImageContainer({
       />
       <MyInput
         label="Enter Image Url"
+        value={image?.uri}
         handleChangeText={text => {
           const Image = {uri: text};
           setImage(Image);

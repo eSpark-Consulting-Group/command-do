@@ -42,6 +42,7 @@ export const GET_CATEGORIES_WITH_ID = gql`
       data {
         id
         name
+        image
         createdAt
         updatedAt
         Item {
