@@ -12,27 +12,28 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist'
+} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import adminOrderSlice from '../features/adminOrders/adminOrderSlice';
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-}
+};
 
 const rootReducer = combineReducers({
   cart: cartReducer,
   profile: profileReducer,
   riderOrder: riderOrderSlice,
   userInfo: userInfoSlice,
-})
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+  adminOrder: adminOrderSlice,
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
@@ -40,10 +41,9 @@ const store = configureStore({
     }),
 });
 
- const persistor = persistStore(store)
+const persistor = persistStore(store);
 
 export default {
   store,
-  persistor
-}
-
+  persistor,
+};

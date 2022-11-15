@@ -31,17 +31,16 @@ export default function CurrentOrders({navigation}) {
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    console.log('Date', new Date().toString());
-    fetchOrders()
-      // make sure to catch any error
-      .catch(console.error);
+    fetchOrders();
   }, []);
 
   const fetchOrders = async () => {
+    const currDate = new Date().setHours(0);
+    console.log('Date', currDate);
     const orders = await GetAllOrders({
       variables: {
         getOrderInput: {
-          createdAt: '2022-11-06T16:08:34.323Z',
+          createdAt: currDate,
         },
       },
     });
