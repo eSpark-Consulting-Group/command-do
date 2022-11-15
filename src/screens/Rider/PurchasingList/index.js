@@ -85,18 +85,18 @@ export default function PurchasingList({navigation}) {
             id: 2,
           },
           amount: 170,
-          quantity: 3,
+          quantity: 1,
           itemId: 2,
         },
-        // {
-        //   item: {
-        //     name: 'Chana Pulao',
-        //     id: 2,
-        //   },
-        //   amount: 100,
-        //   quantity: 0,
-        //   itemId: 2,
-        // },
+        {
+          item: {
+            name: 'Chana Pulao',
+            id: 2,
+          },
+          amount: 120,
+          quantity: 2,
+          itemId: 2,
+        },
         // {
         //   item: {
         //     name: 'Sada Biryani',
@@ -115,51 +115,51 @@ export default function PurchasingList({navigation}) {
         //   quantity: 0,
         //   itemId: 3,
         // },
-        {
-          item: {
-            name: 'Karahi',
-            id: 3,
-          },
-          amount: 250,
-          quantity: 1,
-          itemId: 3,
-        },
         // {
         //   item: {
-        //     name: 'Daal Chana Fry',
+        //     name: 'Karahi',
         //     id: 3,
         //   },
-        //   amount: 120,
+        //   amount: 250,
         //   quantity: 0,
         //   itemId: 3,
         // },
         {
           item: {
-            name: 'Daal Mash Fry',
+            name: 'Daal Chana Fry',
             id: 3,
           },
-          amount: 140,
+          amount: 120,
           quantity: 1,
           itemId: 3,
         },
+        // {
+        //   item: {
+        //     name: 'Daal Mash Fry',
+        //     id: 3,
+        //   },
+        //   amount: 140,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Raita',
             id: 3,
           },
           amount: 25,
-          quantity: 4,
+          quantity: 3,
           itemId: 3,
         },
-        // {
-        //   item: {
-        //     name: 'Dahi',
-        //     id: 3,
-        //   },
-        //   amount: 30,
-        //   quantity: 0,
-        //   itemId: 3,
-        // },
+        {
+          item: {
+            name: 'Dahi(Rs. 70)',
+            id: 3,
+          },
+          amount: 70,
+          quantity: 1,
+          itemId: 3,
+        },
         // {
         //   item: {
         //     name: 'Salad',
@@ -175,25 +175,25 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 40,
+          quantity: 8,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Naan',
+            id: 3,
+          },
+          amount: 20,
           quantity: 4,
           itemId: 3,
         },
-        // {
-        //   item: {
-        //     name: 'Naan',
-        //     id: 3,
-        //   },
-        //   amount: 20,
-        //   quantity: 0,
-        //   itemId: 3,
-        // },
         {
           item: {
             name: 'Chapati',
             id: 3,
           },
           amount: 15,
-          quantity: 2,
+          quantity: 9,
           itemId: 3,
         },
         {
@@ -202,7 +202,7 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 17,
-          quantity: 3,
+          quantity: 6,
           itemId: 3,
         },
         {
@@ -211,7 +211,16 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 17,
-          quantity: 18,
+          quantity: 17,
+          itemId: 3,
+        },
+        {
+          item: {
+            name: 'Andy Wala Burger',
+            id: 3,
+          },
+          amount: 110,
+          quantity: 1,
           itemId: 3,
         },
         // {
@@ -238,7 +247,7 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 40,
-          quantity: 1,
+          quantity: 3,
           itemId: 3,
         },
         {
@@ -250,15 +259,15 @@ export default function PurchasingList({navigation}) {
           quantity: 1,
           itemId: 3,
         },
-        // {
-        //   item: {
-        //     name: 'Lays French(Rs .40)',
-        //     id: 3,
-        //   },
-        //   amount: 40,
-        //   quantity: 0,
-        //   itemId: 3,
-        // },
+        {
+          item: {
+            name: 'Lays French(Rs .40)',
+            id: 3,
+          },
+          amount: 40,
+          quantity: 1,
+          itemId: 3,
+        },
         // {
         //   item: {
         //     name: 'Lays Salt(Rs .40)',
@@ -274,18 +283,18 @@ export default function PurchasingList({navigation}) {
             id: 3,
           },
           amount: 40,
-          quantity: 2,
+          quantity: 1,
           itemId: 3,
         },
-        // {
-        //   item: {
-        //     name: 'Slanty Red (Rs .50)',
-        //     id: 3,
-        //   },
-        //   amount: 50,
-        //   quantity: 0,
-        //   itemId: 3,
-        // },
+        {
+          item: {
+            name: 'Slanty Red (Rs .50)',
+            id: 3,
+          },
+          amount: 50,
+          quantity: 1,
+          itemId: 3,
+        },
         // {
         //   item: {
         //     name: 'Cheetos(Rs. 30)',
@@ -304,22 +313,22 @@ export default function PurchasingList({navigation}) {
         //   quantity: 0,
         //   itemId: 3,
         // },
-        {
-          item: {
-            name: 'Slice mini box(Rs. 40)',
-            id: 3,
-          },
-          amount: 40,
-          quantity: 2,
-          itemId: 3,
-        },
+        // {
+        //   item: {
+        //     name: 'Slice mini box(Rs. 40)',
+        //     id: 3,
+        //   },
+        //   amount: 40,
+        //   quantity: 0,
+        //   itemId: 3,
+        // },
         {
           item: {
             name: 'Cloud 9 Chocolate(Rs. 10)',
             id: 3,
           },
           amount: 10,
-          quantity: 3,
+          quantity: 2,
           itemId: 3,
         },
         // {
@@ -351,11 +360,20 @@ export default function PurchasingList({navigation}) {
         // },
         {
           item: {
+            name: 'Strawberry Shake',
+            id: 3,
+          },
+          amount: 60,
+          quantity: 1,
+          itemId: 3,
+        },
+        {
+          item: {
             name: 'Banana Khajoor Shake',
             id: 3,
           },
           amount: 80,
-          quantity: 4,
+          quantity: 5,
           itemId: 3,
         },
         // {
@@ -391,6 +409,7 @@ export default function PurchasingList({navigation}) {
           description: 'to: ' + file.filePath.slice(19),
           type: 'success',
           icon: 'auto',
+          autoHide: false,
         });
         console.log(file.filePath.slice(19));
         setFilePath(file.filePath);
