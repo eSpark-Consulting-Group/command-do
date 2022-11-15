@@ -22,6 +22,11 @@ import {
   UPDATE_ITEM,
 } from '../../../graphQL/mutation/item.mutation';
 import {showMessage} from 'react-native-flash-message';
+import {
+  ADD_NEW_CATEGORY,
+  DELETE_CATEGORY,
+  UPDATE_CATEGORY,
+} from '../../../graphQL/mutation/category.mutation';
 
 export default function AddForm() {
   const navigation = useNavigation();
@@ -44,9 +49,17 @@ export default function AddForm() {
       fetchPolicy: 'cache-and-network',
     },
   );
-  const [UpdateItem, {loading: updateItemLoading}] = useMutation(UPDATE_ITEM);
+
   const [AddNewItem, {loading: addItemLoading}] = useMutation(ADD_ITEM);
+  const [UpdateItem, {loading: updateItemLoading}] = useMutation(UPDATE_ITEM);
   const [DeleteItem, {loading: deleteItemLoading}] = useMutation(DELETE_ITEM);
+
+  const [AddNewCategory, {loading: addCategoryLoading}] =
+    useMutation(ADD_NEW_CATEGORY);
+  const [UpdateCategory, {loading: updateCategoryLoading}] =
+    useMutation(UPDATE_CATEGORY);
+  const [DeleteCategory, {loading: deleteCategoryLoading}] =
+    useMutation(DELETE_CATEGORY);
 
   useEffect(() => {
     LoadCategories();
@@ -59,6 +72,7 @@ export default function AddForm() {
       {
         text: 'Ok',
         style: 'default',
+        onPress: () => deleteCategory()
       },
       {
         text: 'Cancel',
@@ -72,7 +86,7 @@ export default function AddForm() {
       {
         text: 'Ok',
         style: 'default',
-        onPress: () => deleteItem(itemData?.id)
+        onPress: () => deleteItem(itemData?.id),
       },
       {
         text: 'Cancel',
@@ -117,11 +131,14 @@ export default function AddForm() {
       });
   };
 
-  const updateItem = () => {
+  const updateItem = async () => {
     const obj = {
       updateItemId: itemData?.id,
       name: fields?.name,
-      image: fields?.image,
+      image:
+        fields?.image?.uri?.slice(0, 4) == 'file'
+          ? await uploadImage(fields?.image)
+          : fields?.image,
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
@@ -145,7 +162,7 @@ export default function AddForm() {
       });
   };
 
-  const deleteItem = (id) => {
+  const deleteItem = id => {
     DeleteItem({
       variables: {
         deleteItemId: id,
@@ -170,6 +187,91 @@ export default function AddForm() {
       });
   };
 
+  // CATEGORIES ACTIONS
+  const addCategory = async () => {
+    AddNewCategory({
+      variables: {
+        name: fields?.name,
+        image:
+          fields?.image?.uri?.slice(0, 4) == 'file'
+            ? await uploadImage(fields?.image)
+            : fields?.image,
+      },
+    })
+      .then(res => {
+        if (res?.data?.addNewCategory?.status) {
+          showMessage({
+            message: res?.data?.addNewCategory?.message,
+            type: 'success',
+          });
+          navigation?.goBack();
+        } else {
+          showMessage({
+            message: res?.data?.addNewCategory?.message,
+            type: 'danger',
+          });
+        }
+      })
+      .catch(err => {
+        console.log('error', err, obj);
+      });
+  };
+
+  const updateCategory = async () => {
+    UpdateCategory({
+      variables: {
+        updateCategoryId: itemData?.id,
+        name: fields?.name,
+        image:
+          fields?.image?.uri?.slice(0, 4) == 'file'
+            ? await uploadImage(fields?.image)
+            : fields?.image,
+      },
+    })
+      .then(res => {
+        if (res?.data?.updateCategory?.status) {
+          showMessage({
+            message: res?.data?.updateCategory?.message,
+            type: 'success',
+          });
+          navigation?.goBack();
+        } else {
+          showMessage({
+            message: res?.data?.updateCategory?.message,
+            type: 'danger',
+          });
+        }
+      })
+      .catch(err => {
+        console.log('error', err);
+      });
+  };
+
+  const deleteCategory = async () => {
+    DeleteCategory({
+      variables: {
+        deleteCategoryId: itemData?.id,
+      },
+    })
+      .then(res => {
+        if (res?.data?.deleteCategory?.status) {
+          showMessage({
+            message: res?.data?.deleteCategory?.message,
+            type: 'success',
+          });
+          navigation?.goBack();
+        } else {
+          showMessage({
+            message: res?.data?.deleteCategory?.message,
+            type: 'danger',
+          });
+        }
+      })
+      .catch(err => {
+        console.log('error', err);
+      });
+  }
+
   if (mode === 'add') {
     {
       //! Add Category
@@ -177,6 +279,7 @@ export default function AddForm() {
     if (type === 'category') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
+          <OverlayLoader show={addCategoryLoading} />
           <MyHeader
             title="Add Category"
             leftIcon="arrow-back"
@@ -184,16 +287,29 @@ export default function AddForm() {
           />
           <ScrollView style={{paddingHorizontal: 10}}>
             <MySubHeader title="Add Category Details" />
-            <MyInput label="Name" />
-            <ImageContainer />
+            <MyInput
+              label="Name"
+              handleChangeText={text => {
+                setFields({...fields, name: text});
+              }}
+            />
+            <ImageContainer
+              onImageChange={image => {
+                setFields({...fields, image: image});
+              }}
+            />
           </ScrollView>
-          <BottomButton
-            label="Add Category"
-            count={0}
-            totalCount={1}
-            enabled={true}
-            onPress={() => console.log('Done')}
-          />
+          <View style={{height: 60}}>
+            <BottomButton
+              label="Add Category"
+              count={Object.values(fields).filter(val => Boolean(val))?.length}
+              totalCount={2}
+              enabled={
+                Object.values(fields).filter(val => Boolean(val))?.length == 2
+              }
+              onPress={() => addCategory()}
+            />
+          </View>
         </View>
       );
     }
@@ -203,7 +319,7 @@ export default function AddForm() {
     if (type === 'item') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
-           <OverlayLoader show={addItemLoading} />
+          <OverlayLoader show={addItemLoading} />
           <MyHeader
             title="Add Item"
             leftIcon="arrow-back"
@@ -259,6 +375,9 @@ export default function AddForm() {
     if (type === 'category') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
+          <OverlayLoader
+            show={updateCategoryLoading || deleteCategoryLoading}
+          />
           <MyHeader
             title="Edit Category"
             leftIcon="arrow-back"
@@ -276,15 +395,26 @@ export default function AddForm() {
                 setFields({...fields, name: text});
               }}
             />
-            <ImageContainer />
+            <ImageContainer
+              url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
+              onImageChange={image => {
+                setFields({...fields, image: image});
+                // uploadImage(image).then(fireUrl =>
+                // );
+              }}
+            />
           </ScrollView>
-          <BottomButton
-            label="Edit Category"
-            count={0}
-            totalCount={1}
-            enabled={true}
-            onPress={() => console.log('Done')}
-          />
+          <View style={{height: 60}}>
+            <BottomButton
+              label="Edit Category"
+              count={Object.values(fields).filter(val => Boolean(val))?.length}
+              totalCount={2}
+              enabled={
+                Object.values(fields).filter(val => Boolean(val))?.length == 2
+              }
+              onPress={() => updateCategory()}
+            />
+          </View>
         </View>
       );
     }
@@ -329,7 +459,6 @@ export default function AddForm() {
             <ImageContainer
               url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
               onImageChange={image => {
-                console.log('fireUrl fireUrl', image);
                 setFields({...fields, image: image});
                 // uploadImage(image).then(fireUrl =>
                 // );
