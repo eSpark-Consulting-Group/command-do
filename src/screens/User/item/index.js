@@ -19,6 +19,8 @@ import {addItem, increase} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
 import {SCREEN_HEIGHT} from '../../../constants';
+import { isValidTimeToOrder } from '../../../utils/helperFunctions';
+import { showMessage } from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -248,7 +250,7 @@ function Items({route, navigation}) {
                 textStyle={{fontSize: height * 0.025}}
               />
             </View>
-            <View
+            {/* <View
               style={{
                 width: '100%',
                 marginTop: height * 0.02,
@@ -275,7 +277,7 @@ function Items({route, navigation}) {
                 numberOfLines={8}
                 placeholderTextColor="gray"
               />
-            </View>
+            </View> */}
           </View>
         </View>
       </ScrollView>

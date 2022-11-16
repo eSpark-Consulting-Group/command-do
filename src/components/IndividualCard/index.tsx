@@ -14,6 +14,7 @@ import {Fonts} from '../../utils/fonts';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {MyText} from '..';
 import { NotFound } from '../../assets/images';
+import { colors } from '../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -137,6 +138,7 @@ const IndividualCard = props => {
                                 ? '99+'
                                 : Number(cartItem?.quantity).toString()
                             }
+                            textStyle={{color: colors.background}}
                           />
                         </View>
                       )}
