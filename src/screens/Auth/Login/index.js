@@ -20,6 +20,7 @@ import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
 import {showMessage} from 'react-native-flash-message';
+import { sendFCMToken } from '../../../utils/helperFunctions';
 
 const {width, height} = Dimensions.get('window');
 
@@ -38,11 +39,12 @@ const Login = ({navigation}) => {
   console.log('emailRef', emailRef?.current, passRef.current);
   const handleNavigate = async () => {
     try {
+      const tokenFCM = await sendFCMToken();
       const userData = await LoginUser({
         variables: {
           email: emailRef.current,
           password: passRef.current,
-          fcmToken: 'send fcm token here',
+          fcmToken: tokenFCM,
         },
       });
       const obj = {...userData.data.loginUser.data};
