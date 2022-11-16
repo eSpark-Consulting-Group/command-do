@@ -43,6 +43,7 @@ const Cards = props => {
                   flexDirection: 'row',
                 }}>
                 <FlatList
+                  pagingEnabled
                   data={item?.Item || []}
                   renderItem={({item: dataItem, index: dataIndex}) => {
                     var cartItem = cart?.cartItems?.find(

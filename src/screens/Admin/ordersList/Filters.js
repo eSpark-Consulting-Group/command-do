@@ -35,7 +35,7 @@ export default function FilterScreen() {
   useUpdateEffect(() => {
     if (route.params !== undefined) {
       console.log('kuch ha', route.params);
-      getUserSelected(route.params.userList);
+      // getUserSelected(route.params.userList);
     }
   }, [route.params]);
 
@@ -109,7 +109,7 @@ export default function FilterScreen() {
           navigation.navigate('OrderList', {
             filterInfo: {
               dateRange: selectDate,
-              userInfo: route?.params?.user ?? null,
+              userInfo: route?.params?.userId ?? null,
             },
           });
         }}
