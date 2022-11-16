@@ -2,16 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Divider} from '@rneui/themed';
-
-import {SearchBar, TouchRipple} from '../../../components';
-import {ALL_ITEMS, SEARCH_ITEMS} from '../../../graphQL/query/item.query';
 import {useLazyQuery} from '@apollo/client';
+
+import {SearchBar, TouchRipple} from '../../components';
+import {GET_ALL_ITEMS, SEARCH_ITEMS} from '../../graphQL/query/item.query';
 
 export default function SearchItem({route}) {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [lunchItems, setLunchItems] = useState([]);
-  const [GetAllItems, {loading}] = useLazyQuery(ALL_ITEMS);
+  const [GetAllItems, {loading}] = useLazyQuery(GET_ALL_ITEMS);
   const [SearchItems, {loading: searchLoading}] = useLazyQuery(SEARCH_ITEMS);
 
   const fetchOrders = async () => {
@@ -58,10 +58,12 @@ export default function SearchItem({route}) {
             <TouchRipple
               rippleColor="#bdbdbd40"
               onPress={() =>
-                navigation.navigate(route.params.navigateTo, {
-                  foodType: item?.name,
-                  item: item,
-                })
+                navigation.navigate(
+                  route.params.navigateTo,
+                  route.params.navigateTo == 'Add_Form'
+                    ? {mode: 'edit', type: 'item', itemData: item}
+                    : {foodType: item?.name, item: item},
+                )
               }>
               <Text style={styles.item}>{item.name}</Text>
             </TouchRipple>

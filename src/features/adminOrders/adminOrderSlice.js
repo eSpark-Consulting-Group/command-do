@@ -16,7 +16,7 @@ const adminOrderSlice = createSlice({
     getOrdersByDate: (state, action) => {
       console.log('Action', action.payload);
       let order = [];
-      action.payload.map(item => {
+      action.payload?.map(item => {
         order.push({
           title: new Date(item.createdAt).toString().slice(0, 15),
           data: [item],

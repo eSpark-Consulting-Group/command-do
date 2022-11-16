@@ -34,6 +34,8 @@ export default function AddForm() {
   const isFocused = useIsFocused();
   const {mode, type, itemData} = route?.params;
 
+  console.log('ITEM DATA', itemData);
+
   const [catToggle, setCatToggle] = useState(false);
   const [fields, setFields] = useState({
     name: itemData?.name,
@@ -72,7 +74,7 @@ export default function AddForm() {
       {
         text: 'Ok',
         style: 'default',
-        onPress: () => deleteCategory()
+        onPress: () => deleteCategory(),
       },
       {
         text: 'Cancel',
@@ -270,7 +272,7 @@ export default function AddForm() {
       .catch(err => {
         console.log('error', err);
       });
-  }
+  };
 
   if (mode === 'add') {
     {
