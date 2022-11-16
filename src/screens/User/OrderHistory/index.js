@@ -45,7 +45,7 @@ export default function OrderHistory() {
   return (
     <View style={{alignItems: 'center'}}>
       <SectionList
-        sections={orderHistory}
+        sections={orderHistory || []}
         contentContainerStyle={{
           paddingVertical: 5,
           alignItems: 'center',
