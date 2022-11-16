@@ -30,7 +30,7 @@ const userInfoSlice = createSlice({
           data: [item],
         });
       });
-      state.orders = order;
+      state.orders = order?.reverse();
     },
     logout: (state, action) => {
       state.userData = null;
