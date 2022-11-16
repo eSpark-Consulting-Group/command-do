@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   itemImageContainer: {
-    height: height * 0.35,
+    height: height * 0.75,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
     // marginLeft: height * .01
   },
   itemDetailContainer: {
-    height: height * 0.61,
+    height: height * 0.21,
     backgroundColor: 'white',
     alignItems: 'center',
     position: 'relative',
