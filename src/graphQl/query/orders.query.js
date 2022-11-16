@@ -1,7 +1,7 @@
 import {gql} from '@apollo/client';
 
 export const ALL_ORDERS = gql`
-  query GetAllOrders($getOrderInput: GetOrderInput) {
+ query GetAllOrders($getOrderInput: GetOrderInput) {
     getAllOrders(GetOrderInput: $getOrderInput) {
       data {
         id
@@ -23,6 +23,13 @@ export const ALL_ORDERS = gql`
           quantity
         }
         createdAt
+        userId
+        Rider {
+          firstName
+          lastName
+          id
+        }
+        riderId
       }
       status
       message
