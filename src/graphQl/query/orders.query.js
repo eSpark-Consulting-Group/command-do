@@ -29,3 +29,21 @@ export const ALL_ORDERS = gql`
     }
   }
 `;
+
+export const ORDERS_BY_DATE = gql`
+  query GetOrderOverviewByDate($startDate: Date!, $endDate: Date!) {
+    getOrderOverviewByDate(startDate: $startDate, endDate: $endDate) {
+      data {
+        rider {
+          firstName
+          lastName
+        }
+        totalOrders
+        totalAmount
+        createdAt
+      }
+      message
+      status
+    }
+  }
+`;

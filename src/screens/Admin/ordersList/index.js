@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SectionList, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, SectionList, StyleSheet, View} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
@@ -12,17 +12,62 @@ import {
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {colors} from '../../../theme';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
+import {useEffect} from 'react';
+import {useLazyQuery} from '@apollo/client';
+import {ALL_ORDERS, ORDERS_BY_DATE} from '../../../graphQL/query/orders.query';
+import {getOrdersByDate} from '../../../features/adminOrders/adminOrderSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function OrdersList() {
   const navigation = useNavigation();
   const route = useRoute();
+  const [GetOrdersByDate, {loading: loadingByDate}] =
+    useLazyQuery(ORDERS_BY_DATE);
+  const [GetAllUserOrders, {loading}] = useLazyQuery(ALL_ORDERS);
+  const dispatch = useDispatch();
+  const ordersByDate = useSelector(store => store.adminOrder.adminOrders);
   const condition =
     route?.params?.filterInfo?.userInfo === undefined ||
     route?.params?.filterInfo?.userInfo === null;
 
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    const currDate = new Date().setHours(0);
+    console.log('Date', new Date(currDate));
+    const orders = await GetOrdersByDate({
+      variables: {
+        startDate: currDate,
+        endDate: new Date(),
+      },
+    });
+    dispatch(getOrdersByDate(orders.data.getOrderOverviewByDate.data));
+    // console.log('orders.data', orders.data.getOrderOverviewByDate.data);
+    console.log('ordersByDate', ordersByDate);
+  };
+
+  const fetchUserOrders = async userId => {
+    console.log('User ID', userId);
+    const orders = await GetAllUserOrders({
+      variables: {
+        getOrderInput: {
+          userId: userId,
+        },
+      },
+    });
+    console.log('orders.data', orders.data.getAllOrders.data);
+    dispatch(getOrdersByDate(orders.data.getAllOrders.data));
+    // console.log('ordersByDate', ordersByDate);
+  };
+
   useUpdateEffect(() => {
     if (route.params !== undefined) {
-      console.log('qqqqqq', route.params);
+      console.log('qqqqqq', route.params.filterInfo);
+      condition
+        ? fetchOrders(route.params.filterInfo.dateRange)
+        : fetchUserOrders(route.params.filterInfo.userInfo);
     }
   }, [route.params]);
 
@@ -42,21 +87,30 @@ export default function OrdersList() {
               label="Rider"
               textStyle={{textAlign: 'center', fontWeight: 'bold'}}
             />
-            <MyText label={item.rider} textStyle={{textAlign: 'center'}} />
+            <MyText
+              label={item.rider ? item.rider?.firstName : 'In Progress'}
+              textStyle={{textAlign: 'center'}}
+            />
           </View>
           <View>
             <MyText
               label="Orders Placed"
               textStyle={{textAlign: 'center', fontWeight: 'bold'}}
             />
-            <MyText label={item.orders} textStyle={{textAlign: 'center'}} />
+            <MyText
+              label={item.totalOrders}
+              textStyle={{textAlign: 'center'}}
+            />
           </View>
           <View>
             <MyText
               label="Lunch Amount"
               textStyle={{textAlign: 'center', fontWeight: 'bold'}}
             />
-            <MyText label={item.amount} textStyle={{textAlign: 'center'}} />
+            <MyText
+              label={item.totalAmount}
+              textStyle={{textAlign: 'center'}}
+            />
           </View>
         </TouchRipple>
       </MyCard>
@@ -64,6 +118,7 @@ export default function OrdersList() {
   };
 
   const RenderUserwise = ({item}) => {
+    console.log('Item', item?.User?.firstName);
     return (
       <MyCard cardStyle={styles.item}>
         <TouchRipple
@@ -84,7 +139,10 @@ export default function OrdersList() {
               label="Order Holder"
               textStyle={{textAlign: 'center', fontWeight: 'bold'}}
             />
-            <MyText label={item.user.name} textStyle={{textAlign: 'center'}} />
+            <MyText
+              label={item?.User?.firstName}
+              textStyle={{textAlign: 'center'}}
+            />
           </View>
           <View>
             <MyText
@@ -93,12 +151,12 @@ export default function OrdersList() {
             />
             <View style={{flexDirection: 'row'}}>
               <MyText
-                label={`Rs. ${item.user.paidAmount}`}
+                label={`Rs. ${item?.paidAmount}`}
                 textStyle={{textAlign: 'center'}}
               />
               <MyText label={`/`} textStyle={{textAlign: 'center'}} />
               <MyText
-                label={`${item.user.lunchAmount}`}
+                label={`${item?.totalAmount}`}
                 textStyle={{textAlign: 'center'}}
               />
             </View>
@@ -120,46 +178,9 @@ export default function OrdersList() {
       />
       <GapView length={4} mode="vertical" />
       <SectionList
-        sections={[
-          {
-            title: '31 October 2022',
-            data: [
-              {
-                rider: 'Harison',
-                orders: 36,
-                amount: 2000,
-                user: {name: 'Wirad Ali', lunchAmount: 200, paidAmount: 500},
-              },
-            ],
-          },
-          {
-            title: '30 October 2022',
-            data: [
-              {
-                rider: 'Harison',
-                orders: 31,
-                amount: 1500,
-                user: {name: 'Faraz Uddin', lunchAmount: 500, paidAmount: 500},
-              },
-            ],
-          },
-          {
-            title: '29 October 2022',
-            data: [
-              {
-                rider: 'Harison',
-                orders: 32,
-                amount: 1000,
-                user: {
-                  name: 'Mudassir Ali',
-                  lunchAmount: 250,
-                  paidAmount: 1000,
-                },
-              },
-            ],
-          },
-        ]}
+        sections={ordersByDate}
         renderItem={({item}) =>
+          // <RenderDatewise item={item} />
           condition ? (
             <RenderDatewise item={item} />
           ) : (
@@ -171,6 +192,27 @@ export default function OrdersList() {
           <MyText textStyle={styles.sectionHeader} label={section.title} />
         )}
         keyExtractor={(item, index) => index}
+        ListEmptyComponent={
+          loadingByDate || loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                height: SCREEN_HEIGHT * 0.6,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MyText label={'No Orders'} size={'subHeading'} />
+            </View>
+          )
+        }
       />
     </View>
   );
