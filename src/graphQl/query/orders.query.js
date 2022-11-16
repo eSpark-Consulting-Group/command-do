@@ -47,3 +47,21 @@ export const ORDERS_BY_DATE = gql`
     }
   }
 `;
+export const ORDERS_SUMMARY = gql`
+  query GetOrderSummary($date: Date) {
+    getOrderSummary(date: $date) {
+      status
+      totalAmount
+      message
+      data {
+        amount
+        item {
+          name
+          price
+        }
+        itemId
+        quantity
+      }
+    }
+  }
+`;

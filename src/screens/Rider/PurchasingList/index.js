@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   PermissionsAndroid,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -21,28 +23,43 @@ import {
 } from '../../../components';
 import {colors} from '../../../theme';
 import {pdfHtml} from '../../../utils/purchasingpdf';
-import {orders} from '../../../utils/data';
-
-let arr = [
-  {check: false},
-  {check: false},
-  {check: false},
-  {check: false},
-  {check: false},
-];
+import {useLazyQuery} from '@apollo/client';
+import {ORDERS_SUMMARY} from '../../../graphQL/query/orders.query';
+import {useEffect} from 'react';
 
 export default function PurchasingList({navigation}) {
+  const [GetOrderSummary, {loading}] = useLazyQuery(ORDERS_SUMMARY);
   const [filePath, setFilePath] = useState('');
   const [visible, setVisible] = useState(false);
-  const [check, setCheck] = useState([
-    {check: false},
-    {check: false},
-    {check: false},
-    {check: false},
-    {check: false},
-  ]);
+  const [summary, setSummary] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const fileName = 'PurchasingList';
+
+  useEffect(() => {
+    getSummary();
+  }, []);
+
+  const getSummary = async finalOrders => {
+    const currDate = new Date().setHours(0);
+    const getOrderSummary = await GetOrderSummary({
+      variables: {
+        date: currDate,
+      },
+    });
+    let orders = getOrderSummary.data.getOrderSummary.data;
+    console.log('Update', getOrderSummary.data.getOrderSummary.data);
+    setSummary(orders);
+    let TotalAmount = 0;
+
+    orders.map(item => {
+      TotalAmount = TotalAmount + item.amount;
+      console.log('ORder', item.amount);
+    });
+    console.log('TotalAmount', TotalAmount);
+    setTotalAmount(TotalAmount);
+    navigation.navigate('Purchasing_List');
+  };
 
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
@@ -425,68 +442,45 @@ export default function PurchasingList({navigation}) {
         title="Purchasing List"
         titleStyle={{fontFamily: 'Poppins-Bold'}}
       />
-      {/* <View
-        style={{
-          width: SCREEN_WIDTH,
-          padding: 10,
-          paddingHorizontal: 15,
-          elevation: 5,
-          borderRadius: 2,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: colors.primary,
-        }}>
-        <MyText
-          label={'Purchasing List'}
-          size={'subHeading'}
-          textStyle={{
-            fontWeight: 'bold',
-            fontFamily: 'sans-serif-medium',
-            textAlignVertical: 'center',
-            color: colors.text_inverse,
-          }}
-        />
-      </View> */}
       <PurchasingListHeader
-        checked={!check.some(item => item.check == false)}
-        onAllCheck={val => {
-          check.map((item, index) => {
-            let update = [...check];
-            console.log('Val', !val);
-            update[index].check = !val;
-            setCheck(update);
-          });
-          // if (check.some(item => item.check == false)) {
-          //   check.map((item, index) => {
-          //     let update = [...check];
-          //     update[index].check = true;
-
-          //     setCheck(update);
-          //   });
-          // } else {
-          //   check.map((item, index) => {
-          //     let update = [...check];
-          //     update[index].check = false;
-          //     setCheck(update);
-          //   });
-          // }
-        }}
+      // checked={!check.some(item => item.check == false)}
+      // onAllCheck={val => {
+      //   check.map((item, index) => {
+      //     let update = [...check];
+      //     console.log('Val', !val);
+      //     update[index].check = !val;
+      //     setCheck(update);
+      //   });
+      // }}
       />
       <FlatList
-        data={check}
-        renderItem={({item, index}) => (
-          <PurchasingOrderCard
-            itemName="Chicken Biryani"
-            quantity={2}
-            totalAmount={3500}
-            checked={item.check}
-            onCheck={() => {
-              let update = [...check];
-              update[index].check = !update[index].check;
-              setCheck(update);
-            }}
-          />
-        )}
+        data={summary}
+        renderItem={({item, index}) =>
+          loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            <PurchasingOrderCard
+              itemName={item.item.name}
+              quantity={item.quantity}
+              totalAmount={item.amount}
+              // checked={item.check}
+              // onCheck={() => {
+              //   let update = [...check];
+              //   update[index].check = !update[index].check;
+              //   setCheck(update);
+              // }}
+            />
+          )
+        }
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={getSummary} />
+        }
       />
       <View
         style={{
@@ -501,7 +495,7 @@ export default function PurchasingList({navigation}) {
           borderColor: '#00000042',
         }}>
         <Text style={{fontWeight: '600', fontSize: 18}}>Total</Text>
-        <Text style={{fontWeight: '600', fontSize: 18}}>Rs. 2040</Text>
+        <Text style={{fontWeight: '600', fontSize: 18}}>Rs. {totalAmount}</Text>
       </View>
       <View
         style={{
