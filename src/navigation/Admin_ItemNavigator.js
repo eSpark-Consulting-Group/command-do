@@ -13,7 +13,6 @@ function ItemNavigator() {
       <Stack.Group
         screenOptions={{animationEnabled: true, presentation: 'modal'}}>
         <Stack.Screen name="ItemList" component={ItemList} />
-        <Stack.Screen name="SearchItem" component={SearchScreen} />
       </Stack.Group>
       <Stack.Screen name="Add_Form" component={AddFormItem} />
     </Stack.Navigator>
