@@ -21,23 +21,6 @@ export const GET_ALL_ITEMS = gql`
   }
 `;
 
-export const ALL_ITEMS = gql`
-  query GetAllItems {
-    getAllItems {
-      status
-      message
-      data {
-        id
-        name
-        image
-        price
-        categoryId
-        createdAt
-      }
-    }
-  }
-`;
-
 export const SEARCH_ITEMS = gql`
   query SearchItem($text: String) {
     searchItem(text: $text) {

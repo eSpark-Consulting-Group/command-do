@@ -1,5 +1,11 @@
 import React, {useState, useReducer, useCallback} from 'react';
-import {FlatList, StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
 import {useLazyQuery} from '@apollo/client';
@@ -18,7 +24,6 @@ import {initialState} from '../../../app/store';
 import OverlayLoader from '../../../components/OverlayLoader';
 import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
-
 
 export default function Items() {
   const categoryPrefix = {name: 'All', color: true, id: undefined};
@@ -49,7 +54,7 @@ export default function Items() {
   useFocusEffect(
     React.useCallback(() => {
       LoadItems({
-        variables: undefined
+        variables: undefined,
       });
       getAllCategories();
     }, [refetch, refetchItems]),
@@ -58,7 +63,7 @@ export default function Items() {
   const getItems = async selected => {
     if (selected?.id == undefined) {
       await LoadItems({
-        variables: undefined
+        variables: undefined,
       });
     } else {
       await LoadItems({
@@ -105,7 +110,11 @@ export default function Items() {
       <MyHeader
         title={'All Items'}
         icon="search"
-        onPressRight={() => navigation.navigate('SearchItem')}
+        onPressRight={() =>
+          navigation.navigate('SearchItem', {
+            navigateTo: 'Add_Form',
+          })
+        }
       />
       <View style={{...styles.subHeader}}>
         <MyText
