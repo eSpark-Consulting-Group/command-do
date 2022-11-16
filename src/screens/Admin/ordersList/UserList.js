@@ -1,42 +1,44 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {CheckBox, Icon} from '@rneui/themed';
 
 import {MyHeader, MyText, TouchRipple} from '../../../components';
 import {colors} from '../../../theme';
+import {GET_ALL_USERS} from '../../../graphQL/query/user.query';
+import {useLazyQuery} from '@apollo/client';
+import {useDispatch, useSelector} from 'react-redux';
+import {SCREEN_HEIGHT} from '../../../constants';
 
 export default function UserList() {
   const navigation = useNavigation();
 
+  const [GetAllUsers, {loading}] = useLazyQuery(GET_ALL_USERS);
+  const dispatch = useDispatch();
+  const ordersByDate = useSelector(store => store.adminOrder.ordersByDate);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [orderFilterFields, setOrderFilterFields] = useState([
-    {
-      label: 'No User',
-      selected: true,
-    },
-    {
-      label: 'Wirad Ali',
-      selected: false,
-    },
-    {
-      label: 'Faraz Uddin',
-      selected: false,
-    },
-    {
-      label: 'Mudassir Ali',
-      selected: false,
-    },
-  ]);
+  const [selectedId, setSelectedId] = useState(null);
+  const [orderFilterFields, setOrderFilterFields] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    const orders = await GetAllUsers();
+    const data = orders.data.getAllUsers.data;
+    console.log('orders.data', data?.map(val => val?.record).flat());
+    setOrderFilterFields(data?.map(val => val?.record).flat());
+  };
 
   const handlePressUser = (item, index) => {
-    let tempArr = [...orderFilterFields];
-    tempArr[index].selected = true;
-    tempArr.map((item, ind) =>
-      index !== ind ? (item.selected = false) : true,
-    );
-    setSelectedUser(item);
-    setOrderFilterFields(tempArr);
+    setSelectedId(item.id);
   };
 
   const MyCheckBox = ({selected}) => {
@@ -89,10 +91,21 @@ export default function UserList() {
         onPressRight={() => {
           navigation.navigate('Filters', {
             userList: orderFilterFields,
-            user: selectedUser,
+            userId: selectedId,
           });
         }}
       />
+      <TouchRipple
+        style={styles.listContainer}
+        darkRipple
+        onPress={() => setSelectedId(null)}>
+        <MyText
+          label={'No User'}
+          textStyle={{textAlignVertical: 'center'}}
+          size={16}
+        />
+        <MyCheckBox selected={!selectedId} />
+      </TouchRipple>
       <FlatList
         data={orderFilterFields}
         renderItem={({item, index}) => (
@@ -102,14 +115,38 @@ export default function UserList() {
               darkRipple
               onPress={() => handlePressUser(item, index)}>
               <MyText
-                label={item.label}
+                label={item.firstName + ' ' + item.lastName}
                 textStyle={{textAlignVertical: 'center'}}
                 size={16}
               />
-              <MyCheckBox selected={item.selected} />
+              <MyCheckBox selected={item.id == selectedId} />
             </TouchRipple>
           </View>
         )}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={fetchUsers} />
+        }
+        ListEmptyComponent={
+          loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                height: SCREEN_HEIGHT * 0.6,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MyText label={'No Users'} size={'subHeading'} />
+            </View>
+          )
+        }
       />
     </View>
   );
