@@ -10,7 +10,7 @@ import {
 import {MyText} from '..';
 import {useSelector} from 'react-redux';
 import {NotFound} from '../../assets/images';
-import { colors } from '../../theme';
+import {colors} from '../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -44,7 +44,6 @@ const Cards = props => {
                   flexDirection: 'row',
                 }}>
                 <FlatList
-                  pagingEnabled
                   data={item?.Item || []}
                   renderItem={({item: dataItem, index: dataIndex}) => {
                     var cartItem = cart?.cartItems?.find(

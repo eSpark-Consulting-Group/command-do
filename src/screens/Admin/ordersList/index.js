@@ -30,9 +30,9 @@ export default function OrdersList() {
     route?.params?.filterInfo?.userInfo === undefined ||
     route?.params?.filterInfo?.userInfo === null;
 
-  // useEffect(() => {
-  //   fetchOrders();
-  // }, []);
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const fetchOrders = async dateRange => {
     const currDate = new Date().setHours(0);

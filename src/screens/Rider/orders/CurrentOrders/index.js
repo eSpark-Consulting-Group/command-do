@@ -76,17 +76,6 @@ export default function CurrentOrders({navigation}) {
           <RefreshControl refreshing={false} onRefresh={fetchOrders} />
         }
         renderItem={({item}) =>
-          item.status == 'UNPAID' && (
-            <OrderCard
-              name={item.User.firstName + ' ' + item.User.lastName}
-              amount={item.totalAmount}
-              order={item.OrderItems}
-              paid={item.status}
-              onCollect={() => openOverlay(item.totalAmount, item.id)}
-            />
-          )
-        }
-        ListEmptyComponent={
           loading ? (
             <View
               style={{
@@ -96,16 +85,27 @@ export default function CurrentOrders({navigation}) {
               <ActivityIndicator size={'large'} color={colors.primary} />
             </View>
           ) : (
-            <View
-              style={{
-                width: '100%',
-                height: SCREEN_HEIGHT * 0.6,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <MyText label={'No Orders'} size={'subHeading'} />
-            </View>
+            item.status == 'UNPAID' && (
+              <OrderCard
+                name={item.User.firstName + ' ' + item.User.lastName}
+                amount={item.totalAmount}
+                order={item.OrderItems}
+                paid={item.status}
+                onCollect={() => openOverlay(item.totalAmount, item.id)}
+              />
+            )
           )
+        }
+        ListEmptyComponent={
+          <View
+            style={{
+              width: '100%',
+              height: SCREEN_HEIGHT * 0.6,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <MyText label={'No Orders'} size={'subHeading'} />
+          </View>
         }
       />
       {showModal && (
