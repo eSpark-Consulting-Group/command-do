@@ -84,7 +84,10 @@ export default function OrdersList() {
           onPress={() =>
             navigation.navigate('Order_Details', {
               mode: 'date',
-              Date: item.createdAt,
+              data: {
+                userId: undefined,
+                createdAt: new Date(item?.createdAt).setHours(0)
+              },
             })
           }>
           <View>
@@ -123,7 +126,6 @@ export default function OrdersList() {
   };
 
   const RenderUserwise = ({item}) => {
-    console.log('Item', item?.User?.firstName);
     return (
       <MyCard cardStyle={styles.item}>
         <TouchRipple
@@ -136,7 +138,10 @@ export default function OrdersList() {
           onPress={() =>
             navigation.navigate('Order_Details', {
               mode: condition ? 'date' : 'user',
-              userDetails: route?.params?.filterInfo?.userInfo,
+              data: {
+                userId: route?.params?.filterInfo?.userInfo,
+                createdAt: new Date(item?.createdAt).setHours(0)
+              },
             })
           }>
           <View>
