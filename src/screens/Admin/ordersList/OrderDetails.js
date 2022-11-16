@@ -1,15 +1,43 @@
 import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 
 import {GapView, MyCard, MyHeader, MyText} from '../../../components';
 import {colors} from '../../../theme';
+import { useLazyQuery } from '@apollo/client';
+import { ALL_ORDERS } from '../../../graphQL/query/orders.query';
+import { useEffect } from 'react';
+import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
 
 export default function OrderDetails() {
   const navigation = useNavigation();
   const route = useRoute();
-  const {mode, userDetails} = route?.params;
+  const isFocused = useIsFocused();
+  const {mode, data} = route?.params;
+  const [GetAllOrders, {data: OrderData, refetch}] = useLazyQuery(ALL_ORDERS, {
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      "getOrderInput": data
+    }
+  })
 
+  useEffect(() => {
+    GetAllOrders({
+      variables: {
+        "getOrderInput": data
+      }
+    })
+  }, [])
+
+  useUpdateEffect(() => {
+    refetch()
+  }, [data])
+
+  const OrderDetails = OrderData?.getAllOrders?.data[0]
+  console.log("isFocused isFocused", OrderDetails, data)
+
+  
   const renderDayOrder = () => {
     return (
       <>
@@ -22,12 +50,12 @@ export default function OrderDetails() {
           <View style={{paddingHorizontal: 10}}>
             <View style={styles.rowSpacer}>
               <MyText label="Details" />
-              <MyText label="Rider/ Harrison" textStyle={{color: 'grey'}} />
+              <MyText label={`Rider/ ${OrderDetails?.Rider?.firstName ?? "order Not Picked yet"}`} textStyle={{color: 'grey'}} />
             </View>
             <GapView mode="vertical" length={8} />
             <View style={styles.rowSpacer}>
               <MyText label="Dated: 2 Nov, 14:00" textStyle={{color: 'grey'}} />
-              <MyText label="Order #10" textStyle={{color: 'grey'}} />
+              <MyText label={`Order #${OrderDetails?.id}`} textStyle={{color: 'grey'}} />
             </View>
           </View>
           <View style={styles.listHeader}>
@@ -43,28 +71,10 @@ export default function OrderDetails() {
             />
           </View>
           <FlatList
-            data={[
-              {item: 'Chicken Biryani', quantity: '3'},
-              {item: 'Sada Biryani', quantity: '2'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Salad', quantity: '1'},
-            ]}
+            data={OrderDetails?.OrderItems || []}
             renderItem={({item, index}) => (
               <View style={styles.listContent}>
-                <MyText label={item.item} size={18} />
+                <MyText label={item.Item?.name} size={18} />
                 <View
                   style={{
                     flexDirection: 'row',
@@ -72,7 +82,7 @@ export default function OrderDetails() {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <MyText label={`x ${item.quantity}`} size={18} />
+                  <MyText label={`x ${item?.quantity}`} size={18} />
                 </View>
               </View>
             )}
@@ -90,7 +100,7 @@ export default function OrderDetails() {
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
             <MyText
-              label={'Rs. 2000'}
+              label={`Rs. ${OrderDetails?.totalAmount}`}
               size={'subHeading'}
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
@@ -102,7 +112,7 @@ export default function OrderDetails() {
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
             <MyText
-              label={'Rs. 2250'}
+              label={`Rs. ${OrderDetails?.paidAmount}`}
               size={'subHeading'}
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
@@ -120,7 +130,7 @@ export default function OrderDetails() {
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
             <MyText
-              label={'Rs. 250'}
+              label={`Rs. ${OrderDetails?.remainingAmount > 0 ? OrderDetails?.remainingAmount : 0}`}
               size={'subHeading'}
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
@@ -141,7 +151,7 @@ export default function OrderDetails() {
         <MyCard cardStyle={styles.item}>
           <View style={{paddingHorizontal: 10}}>
             <View style={styles.rowSpacer}>
-              <MyText label={userDetails?.label} />
+              <MyText label={data?.userId?.firstName} />
               <MyText label="Rider/ Harrison" textStyle={{color: 'grey'}} />
             </View>
             <GapView mode="vertical" length={8} />
@@ -233,7 +243,7 @@ export default function OrderDetails() {
 
   return (
     <View style={styles.container}>
-      {mode == 'date' ? renderDayOrder() : renderUserOrder()}
+       {renderDayOrder()} 
     </View>
   );
 }
