@@ -10,6 +10,7 @@ import {
 import {MyText} from '..';
 import {useSelector} from 'react-redux';
 import {NotFound} from '../../assets/images';
+import { colors } from '../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -99,6 +100,7 @@ const Cards = props => {
                                     ? '99+'
                                     : Number(cartItem?.quantity).toString()
                                 }
+                                textStyle={{color: colors.background}}
                               />
                             </View>
                           )}
