@@ -30,20 +30,20 @@ export default function OrdersList() {
     route?.params?.filterInfo?.userInfo === undefined ||
     route?.params?.filterInfo?.userInfo === null;
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  // useEffect(() => {
+  //   fetchOrders();
+  // }, []);
 
-  const fetchOrders = async () => {
+  const fetchOrders = async dateRange => {
     const currDate = new Date().setHours(0);
     console.log('Date', new Date(currDate));
     const orders = await GetOrdersByDate({
-      variables: {
+      variables: dateRange ?? {
         startDate: currDate,
         endDate: new Date(),
       },
     });
-    dispatch(getOrdersByDate(orders.data.getOrderOverviewByDate.data));
+    dispatch(getOrdersByDate(orders?.data?.getOrderOverviewByDate?.data));
     // console.log('orders.data', orders.data.getOrderOverviewByDate.data);
     console.log('ordersByDate', ordersByDate);
   };
@@ -81,7 +81,12 @@ export default function OrdersList() {
             padding: 10,
           }}
           darkRipple
-          onPress={() => navigation.navigate('Order_Details', {mode: 'date'})}>
+          onPress={() =>
+            navigation.navigate('Order_Details', {
+              mode: 'date',
+              Date: item.createdAt,
+            })
+          }>
           <View>
             <MyText
               label="Rider"
