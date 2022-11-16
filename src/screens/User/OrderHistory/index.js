@@ -75,6 +75,9 @@ export default function OrderHistory() {
             label={section.title}
           />
         )}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={fetchOrders} />
+        }
         keyExtractor={(item, index) => index}
         ListEmptyComponent={
           loading ? (
