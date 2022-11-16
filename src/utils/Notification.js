@@ -1,0 +1,48 @@
+import PushNotification from 'react-native-push-notification';
+class Notifications {
+  constructor() {
+    PushNotification.configure({
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function (token) {
+        // console.log('TOKEN:', token);
+      },
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+      // IOS ONLY (optional): default: all - Permissions to register.
+      permissions: {
+        alert: true,
+        badge: false,
+        sound: false,
+      },
+    });
+
+    PushNotification.createChannel(
+      {
+        channelId: 'reminders', // (required)
+        channelName: 'Task reminder notifications', // (required)
+        channelDescription: 'Reminder for any tasks',
+      },
+      (created) => { 
+        console.log('====================================', created);
+      },
+    );
+
+    PushNotification.getScheduledLocalNotifications(rn => {
+      console.log('SN --- ', rn);
+    });
+  }
+
+  schduleNotification(date) {
+    PushNotification.localNotificationSchedule({
+      channelId: 'reminders',
+      title: '🔔 Reminder!',
+      message: 'Now you can place order for todays lunch',
+      date,
+    });
+  }
+}
+
+export default new Notifications();

@@ -1,6 +1,7 @@
 import storage from '@react-native-firebase/storage'
 import { PermissionsAndroid, Platform } from 'react-native'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import messaging from '@react-native-firebase/messaging';
 
 export const uploadImage = async image => {
     var url 
@@ -18,6 +19,18 @@ export const uploadImage = async image => {
       }
     return url
 }
+
+export const sendFCMToken = async () => {
+  await messaging().registerDeviceForRemoteMessages();
+
+    // Get the token
+    fcmToken = await messaging().getToken();
+
+    console.log("fcmToken fcmToken", fcmToken)
+
+    return fcmToken;
+}
+
 
 export const imagePicker = async () => {
   try {
