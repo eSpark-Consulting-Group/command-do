@@ -1489,6 +1489,11 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
+"@react-native-firebase/messaging@^16.4.4":
+  version "16.4.4"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-16.4.4.tgz#de0b53ac403e152c95fd9ca1bf4e41901a3e92e9"
+  integrity sha512-oGXFPIqx8w8rTJRjkJ2a5I/pcObbXP12nW4M5afNesnWuWwq8oTjy1BDzYKGZHfwQqmBMAYvLI0F+odX8xdFIw==
+
 "@react-native-firebase/storage@^16.4.3":
   version "16.4.3"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-16.4.3.tgz#9ad3d5e7fc293cf4d53b46b225225e87e247397c"
@@ -6534,6 +6539,11 @@ react-native-codegen@^0.69.1:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-cron-job@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-cron-job/-/react-native-cron-job-1.0.2.tgz#144837e6662f29042fc299ae69fcc9e84d1cc9a7"
+  integrity sha512-BMHbOtsT4VtAQ0YXZbnK22wUGS8XhhADmO5tJOC1NzRaUuHM28eZe1Uw1t9kOBZV+TltPKF/rAaMrSicR+5Q6w==
+
 react-native-date-ranges@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-native-date-ranges/-/react-native-date-ranges-2.5.0.tgz#aab58a3351606ce7a8a35a12e7d1c4e00db4a75d"
@@ -6625,6 +6635,11 @@ react-native-progress@^5.0.0:
   integrity sha512-KjnGIt3r9i5Kn2biOD9fXLJocf0bwxPRxOyAgXEnZTJQU2O+HyzgGFRCbM5h3izm9kKIkSc1txh8aGmMafCD9A==
   dependencies:
     prop-types "^15.7.2"
+
+react-native-push-notification@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"
+  integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
 
 react-native-ratings@^8.1.0:
   version "8.1.0"
