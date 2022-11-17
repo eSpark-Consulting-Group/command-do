@@ -89,14 +89,15 @@ const IndividualCard = props => {
                       backgroundColor: 'white',
                       borderRadius: height * 0.02,
                       elevation: height * 0.003,
+                      overflow: 'hidden',
                     }}>
                     <Image
                       source={{uri: dataItem?.image}}
                       style={{
-                        borderRadius: height * 0.02,
-                        height: height * 0.25,
-                        width: width * 0.88,
-                        backgroundColor: 'white',
+                        height: '100%',
+                        width: '100%',
+                        backgroundColor: colors.background,
+                        resizeMode: 'contain',
                       }}
                     />
                   </View>
