@@ -20,7 +20,7 @@ import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
 import {showMessage} from 'react-native-flash-message';
-import { sendFCMToken } from '../../../utils/helperFunctions';
+import {sendFCMToken} from '../../../utils/helperFunctions';
 
 const {width, height} = Dimensions.get('window');
 
@@ -60,10 +60,9 @@ const Login = ({navigation}) => {
           });
         } else {
           showMessage({
-            message: 'This email is not valid for selected role!',
+            message: 'This account is not valid for selected role!',
             type: 'danger',
             icon: 'auto',
-            duration: 500,
           });
         }
       } else {

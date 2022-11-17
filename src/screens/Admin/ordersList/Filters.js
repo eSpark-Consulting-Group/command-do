@@ -76,10 +76,10 @@ export default function FilterScreen() {
     if (startDate !== undefined || endDate !== undefined) {
       const endDateFormat = moment(endDate).utc(true);
       const startDateFormat = moment(startDate).utc(true);
-      setSelectDate({startDate, endDate});
+      setSelectDate({startDate: startDateFormat, endDate: endDateFormat});
       console.log(endDateFormat);
       console.log(startDateFormat);
-      handleChangeLabel(startDate, endDate);
+      handleChangeLabel(startDateFormat, endDateFormat);
     }
     setShow(false);
   };
@@ -87,9 +87,13 @@ export default function FilterScreen() {
   const handleChangeLabel = (sd, ed) => {
     const startD = moment(sd).utc(true).toISOString().split('T');
     const endD = moment(ed).utc(true).toISOString().split('T');
+    // const startD = moment(sd).utc(true);
+    // const endD = moment(ed).utc(true);
     let tempArr = [...orderFilterFields];
     console.log('sd', startD[0]);
     console.log('ed', endD[0]);
+    // console.log('sd', startD[0]);
+    // console.log('ed', endD[0]);
     tempArr[0]['label'] = `${startD[0].toString()} - ${endD[0].toString()}`;
     setOrderFilterFields(tempArr);
   };

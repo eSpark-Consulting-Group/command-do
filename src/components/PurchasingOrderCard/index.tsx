@@ -9,31 +9,31 @@ export default function PurchasingOrderCard({
   itemName,
   quantity,
   totalAmount,
-  checked,
-  onCheck,
-}: {
+}: // checked,
+// onCheck,
+{
   itemName: string;
   quantity: number;
   totalAmount: number;
-  checked: boolean;
-  onCheck: (val: boolean) => void;
+  // checked: boolean;
+  // onCheck: (val: boolean) => void;
 }) {
   // const [check, setCheck] = useState(false);
 
-  const onChecked = () => {
-    onCheck(!checked);
-  };
+  // const onChecked = () => {
+  //   onCheck(!checked);
+  // };
 
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.cardDataContainer1}>
+      {/* <View style={styles.cardDataContainer1}>
         <CheckBox
           checked={checked}
           onPress={onChecked}
           checkedColor={colors.primary}
           containerStyle={{height: SCREEN_HEIGHT * 0.06}}
         />
-      </View>
+      </View> */}
       <View style={styles.cardDataContainer}>
         <Text style={styles.cardDataText}>{itemName}</Text>
       </View>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   cardDataContainer: {width: '48%', paddingLeft: '2%'},
   cardDataContainer1: {width: '12%', alignItems: 'center'},
-  cardDataContainer2: {width: '20%', alignItems: 'center'},
+  cardDataContainer2: {width: '25%', alignItems: 'center'},
   cardDataText: {
     fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',

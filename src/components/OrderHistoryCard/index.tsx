@@ -58,7 +58,7 @@ export default function OrderHistoryCard({
             backgroundColor:
               paidAmount == 0
                 ? '#F0AD4E'
-                : remainingAmount < 1
+                : remainingAmount > 0
                 ? '#D9534F'
                 : '#5CB85C',
             elevation: 5,
@@ -69,7 +69,7 @@ export default function OrderHistoryCard({
             label={
               paidAmount == 0
                 ? 'Not Paid'
-                : remainingAmount < 1
+                : remainingAmount > 0
                 ? 'Not Received'
                 : 'Received'
             }
