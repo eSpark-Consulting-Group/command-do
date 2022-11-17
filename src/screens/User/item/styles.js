@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   itemImageContainer: {
-    height: height * 0.75,
+    height: height * 0.72,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -32,6 +32,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    top: -10,
+    right: 0
   },
   removeNumericButton: {
     borderRadius: height * 1,
@@ -60,7 +63,7 @@ export const styles = StyleSheet.create({
     // marginLeft: height * .01
   },
   itemDetailContainer: {
-    height: height * 0.21,
+    height: height * 0.25,
     backgroundColor: 'white',
     alignItems: 'center',
     position: 'relative',
@@ -74,7 +77,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: height * 0.055,
+    // height: height * 0.055,
     // backgroundColor: 'red'
   },
   noteStyle: {
