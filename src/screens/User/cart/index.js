@@ -146,9 +146,9 @@ function Cart({route, navigation}) {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={{flex: 1, backgroundColor: colors?.background}}>
       <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
-        <View style={{height: height * 0.965, backgroundColor: 'white'}}>
+        <View style={{flex: 1}}>
           <DropDownAlert
             childFunc={qtyWarn}
             setPress={() => setPress(false)}
@@ -207,7 +207,7 @@ function Cart({route, navigation}) {
               <MyText label={'Hurry up 😀'} subHeading />
               <MyText
                 label={`We are waiting for your order!`}
-                subTitle
+                size="subTitle"
                 textStyle={{color: '#00000060'}}
               />
             </View>
@@ -420,7 +420,7 @@ function Cart({route, navigation}) {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    </ScrollView>
+    </View>
   );
 }
 

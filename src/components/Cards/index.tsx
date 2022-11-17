@@ -11,6 +11,7 @@ import {MyText} from '..';
 import {useSelector} from 'react-redux';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
+import {AddToCartBtn} from '../AddToCartBtn';
 
 const {width, height} = Dimensions.get('window');
 
@@ -104,21 +105,37 @@ const Cards = props => {
                             </View>
                           )}
                         </View>
-                        <MyText
-                          label={dataItem?.name}
-                          textStyle={{marginTop: height * 0.02}}
-                        />
                         <View
                           style={{
-                            borderColor: '#00000030',
-                            borderWidth: height * 0.001,
-                            padding: height * 0.005,
-                            position: 'absolute',
-                            bottom: 0,
-                            left: height * 0.01,
-                            borderRadius: height * 0.005,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
                           }}>
-                          <MyText label={`Rs.${dataItem?.price}`} />
+                          <>
+                            <MyText
+                              label={dataItem?.name}
+                              textStyle={{marginTop: height * 0.02}}
+                            />
+                            <View
+                              style={{
+                                borderColor: '#00000030',
+                                borderWidth: height * 0.001,
+                                padding: height * 0.005,
+                                position: 'absolute',
+                                bottom: -40,
+                                // left: height * 0.01,
+                                borderRadius: height * 0.005,
+                              }}>
+                              <MyText label={`Rs.${dataItem?.price}`} />
+                            </View>
+                          </>
+                          <View style={{top: 20}}>
+                            <AddToCartBtn
+                              item={{
+                                ...dataItem,
+                                quantity: Number(cartItem?.quantity || 0),
+                              }}
+                            />
+                          </View>
                         </View>
                       </Pressable>
                     );
