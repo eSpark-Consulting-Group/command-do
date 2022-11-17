@@ -65,8 +65,7 @@ export default function MyHeader({
         label={title}
         size={'heading'}
         textStyle={{
-          fontWeight: 'bold',
-          fontFamily: 'monospace',
+          // fontFamily: 'monospace',
           textAlignVertical: 'center',
           color: colors.text_inverse,
           ...titleStyle,

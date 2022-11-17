@@ -35,7 +35,7 @@ export default function CurrentOrders({navigation}) {
   }, []);
 
   const fetchOrders = async () => {
-    const currDate = new Date().setHours(0);
+    const currDate = new Date().setUTCHours(0);
     console.log('Date', currDate);
     const orders = await GetAllOrders({
       variables: {
@@ -97,15 +97,25 @@ export default function CurrentOrders({navigation}) {
           )
         }
         ListEmptyComponent={
-          <View
-            style={{
-              width: '100%',
-              height: SCREEN_HEIGHT * 0.6,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <MyText label={'No Orders'} size={'subHeading'} />
-          </View>
+          loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                height: SCREEN_HEIGHT * 0.6,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MyText label={'No Orders'} size={'subHeading'} />
+            </View>
+          )
         }
       />
       {showModal && (
