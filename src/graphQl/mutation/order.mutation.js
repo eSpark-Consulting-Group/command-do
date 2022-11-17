@@ -10,8 +10,12 @@ export const PLACE_ORDER = gql`
 `;
 
 export const UPDATE_ORDER = gql`
-  mutation UpdateOrder($input: [updateOrderInput], $type: ORDER_UPDATE) {
-    updateOrder(input: $input, type: $type) {
+  mutation UpdateOrder(
+    $input: [updateOrderInput]
+    $returnAmount: Int
+    $type: ORDER_UPDATE
+  ) {
+    updateOrder(input: $input, returnAmount: $returnAmount, type: $type) {
       status
       message
     }

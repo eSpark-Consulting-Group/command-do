@@ -27,15 +27,13 @@ export default function MoneyReturnCard({
   name,
   amount,
   order = [],
-  onCollect,
-  onRevert,
+  onReturn,
   paid,
 }: {
   name: string;
   amount: number;
   order: orderListType[];
-  onCollect: () => void;
-  onRevert: () => void;
+  onReturn: () => void;
   paid: string;
 }) {
   return (
@@ -48,7 +46,7 @@ export default function MoneyReturnCard({
         }}>
         <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
         <TouchableOpacity
-          onPress={() => console.log('Amount Returned: ', amount)}
+          onPress={onReturn}
           style={{
             ...styles.cardDataContainer2,
             borderRadius: 5,
