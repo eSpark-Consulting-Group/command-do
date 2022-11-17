@@ -11,14 +11,13 @@ import {MyText} from '..';
 import {useSelector} from 'react-redux';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
-import { AddToCartBtn } from '../AddToCartBtn';
+import {AddToCartBtn} from '../AddToCartBtn';
 
 const {width, height} = Dimensions.get('window');
 
 const Cards = props => {
   const {label, data, navigation} = props;
   const cart = useSelector((store: any) => store.cart);
-  
 
   return (
     <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
@@ -46,7 +45,6 @@ const Cards = props => {
                   flexDirection: 'row',
                 }}>
                 <FlatList
-                  pagingEnabled
                   data={item?.Item || []}
                   renderItem={({item: dataItem, index: dataIndex}) => {
                     var cartItem = cart?.cartItems?.find(
@@ -107,7 +105,11 @@ const Cards = props => {
                             </View>
                           )}
                         </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
                           <>
                             <MyText
                               label={dataItem?.name}
@@ -127,7 +129,12 @@ const Cards = props => {
                             </View>
                           </>
                           <View style={{top: 20}}>
-                            <AddToCartBtn item={{...dataItem, quantity: Number(cartItem?.quantity || 0)}} />
+                            <AddToCartBtn
+                              item={{
+                                ...dataItem,
+                                quantity: Number(cartItem?.quantity || 0),
+                              }}
+                            />
                           </View>
                         </View>
                       </Pressable>

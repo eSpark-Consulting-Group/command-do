@@ -31,7 +31,6 @@ export const pdfHtml = order => {
         </div>
         ${order.data
           .map(item => {
-            total = total + item.amount * item.quantity;
             return `<div
         style="
         display: flex;
@@ -63,7 +62,7 @@ export const pdfHtml = order => {
       <p style="font-weight: bold">${item.quantity}</p>
     </div>
     <div style="width: 18vw; align-items: center">
-      <p style="font-weight: bold">Rs. ${item.amount * item.quantity}</p>
+      <p style="font-weight: bold">Rs. ${item.amount}</p>
     </div>
       </div>`;
           })
@@ -82,7 +81,9 @@ export const pdfHtml = order => {
             margin-top: 5px
           ">
           <p style="font-weight: bold; font-size: large">Total</p>
-          <p style="font-weight: bold; font-size: large">Rs. ${total}</p>
+          <p style="font-weight: bold; font-size: large">Rs. ${
+            order.totalAmount
+          }</p>
         </div>
       </div>
       `;

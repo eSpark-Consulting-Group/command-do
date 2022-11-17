@@ -1,7 +1,7 @@
 import {gql} from '@apollo/client';
 
 export const ALL_ORDERS = gql`
- query GetAllOrders($getOrderInput: GetOrderInput) {
+  query GetAllOrders($getOrderInput: GetOrderInput) {
     getAllOrders(GetOrderInput: $getOrderInput) {
       data {
         id
@@ -30,6 +30,7 @@ export const ALL_ORDERS = gql`
           id
         }
         riderId
+        returned
       }
       status
       message
@@ -49,6 +50,32 @@ export const ORDERS_BY_DATE = gql`
         totalAmount
         createdAt
       }
+      message
+      status
+    }
+  }
+`;
+export const ORDERS_SUMMARY = gql`
+  query GetOrderSummary($date: Date) {
+    getOrderSummary(date: $date) {
+      status
+      totalAmount
+      message
+      data {
+        amount
+        item {
+          name
+          price
+        }
+        itemId
+        quantity
+      }
+    }
+  }
+`;
+export const ORDERS_PURCHASED = gql`
+  query OrderPurchased {
+    orderPurchased {
       message
       status
     }
