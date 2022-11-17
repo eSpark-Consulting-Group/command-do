@@ -86,3 +86,16 @@ export const isValidTimeToOrder = () => {
     endTime = moment('12:30:00', format);
   return time.isBetween(startTime, endTime)
 };
+
+export const greetMessage = () => {
+  var today = new Date()
+  var curHr = today.getHours()
+
+  if (curHr < 12) {
+    return 'Good Morning! 🙋‍♂️'
+  } else if (curHr < 18) {
+    return 'Good Afternoon! 🙋‍♂️'
+  } else {
+    return 'Good Evening! 🙋‍♂️'
+  }
+}

@@ -195,8 +195,9 @@ function Items({route, navigation}) {
           <View style={styles.itemDetailContainer}>
             <View style={styles.subHeadingContainer}>
               <MyText
+                numberOfLines={2}
                 label={getData?.name}
-                textStyle={{fontSize: height * 0.03}}
+                textStyle={{fontSize: height * 0.03, width: (editData?.length == 0 ? animateToNumber != 0 : editMode != 0) ? width * .6 : width * .75}}
               />
               {(
                 editData?.length == 0 ? animateToNumber != 0 : editMode != 0
@@ -230,6 +231,9 @@ function Items({route, navigation}) {
                     width: height * 0.05,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    position: 'absolute',
+                    right: 0,
+                    top: 0
                   }}
                   onPress={addQty}>
                   <Icon name="add" size={height * 0.03} color="white" />
