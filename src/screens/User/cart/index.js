@@ -23,8 +23,8 @@ import {MyText, DropDownAlert} from '../../../components';
 import {useMutation} from '@apollo/client';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
-import { isValidTimeToOrder } from '../../../utils/helperFunctions';
-import { showMessage } from 'react-native-flash-message';
+import {isValidTimeToOrder} from '../../../utils/helperFunctions';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -355,19 +355,23 @@ function Cart({route, navigation}) {
                   marginVertical: height * 0.009,
                 }}
                 onPress={() => {
-                  if(!isValidTimeToOrder()) {
+                  if (!isValidTimeToOrder()) {
                     showMessage({
-                      message: "Alas! Time is over for placing order😬",
+                      message: 'Alas! Time is over for placing order😬',
                       icon: 'auto',
-                      type: 'info'
-                    })
-                    return
+                      type: 'info',
+                    });
+                    return;
                   }
                   isShowAlert(true);
                 }}>
                 {!loading ? (
                   <MyText
-                    label={count?.cart?.cartItems?.length != 0 ? 'Proceed to checkout' : 'Please add item into cart'}
+                    label={
+                      count?.cart?.cartItems?.length != 0
+                        ? 'Proceed to checkout'
+                        : 'Please add item into cart'
+                    }
                     title
                     textStyle={{color: 'white'}}
                   />

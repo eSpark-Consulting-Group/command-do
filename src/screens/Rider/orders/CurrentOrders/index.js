@@ -35,7 +35,7 @@ export default function CurrentOrders({navigation}) {
   }, []);
 
   const fetchOrders = async () => {
-    const currDate = new Date().setHours(0);
+    const currDate = new Date().setUTCHours(0);
     console.log('Date', currDate);
     const orders = await GetAllOrders({
       variables: {
@@ -76,14 +76,24 @@ export default function CurrentOrders({navigation}) {
           <RefreshControl refreshing={false} onRefresh={fetchOrders} />
         }
         renderItem={({item}) =>
-          item.status == 'UNPAID' && (
-            <OrderCard
-              name={item.User.firstName + ' ' + item.User.lastName}
-              amount={item.totalAmount}
-              order={item.OrderItems}
-              paid={item.status}
-              onCollect={() => openOverlay(item.totalAmount, item.id)}
-            />
+          loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            item.status == 'UNPAID' && (
+              <OrderCard
+                name={item.User.firstName + ' ' + item.User.lastName}
+                amount={item.totalAmount}
+                order={item.OrderItems}
+                paid={item.status}
+                onCollect={() => openOverlay(item.totalAmount, item.id)}
+              />
+            )
           )
         }
         ListEmptyComponent={

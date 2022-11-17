@@ -12,14 +12,21 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {CustomizeModal, MyHeader, MyText} from '../components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../constants';
 import {colors} from '../theme';
-import { logout } from '../features/userInfo/userInfoSlice';
-import { useDispatch } from 'react-redux';
+import {logout} from '../features/userInfo/userInfoSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Stack = createStackNavigator();
 // 11a79c
 function RiderNavigator({navigation}) {
   const [isModal, setIsModal] = useState(false);
-  const dispatch = useDispatch()
+  const finishedStatus = useSelector(
+    store => store?.riderOrder.collectionFinished,
+  );
+  const purchasedStatus = useSelector(
+    store => store?.riderOrder.orderPurchased,
+  );
+  const dispatch = useDispatch();
+  console.log('Finished Status', finishedStatus);
   const isModalVisible = () => {
     LayoutAnimation.configureNext({
       duration: 300,
@@ -40,15 +47,21 @@ function RiderNavigator({navigation}) {
   };
 
   const logoutHandler = () => {
-    dispatch(logout())
-  }
-
+    dispatch(logout());
+  };
 
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+      initialRouteName={
+        finishedStatus
+          ? purchasedStatus
+            ? 'MoneyReturn'
+            : 'Purchasing_List'
+          : 'Orders'
+      }>
       <Stack.Screen
         name="Orders"
         component={Orders}
