@@ -33,6 +33,7 @@ import { GET_ALL_ITEMS } from '../../../graphQL/query/item.query';
 import styles from './styles';
 import { colors } from '../../../theme';
 import { logout } from '../../../features/userInfo/userInfoSlice';
+import { greetMessage } from '../../../utils/helperFunctions';
 const { width, height } = Dimensions.get('window');
 
 function Home({ route, navigation }) {
@@ -262,7 +263,7 @@ function Home({ route, navigation }) {
 
         <View
           style={{
-            flex: 1,
+            flex: 0.5,
             justifyContent: 'center',
             paddingHorizontal: height * 0.02,
             paddingVertical: height * 0.0001,
@@ -272,8 +273,9 @@ function Home({ route, navigation }) {
             label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
             heading
           />
-          <MyText label="Good Morning! 🙋‍♂️" subHeading />
+          <MyText label={greetMessage()} subHeading />
         </View>
+
         {remainingAmount?.getCurrentRemainingAmount?.data && <View style={{
           justifyContent: 'center', 
           flex: 0.5,
@@ -283,7 +285,7 @@ function Home({ route, navigation }) {
           alignItems: 'center',
           alignSelf: 'center',
           flexDirection: 'row',
-          marginBottom: 20,
+          marginVertical: height * 0.007
         }}>
           <MyText label={"You have a remaining amount of "} textStyle={{ justifyContent: 'center', textAlign: 'center' }} />
           <MyText label={`Rs:${remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount || 0}`} textStyle={{ justifyContent: 'center', textAlign: 'center', fontWeight: 'bold', bottom: 2}} />
