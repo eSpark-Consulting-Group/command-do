@@ -7,14 +7,22 @@ import {
   InputAccessoryViewProps,
   NativeMethods,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {Overlay} from '@rneui/themed';
 import FA from 'react-native-vector-icons/FontAwesome';
 import MyText from '../Text';
 import {colors} from '../../theme';
+import {SCREEN_HEIGHT} from '../../constants';
 
-export default function CollectionModal({closeModal, totAmount, onCollected}) {
+export default function CollectionModal({
+  closeModal,
+  totAmount,
+  onCollected,
+  type,
+  isLoading,
+}) {
   const [amount, setAmount] = useState('');
 
   const inputRef: any = useRef();
@@ -61,7 +69,11 @@ export default function CollectionModal({closeModal, totAmount, onCollected}) {
             padding: 10,
             marginVertical: 20,
           }}>
-          <MyText label={'How much amount is collected?'} />
+          <MyText
+            label={`How much amount is ${
+              type == 'return' ? 'returned' : 'collected'
+            }?`}
+          />
           <View
             style={{
               flexDirection: 'row',
@@ -94,22 +106,43 @@ export default function CollectionModal({closeModal, totAmount, onCollected}) {
         </View>
         <TouchableOpacity
           onPress={() => onCollected(amount)}
-          disabled={amount >= totAmount ? false : true}
+          disabled={
+            type == 'return'
+              ? amount == totAmount
+                ? false
+                : true
+              : amount >= totAmount
+              ? false
+              : true
+          }
           style={{
             width: '100%',
             alignItems: 'center',
-            backgroundColor: amount >= totAmount ? colors.primary : '#ccc',
+            justifyContent: 'center',
+            height: SCREEN_HEIGHT * 0.07,
+            backgroundColor:
+              type == 'return'
+                ? amount == totAmount
+                  ? colors.primary
+                  : '#ccc'
+                : amount >= totAmount
+                ? colors.primary
+                : '#ccc',
             paddingVertical: 5,
             borderRadius: 10,
           }}>
-          <MyText
-            label={'Collected'}
-            textStyle={{
-              fontFamily: 'Poppins-Bold',
-              fontSize: 25,
-              color: colors.text_inverse,
-            }}
-          />
+          {isLoading ? (
+            <ActivityIndicator size={'large'} color={colors.text_inverse} />
+          ) : (
+            <MyText
+              label={'Collected'}
+              textStyle={{
+                fontFamily: 'Poppins-Bold',
+                fontSize: 25,
+                color: colors.text_inverse,
+              }}
+            />
+          )}
         </TouchableOpacity>
       </Overlay>
     </>

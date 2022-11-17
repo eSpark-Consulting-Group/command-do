@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Dimensions,
@@ -9,8 +9,8 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLazyQuery } from '@apollo/client';
+import {useDispatch, useSelector} from 'react-redux';
+import {useLazyQuery} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
@@ -20,23 +20,21 @@ import {
   MyText,
   DropDownAlert,
 } from '../../../components';
-import { AllData, profileData } from '../../../utils/data';
-import { initialDataUpdate } from '../../../features/profile/profileSlice';
+import {AllData, profileData} from '../../../utils/data';
+import {initialDataUpdate} from '../../../features/profile/profileSlice';
 import {
   GET_ALL_CATEGORIES,
   GET_ALL_CATEGORIES_WITH_ITEMS,
 } from '../../../graphQL/query/categories.query';
-import {
-  GET_CURRENT_REMAINING_AMOUNT
-} from '../../../graphQL/query/user.query';
-import { GET_ALL_ITEMS } from '../../../graphQL/query/item.query';
+import {GET_CURRENT_REMAINING_AMOUNT} from '../../../graphQL/query/user.query';
+import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import styles from './styles';
-import { colors } from '../../../theme';
-import { logout } from '../../../features/userInfo/userInfoSlice';
-import { greetMessage } from '../../../utils/helperFunctions';
-const { width, height } = Dimensions.get('window');
+import {colors} from '../../../theme';
+import {logout} from '../../../features/userInfo/userInfoSlice';
+import {greetMessage} from '../../../utils/helperFunctions';
+const {width, height} = Dimensions.get('window');
 
-function Home({ route, navigation }) {
+function Home({route, navigation}) {
   const childFunc = useRef(null);
 
   const reduxData = useSelector(store => store);
@@ -54,32 +52,32 @@ function Home({ route, navigation }) {
 
   const [
     LoadCategories,
-    { data: categoriesData, loading: LoadCategoriesLoading },
+    {data: categoriesData, loading: LoadCategoriesLoading},
   ] = useLazyQuery(GET_ALL_CATEGORIES, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
   const [
     getRemainingAmount,
-    { data: remainingAmount, loading: LoadRemainingAmount },
+    {data: remainingAmount, loading: LoadRemainingAmount},
   ] = useLazyQuery(GET_CURRENT_REMAINING_AMOUNT, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
     variables: {
-      userId: userData?.id
-    }
+      userId: userData?.id,
+    },
   });
 
   const [
     LoadCategoriesWithItem,
-    { data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading },
+    {data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading},
   ] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
   const [
     LoadItems,
-    { data: itemData, refetch: refetchItems, loading: LoadItemsLoading },
+    {data: itemData, refetch: refetchItems, loading: LoadItemsLoading},
   ] = useLazyQuery(GET_ALL_ITEMS, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
@@ -185,7 +183,7 @@ function Home({ route, navigation }) {
               <MyText
                 label={'Profile'}
                 title
-                textStyle={{ color: '#00000080' }}
+                textStyle={{color: '#00000080'}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -200,7 +198,7 @@ function Home({ route, navigation }) {
               <MyText
                 label={'Change Password'}
                 title
-                textStyle={{ color: '#00000080' }}
+                textStyle={{color: '#00000080'}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -212,10 +210,10 @@ function Home({ route, navigation }) {
                 color="#11a79c"
                 style={styles.btnIcon}
               />
-              <MyText label={'Orders'} title textStyle={{ color: '#00000080' }} />
+              <MyText label={'Orders'} title textStyle={{color: '#00000080'}} />
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.buttonContainer, { borderBottomWidth: height * 0 }]}
+              style={[styles.buttonContainer, {borderBottomWidth: height * 0}]}
               onPress={() => logoutHandler()}>
               <Icon
                 name="ios-exit"
@@ -226,7 +224,7 @@ function Home({ route, navigation }) {
               <MyText
                 label={'Log out'}
                 title
-                textStyle={{ color: '#00000080' }}
+                textStyle={{color: '#00000080'}}
               />
             </TouchableOpacity>
           </View>
@@ -242,24 +240,22 @@ function Home({ route, navigation }) {
               color="#11a79c90"
             />
           </TouchableOpacity>
-          <View style={styles.headerCenterComponentStyle}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('SearchItem', { navigateTo: 'Item' })
-              }>
-              <Icon name="search" size={height * 0.03} color="black" />
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerCenterComponentStyle}
+            onPress={() =>
+              navigation.navigate('SearchItem', {navigateTo: 'Item'})
+            }>
+            <Icon name="search" size={height * 0.03} color="black" />
             <MyText
               label={"What's your order?🍔"}
-              textStyle={{ color: '#000000', fontSize: height * 0.024 }}
+              textStyle={{color: '#000000', fontSize: height * 0.024}}
             />
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity style={{}}>
             {/* <Icon name="wallet-sharp" size={height * 0.035} color="#11a79c90" /> */}
           </TouchableOpacity>
         </View>
-        
 
         <View
           style={{
@@ -276,24 +272,41 @@ function Home({ route, navigation }) {
           <MyText label={greetMessage()} subHeading />
         </View>
 
-        {remainingAmount?.getCurrentRemainingAmount?.data && <View style={{
-          justifyContent: 'center', 
-          flex: 0.5,
-          borderRadius: 15,
-          backgroundColor: '#dff2e4',
-          width: width * 0.9,
-          alignItems: 'center',
-          alignSelf: 'center',
-          flexDirection: 'row',
-          marginVertical: height * 0.007
-        }}>
-          <MyText label={"You have a remaining amount of "} textStyle={{ justifyContent: 'center', textAlign: 'center' }} />
-          <MyText label={`Rs:${remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount || 0}`} textStyle={{ justifyContent: 'center', textAlign: 'center', fontWeight: 'bold', bottom: 2}} />
-        </View>}
+        {remainingAmount?.getCurrentRemainingAmount?.data && (
+          <View
+            style={{
+              justifyContent: 'center',
+              flex: 0.5,
+              borderRadius: 15,
+              backgroundColor: '#dff2e4',
+              width: width * 0.9,
+              alignItems: 'center',
+              alignSelf: 'center',
+              flexDirection: 'row',
+              marginVertical: height * 0.007,
+            }}>
+            <MyText
+              label={'You have a remaining amount of '}
+              textStyle={{justifyContent: 'center', textAlign: 'center'}}
+            />
+            <MyText
+              label={`Rs:${
+                remainingAmount?.getCurrentRemainingAmount?.data
+                  ?.remainingAmount || 0
+              }`}
+              textStyle={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                bottom: 2,
+              }}
+            />
+          </View>
+        )}
         <View style={styles.categoryContainer}>
           {categories && (
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {[{ name: 'All', image: null, id: 0 }, ...categories]?.map(
+              {[{name: 'All', image: null, id: 0}, ...categories]?.map(
                 (item, index) => (
                   <TouchableOpacity
                     key={index}
@@ -320,7 +333,7 @@ function Home({ route, navigation }) {
                     onPress={() => isSelect(item)}>
                     {item.image && (
                       <Image
-                        source={{ uri: item?.image }}
+                        source={{uri: item?.image}}
                         style={styles.categoryImage}
                       />
                     )}
@@ -339,9 +352,9 @@ function Home({ route, navigation }) {
           )}
         </View>
         {LoadItemsLoading ||
-          LoadCategoriesLoading ||
-          LoadCategoriesWithItemLoading ? (
-          <View style={{ flex: 4, top: height / 4 }}>
+        LoadCategoriesLoading ||
+        LoadCategoriesWithItemLoading ? (
+          <View style={{flex: 4, top: height / 4}}>
             <ActivityIndicator size={30} color={colors.primary} />
           </View>
         ) : (
@@ -368,7 +381,7 @@ function Home({ route, navigation }) {
                   reduxData?.cart?.amount > 99 ? '99+' : reduxData?.cart?.amount
                 }
                 subTitle
-                textStyle={{ color: '#000' }}
+                textStyle={{color: '#000'}}
               />
             </View>
           )}

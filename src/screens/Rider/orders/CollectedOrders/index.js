@@ -1,3 +1,4 @@
+import {useMutation} from '@apollo/client';
 import React from 'react';
 import {
   StyleSheet,
@@ -11,30 +12,44 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {MyText, OrderCard} from '../../../../components';
 import {SCREEN_HEIGHT} from '../../../../constants';
-import {revertCollection} from '../../../../features/riderOrders/riderOrderSlice';
+import {
+  getReturnMoneyData,
+  revertCollection,
+  toggleFinishCollection,
+} from '../../../../features/riderOrders/riderOrderSlice';
+import {UPDATE_ORDER} from '../../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../../theme';
 
 export default function CollectedOrders({navigation}) {
+  const [UpdateOrder, {loading}] = useMutation(UPDATE_ORDER);
   const reduxData = useSelector(store => store);
   let orders = reduxData.riderOrder.orders;
   const dispatch = useDispatch();
 
+  const updateOrder = async finalOrders => {
+    const update = await UpdateOrder({
+      variables: {
+        input: finalOrders,
+      },
+    });
+    dispatch(toggleFinishCollection(true));
+    dispatch(getReturnMoneyData());
+    navigation.navigate('Purchasing_List');
+  };
+
   const finishCollection = () => {
     let finalOrders = [];
     orders.map(item => {
-      if (item.status == 'PAID') {
-        finalOrders.push({
-          id: item.id,
-          status: item.status,
-          paidAmount: item.paidAmount,
-          riderId: item.riderId,
-        });
-      }
+      var obj = {
+        id: item.id,
+        status: item.status,
+        paidAmount: Number(item.paidAmount),
+      };
+      item?.riderId && (obj['riderId'] = item.riderId);
+      finalOrders.push(obj);
     });
-
-    console.log('FInal Order', finalOrders);
     Alert.alert('Confirmation', 'Are you sure you want to Finish Collection?', [
-      {text: 'Yes', onPress: () => navigation.navigate('Purchasing_List')},
+      {text: 'Yes', onPress: () => updateOrder(finalOrders)},
       {text: 'No', style: 'cancel'},
     ]);
   };
@@ -64,7 +79,11 @@ export default function CollectedOrders({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <FlatList
-        data={orders.some(val => val.status == 'PAID') ? orders : []}
+        data={
+          orders.some(val => val.status == 'PAID' && val.returned == false)
+            ? orders
+            : []
+        }
         renderItem={({item}) =>
           item.status == 'PAID' && (
             <OrderCard
@@ -91,11 +110,15 @@ export default function CollectedOrders({navigation}) {
       />
       <TouchableOpacity
         onPress={finishCollection}
-        // disabled={!orders.some(val => val.status == 'PAID')}
+        disabled={
+          !orders.some(val => val.status == 'PAID' && val.returned == false)
+        }
         style={{
           width: '95%',
           alignItems: 'center',
-          backgroundColor: orders.some(val => val.status == 'PAID')
+          backgroundColor: orders.some(
+            val => val.status == 'PAID' && val.returned == false,
+          )
             ? colors.primary
             : '#ccc',
           marginVertical: 10,

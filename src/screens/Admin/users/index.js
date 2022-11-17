@@ -171,7 +171,6 @@ export default function Users() {
         sections={userList ?? []}
         style={{paddingTop: 3}}
         renderItem={({item}) => {
-          console.log('item', item);
           return (
             <>
               <TouchRipple
