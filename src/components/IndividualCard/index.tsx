@@ -76,8 +76,8 @@ const IndividualCard = props => {
                     key={dataIndex}
                     style={{
                       paddingHorizontal: height * 0.01,
-                      marginVertical: dataIndex != 0 ? height * 0.04 : 0,
-                      marginBottom: dataIndex == 0 ? height * 0.04 : 0,
+                      marginVertical: height * 0.04,
+                      // marginBottom: dataIndex == 0 ? height * 0.04 : 0,
                     }}
                     onPress={() =>
                       navigation.navigate('Item', {
