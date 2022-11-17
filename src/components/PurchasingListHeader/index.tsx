@@ -5,28 +5,27 @@ import LineSeparater from '../LineSeparater';
 import {CheckBox} from '@rneui/themed';
 import {colors} from '../../theme';
 
-export default function PurchasingListHeader({
-  onAllCheck,
-  checked,
-}: {
-  onAllCheck: (val: boolean) => void;
-  checked: boolean;
+export default function PurchasingListHeader({}: // onAllCheck,
+// checked,
+{
+  // onAllCheck: (val: boolean) => void;
+  // checked: boolean;
 }) {
-  const updateAllCheck = () => {
-    onAllCheck(checked);
-  };
+  // const updateAllCheck = () => {
+  //   onAllCheck(checked);
+  // };
 
   return (
     <>
       <View style={styles.headerTitlesContainer}>
-        <View style={styles.headerTitleContainer1}>
+        {/* <View style={styles.headerTitleContainer1}>
           <CheckBox
             checked={checked}
             onPress={updateAllCheck}
             checkedColor={colors.primary}
             containerStyle={{height: SCREEN_HEIGHT * 0.06}}
           />
-        </View>
+        </View> */}
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Item</Text>
         </View>
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     paddingLeft: '2%',
   },
   headerTitleContainer1: {width: '12%', alignItems: 'center'},
-  headerTitleContainer2: {width: '20%', alignItems: 'center'},
+  headerTitleContainer2: {width: '25%', alignItems: 'center'},
   headerTitle: {
     fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',
