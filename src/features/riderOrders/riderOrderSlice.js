@@ -7,6 +7,9 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   orders: [],
+  collectionFinished: false,
+  orderPurchased: false,
+  returnMoneyOrders: [],
 };
 const riderOrderSlice = createSlice({
   name: 'riderOrder',
@@ -31,10 +34,33 @@ const riderOrderSlice = createSlice({
       state.orders[index].paidAmount = 0;
       delete state.orders[index].riderId;
     },
+    toggleFinishCollection: (state, action) => {
+      state.collectionFinished = action.payload;
+      if (action.payload) {
+        state.orders = [];
+      }
+    },
+    toggleOrderPurchased: (state, action) => {
+      state.orderPurchased = action.payload;
+    },
+    getReturnMoneyData: (state, action) => {
+      let orders = [];
+      state.orders.map(item => {
+        item.remainingAmount && orders.push(item);
+      });
+      state.returnMoneyOrders = orders;
+      // console.log('Retun Money orders', orders);
+    },
   },
 });
 
-export const {collectAmouunt, revertCollection, getOrders} =
-  riderOrderSlice.actions;
+export const {
+  collectAmouunt,
+  revertCollection,
+  getOrders,
+  toggleFinishCollection,
+  getReturnMoneyData,
+  toggleOrderPurchased,
+} = riderOrderSlice.actions;
 
 export default riderOrderSlice.reducer;

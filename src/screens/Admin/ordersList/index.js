@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, SectionList, StyleSheet, View} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {useLazyQuery} from '@apollo/client';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {
   GapView,
@@ -13,10 +15,8 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {colors} from '../../../theme';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
 import {useEffect} from 'react';
-import {useLazyQuery} from '@apollo/client';
 import {ALL_ORDERS, ORDERS_BY_DATE} from '../../../graphQL/query/orders.query';
 import {getOrdersByDate} from '../../../features/adminOrders/adminOrderSlice';
-import {useDispatch, useSelector} from 'react-redux';
 
 export default function OrdersList() {
   const navigation = useNavigation();
@@ -25,7 +25,9 @@ export default function OrdersList() {
     useLazyQuery(ORDERS_BY_DATE);
   const [GetAllUserOrders, {loading}] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
-  const ordersByDate = useSelector(store => store.adminOrder.adminOrders);
+  // const ordersByDate = useSelector(store => store.adminOrder.adminOrders);
+  // let ordersByDate = [];
+  const [ordersByDate, setOrdersByDate] = useState([]);
   const condition =
     route?.params?.filterInfo?.userInfo === undefined ||
     route?.params?.filterInfo?.userInfo === null;
@@ -34,8 +36,19 @@ export default function OrdersList() {
     fetchOrders();
   }, []);
 
+  const getSortedOrders = orders => {
+    let order = [];
+    orders?.map(item => {
+      order.push({
+        title: new Date(item.createdAt).toString().slice(0, 15),
+        data: [item],
+      });
+    });
+    return order;
+  };
+
   const fetchOrders = async dateRange => {
-    const currDate = new Date().setHours(0);
+    const currDate = new Date().setUTCHours(0);
     console.log('Date', new Date(currDate));
     const orders = await GetOrdersByDate({
       variables: dateRange ?? {
@@ -43,9 +56,10 @@ export default function OrdersList() {
         endDate: new Date(),
       },
     });
-    dispatch(getOrdersByDate(orders?.data?.getOrderOverviewByDate?.data));
-    // console.log('orders.data', orders.data.getOrderOverviewByDate.data);
-    console.log('ordersByDate', ordersByDate);
+    console.log('ordersByDate', orders?.data?.getOrderOverviewByDate?.data);
+    setOrdersByDate(
+      getSortedOrders(orders?.data?.getOrderOverviewByDate?.data),
+    );
   };
 
   const fetchUserOrders = async userId => {
@@ -57,9 +71,8 @@ export default function OrdersList() {
         },
       },
     });
-    console.log('orders.data', orders.data.getAllOrders.data);
-    dispatch(getOrdersByDate(orders.data.getAllOrders.data));
-    // console.log('ordersByDate', ordersByDate);
+    console.log('orders.data', orders?.data?.getAllOrders?.data);
+    setOrdersByDate(getSortedOrders(orders?.data?.getAllOrders?.data));
   };
 
   useUpdateEffect(() => {
@@ -86,7 +99,7 @@ export default function OrdersList() {
               mode: 'date',
               data: {
                 userId: undefined,
-                createdAt: new Date(item?.createdAt).setHours(0)
+                createdAt: new Date(item?.createdAt).setUTCHours(0),
               },
             })
           }>
@@ -140,7 +153,7 @@ export default function OrdersList() {
               mode: condition ? 'date' : 'user',
               data: {
                 userId: route?.params?.filterInfo?.userInfo,
-                createdAt: new Date(item?.createdAt).setHours(0)
+                createdAt: new Date(item?.createdAt).setUTCHours(0),
               },
             })
           }>
@@ -191,16 +204,27 @@ export default function OrdersList() {
         sections={ordersByDate}
         renderItem={({item}) =>
           // <RenderDatewise item={item} />
-          condition ? (
+          loadingByDate || loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : condition ? (
             <RenderDatewise item={item} />
           ) : (
             <RenderUserwise item={item} />
           )
         }
         SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
-        renderSectionHeader={({section}) => (
-          <MyText textStyle={styles.sectionHeader} label={section.title} />
-        )}
+        renderSectionHeader={({section}) =>
+          !loadingByDate &&
+          !loading && (
+            <MyText textStyle={styles.sectionHeader} label={section.title} />
+          )
+        }
         keyExtractor={(item, index) => index}
         ListEmptyComponent={
           loadingByDate || loading ? (
