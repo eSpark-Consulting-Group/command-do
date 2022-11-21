@@ -93,14 +93,24 @@ function Cart({route, navigation}) {
 
   const addToCart = (item, value) => {
     // console.log('value---->', value);
-    if (Number(value) > 999) {
-      qtyWarn.current();
-      setIsEditQty(false);
-    } else {
-      var changeData = {...item};
-      changeData.quantity = value;
-      setGetData(changeData);
+    if (value != '') {
+      if (Number(value) > 999) {
+        qtyWarn.current();
+        setIsEditQty(false);
+      } else {
+        var changeData = {...item};
+        changeData.quantity = value;
+        setGetData(changeData);
+      }
     }
+  };
+
+  const removefromCart = (item, value) => {
+    // console.log('value---->', value);
+
+    var changeData = {...item};
+    changeData.quantity = value;
+    setGetData(changeData);
   };
 
   useEffect(() => {
@@ -232,6 +242,9 @@ function Cart({route, navigation}) {
                         value={Number(item.quantity)}
                         onChange={value => addToCart(item, value)}
                         maxValue={999}
+                        extraTextInputProps={{
+                          onSubmitEditing: () => setIsEditQty(false),
+                        }}
                         // onLimitReached={(isMax, msg) => console.log(isMax, msg)}
                         totalWidth={height * 0.17}
                         totalHeight={height * 0.09}
@@ -311,7 +324,7 @@ function Cart({route, navigation}) {
                     />
                     <TouchableOpacity
                       style={styles.deleteItem}
-                      onPress={() => addToCart(item, 0)}>
+                      onPress={() => removefromCart(item, 0)}>
                       <Icon
                         name="md-trash-outline"
                         size={height * 0.02}
@@ -323,12 +336,7 @@ function Cart({route, navigation}) {
             </ScrollView>
           </View>
           <View style={styles.addMoreItemContainer}>
-            <TouchableOpacity
-              style={{
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}
-              onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <MyText
                 label={'Add more Items 😋'}
                 title
