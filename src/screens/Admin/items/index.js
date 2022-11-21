@@ -286,7 +286,6 @@ const styles = StyleSheet.create({
   },
   subHeader: {
     flexDirection: 'row',
-    paddingVertical: 10,
     paddingHorizontal: 10,
     width: SCREEN_WIDTH,
   },
@@ -297,11 +296,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   itemContainer: {
-    paddingVertical: 10,
     marginBottom: 10,
   },
   item: {
-    marginVertical: 10,
+    marginVertical: 5,
     marginHorizontal: 2,
   },
 });
