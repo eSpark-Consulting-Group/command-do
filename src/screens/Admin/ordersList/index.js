@@ -25,8 +25,7 @@ export default function OrdersList() {
     useLazyQuery(ORDERS_BY_DATE);
   const [GetAllUserOrders, {loading}] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
-  // const ordersByDate = useSelector(store => store.adminOrder.adminOrders);
-  // let ordersByDate = [];
+
   const [ordersByDate, setOrdersByDate] = useState([]);
   const condition =
     route?.params?.filterInfo?.userInfo === undefined ||
