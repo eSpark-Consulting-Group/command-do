@@ -26,8 +26,7 @@ import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 
 export default function Items() {
-  const categoryPrefix = {name: 'All', color: true, id: undefined};
-
+  let categoryPrefix = {name: 'All', color: true, id: undefined};
   const navigation = useNavigation();
 
   const [LoadCategories, {loading: categoryLoader, refetch, error}] =
@@ -45,11 +44,6 @@ export default function Items() {
 
   const [visible, setVisible] = useState(false);
   const [categoryData, setCategoryData] = useState([]);
-
-  // const [count, dispatchCount] = useReducer(
-  //   handleCountReducer,
-  //   initialState.count,
-  // );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -82,6 +76,7 @@ export default function Items() {
       if (res?.data?.getAllCategories?.status) {
         const {data} = res?.data?.getAllCategories;
         let newData = data.map(item => ({...item, color: false}));
+        categoryPrefix['color'] = true;
         setCategoryData([categoryPrefix, ...newData]);
       }
     } catch (e) {
@@ -96,14 +91,12 @@ export default function Items() {
       index == index2 ? (item.color = true) : (item.color = false),
     );
     setCategoryData(temp);
+    console.log('kia ha', temp);
     temp.forEach(item => (item.color ? (selected = item) : null));
     forceUpdate();
     getItems(selected);
   };
 
-  // const handleIncreament = () => {
-  //   dispatchCount({type: 'increment'});
-  // };
   return (
     <View style={styles.container}>
       <OverlayLoader show={categoryLoader || itemsLoading} />
