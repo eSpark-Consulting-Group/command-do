@@ -21,12 +21,14 @@ import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
 import {showMessage} from 'react-native-flash-message';
 import {sendFCMToken} from '../../../utils/helperFunctions';
+import {SCREEN_HEIGHT} from '../../../constants';
 
 const {width, height} = Dimensions.get('window');
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
   const [selectedRole, setselectedRole] = useState('ADMIN');
+  const [showPass, setShowPass] = useState(false);
 
   const emailRef = useRef('mraza@esparkconsultants.com');
   const passRef = useRef('123456789');
@@ -81,11 +83,12 @@ const Login = ({navigation}) => {
     <View
       style={{
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
         backgroundColor: 'white',
       }}>
       <View
         style={{
-          flex: 1,
           justifyContent: 'flex-end',
           alignItems: 'center',
         }}>
@@ -100,27 +103,42 @@ const Login = ({navigation}) => {
 
       <View
         style={{
-          flex: 2,
           justifyContent: 'center',
           alignItems: 'center',
+          marginBottom: 80,
         }}>
-        <TextInput
-          onChangeText={text => {
-            emailRef.current = text;
-          }}
-          placeholder="Email"
-          style={styles.inputStyle}
-          placeholderTextColor="gray"
-        />
-        <TextInput
-          onChangeText={text => {
-            passRef.current = text;
-          }}
-          placeholder="Password"
-          style={styles.inputStyle}
-          secureTextEntry
-          placeholderTextColor="gray"
-        />
+        <View style={styles.inputStyle}>
+          <TextInput
+            onChangeText={text => {
+              emailRef.current = text;
+            }}
+            placeholder="Email"
+            style={{
+              width: '100%',
+              paddingHorizontal: 10,
+            }}
+            placeholderTextColor="gray"
+          />
+        </View>
+        <View style={styles.inputStyle}>
+          <TextInput
+            onChangeText={text => {
+              passRef.current = text;
+            }}
+            placeholder="Password"
+            secureTextEntry={!showPass}
+            placeholderTextColor="gray"
+            style={{
+              width: '85%',
+              paddingHorizontal: 10,
+            }}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPass(!showPass)}
+            style={{paddingHorizontal: SCREEN_HEIGHT * 0.015}}>
+            <Icon name={showPass ? 'visibility' : 'visibility-off'} />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => handleNavigate()}>
@@ -228,11 +246,6 @@ const Login = ({navigation}) => {
           />
         </View>
       </View>
-      <View
-        style={{
-          flex: 1,
-        }}
-      />
     </View>
   );
 };
