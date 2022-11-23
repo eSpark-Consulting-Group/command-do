@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   modalInner: {
     height: height * 0.24,
-    width: width * 0.3,
+    // width: width * 0.3,
     position: 'absolute',
     backgroundColor: '#fff',
     borderRadius: height * 0.005,

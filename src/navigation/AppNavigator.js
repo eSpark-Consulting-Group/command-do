@@ -1,6 +1,8 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import SplashScreen from 'react-native-splash-screen';
+
 import {
   Home,
   Login,
@@ -24,6 +26,9 @@ function MainStackNavigator() {
   const navigationRef = React.useRef();
   const userData = useSelector(store => store?.userInfo?.userData);
   const initialRouteName = ROLES[userData?.selected] || 'Login';
+  useEffect(() => {
+    SplashScreen.hide(); //hides the splash screen on app load.
+  }, []);
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
