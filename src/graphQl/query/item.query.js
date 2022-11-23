@@ -1,8 +1,8 @@
 import {gql} from '@apollo/client';
 
 export const GET_ALL_ITEMS = gql`
-  query GetAllItems($where: where) {
-    getAllItems(where: $where) {
+  query GetAllItems($pagination: PaginationInput, $where: where) {
+    getAllItems(pagination: $pagination, where: $where) {
       status
       message
       data {
@@ -11,12 +11,15 @@ export const GET_ALL_ITEMS = gql`
         image
         price
         categoryId
+        createdAt
         Category {
           id
           name
         }
       }
-      error
+      pagination {
+        nextCursor
+      }
     }
   }
 `;

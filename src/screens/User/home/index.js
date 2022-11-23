@@ -95,7 +95,6 @@ function Home({route, navigation}) {
     LoadCategories();
     getRemainingAmount();
     LoadCategoriesWithItem();
-    LoadItems();
     dispatch(initialDataUpdate(profileData));
   }, []);
 
