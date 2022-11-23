@@ -35,17 +35,20 @@ export default function FilterScreen() {
   useUpdateEffect(() => {
     if (route.params !== undefined) {
       console.log('kuch ha', route.params);
-      // getUserSelected(route.params.userList);
+      getUserSelected(route.params);
     }
   }, [route.params]);
 
-  const getUserSelected = userList => {
+  const getUserSelected = ({userList, userId}) => {
     let tempArr = [...orderFilterFields];
-    let newArr = userList.filter(item => item.selected == true);
-    if (newArr[0].label === 'No User') {
+    console.log('userList ka bta', userList, userId);
+    let newArr = userList.filter(item => (item.id === userId ? item : null));
+    console.log('xxx=>>', newArr);
+    console.log('zzzz===>><<>>', tempArr);
+    if (newArr.length === 0) {
       tempArr[1].label = 'Select User';
     } else {
-      tempArr[1].label = newArr[0].label;
+      tempArr[1].label = newArr[0].firstName + ' ' + newArr[0].lastName;
     }
     setOrderFilterFields(tempArr);
   };
@@ -107,7 +110,15 @@ export default function FilterScreen() {
         leftIcon="filter-remove-outline"
         leftIconType="material-community"
         onPressLeft={() => {
-          navigation.goBack();
+          navigation.navigate('OrderList', {
+            filterInfo: {
+              dateRange: {
+                startDate: null,
+                endDate: null,
+              },
+              userInfo: null,
+            },
+          });
         }}
         onPressRight={() => {
           navigation.navigate('OrderList', {
