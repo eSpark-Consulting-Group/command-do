@@ -16,7 +16,6 @@ import {colors} from '../../../theme';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
 import {useEffect} from 'react';
 import {ALL_ORDERS, ORDERS_BY_DATE} from '../../../graphQL/query/orders.query';
-import {getOrdersByDate} from '../../../features/adminOrders/adminOrderSlice';
 
 export default function OrdersList() {
   const navigation = useNavigation();
@@ -32,7 +31,7 @@ export default function OrdersList() {
     route?.params?.filterInfo?.userInfo === null;
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders({endDate: null, startDate: null});
   }, []);
 
   const getSortedOrders = orders => {
@@ -46,15 +45,17 @@ export default function OrdersList() {
     return order;
   };
 
-  const fetchOrders = async dateRange => {
+  const fetchOrders = async ({endDate, startDate}) => {
     const currDate = new Date().setUTCHours(0);
+    const theDate = {
+      startDate: startDate ?? currDate,
+      endDate: endDate ?? new Date(),
+    };
     console.log('Date', new Date(currDate));
     const orders = await GetOrdersByDate({
-      variables: dateRange ?? {
-        startDate: currDate,
-        endDate: new Date(),
-      },
+      variables: theDate,
     });
+    console.log('bta Date kia ha', theDate);
     console.log('ordersByDate', orders?.data?.getOrderOverviewByDate?.data);
     setOrdersByDate(
       getSortedOrders(orders?.data?.getOrderOverviewByDate?.data),
