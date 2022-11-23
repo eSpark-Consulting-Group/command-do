@@ -55,13 +55,14 @@ function RiderNavigator({navigation}) {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={
-        finishedStatus
-          ? purchasedStatus
-            ? 'MoneyReturn'
-            : 'Purchasing_List'
-          : 'Orders'
-      }>
+      // initialRouteName={
+      //   finishedStatus
+      //     ? purchasedStatus
+      //       ? 'MoneyReturn'
+      //       : 'Purchasing_List'
+      //     : 'Orders'
+      // }
+    >
       <Stack.Screen
         name="Orders"
         component={Orders}
