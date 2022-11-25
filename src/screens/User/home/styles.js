@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: height * 0.015,
+    marginLeft: 15,
   },
   categoryImage: {
     height: height * 0.05,
