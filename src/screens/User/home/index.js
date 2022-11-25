@@ -19,6 +19,7 @@ import {
   CustomizeModal,
   MyText,
   DropDownAlert,
+  OverlayLoader,
 } from '../../../components';
 import {AllData, profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
@@ -134,12 +135,13 @@ function Home({route, navigation}) {
     ' Items itemData?.getAllItems ',
     itemData?.getAllItems?.pagination,
   );
+
   const onLoadMore = () => {
     if (itemData?.getAllItems?.pagination?.nextCursor == null) {
       return;
     }
     fetchMore({
-      query: GET_ALL_ITEMS,
+      // query: GET_ALL_ITEMS,
       variables: {
         where: {
           categoryId: selectedCategory?.id,
@@ -151,17 +153,21 @@ function Home({route, navigation}) {
       },
       updateQuery: (previousResult, {fetchMoreResult}) => {
         const newItems = fetchMoreResult.getAllItems.data;
+        const updatedArr = [...previousResult?.getAllItems?.data, ...newItems];
         // setToggle(!toggle)
         return {
           getAllItems: {
             ...fetchMoreResult?.getAllItems,
             pagination: fetchMoreResult?.getAllItems?.pagination,
-            data: [...previousResult?.getAllItems?.data, ...newItems],
+            data: [
+              ...new Map(updatedArr.map(item => [item['id'], item])).values(),
+            ],
           },
         };
       },
     });
   };
+
   const _onSelect = () => {
     if (reduxData?.cart?.amount == 0) {
       childFunc.current();
@@ -199,6 +205,13 @@ function Home({route, navigation}) {
         flex: 1,
         backgroundColor: 'white',
       }}>
+      <OverlayLoader
+        show={
+          LoadItemsLoading ||
+          LoadCategoriesLoading ||
+          LoadCategoriesWithItemLoading
+        }
+      />
       <DropDownAlert
         childFunc={childFunc}
         setPress={() => setPress(false)}
@@ -393,13 +406,7 @@ function Home({route, navigation}) {
             </ScrollView>
           )}
         </View>
-        {LoadItemsLoading ||
-        LoadCategoriesLoading ||
-        LoadCategoriesWithItemLoading ? (
-          <View style={{flex: 4, top: height / 4}}>
-            <ActivityIndicator size={30} color={colors.primary} />
-          </View>
-        ) : (
+        {
           <View
             style={{
               flex: 4,
@@ -416,7 +423,7 @@ function Home({route, navigation}) {
               />
             )}
           </View>
-        )}
+        }
         <TouchableOpacity
           style={styles.cartContainerStyle}
           disabled={reduxData?.cart?.amount == 0 && press}
