@@ -18,7 +18,6 @@ const riderOrderSlice = createSlice({
     getOrders: (state, action) => {
       console.log('Action', action.payload);
       state.orders = action.payload;
-      // console.log(action);
     },
     collectAmouunt: (state, action) => {
       console.log('Action', action.payload);
@@ -49,7 +48,6 @@ const riderOrderSlice = createSlice({
         item.remainingAmount && orders.push(item);
       });
       state.returnMoneyOrders = orders;
-      // console.log('Retun Money orders', orders);
     },
   },
 });
