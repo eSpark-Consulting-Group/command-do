@@ -105,10 +105,11 @@ export default function Users() {
         });
         return acc;
       }, []);
-      setUserList(userData);
+      
+      setUserList(userData?.sort((a, b) => a?.title?.localeCompare(b?.title)));
       // console.log('reduxData', reduxData?.userInfo?.userData);
     } catch (e) {
-      console.log('error while fetching', e);
+      console.log('error while fetching', e?.sort((a, b) => a?.title?.localeCompare(b?.title)));
     }
   };
 
