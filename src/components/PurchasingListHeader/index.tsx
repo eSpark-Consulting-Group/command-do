@@ -4,6 +4,7 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
 import LineSeparater from '../LineSeparater';
 import {CheckBox} from '@rneui/themed';
 import {colors} from '../../theme';
+import MyText from '../Text';
 
 export default function PurchasingListHeader({}: // onAllCheck,
 // checked,
@@ -27,13 +28,13 @@ export default function PurchasingListHeader({}: // onAllCheck,
           />
         </View> */}
         <View style={styles.headerTitleContainer}>
-          <Text style={styles.headerTitle}>Item</Text>
+          <MyText label={'Item'} textStyle={styles.headerTitle} />
         </View>
         <View style={styles.headerTitleContainer2}>
-          <Text style={styles.headerTitle}>Quantity</Text>
+          <MyText label={'Quantity'} textStyle={styles.headerTitle} />
         </View>
         <View style={styles.headerTitleContainer2}>
-          <Text style={styles.headerTitle}>Amount</Text>
+          <MyText label={'Amount'} textStyle={styles.headerTitle} />
         </View>
       </View>
       <LineSeparater />
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SCREEN_WIDTH * 0.02,
     height: SCREEN_HEIGHT * 0.06,
     alignItems: 'center',
-    marginTop: 5,
+    // marginTop: 5,
   },
   headerTitleContainer: {
     width: '48%',
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   headerTitleContainer1: {width: '12%', alignItems: 'center'},
   headerTitleContainer2: {width: '25%', alignItems: 'center'},
   headerTitle: {
-    fontSize: SCREEN_WIDTH * 0.04,
+    // fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',
   },
 });

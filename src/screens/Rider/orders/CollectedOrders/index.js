@@ -8,6 +8,7 @@ import {
   Alert,
   FlatList,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {MyText, OrderCard} from '../../../../components';
@@ -116,13 +117,14 @@ export default function CollectedOrders({navigation}) {
         style={{
           width: '95%',
           alignItems: 'center',
+          justifyContent: 'center',
+          height: moderateVerticalScale(50),
           backgroundColor: orders.some(
             val => val.status == 'PAID' && val.returned == false,
           )
             ? colors.primary
             : '#ccc',
           marginVertical: 10,
-          paddingVertical: 10,
           borderRadius: 10,
         }}>
         <Text
