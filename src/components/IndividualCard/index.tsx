@@ -19,6 +19,7 @@ import {MyText} from '..';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
+import {SCREEN_HEIGHT} from '../../constants';
 const {width, height} = Dimensions.get('window');
 type Item = {
   id: number;
@@ -34,7 +35,6 @@ const IndividualCard = props => {
   const count = useSelector((store: any) => store);
   const [allData, setAllData] = useState<any>([]);
   const cart = useSelector((store: any) => store.cart);
-  const scroll = useRef()
   useEffect(() => {
     // if (menuData?.data) {
     // console.log('asdjl--->', allData?.data);
@@ -65,7 +65,6 @@ const IndividualCard = props => {
             alignItems: 'center',
           }}>
           <FlatList
-            ref={scroll}
             data={data || []}
             showsVerticalScrollIndicator={false}
             onScroll={event => {
@@ -79,12 +78,13 @@ const IndividualCard = props => {
                   type: LayoutAnimation.Types.easeInEaseOut,
                 },
               });
+
               if (
-                (event?.nativeEvent?.contentOffset?.y + 800) <
+                event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1 <
                 event?.nativeEvent?.contentSize?.height
               ) {
                 props?.onScrollToTopStart();
-              }else {
+              } else {
                 props?.onReachEnd();
               }
             }}
@@ -94,7 +94,11 @@ const IndividualCard = props => {
               }
             }}
             ListFooterComponent={
-              loading && data.length > 0 ?  <ActivityIndicator size={'large'} /> : <View style={{height: height * .08}} />
+              loading && data.length > 0 ? (
+                <ActivityIndicator size={'large'} />
+              ) : (
+                <View style={{height: height * 0.08}} />
+              )
             }
             renderItem={({item: dataItem, index: dataIndex}) => {
               var cartItem = cart?.cartItems?.find(
@@ -106,6 +110,7 @@ const IndividualCard = props => {
                   style={{
                     marginVertical: 5,
                     paddingHorizontal: 5,
+                    marginHorizontal: 10,
                     // marginBottom: dataIndex == 0 ? height * 0.04 : 0,
                   }}
                   onPress={() =>
@@ -190,10 +195,15 @@ const IndividualCard = props => {
             }}
             ListEmptyComponent={
               !loading ? (
-                <View>
+                <View style={{alignItems: 'center'}}>
                   <Image
                     source={NotFound}
                     style={{height: height / 2.4, width: width - 30}}
+                  />
+                  <MyText
+                    label={'No Items Found'}
+                    size={'subHeading'}
+                    // textStyle={{color: colors.background}}
                   />
                 </View>
               ) : null
