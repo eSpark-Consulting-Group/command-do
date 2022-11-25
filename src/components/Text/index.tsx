@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, Dimensions, TextStyle} from 'react-native';
-import {Fonts} from '../../utils/fonts';
 
 const {width, height} = Dimensions.get('window');
 
@@ -16,7 +15,7 @@ const MyText = ({
   label,
   size = 'default',
   textStyle,
-  numberOfLines= 1
+  numberOfLines = 1,
 }: {
   label?: string | number;
   size?: 'heading' | 'subHeading' | 'title' | 'subTitle' | 'default' | number;

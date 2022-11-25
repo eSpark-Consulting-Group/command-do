@@ -1,39 +1,18 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
-import {CheckBox} from '@rneui/themed';
-import {useState} from 'react';
-import {colors} from '../../theme';
 
 export default function PurchasingOrderCard({
   itemName,
   quantity,
   totalAmount,
-}: // checked,
-// onCheck,
-{
+}: {
   itemName: string;
   quantity: number;
   totalAmount: number;
-  // checked: boolean;
-  // onCheck: (val: boolean) => void;
 }) {
-  // const [check, setCheck] = useState(false);
-
-  // const onChecked = () => {
-  //   onCheck(!checked);
-  // };
-
   return (
     <View style={styles.cardContainer}>
-      {/* <View style={styles.cardDataContainer1}>
-        <CheckBox
-          checked={checked}
-          onPress={onChecked}
-          checkedColor={colors.primary}
-          containerStyle={{height: SCREEN_HEIGHT * 0.06}}
-        />
-      </View> */}
       <View style={styles.cardDataContainer}>
         <Text style={styles.cardDataText}>{itemName}</Text>
       </View>
