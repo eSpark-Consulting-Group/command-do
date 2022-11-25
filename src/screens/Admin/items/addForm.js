@@ -296,6 +296,7 @@ export default function AddForm() {
               }}
             />
             <ImageContainer
+              load={fields?.image ? true : false}
               onImageChange={image => {
                 setFields({...fields, image: image});
               }}
@@ -401,8 +402,6 @@ export default function AddForm() {
               url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
               onImageChange={image => {
                 setFields({...fields, image: image});
-                // uploadImage(image).then(fireUrl =>
-                // );
               }}
             />
           </ScrollView>
@@ -462,8 +461,6 @@ export default function AddForm() {
               url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
               onImageChange={image => {
                 setFields({...fields, image: image});
-                // uploadImage(image).then(fireUrl =>
-                // );
               }}
             />
           </ScrollView>
