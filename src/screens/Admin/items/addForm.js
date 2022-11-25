@@ -43,6 +43,7 @@ export default function AddForm() {
     image: itemData?.image,
   });
   const [selectedCategory, setSelectedCategory] = useState(itemData?.Category);
+  const [uploadLoader, setUploadLoader] = useState(false);
 
   const [LoadCategories, {data: categoryData}] = useLazyQuery(
     GET_ALL_CATEGORIES,
@@ -104,6 +105,9 @@ export default function AddForm() {
       showMessage({message: 'Please select a category', type: 'error'});
       return;
     }
+    if (fields?.image?.uri?.slice(0, 4) == 'file') {
+      setUploadLoader(true);
+    }
     const obj = {
       name: fields?.name,
       image:
@@ -113,8 +117,12 @@ export default function AddForm() {
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
+    console.log('kia ja raha ha', obj);
     AddNewItem({variables: obj})
       .then(res => {
+        if (fields?.image?.uri?.slice(0, 4) == 'file') {
+          setUploadLoader(false);
+        }
         if (res?.data?.addNewItem?.status) {
           showMessage({
             message: res?.data?.addNewItem?.message,
@@ -134,18 +142,24 @@ export default function AddForm() {
   };
 
   const updateItem = async () => {
+    if (fields?.image?.uri.slice(0, 4) == 'file') {
+      setUploadLoader(true);
+    }
     const obj = {
       updateItemId: itemData?.id,
       name: fields?.name,
       image:
         fields?.image?.uri?.slice(0, 4) == 'file'
           ? await uploadImage(fields?.image)
-          : fields?.image,
+          : fields?.image?.uri,
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
     UpdateItem({variables: obj})
       .then(res => {
+        if (fields?.image?.uri?.slice(0, 4) == 'file') {
+          setUploadLoader(false);
+        }
         if (res?.data?.updateItem?.status) {
           showMessage({
             message: res?.data?.updateItem?.message,
@@ -191,16 +205,22 @@ export default function AddForm() {
 
   // CATEGORIES ACTIONS
   const addCategory = async () => {
+    if (fields?.image?.uri?.slice(0, 4) == 'file') {
+      setUploadLoader(true);
+    }
     AddNewCategory({
       variables: {
         name: fields?.name,
         image:
           fields?.image?.uri?.slice(0, 4) == 'file'
             ? await uploadImage(fields?.image)
-            : fields?.image,
+            : fields?.image?.uri,
       },
     })
       .then(res => {
+        if (fields?.image?.uri?.slice(0, 4) == 'file') {
+          setUploadLoader(false);
+        }
         if (res?.data?.addNewCategory?.status) {
           showMessage({
             message: res?.data?.addNewCategory?.message,
@@ -215,11 +235,22 @@ export default function AddForm() {
         }
       })
       .catch(err => {
-        console.log('error', err, obj);
+        console.log('error', err);
       });
   };
 
   const updateCategory = async () => {
+    if (fields?.image?.uri?.slice(0, 4) == 'file') {
+      setUploadLoader(true);
+      console.log('xx=>>', {
+        updateCategoryId: itemData?.id,
+        name: fields?.name,
+        image:
+          fields?.image?.uri?.slice(0, 4) == 'file'
+            ? await uploadImage(fields?.image)
+            : fields?.image?.uri,
+      });
+    }
     UpdateCategory({
       variables: {
         updateCategoryId: itemData?.id,
@@ -227,10 +258,13 @@ export default function AddForm() {
         image:
           fields?.image?.uri?.slice(0, 4) == 'file'
             ? await uploadImage(fields?.image)
-            : fields?.image,
+            : fields?.image?.uri,
       },
     })
       .then(res => {
+        if (fields?.image?.uri?.slice(0, 4) == 'file') {
+          setUploadLoader(true);
+        }
         if (res?.data?.updateCategory?.status) {
           showMessage({
             message: res?.data?.updateCategory?.message,
@@ -274,6 +308,10 @@ export default function AddForm() {
       });
   };
 
+  const cond1 = selectedCategory !== undefined;
+  const cond2 =
+    fields?.name !== '' && fields?.price !== '' && fields?.image?.uri !== '';
+
   if (mode === 'add') {
     {
       //! Add Category
@@ -281,7 +319,7 @@ export default function AddForm() {
     if (type === 'category') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
-          <OverlayLoader show={addCategoryLoading} />
+          <OverlayLoader show={addCategoryLoading || uploadLoader} />
           <MyHeader
             title="Add Category"
             leftIcon="arrow-back"
@@ -322,7 +360,7 @@ export default function AddForm() {
     if (type === 'item') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
-          <OverlayLoader show={addItemLoading} />
+          <OverlayLoader show={addItemLoading || uploadLoader} />
           <MyHeader
             title="Add Item"
             leftIcon="arrow-back"
@@ -346,13 +384,14 @@ export default function AddForm() {
             />
             <MyInput
               label="Price"
+              numericKeyboard
               handleChangeText={text => {
                 setFields({...fields, price: text});
               }}
             />
             <ImageContainer
-              onImageChange={image => {
-                setFields({...fields, image: image});
+              onImageChange={({uri}) => {
+                setFields({...fields, image: uri});
               }}
             />
           </ScrollView>
@@ -362,6 +401,8 @@ export default function AddForm() {
               count={Object.values(fields).filter(val => Boolean(val))?.length}
               totalCount={3}
               enabled={
+                cond1 &&
+                cond2 &&
                 Object.values(fields).filter(val => Boolean(val))?.length == 3
               }
               onPress={() => addItem()}
@@ -379,7 +420,9 @@ export default function AddForm() {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
           <OverlayLoader
-            show={updateCategoryLoading || deleteCategoryLoading}
+            show={
+              updateCategoryLoading || deleteCategoryLoading || uploadLoader
+            }
           />
           <MyHeader
             title="Edit Category"
@@ -425,7 +468,9 @@ export default function AddForm() {
     if (type === 'item') {
       return (
         <View style={{flex: 1, backgroundColor: colors.background}}>
-          <OverlayLoader show={updateItemLoading || deleteItemLoading} />
+          <OverlayLoader
+            show={updateItemLoading || deleteItemLoading || uploadLoader}
+          />
           <MyHeader
             title="Edit Item"
             leftIcon="arrow-back"
@@ -455,11 +500,13 @@ export default function AddForm() {
             <MyInput
               label="Price"
               value={fields.price}
+              numericKeyboard
               handleChangeText={text => setFields({...fields, price: text})}
             />
             <ImageContainer
               url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
               onImageChange={image => {
+                console.log('kia mil raha ha', image);
                 setFields({...fields, image: image});
               }}
             />

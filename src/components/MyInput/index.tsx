@@ -15,12 +15,14 @@ import MyText from '../Text';
 export default function MyInput({
   label,
   value,
+  numericKeyboard = false,
   canEdit = true,
   handleChangeText,
   onSubmit,
 }: {
   label?: string;
   value?: string;
+  numericKeyboard?: boolean;
   canEdit?: boolean;
   handleChangeText?: (text: string) => void;
   onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
@@ -44,6 +46,7 @@ export default function MyInput({
         onSubmitEditing={onSubmit}
         onChangeText={handleChangeText}
         placeholder="Enter Text in TextInput"
+        keyboardType={numericKeyboard ? 'numeric' : 'default'}
         editable={canEdit}
         underlineColorAndroid="transparent"
         style={styles.TextInputStyleClass}
