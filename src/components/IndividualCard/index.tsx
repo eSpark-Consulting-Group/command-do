@@ -177,7 +177,7 @@ const IndividualCard = props => {
                 );
               }}
               ListEmptyComponent={
-              <View>
+              !loading && <View>
                 <Image
                   source={NotFound}
                   style={{height: height / 2.4, width: width - 30}}
