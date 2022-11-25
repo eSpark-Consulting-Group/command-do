@@ -19,6 +19,7 @@ import {
   CustomizeModal,
   MyText,
   DropDownAlert,
+  OverlayLoader,
 } from '../../../components';
 import {AllData, profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
@@ -43,7 +44,7 @@ function Home({route, navigation}) {
   const [isModal, setIsModal] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [press, setPress] = useState(false);
-  const [toggle, setToggle] = useState(false);
+  const [reachedEnd, setReachedEnd] = useState(false);
   const [allData, setAllData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({
     name: 'All',
@@ -139,12 +140,13 @@ function Home({route, navigation}) {
     ' Items itemData?.getAllItems ',
     itemData?.getAllItems?.pagination,
   );
+
   const onLoadMore = () => {
     if (itemData?.getAllItems?.pagination?.nextCursor == null) {
       return;
     }
     fetchMore({
-      query: GET_ALL_ITEMS,
+      // query: GET_ALL_ITEMS,
       variables: {
         where: {
           categoryId: selectedCategory?.id,
@@ -156,17 +158,21 @@ function Home({route, navigation}) {
       },
       updateQuery: (previousResult, {fetchMoreResult}) => {
         const newItems = fetchMoreResult.getAllItems.data;
+        const updatedArr = [...previousResult?.getAllItems?.data, ...newItems];
         // setToggle(!toggle)
         return {
           getAllItems: {
             ...fetchMoreResult?.getAllItems,
             pagination: fetchMoreResult?.getAllItems?.pagination,
-            data: [...previousResult?.getAllItems?.data, ...newItems],
+            data: [
+              ...new Map(updatedArr.map(item => [item['id'], item])).values(),
+            ],
           },
         };
       },
     });
   };
+
   const _onSelect = () => {
     if (reduxData?.cart?.amount == 0) {
       childFunc.current();
@@ -190,6 +196,14 @@ function Home({route, navigation}) {
     setIsModal(!isModal);
   };
 
+  const onReachEnd = () => {
+    setReachedEnd(true);
+  };
+
+  const onScrollToTopStart = () => {
+    setReachedEnd(false);
+  };
+
   const goToNavigation = navigate => {
     navigation.navigate(navigate);
     setIsModal(!isModal);
@@ -204,6 +218,13 @@ function Home({route, navigation}) {
         flex: 1,
         backgroundColor: 'white',
       }}>
+      <OverlayLoader
+        show={
+          LoadItemsLoading ||
+          LoadCategoriesLoading ||
+          LoadCategoriesWithItemLoading
+        }
+      />
       <DropDownAlert
         childFunc={childFunc}
         setPress={() => setPress(false)}
@@ -367,42 +388,42 @@ function Home({route, navigation}) {
                         : height * 0.02,
                       borderWidth:
                         selectedCategory?.id == item?.id ? 0 : height * 0.001,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                       paddingVertical: height * 0.005,
                       borderColor: '#00000030',
                       marginHorizontal: height * 0.005,
                       borderRadius: height * 0.01,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
+                      // width: width * 0.3,
                     }}
                     onPress={() => isSelect(item)}>
-                    {item.image && (
-                      <Image
-                        source={{uri: item?.image}}
-                        style={styles.categoryImage}
+                    <View>
+                      {item.image && (
+                        <Image
+                          source={{uri: item?.image}}
+                          style={styles.categoryImage}
+                        />
+                      )}
+                    </View>
+
+                    <View>
+                      <MyText
+                        label={item?.name}
+                        size={'title'}
+                        textStyle={{
+                          color:
+                            selectedCategory?.id == item?.id ? '#fff' : '#000',
+                        }}
                       />
-                    )}
-                    <MyText
-                      label={item?.name}
-                      size={'title'}
-                      textStyle={{
-                        color:
-                          selectedCategory?.id == item?.id ? '#fff' : '#000',
-                      }}
-                    />
+                    </View>
                   </TouchableOpacity>
                 ),
               )}
             </ScrollView>
           )}
         </View>
-        {LoadItemsLoading ||
-        LoadCategoriesLoading ||
-        LoadCategoriesWithItemLoading ? (
-          <View style={{flex: 4, top: height / 4}}>
-            <ActivityIndicator size={30} color={colors.primary} />
-          </View>
-        ) : (
+        {
           <View
             style={{
               flex: 4,
@@ -416,27 +437,71 @@ function Home({route, navigation}) {
                 data={items || []}
                 loading={LoadItemsLoading}
                 navigation={navigation}
+                onReachEnd={onReachEnd}
+                onScrollToTopStart={onScrollToTopStart}
               />
             )}
           </View>
+        }
+
+        {!reachedEnd ? (
+          <TouchableOpacity
+            style={styles.cartContainerStyle}
+            disabled={reduxData?.cart?.amount == 0 && press}
+            onPress={_onSelect}>
+            <Icon name="cart-outline" size={height * 0.035} color="white" />
+            {reduxData?.cart?.amount != 0 && (
+              <View style={styles.cartAmountStyle}>
+                <MyText
+                  label={
+                    reduxData?.cart?.amount > 99
+                      ? '99+'
+                      : reduxData?.cart?.amount
+                  }
+                  subTitle
+                  textStyle={{color: '#000'}}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            ddisabled={reduxData?.cart?.amount == 0 && press}
+            style={{
+              ...styles.cartButtonStyle,
+              // borderRadius: reachedEnd ? height * 0.1 : 0,
+            }}
+            onPress={_onSelect}>
+            <Icon
+              name="cart-outline"
+              size={height * 0.04}
+              color="#fff"
+              style={{
+                position: 'absolute',
+                left: height * 0.02,
+                // transform: [{scaleX: -1}],
+              }}
+            />
+            <MyText
+              label={'Checkout Cart'}
+              title
+              textStyle={{color: 'white'}}
+            />
+            {reduxData?.cart?.amount != 0 && (
+              <View style={styles.cartCountStyle}>
+                <MyText
+                  label={
+                    reduxData?.cart?.amount > 99
+                      ? '99+'
+                      : reduxData?.cart?.amount
+                  }
+                  subTitle
+                  textStyle={{color: 'white'}}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
         )}
-        <TouchableOpacity
-          style={styles.cartContainerStyle}
-          disabled={reduxData?.cart?.amount == 0 && press}
-          onPress={_onSelect}>
-          <Icon name="cart-outline" size={height * 0.035} color="white" />
-          {reduxData?.cart?.amount != 0 && (
-            <View style={styles.cartAmountStyle}>
-              <MyText
-                label={
-                  reduxData?.cart?.amount > 99 ? '99+' : reduxData?.cart?.amount
-                }
-                subTitle
-                textStyle={{color: '#000'}}
-              />
-            </View>
-          )}
-        </TouchableOpacity>
       </View>
     </View>
   );
