@@ -5,14 +5,13 @@ import {
   ScrollView,
   Image,
   Pressable,
-  FlatList,
 } from 'react-native';
 import {MyText} from '..';
 import {useSelector} from 'react-redux';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
-
+import { FlatList } from 'react-native-gesture-handler';
 const {width, height} = Dimensions.get('window');
 
 const Cards = props => {
@@ -57,6 +56,7 @@ const Cards = props => {
                         style={{
                           paddingHorizontal: height * 0.01,
                           paddingTop: height * 0.01,
+                          flex: 1
                         }}
                         onPress={() =>
                           navigation.navigate('Item', {
@@ -68,7 +68,7 @@ const Cards = props => {
                           style={{
                             height: height * 0.25,
                             width: width * 0.8,
-                            backgroundColor: 'white',
+                            // backgroundColor: 'white',
                             borderRadius: height * 0.02,
                             elevation: width * 0.003,
                           }}>
@@ -150,6 +150,8 @@ const Cards = props => {
                       />
                     </View>
                   }
+                  // removeClippedSubviews={false}
+                  // updateCellsBatchingPeriod={10}
                 />
               </View>
             </View>
