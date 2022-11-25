@@ -41,6 +41,7 @@ function Home({route, navigation}) {
   const dispatch = useDispatch();
 
   const [isModal, setIsModal] = useState(false);
+  const [cursor, setCursor] = useState(null);
   const [press, setPress] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [allData, setAllData] = useState([]);
@@ -118,6 +119,10 @@ function Home({route, navigation}) {
     } else {
       LoadItems({
         variables: {
+          pagination: {
+            cursor: null,
+            limit: 20,
+          },
           where: {
             categoryId: item?.id,
           },
@@ -303,7 +308,7 @@ function Home({route, navigation}) {
           style={{
             flex: 0.5,
             justifyContent: 'center',
-            paddingHorizontal: height * 0.02,
+            paddingHorizontal: 15,
             paddingVertical: height * 0.0001,
             // backgroundColor: 'red'
           }}>
@@ -314,7 +319,8 @@ function Home({route, navigation}) {
           <MyText label={greetMessage()} subHeading />
         </View>
 
-        {remainingAmount?.getCurrentRemainingAmount?.data && (
+        {remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount >
+          0 && (
           <View
             style={{
               justifyContent: 'center',
@@ -332,10 +338,7 @@ function Home({route, navigation}) {
               textStyle={{justifyContent: 'center', textAlign: 'center'}}
             />
             <MyText
-              label={`Rs:${
-                remainingAmount?.getCurrentRemainingAmount?.data
-                  ?.remainingAmount || 0
-              }`}
+              label={`Rs:${remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount}`}
               textStyle={{
                 justifyContent: 'center',
                 textAlign: 'center',
