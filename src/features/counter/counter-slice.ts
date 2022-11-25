@@ -14,10 +14,7 @@ const counterSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
-    // increament
     increamented(state) {
-      // its okay to do this because immer makes it immutable
-      // under the hood
       state.value++;
     },
   },

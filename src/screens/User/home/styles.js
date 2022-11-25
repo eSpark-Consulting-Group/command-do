@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import { colors } from '../../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -49,13 +50,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: height * 0.015,
+    marginLeft: 15,
   },
   categoryImage: {
     height: height * 0.05,
     width: height * 0.05,
     borderRadius: height * 0.05,
-    marginRight: height * 0.003,
+    marginRight: 10,
   },
   cartContainerStyle: {
     position: 'absolute',
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     width: height * 0.08,
     height: height * 0.08,
     borderRadius: height * 0.1,
-    backgroundColor: 'black',
+    backgroundColor: colors?.primary,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: height * 0.003,
@@ -80,6 +81,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: height * 0.005,
+  },
+  cartButtonStyle: {
+    position: 'absolute',
+    bottom: 0,
+    width: width,
+    height: height * 0.08,
+    backgroundColor: colors?.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: height * 0.003,
+  },
+  cartCountStyle: {
+    position: 'absolute',
+    right: height * 0.02,
+    borderWidth: height * 0.002,
+    borderColor: 'white',
+    borderRadius: height * 1,
+    height: height * 0.04,
+    width: height * 0.04,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
