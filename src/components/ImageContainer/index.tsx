@@ -8,17 +8,17 @@ import {TouchRipple} from '../';
 import {imagePicker} from '../../utils/helperFunctions';
 import {useState} from 'react';
 import MyInput from '../MyInput';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 export default function ImageContainer({
   onImageChange = (image: object) => {},
   url = null,
 }) {
   const [image, setImage] = useState<any>(url);
-  
+
   useEffect(() => {
-    setImage(url)
-  }, [url])
-  
+    setImage(url);
+  }, [url]);
+
   const onUploadImage = async () => {
     try {
       const result: any = await imagePicker();
@@ -58,11 +58,7 @@ export default function ImageContainer({
           />
         </TouchRipple>
       </View>
-      <MyText
-        label="Or"
-        size={SCREEN_HEIGHT * 0.028}
-        textStyle={{top: 10}}
-      />
+      <MyText label="Or" size={SCREEN_HEIGHT * 0.028} textStyle={{top: 10}} />
       <MyInput
         label="Enter Image Url"
         value={image?.uri}

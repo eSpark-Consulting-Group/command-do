@@ -61,131 +61,131 @@ const IndividualCard = props => {
             margin: height * 0.02,
           }}
         />
-          <View
-            style={{
-              padding: height * 0.02,
-              marginBottom: height * 0.02,
-              flex: 1
-            }}>
-            {/* <ScrollView horizontal> */}
-            <FlatList
-              data={data || []}
-              showsVerticalScrollIndicator={false}
-              onEndReachedThreshold={1}
-              onEndReached={() => {
-                console.log('Load', cursor);
-                if (cursor != null) {
-                  fetchMoreOnEnd();
-                }
-              }}
-              ListFooterComponent={
-                loading &&
-                data.length > 0 && <ActivityIndicator size={'large'} />
+        <View
+          style={{
+            padding: height * 0.02,
+            marginBottom: height * 0.02,
+            flex: 1,
+          }}>
+          {/* <ScrollView horizontal> */}
+          <FlatList
+            data={data || []}
+            showsVerticalScrollIndicator={false}
+            onEndReachedThreshold={1}
+            onEndReached={() => {
+              console.log('Load', cursor);
+              if (cursor != null) {
+                fetchMoreOnEnd();
               }
-              renderItem={({item: dataItem, index: dataIndex}) => {
-                var cartItem = cart?.cartItems?.find(
-                  value => value?.id == dataItem?.id,
-                );
-                return (
-                  <Pressable
-                    key={dataIndex}
+            }}
+            ListFooterComponent={
+              loading && data.length > 0 && <ActivityIndicator size={'large'} />
+            }
+            renderItem={({item: dataItem, index: dataIndex}) => {
+              var cartItem = cart?.cartItems?.find(
+                value => value?.id == dataItem?.id,
+              );
+              return (
+                <Pressable
+                  key={dataIndex}
+                  style={{
+                    paddingHorizontal: height * 0.01,
+                    marginVertical: height * 0.04,
+                    // marginBottom: dataIndex == 0 ? height * 0.04 : 0,
+                  }}
+                  onPress={() =>
+                    navigation.navigate('Item', {
+                      foodType: dataItem?.name,
+                      item: dataItem,
+                    })
+                  }>
+                  <View
                     style={{
-                      paddingHorizontal: height * 0.01,
-                      marginVertical: height * 0.04,
-                      // marginBottom: dataIndex == 0 ? height * 0.04 : 0,
-                    }}
-                    onPress={() =>
-                      navigation.navigate('Item', {
-                        foodType: dataItem?.name,
-                        item: dataItem,
-                      })
-                    }>
-                    <View
+                      height: height * 0.25,
+                      width: width * 0.88,
+                      backgroundColor: 'white',
+                      borderRadius: height * 0.02,
+                      elevation: height * 0.003,
+                    }}>
+                    <Image
+                      source={{uri: dataItem?.image}}
                       style={{
+                        borderRadius: height * 0.02,
                         height: height * 0.25,
                         width: width * 0.88,
                         backgroundColor: 'white',
-                        borderRadius: height * 0.02,
-                        elevation: height * 0.003,
-                      }}>
-                      <Image
-                        source={{uri: dataItem?.image}}
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <>
+                      <MyText
+                        label={dataItem?.name}
+                        textStyle={{marginTop: height * 0.02}}
+                      />
+                      <View
                         style={{
-                          borderRadius: height * 0.02,
-                          height: height * 0.25,
-                          width: width * 0.88,
-                          backgroundColor: 'white',
+                          borderColor: '#00000030',
+                          borderWidth: height * 0.001,
+                          padding: height * 0.005,
+                          position: 'absolute',
+                          bottom: -40,
+                          // left: height * 0.01,
+                          borderRadius: height * 0.005,
+                        }}>
+                        <MyText label={`Rs.${dataItem?.price}`} />
+                      </View>
+                    </>
+                    <View style={{top: 20}}>
+                      <AddToCartBtn
+                        item={{
+                          ...dataItem,
+                          quantity: Number(cartItem?.quantity || 0),
                         }}
                       />
                     </View>
+                  </View>
+                  {cartItem != undefined && cartItem?.quantity != 0 && (
                     <View
                       style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
+                        height: height * 0.04,
+                        width: height * 0.04,
+                        backgroundColor: '#11a79c',
+                        borderRadius: height * 1,
+                        position: 'absolute',
+                        right: height * -0.005,
+                        top: height * -0.005,
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}>
-                      <>
-                        <MyText
-                          label={dataItem?.name}
-                          textStyle={{marginTop: height * 0.02}}
-                        />
-                        <View
-                          style={{
-                            borderColor: '#00000030',
-                            borderWidth: height * 0.001,
-                            padding: height * 0.005,
-                            position: 'absolute',
-                            bottom: -40,
-                            // left: height * 0.01,
-                            borderRadius: height * 0.005,
-                          }}>
-                          <MyText label={`Rs.${dataItem?.price}`} />
-                        </View>
-                      </>
-                      <View style={{top: 20}}>
-                        <AddToCartBtn
-                          item={{
-                            ...dataItem,
-                            quantity: Number(cartItem?.quantity || 0),
-                          }}
-                        />
-                      </View>
+                      <MyText
+                        label={
+                          cartItem?.quantity > 99
+                            ? '99+'
+                            : Number(cartItem?.quantity).toString()
+                        }
+                        textStyle={{color: colors.background}}
+                      />
                     </View>
-                    {cartItem != undefined && cartItem?.quantity != 0 && (
-                      <View
-                        style={{
-                          height: height * 0.04,
-                          width: height * 0.04,
-                          backgroundColor: '#11a79c',
-                          borderRadius: height * 1,
-                          position: 'absolute',
-                          right: height * -0.005,
-                          top: height * -0.005,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <MyText
-                          label={
-                            cartItem?.quantity > 99
-                              ? '99+'
-                              : Number(cartItem?.quantity).toString()
-                          }
-                          textStyle={{color: colors.background}}
-                        />
-                      </View>
-                    )}
-                  </Pressable>
-                );
-              }}
-              ListEmptyComponent={
+                  )}
+                </Pressable>
+              );
+            }}
+            ListEmptyComponent={
               <View>
                 <Image
                   source={NotFound}
                   style={{height: height / 2.4, width: width - 30}}
                 />
-              </View>}
-            />
-            {/* </ScrollView> */}
-          </View>
+              </View>
+            }
+          />
+          {/* </ScrollView> */}
+        </View>
       </View>
     )
   );
