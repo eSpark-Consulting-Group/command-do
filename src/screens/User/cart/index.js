@@ -23,6 +23,7 @@ import {MyText, DropDownAlert} from '../../../components';
 import {useMutation} from '@apollo/client';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -172,17 +173,22 @@ function Cart({route, navigation}) {
                 }}>
                 <MyText
                   label={progressText}
-                  subTitle
+                  size={'subTitle'}
                   textStyle={{color: '#00000080'}}
                 />
               </Animated.View>
               <Progress.Circle
-                size={height * 0.09}
+                size={width * 0.15}
                 progress={progress}
                 thickness={height * 0.005}
                 color={colors.primary}
                 borderWidth={0}
                 unfilledColor="#00000020"
+                style={{
+                  width: width * 0.2,
+                  alignItems: 'center',
+                  // backgroundColor: 'red',
+                }}
               />
             </View>
           </View>
@@ -285,16 +291,17 @@ function Cart({route, navigation}) {
                     </View>
                     <MyText
                       label={item.name}
-                      title
+                      size={'title'}
                       textStyle={{color: colors.primary, width: height * 0.13}}
                     />
                     <MyText
-                      label={`Rs.${item.price * item.quantity}`}
-                      title
+                      label={`Rs. ${item.price * item.quantity}`}
+                      size={'title'}
                       textStyle={{
                         textAlign: 'right',
                         position: 'absolute',
-                        right: height * 0,
+                        right: '5%',
+                        top: '40%',
                         width: height * 0.1,
                         flexWrap: 'wrap',
                       }}
@@ -445,8 +452,9 @@ const styles = StyleSheet.create({
     height: height * 0.12,
     alignItems: 'center',
     flexDirection: 'row',
-    borderBottomWidth: height * 0.0005,
+    borderBottomWidth: 1,
     borderBottomColor: '#00000050',
+    // elevation: 1,
   },
   addMoreItemContainer: {
     height: height * 0.06,
