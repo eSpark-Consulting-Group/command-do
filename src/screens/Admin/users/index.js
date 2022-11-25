@@ -126,18 +126,20 @@ export default function Users() {
         renderData={
           <View style={styles.modalInner}>
             <TouchableOpacity
-              style={styles.buttonContainer}
+              style={{...styles.buttonContainer}}
               onPress={() => goToNavigation('Profile')}>
               <Ionicons
                 name="person"
-                size={SCREEN_HEIGHT * 0.025}
+                size={SCREEN_HEIGHT * 0.02}
                 color={colors.primary}
                 style={styles.btnIcon}
               />
               <MyText
                 label={'Profile'}
-                title
-                textStyle={{color: colors.text_normal}}
+                size={'title'}
+                textStyle={{
+                  color: colors.text_normal,
+                }}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -250,7 +252,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     padding: SCREEN_HEIGHT * 0.01,
     borderBottomWidth: SCREEN_HEIGHT * 0.0005,
     borderBottomColor: '#00000050',

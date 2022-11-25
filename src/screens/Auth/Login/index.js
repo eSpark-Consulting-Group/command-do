@@ -22,6 +22,7 @@ import styles from './styles';
 import {showMessage} from 'react-native-flash-message';
 import {sendFCMToken} from '../../../utils/helperFunctions';
 import {SCREEN_HEIGHT} from '../../../constants';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -147,7 +148,7 @@ const Login = ({navigation}) => {
           ) : (
             <Text
               style={{
-                fontSize: height * 0.03,
+                fontSize: moderateVerticalScale(20),
                 color: 'white',
                 fontFamily: Fonts.Roboto_Black,
               }}>
