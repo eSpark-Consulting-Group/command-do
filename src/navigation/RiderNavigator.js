@@ -14,6 +14,7 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../constants';
 import {colors} from '../theme';
 import {logout} from '../features/userInfo/userInfoSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 const Stack = createStackNavigator();
 // 11a79c
@@ -88,13 +89,13 @@ function RiderNavigator({navigation}) {
                       onPress={() => goToNavigation('Profile')}>
                       <Ionicons
                         name="person"
-                        size={SCREEN_HEIGHT * 0.025}
+                        size={moderateVerticalScale(20)}
                         color={colors.primary}
                         style={styles.btnIcon}
                       />
                       <MyText
                         label={'Profile'}
-                        title
+                        size={'title'}
                         textStyle={{color: colors.text_normal}}
                       />
                     </TouchableOpacity>
@@ -106,13 +107,13 @@ function RiderNavigator({navigation}) {
                       onPress={() => logoutHandler()}>
                       <Ionicons
                         name="ios-exit"
-                        size={SCREEN_HEIGHT * 0.025}
+                        size={moderateVerticalScale(20)}
                         color={colors.primary}
                         style={styles.btnIcon}
                       />
                       <MyText
                         label={'Log out'}
-                        title
+                        size={'title'}
                         textStyle={{color: colors.text_normal}}
                       />
                     </TouchableOpacity>
@@ -131,8 +132,8 @@ function RiderNavigator({navigation}) {
 
 const styles = StyleSheet.create({
   modalInner: {
-    height: SCREEN_HEIGHT * 0.1,
-    width: SCREEN_WIDTH * 0.3,
+    height: moderateVerticalScale(80),
+    width: moderateVerticalScale(140),
     position: 'absolute',
     backgroundColor: '#fff',
     borderRadius: SCREEN_HEIGHT * 0.005,
