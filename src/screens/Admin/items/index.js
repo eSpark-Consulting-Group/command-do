@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
@@ -21,12 +22,10 @@ import {
   MyCard,
 } from '../../../components';
 import {colors} from '../../../theme';
-import {handleCountReducer} from '../../../reducers/userReducer';
-import {initialState} from '../../../app/store';
 import OverlayLoader from '../../../components/OverlayLoader';
 import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
-import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
+import {PicBack} from '../../../assets/images';
 
 export default function Items() {
   let categoryPrefix = {name: 'All', color: true, id: undefined};
@@ -46,6 +45,7 @@ export default function Items() {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const [visible, setVisible] = useState(false);
+  const [load, setLoad] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [data, setData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
@@ -113,8 +113,8 @@ export default function Items() {
   };
 
   const handlePress = (index, id) => {
-    console.log(' fetching');
     let selected = {};
+    console.log(' fetching');
     let temp = [...categoryData];
     temp.forEach((item, index2) =>
       index == index2 ? (item.color = true) : (item.color = false),
@@ -127,6 +127,7 @@ export default function Items() {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={visible ? '#000000' : colors.primary} />
       <OverlayLoader show={categoryLoader} />
       {data.length < 1 ||
         (!categoryData[0]?.color ? (
@@ -256,11 +257,16 @@ export default function Items() {
                   }>
                   <View style={{flexDirection: 'row'}}>
                     <Image
-                      source={{uri: item?.image}}
+                      source={load ? {uri: item?.image} : PicBack}
+                      onLoad={() => setLoad(true)}
                       style={{
                         height: 50,
                         width: 50,
-                        backgroundColor: 'teal',
+                        backgroundColor: 'transparent',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderWidth: 2,
+                        borderColor: colors.primary,
                       }}
                     />
                     <GapView mode="horizontal" />
@@ -290,12 +296,12 @@ export default function Items() {
       <SpeedDial
         isOpen={visible}
         color={colors.primary}
-        icon={{name: 'add', color: '#fff'}}
-        openIcon={{name: 'close', color: '#fff'}}
+        icon={{name: 'add', color: colors.text_inverse}}
+        openIcon={{name: 'close', color: colors.text_inverse}}
         onOpen={() => setVisible(!visible)}
         onClose={() => setVisible(!visible)}>
         <SpeedDial.Action
-          icon={{name: 'add', color: '#fff'}}
+          icon={{name: 'add', color: colors.text_inverse}}
           color={colors.primary}
           title="Add Category"
           onPress={() => {
@@ -304,7 +310,7 @@ export default function Items() {
           }}
         />
         <SpeedDial.Action
-          icon={{name: 'add', color: '#fff'}}
+          icon={{name: 'add', color: colors.text_inverse}}
           color={colors.primary}
           title="Add Item"
           onPress={() => {
