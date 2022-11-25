@@ -28,10 +28,9 @@ import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import {PicBack} from '../../../assets/images';
 
 export default function Items() {
-  let categoryPrefix = {name: 'All', color: true, id: undefined};
   const navigation = useNavigation();
 
-  const [LoadCategories, {loading: categoryLoader, refetch, error}] =
+  const [LoadCategories, {data: categoryData, loading: categoryLoader}] =
     useLazyQuery(GET_CATEGORIES_WITH_ID, {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
@@ -39,42 +38,38 @@ export default function Items() {
 
   const [
     LoadItems,
-    {data: itemData, refetch: refetchItems, loading: itemsLoading},
+    {data: itemData, error, refetch: refetchItems, loading: itemsLoading},
   ] = useLazyQuery(GET_ALL_ITEMS);
-
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const [visible, setVisible] = useState(false);
   const [load, setLoad] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [data, setData] = useState([]);
-  const [categoryData, setCategoryData] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(0);
 
   useEffect(() => {
     fetchItems();
-    getAllCategories();
+    LoadCategories();
   }, []);
 
-  const fetchItems = selected => {
-    console.log('Selected', selected);
+  const fetchItems = (selected, cur) => {
+    console.log('Selected', selected, cur, cursor);
     LoadItems({
       variables: {
         pagination: {
-          cursor: selected ? null : cursor,
+          cursor: cur == 1 ? null : cursor,
           limit: 20,
         },
         where: {
-          categoryId: selected ?? undefined,
+          categoryId: selected > 0 ? selected : undefined,
         },
       },
     });
   };
 
+  // console.log('LaodITems Error', error);
+
   useEffect(() => {
-    console.log(
-      'itemData?.getAllItems?.data',
-      itemData?.getAllItems?.data?.length,
-    );
     console.log(
       'cursor itemData?.getAllItems?.data',
       cursor,
@@ -82,47 +77,48 @@ export default function Items() {
     );
     if (
       itemData?.getAllItems?.data &&
-      cursor != itemData?.getAllItems?.pagination?.nextCursor
+      cursor != itemData?.getAllItems?.pagination?.nextCursor &&
+      selectedCategoryId < 1
     ) {
-      console.log('update huwa');
+      console.log('first if');
+      if (cursor != null) {
+        setData(prv => [...prv, ...(itemData?.getAllItems?.data || [])]);
+        setCursor(itemData?.getAllItems?.pagination?.nextCursor);
+      } else {
+        console.log('first else');
+        setData(itemData?.getAllItems?.data);
+        setCursor(itemData?.getAllItems?.pagination?.nextCursor);
+      }
+    }
+    if (
+      itemData?.getAllItems?.data &&
+      selectedCategoryId > 0 &&
+      cursor != null
+    ) {
+      console.log('second if');
       setData(prv => [...prv, ...(itemData?.getAllItems?.data || [])]);
       setCursor(itemData?.getAllItems?.pagination?.nextCursor);
-    }
-    if (itemData?.getAllItems?.data && !categoryData[0]?.color) {
-      console.log('update huwa category wala');
+    } else if (
+      itemData?.getAllItems?.data &&
+      selectedCategoryId > 0 &&
+      cursor == null
+    ) {
+      console.log('second else');
       setData(itemData?.getAllItems?.data);
       setCursor(itemData?.getAllItems?.pagination?.nextCursor);
     }
   }, [itemData?.getAllItems?.data]);
+
   const getOnEnd = async () => {
-    fetchItems();
+    console.log('Getting on end');
+    fetchItems(selectedCategoryId);
   };
 
-  const getAllCategories = async () => {
-    try {
-      const res = await LoadCategories();
-      if (res?.data?.getAllCategories?.status) {
-        const {data} = res?.data?.getAllCategories;
-        let newData = data.map(item => ({...item, color: false}));
-        categoryPrefix['color'] = true;
-        setCategoryData([categoryPrefix, ...newData]);
-      }
-    } catch (e) {
-      console.log('error while fetching', e);
-    }
-  };
-
-  const handlePress = (index, id) => {
-    let selected = {};
-    console.log(' fetching');
-    let temp = [...categoryData];
-    temp.forEach((item, index2) =>
-      index == index2 ? (item.color = true) : (item.color = false),
-    );
-    setCategoryData(temp);
-    temp.forEach(item => (item.color ? (selected = item) : null));
-    forceUpdate();
-    fetchItems(id);
+  const handlePress = id => {
+    setData([]);
+    setCursor(null);
+    setSelectedCategoryId(id);
+    fetchItems(id, 1);
   };
 
   return (
@@ -130,7 +126,7 @@ export default function Items() {
       <StatusBar backgroundColor={visible ? '#000000' : colors.primary} />
       <OverlayLoader show={categoryLoader} />
       {data.length < 1 ||
-        (!categoryData[0]?.color ? (
+        (selectedCategoryId > 0 ? (
           <OverlayLoader show={categoryLoader || itemsLoading} />
         ) : null)}
 
@@ -155,65 +151,72 @@ export default function Items() {
             alignSelf: 'center',
             flexDirection: 'row-reverse',
           }}>
-          {categoryData.length !== 0 && !categoryData[0].color && (
-            <>
-              <MyCard cardStyle={{borderRadius: 100}}>
-                <Icon
-                  name="edit"
-                  style={{
-                    textAlignVertical: 'center',
-                    padding: 10,
-                  }}
-                  containerStyle={{borderRadius: 100}}
-                  pressableProps={{
-                    android_ripple: {borderless: true, color: '#8f8f8f33'},
-                  }}
-                  onPress={() =>
-                    navigation.navigate('Add_Form', {
-                      mode: 'edit',
-                      type: 'category',
-                      itemData: categoryData?.filter(value => value?.color)[0],
-                    })
-                  }
-                />
-              </MyCard>
-            </>
-          )}
+          {categoryData?.getAllCategories?.data?.length !== 0 &&
+            selectedCategoryId > 0 && (
+              <>
+                <MyCard cardStyle={{borderRadius: 100}}>
+                  <Icon
+                    name="edit"
+                    style={{
+                      textAlignVertical: 'center',
+                      padding: 10,
+                    }}
+                    containerStyle={{borderRadius: 100}}
+                    pressableProps={{
+                      android_ripple: {borderless: true, color: '#8f8f8f33'},
+                    }}
+                    onPress={() =>
+                      navigation.navigate('Add_Form', {
+                        mode: 'edit',
+                        type: 'category',
+                        itemData: categoryData?.getAllCategories?.data?.find(
+                          value => value?.id == selectedCategoryId,
+                        ),
+                      })
+                    }
+                  />
+                </MyCard>
+              </>
+            )}
         </View>
       </View>
       <View style={{width: SCREEN_WIDTH}}>
-        <FlatList
-          data={categoryData}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryContainer}
-          renderItem={({item, index}) => (
-            <MyCard
-              key={item.id}
-              cardStyle={{
-                ...styles.category,
-                backgroundColor: item.color
-                  ? colors.primary
-                  : colors.background,
-              }}>
-              <TouchableOpacity
-                style={{padding: 10}}
-                onPress={() => {
-                  handlePress(index, item.id);
+        {!categoryLoader && categoryData?.getAllCategories && (
+          <FlatList
+            data={[{name: 'All', id: 0}, ...categoryData.getAllCategories.data]}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryContainer}
+            renderItem={({item, index}) => (
+              <MyCard
+                key={item.id}
+                cardStyle={{
+                  ...styles.category,
+                  backgroundColor:
+                    selectedCategoryId == item.id
+                      ? colors.primary
+                      : colors.background,
                 }}>
-                <MyText
-                  label={item?.name}
-                  size={'title'}
-                  textStyle={{
-                    color: item.color
-                      ? colors.text_inverse
-                      : colors.text_normal,
-                  }}
-                />
-              </TouchableOpacity>
-            </MyCard>
-          )}
-        />
+                <TouchableOpacity
+                  style={{padding: 10}}
+                  onPress={() => {
+                    handlePress(item.id);
+                  }}>
+                  <MyText
+                    label={item?.name}
+                    size={'title'}
+                    textStyle={{
+                      color:
+                        selectedCategoryId == item.id
+                          ? colors.text_inverse
+                          : colors.text_normal,
+                    }}
+                  />
+                </TouchableOpacity>
+              </MyCard>
+            )}
+          />
+        )}
       </View>
       <View style={styles.subHeader}>
         <MyText
@@ -222,16 +225,16 @@ export default function Items() {
           textStyle={{alignSelf: 'center', paddingVertical: 10}}
         />
       </View>
-      {data && (
+      {!categoryLoader && data && (
         <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
           <FlatList
             data={data}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.itemContainer}
-            onEndReachedThreshold={1}
+            // onEndReachedThreshold={1}
             onEndReached={() => {
               console.log('Load');
-              if (categoryData[0].color && cursor != null) {
+              if (cursor != null) {
                 getOnEnd();
               }
             }}

@@ -31,6 +31,7 @@ import {
 import {useEffect} from 'react';
 import {toggleOrderPurchased} from '../../../features/riderOrders/riderOrderSlice';
 import {useDispatch} from 'react-redux';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function PurchasingList({navigation}) {
   const [GetOrderSummary, {loading}] = useLazyQuery(ORDERS_SUMMARY);
@@ -178,8 +179,14 @@ export default function PurchasingList({navigation}) {
           borderTopWidth: 1,
           borderColor: '#00000042',
         }}>
-        <Text style={{fontWeight: '600', fontSize: 18}}>Total</Text>
-        <Text style={{fontWeight: '600', fontSize: 18}}>Rs. {totalAmount}</Text>
+        <MyText
+          label={'Total'}
+          textStyle={{fontWeight: '600', fontFamily: 'Poppins-Bold'}}
+        />
+        <MyText
+          label={`Rs. ${totalAmount}`}
+          textStyle={{fontWeight: '600', fontFamily: 'Poppins-Bold'}}
+        />
       </View>
       <View
         style={{
@@ -188,35 +195,41 @@ export default function PurchasingList({navigation}) {
           justifyContent: 'space-between',
           alignItems: 'center',
           marginVertical: 10,
+          height: moderateVerticalScale(50),
         }}>
         <TouchableOpacity
           onPress={createPDF}
           style={{
             width: '15%',
+            height: '100%',
             alignItems: 'center',
             backgroundColor: '#11a79c',
-            height: SCREEN_HEIGHT * 0.08,
             justifyContent: 'center',
             borderRadius: 10,
           }}>
-          <Icon name="print" color={'#fff'} />
+          <Icon name="print" size={moderateVerticalScale(30)} color={'#fff'} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={orderPurchased}
           style={{
             width: '80%',
+            height: '100%',
             alignItems: 'center',
             backgroundColor: '#11a79c',
-            height: SCREEN_HEIGHT * 0.08,
             justifyContent: 'center',
             borderRadius: 10,
           }}>
           {loadPurchased ? (
             <ActivityIndicator size={'large'} color={colors.background} />
           ) : (
-            <Text style={{fontWeight: '600', fontSize: 22, color: '#fff'}}>
-              Order Purchased
-            </Text>
+            <MyText
+              textStyle={{
+                fontFamily: 'Poppins-Bold',
+                fontSize: 22,
+                color: colors.text_inverse,
+              }}
+              label={'Order Purchased'}
+            />
           )}
         </TouchableOpacity>
       </View>

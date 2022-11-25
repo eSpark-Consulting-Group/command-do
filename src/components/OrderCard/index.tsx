@@ -49,7 +49,7 @@ export default function OrderCard({
           padding: 5,
           borderBottomWidth: 1,
         }}>
-        <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
+        <MyText label={name} size={'heading'} textStyle={styles.cardDataText} />
         <TouchableOpacity
           onPress={paid == 'UNPAID' ? onCollect : onRevert}
           style={{
@@ -57,7 +57,7 @@ export default function OrderCard({
             borderRadius: 5,
             backgroundColor: colors.primary,
             elevation: 5,
-            paddingVertical: 1,
+            paddingVertical: 5,
           }}>
           <MyText
             label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
@@ -70,12 +70,18 @@ export default function OrderCard({
           <MyText
             label={'Order'}
             size={'title'}
-            textStyle={{fontFamily: 'Poppins-Bold'}}
+            textStyle={{
+              fontFamily: 'Poppins-Bold',
+              textDecorationLine: 'underline',
+            }}
           />
           <MyText
             label={'Quantity'}
             size={'title'}
-            textStyle={{fontFamily: 'Poppins-Bold'}}
+            textStyle={{
+              fontFamily: 'Poppins-Bold',
+              textDecorationLine: 'underline',
+            }}
           />
         </View>
         {order.length > 0 &&
@@ -171,7 +177,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataText: {
-    fontSize: width * 0.04,
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
   },
