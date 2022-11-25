@@ -32,9 +32,6 @@ export default function SearchItem({route}) {
       },
     });
     setLunchItems(searchedItems.data.searchItem.data);
-    // const items = [...lunchItems];
-    // const filItems = items.filter(item => item.name == text);
-    // console.log('ITEMS', filItems);
   };
 
   return (
