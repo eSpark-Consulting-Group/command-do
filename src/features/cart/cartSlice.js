@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { AllData } from '../../utils/data';
+import {createSlice} from '@reduxjs/toolkit';
+import {AllData} from '../../utils/data';
 
 const initialState = {
   cartItems: [],
@@ -14,17 +14,15 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-
     addItem: (state, action) => {
       const data = action.payload;
-      const sameItem = state.cartItems.filter((item) => (item.name === data.name))
+      const sameItem = state.cartItems.filter(item => item.name === data.name);
 
       if (sameItem.length != 0) {
         state.cartItems.map((item, index) => {
           if (item.name === data.name) {
             if (data.quantity == 0) {
-              state.cartItems.splice(index, 1)
-              // console.log(data.quantity, '====< data.quantity');
+              state.cartItems.splice(index, 1);
             } else {
               state.cartItems[index].quantity = data.quantity;
             }
@@ -33,15 +31,13 @@ const cartSlice = createSlice({
             if (allItems.name === data.foodType) {
               allItems.data.map((menuItem, menuIndex) => {
                 if (menuItem.name === data.name) {
-                  state.menuItems[index].data[menuIndex].quantity = data.quantity;
-                  // console.log('check item--->', state.menuItems[index].data[menuIndex].quantity);
+                  state.menuItems[index].data[menuIndex].quantity =
+                    data.quantity;
                 }
-              })
-              // console.log('allItems===>', allItems);
+              });
             }
-          })
-        })
-        // increase()
+          });
+        });
       } else {
         state.cartItems = [...state.cartItems, data];
         AllData?.map((allItems, index) => {
@@ -49,46 +45,39 @@ const cartSlice = createSlice({
             allItems.data.map((menuItem, menuIndex) => {
               if (menuItem.name === data.name) {
                 state.menuItems[index].data[menuIndex].quantity = data.quantity;
-                // console.log('check item--->', state.menuItems[index].data[menuIndex].quantity);
               }
-            })
+            });
           }
-        })
-        // increase()
+        });
       }
     },
     changeType: (state, action) => {
       state.foodType = action.payload;
     },
-    clearCart: (state) => {
+    clearCart: state => {
       state.cartItems = [];
       state.amount = 0;
     },
     removeItem: (state, action) => {
       const itemId = action.payload;
-      state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
+      state.cartItems = state.cartItems.filter(item => item.id !== itemId);
     },
     increase: (state, action) => {
-      // const addQty = action.payload;
-      // state.amount = state.amount + 1;
-      // console.log(state?.cartItems);
       var makeTotal = 0;
       if (state?.cartItems) {
         state?.cartItems.map((item, index) => {
           makeTotal = makeTotal + Number(item.quantity);
-        })
+        });
         state.amount = makeTotal;
       }
-
     },
-    decrease: (state, { payload }) => {
-      // const cartItem = state.cartItems.find((item) => item.id === payload.id);
+    decrease: (state, {payload}) => {
       state.amount = state.amount - 1;
     },
-    calculateTotals: (state) => {
+    calculateTotals: state => {
       let amount = 0;
       let total = 0;
-      state.cartItems.forEach((item) => {
+      state.cartItems.forEach(item => {
         amount += item.amount;
         total += item.amount * item.price;
       });
@@ -98,7 +87,14 @@ const cartSlice = createSlice({
   },
 });
 
-export const { clearCart, removeItem, increase, decrease, calculateTotals, addItem, changeType } =
-  cartSlice.actions;
+export const {
+  clearCart,
+  removeItem,
+  increase,
+  decrease,
+  calculateTotals,
+  addItem,
+  changeType,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

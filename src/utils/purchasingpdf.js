@@ -1,5 +1,4 @@
 export const pdfHtml = order => {
-  let total = 0;
   return `<div
         style="
           display: flex;

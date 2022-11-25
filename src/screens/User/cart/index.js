@@ -23,8 +23,6 @@ import {MyText, DropDownAlert} from '../../../components';
 import {useMutation} from '@apollo/client';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
-import {isValidTimeToOrder} from '../../../utils/helperFunctions';
-import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -46,8 +44,8 @@ function Cart({route, navigation}) {
   const [press, setPress] = useState(false);
   const userData = useSelector(store => store?.userInfo?.userData);
   const [CreateOrder, {loading, error}] = useMutation(PLACE_ORDER);
+
   useEffect(() => {
-    // console.log("count", count);
     setTimeout(() => {
       setProgress(0.7);
       setTimeout(() => {
@@ -70,14 +68,7 @@ function Cart({route, navigation}) {
       });
     }
     setTotal(makeTotal);
-    // if (count?.cart?.cartItems.length == 0) {
-    //   navigation.goBack();
-    // }
   }, [count?.cart?.cartItems]);
-
-  useEffect(() => {
-    // console.log("timer--->",timer);
-  }, []);
 
   const onHandleEditQty = index => {
     setIsEditQty(false);
@@ -92,7 +83,6 @@ function Cart({route, navigation}) {
   };
 
   const addToCart = (item, value) => {
-    // console.log('value---->', value);
     if (value != '') {
       if (Number(value) > 999) {
         qtyWarn.current();
@@ -106,24 +96,15 @@ function Cart({route, navigation}) {
   };
 
   const removefromCart = (item, value) => {
-    // console.log('value---->', value);
-
     var changeData = {...item};
     changeData.quantity = value;
     setGetData(changeData);
   };
 
   useEffect(() => {
-    // const payload = {
-    // 	foodType: getRouteData?.foodType,
-    // 	getData
-    // }
-    // setAllData(foodName[0].data)
     if (Object.keys(getData).length != 0) {
-      // console.log('run or not-->',getData);
       dispatch(addItem(getData));
       dispatch(increase());
-      // navigation.goBack()
     }
   }, [getData]);
 
@@ -168,7 +149,11 @@ function Cart({route, navigation}) {
           />
           <View style={styles.headerContainer}>
             <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
-              <Icon name="md-close" size={height * 0.04} color="#11a79c" />
+              <Icon
+                name="md-close"
+                size={height * 0.04}
+                color={colors.primary}
+              />
             </TouchableOpacity>
             <View style={styles.headerText}>
               <MyText label={'Cart'} subHeading />
@@ -195,14 +180,10 @@ function Cart({route, navigation}) {
                 size={height * 0.09}
                 progress={progress}
                 thickness={height * 0.005}
-                color="#11a79c"
+                color={colors.primary}
                 borderWidth={0}
                 unfilledColor="#00000020"
               />
-              {/* 
-          <Text style={{}}>
-
-          </Text> */}
             </View>
           </View>
           <View style={styles.deliveryOptionContainer}>
@@ -226,7 +207,6 @@ function Cart({route, navigation}) {
             <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
               {count?.cart?.cartItems &&
                 count?.cart?.cartItems.map((item, index) => (
-                  // console.log(item),
                   <TouchableOpacity
                     activeOpacity={0.7}
                     style={styles.cartItemInner}
@@ -245,15 +225,13 @@ function Cart({route, navigation}) {
                         extraTextInputProps={{
                           onSubmitEditing: () => setIsEditQty(false),
                         }}
-                        // onLimitReached={(isMax, msg) => console.log(isMax, msg)}
                         totalWidth={height * 0.17}
                         totalHeight={height * 0.09}
                         iconSize={height * 0.01}
-                        // step={1.5}
                         valueType="integer"
                         rounded
                         separatorWidth={0}
-                        textColor="#11a79c"
+                        textColor={colors.primary}
                         iconStyle={{color: 'black'}}
                         inputStyle={{
                           fontSize: height * 0.03,
@@ -266,7 +244,6 @@ function Cart({route, navigation}) {
                           backgroundColor: 'white',
                           elevation: height * 0.005,
                           borderWidth: height * 0.001,
-                          // borderColor:'#00000050',
                           borderRadius: height * 0.01,
                         }}
                         rightButtonBackgroundColor="#fff"
@@ -309,7 +286,7 @@ function Cart({route, navigation}) {
                     <MyText
                       label={item.name}
                       title
-                      textStyle={{color: '#11a79c', width: height * 0.13}}
+                      textStyle={{color: colors.primary, width: height * 0.13}}
                     />
                     <MyText
                       label={`Rs.${item.price * item.quantity}`}
@@ -340,7 +317,10 @@ function Cart({route, navigation}) {
               <MyText
                 label={'Add more Items 😋'}
                 title
-                textStyle={{color: '#11a79c', textDecorationLine: 'underline'}}
+                textStyle={{
+                  color: colors.primary,
+                  textDecorationLine: 'underline',
+                }}
               />
             </TouchableOpacity>
           </View>
@@ -353,7 +333,7 @@ function Cart({route, navigation}) {
               <TouchableOpacity
                 disabled={count?.cart?.cartItems.length == 0}
                 style={{
-                  backgroundColor: '#11a79c',
+                  backgroundColor: colors.primary,
                   height: height * 0.06,
                   borderRadius: height * 0.005,
                   paddingLeft: height * 0.015,
@@ -363,14 +343,6 @@ function Cart({route, navigation}) {
                   marginVertical: height * 0.009,
                 }}
                 onPress={() => {
-                  // if (!isValidTimeToOrder()) {
-                  //   showMessage({
-                  //     message: 'Alas! Time is over for placing order😬',
-                  //     icon: 'auto',
-                  //     type: 'info',
-                  //   });
-                  //   return;
-                  // }
                   isShowAlert(true);
                 }}>
                 {!loading ? (
@@ -418,7 +390,7 @@ function Cart({route, navigation}) {
                 cancelText="No, Cancel"
                 confirmText="Yes, Confirm"
                 cancelButtonColor="#00000060"
-                confirmButtonColor="#11a79c"
+                confirmButtonColor={colors.primary}
                 onCancelPressed={() => {
                   isShowAlert(false);
                 }}
@@ -432,8 +404,6 @@ function Cart({route, navigation}) {
   );
 }
 
-// trash-outline
-
 export default Cart;
 
 const styles = StyleSheet.create({
@@ -445,7 +415,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: height * 0.02,
-    // textAlign:''
   },
   headerText: {
     marginLeft: height * 0.02,
@@ -456,7 +425,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   // Delivery Option Container
   deliveryOptionContainer: {
     height: height * 0.12,
@@ -467,14 +435,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: height * 0.02,
     margin: height * 0.02,
   },
-
   // Cart Item Container
   cartItemContainer: {
-    // minHeight: height * .1,
     maxHeight: height * 0.52,
     flexDirection: 'row',
     paddingHorizontal: height * 0.02,
-    // backgroundColor: 'red'
   },
   cartItemInner: {
     height: height * 0.12,
@@ -482,15 +447,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: height * 0.0005,
     borderBottomColor: '#00000050',
-    // backgroundColor: 'red'
   },
-
   addMoreItemContainer: {
     height: height * 0.06,
     paddingLeft: height * 0.025,
     justifyContent: 'center',
-    // alignItems: 'center',
-    // flexDirection: 'row',
   },
   qtyButtonContainer: {
     flexDirection: 'row',
@@ -504,7 +465,7 @@ const styles = StyleSheet.create({
     height: height * 0.03,
     elevation: height * 0.003,
     width: height * 0.03,
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -512,7 +473,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: height * 0.01,
   },
-
   // Footer Container
   footerContainer: {
     width: width * 1,
@@ -521,14 +481,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     bottom: 0,
     alignSelf: 'center',
-    // backgroundColor: 'red',
-    // flexDirection: 'row',
-    // paddingHorizontal: height * .02,
-    // backgroundColor: 'blue',
     justifyContent: 'flex-end',
   },
   totalAmountContainer: {
-    // height: height * .12,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -537,6 +492,5 @@ const styles = StyleSheet.create({
   ProceedToCheckOut: {
     height: height * 0.09,
     width: width * 0.9,
-    // flexDirection: 'row',
   },
 });
