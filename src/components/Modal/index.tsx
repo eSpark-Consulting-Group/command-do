@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Modal,
@@ -27,16 +27,18 @@ const CustomizeModal = props => {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
-  LayoutAnimation.configureNext({
-    duration: 200,
-    create: {
-      type: LayoutAnimation.Types.easeInEaseOut,
-      property: LayoutAnimation.Properties.opacity,
-    },
-    update: {
-      type: LayoutAnimation.Types.easeInEaseOut,
-    },
-  });
+  useEffect(() => {
+    LayoutAnimation.configureNext({
+        duration: 200,
+        create: {
+          type: LayoutAnimation.Types.easeInEaseOut,
+          property: LayoutAnimation.Properties.opacity,
+        },
+        update: {
+          type: LayoutAnimation.Types.easeInEaseOut,
+        },
+      });
+  }, [isVisible])
 
   return (
     <>
