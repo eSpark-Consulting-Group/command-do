@@ -11,6 +11,7 @@ import {
   Pressable,
   FlatList,
   ActivityIndicator,
+  LayoutAnimation,
 } from 'react-native';
 import {Fonts} from '../../utils/fonts';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
@@ -18,6 +19,7 @@ import {MyText} from '..';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
+import {SCREEN_HEIGHT} from '../../constants';
 const {width, height} = Dimensions.get('window');
 type Item = {
   id: number;
@@ -65,15 +67,38 @@ const IndividualCard = props => {
           <FlatList
             data={data || []}
             showsVerticalScrollIndicator={false}
-            onEndReachedThreshold={1}
+            onScroll={event => {
+              LayoutAnimation.configureNext({
+                duration: 300,
+                create: {
+                  type: LayoutAnimation.Types.easeInEaseOut,
+                  property: LayoutAnimation.Properties.opacity,
+                },
+                update: {
+                  type: LayoutAnimation.Types.easeInEaseOut,
+                },
+              });
+
+              if (
+                event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1 <
+                event?.nativeEvent?.contentSize?.height
+              ) {
+                props?.onScrollToTopStart();
+              } else {
+                props?.onReachEnd();
+              }
+            }}
             onEndReached={() => {
-              console.log('Load', cursor);
               if (cursor != null) {
                 fetchMoreOnEnd();
               }
             }}
             ListFooterComponent={
-              loading && data.length > 0 && <ActivityIndicator size={'large'} />
+              loading && data.length > 0 ? (
+                <ActivityIndicator size={'large'} />
+              ) : (
+                <View style={{height: height * 0.08}} />
+              )
             }
             renderItem={({item: dataItem, index: dataIndex}) => {
               var cartItem = cart?.cartItems?.find(
@@ -85,6 +110,7 @@ const IndividualCard = props => {
                   style={{
                     marginVertical: 5,
                     paddingHorizontal: 5,
+                    marginHorizontal: 10,
                     // marginBottom: dataIndex == 0 ? height * 0.04 : 0,
                   }}
                   onPress={() =>
@@ -168,12 +194,19 @@ const IndividualCard = props => {
               );
             }}
             ListEmptyComponent={
-              <View>
-                <Image
-                  source={NotFound}
-                  style={{height: height / 2.4, width: width - 30}}
-                />
-              </View>
+              !loading ? (
+                <View style={{alignItems: 'center'}}>
+                  <Image
+                    source={NotFound}
+                    style={{height: height / 2.4, width: width - 30}}
+                  />
+                  <MyText
+                    label={'No Items Found'}
+                    size={'subHeading'}
+                    // textStyle={{color: colors.background}}
+                  />
+                </View>
+              ) : null
             }
           />
         </View>

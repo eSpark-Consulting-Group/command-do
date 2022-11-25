@@ -147,14 +147,13 @@ const Login = ({navigation}) => {
           {userLoader ? (
             <ActivityIndicator size={30} color="white" />
           ) : (
-            <Text
-              style={{
+            <MyText
+              label={'Login'}
+              textStyle={{
                 fontSize: moderateVerticalScale(20),
-                color: 'white',
-                fontFamily: Fonts.Roboto_Black,
-              }}>
-              Login
-            </Text>
+                color: colors.text_inverse,
+              }}
+            />
           )}
         </TouchableOpacity>
         <View style={styles.radioButtonContainer}>
