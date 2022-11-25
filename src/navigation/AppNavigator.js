@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -21,6 +21,18 @@ import {useSelector} from 'react-redux';
 import {ROLES} from '../constants';
 import {MyHeader} from '../components';
 
+const MyTheme = {
+  dark: false,
+  colors: {
+    primary: 'rgb(255, 45, 85)',
+    background: 'rgb(242, 242, 242)',
+    card: 'rgb(255, 255, 255)',
+    text: 'rgb(28, 28, 30)',
+    border: 'rgb(199, 199, 204)',
+    notification: 'rgb(255, 69, 58)',
+  },
+};
+
 const Stack = createStackNavigator();
 function MainStackNavigator() {
   const navigationRef = React.useRef();
@@ -30,7 +42,7 @@ function MainStackNavigator() {
     SplashScreen.hide(); //hides the splash screen on app load.
   }, []);
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer theme={DefaultTheme} ref={navigationRef}>
       <Stack.Navigator
         initialRouteName={initialRouteName}
         screenOptions={{
