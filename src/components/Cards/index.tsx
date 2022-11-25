@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Dimensions,
-  ScrollView,
-  Image,
-  Pressable,
-  FlatList,
-} from 'react-native';
+import {View, Dimensions, ScrollView, Image, Pressable} from 'react-native';
 import {MyText} from '..';
 import {useSelector} from 'react-redux';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
-
+import {FlatList} from 'react-native-gesture-handler';
 const {width, height} = Dimensions.get('window');
 
 const Cards = props => {
@@ -163,6 +156,8 @@ const Cards = props => {
                       />
                     </View>
                   }
+                  // removeClippedSubviews={false}
+                  // updateCellsBatchingPeriod={10}
                 />
               </View>
             </View>

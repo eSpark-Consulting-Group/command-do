@@ -43,6 +43,7 @@ function Home({route, navigation}) {
   const [isModal, setIsModal] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [press, setPress] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const [allData, setAllData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({
     name: 'All',
@@ -88,6 +89,7 @@ function Home({route, navigation}) {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
+
   const categories = categoriesData?.getAllCategories?.data;
   const items =
     selectedCategory?.id == 0
@@ -124,11 +126,47 @@ function Home({route, navigation}) {
           where: {
             categoryId: item?.id,
           },
+          pagination: {
+            limit: 20,
+            cursor: null,
+          },
         },
       });
     }
   };
 
+  console.log(
+    ' Items itemData?.getAllItems ',
+    itemData?.getAllItems?.pagination,
+  );
+  const onLoadMore = () => {
+    if (itemData?.getAllItems?.pagination?.nextCursor == null) {
+      return;
+    }
+    fetchMore({
+      query: GET_ALL_ITEMS,
+      variables: {
+        where: {
+          categoryId: selectedCategory?.id,
+        },
+        pagination: {
+          limit: 20,
+          cursor: itemData?.getAllItems?.pagination?.nextCursor,
+        },
+      },
+      updateQuery: (previousResult, {fetchMoreResult}) => {
+        const newItems = fetchMoreResult.getAllItems.data;
+        // setToggle(!toggle)
+        return {
+          getAllItems: {
+            ...fetchMoreResult?.getAllItems,
+            pagination: fetchMoreResult?.getAllItems?.pagination,
+            data: [...previousResult?.getAllItems?.data, ...newItems],
+          },
+        };
+      },
+    });
+  };
   const _onSelect = () => {
     if (reduxData?.cart?.amount == 0) {
       childFunc.current();
@@ -372,7 +410,13 @@ function Home({route, navigation}) {
             {selectedCategory?.id == 0 ? (
               <Cards data={items || []} navigation={navigation} />
             ) : (
-              <IndividualCard data={items || []} navigation={navigation} />
+              <IndividualCard
+                fetchMoreOnEnd={onLoadMore}
+                cursor={itemData?.getAllItems?.pagination?.nextCursor}
+                data={items || []}
+                loading={LoadItemsLoading}
+                navigation={navigation}
+              />
             )}
           </View>
         )}
