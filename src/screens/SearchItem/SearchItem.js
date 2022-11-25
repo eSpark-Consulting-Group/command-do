@@ -40,7 +40,7 @@ export default function SearchItem({route}) {
         value={search}
         handleChangeText={text => updateSearch(text)}
         leftIcon="arrow-back"
-        icon="close-circle"
+        icon="close-circle-outline"
         onPressLeft={() => navigation.goBack()}
         onPressRight={() => updateSearch('')}
         Loader={searchLoading}

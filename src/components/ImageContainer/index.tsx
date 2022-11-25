@@ -31,7 +31,12 @@ export default function ImageContainer({
   };
 
   useEffect(() => {
-    if (image?.uri === '' || image?.uri === undefined) {
+    console.log('bta image kia', image?.uri, image?.uri == '');
+    if (
+      image?.uri === '' ||
+      image?.uri === undefined ||
+      image?.uri?.uri === ''
+    ) {
       setLoad(false);
     } else {
       setLoad(true);
@@ -56,11 +61,10 @@ export default function ImageContainer({
             width: 80,
             borderWidth: 2,
             borderColor: colors.primary,
-            borderRadius: 10,
           }}>
           <Image
             source={load ? {uri: image?.uri} : PicBack}
-            style={{height: '100%', width: '100%', borderRadius: 5}}
+            style={{height: '100%', width: '100%'}}
           />
         </View>
         <GapView mode="horizontal" />
@@ -71,7 +75,7 @@ export default function ImageContainer({
           {showUrl ? (
             <View
               style={{
-                flex: 1,
+                flex: 0.5,
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
@@ -83,19 +87,31 @@ export default function ImageContainer({
                   onImageChange(Image);
                 }}
               />
-              <TouchRipple
-                onPress={() => setShowUrl(false)}
-                darkRipple
-                style={styles.btnStyle}>
-                <MyText
-                  label={'Done'}
-                  textStyle={{
-                    color: colors.text_normal,
-                    textAlignVertical: 'center',
-                    paddingHorizontal: 10,
-                  }}
-                />
-              </TouchRipple>
+              <View
+                style={{
+                  ...styles.btnStyle,
+                  flex: 0.4,
+                  marginHorizontal: 10,
+                  height: '80%',
+                }}>
+                <TouchRipple
+                  onPress={() => setShowUrl(false)}
+                  darkRipple
+                  style={{
+                    flex: 1,
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <MyText
+                    label={'Done'}
+                    textStyle={{
+                      color: colors.text_normal,
+                      textAlignVertical: 'center',
+                    }}
+                  />
+                </TouchRipple>
+              </View>
             </View>
           ) : (
             <View
@@ -103,32 +119,39 @@ export default function ImageContainer({
                 flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
+                justifyContent: 'center',
               }}>
-              <TouchRipple
-                onPress={onUploadImage}
-                darkRipple
-                style={styles.btnStyle}>
-                <MyText
-                  label={'Upload Image'}
-                  textStyle={{
-                    color: colors.text_normal,
-                    textAlignVertical: 'center',
-                  }}
-                />
-              </TouchRipple>
-              <MyText label="Or" size={14} />
-              <TouchRipple
-                onPress={() => setShowUrl(true)}
-                darkRipple
-                style={styles.btnStyle}>
-                <MyText
-                  label={'Set Image Url'}
-                  textStyle={{
-                    color: colors.text_normal,
-                    textAlignVertical: 'center',
-                  }}
-                />
-              </TouchRipple>
+              <View style={styles.btnStyle}>
+                <TouchRipple onPress={onUploadImage} darkRipple>
+                  <MyText
+                    label={'Upload Image'}
+                    size={12}
+                    textStyle={{
+                      color: colors.text_normal,
+                      textAlignVertical: 'center',
+                      padding: 5,
+                    }}
+                  />
+                </TouchRipple>
+              </View>
+              <MyText
+                label="Or"
+                size={12}
+                textStyle={{marginHorizontal: 8, opacity: 0.6}}
+              />
+              <View style={styles.btnStyle}>
+                <TouchRipple onPress={() => setShowUrl(true)} darkRipple>
+                  <MyText
+                    label={'Set Image Url'}
+                    size={12}
+                    textStyle={{
+                      color: colors.text_normal,
+                      textAlignVertical: 'center',
+                      padding: 5,
+                    }}
+                  />
+                </TouchRipple>
+              </View>
             </View>
           )}
         </View>
@@ -139,9 +162,7 @@ export default function ImageContainer({
 
 const styles = StyleSheet.create({
   btnStyle: {
-    marginHorizontal: 10,
     backgroundColor: colors.background,
-    padding: 5,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: colors.primary,
