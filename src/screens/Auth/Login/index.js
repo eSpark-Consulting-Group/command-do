@@ -23,6 +23,7 @@ import {showMessage} from 'react-native-flash-message';
 import {sendFCMToken} from '../../../utils/helperFunctions';
 import {SCREEN_HEIGHT} from '../../../constants';
 import {moderateVerticalScale} from 'react-native-size-matters';
+import {colors} from '../../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -168,7 +169,7 @@ const Login = ({navigation}) => {
               <Icon
                 name="radio-button-checked"
                 type="material"
-                color="#11a79c"
+                color={colors.primary}
                 size={20}
                 iconStyle={{marginRight: 5}}
               />
@@ -197,7 +198,7 @@ const Login = ({navigation}) => {
               <Icon
                 name="radio-button-checked"
                 type="material"
-                color="#11a79c"
+                color={colors.primary}
                 size={20}
                 iconStyle={{marginRight: 5}}
               />
@@ -226,7 +227,7 @@ const Login = ({navigation}) => {
               <Icon
                 name="radio-button-checked"
                 type="material"
-                color="#11a79c"
+                color={colors.primary}
                 size={20}
                 iconStyle={{marginRight: 5}}
               />
