@@ -19,8 +19,8 @@ import {addItem, increase} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
 import {SCREEN_HEIGHT} from '../../../constants';
-import { isValidTimeToOrder } from '../../../utils/helperFunctions';
-import { showMessage } from 'react-native-flash-message';
+import {isValidTimeToOrder} from '../../../utils/helperFunctions';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -161,7 +161,7 @@ function Items({route, navigation}) {
 
   return (
     <>
-      <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+      <View style={{flex: 1}}>
         <DropDownAlert
           childFunc={childFunc}
           setPress={checkSetPress}
@@ -197,7 +197,14 @@ function Items({route, navigation}) {
               <MyText
                 numberOfLines={2}
                 label={getData?.name}
-                textStyle={{fontSize: height * 0.03, width: (editData?.length == 0 ? animateToNumber != 0 : editMode != 0) ? width * .6 : width * .75}}
+                textStyle={{
+                  fontSize: height * 0.03,
+                  width: (
+                    editData?.length == 0 ? animateToNumber != 0 : editMode != 0
+                  )
+                    ? width * 0.6
+                    : width * 0.75,
+                }}
               />
               {(
                 editData?.length == 0 ? animateToNumber != 0 : editMode != 0
@@ -233,7 +240,7 @@ function Items({route, navigation}) {
                     alignItems: 'center',
                     position: 'absolute',
                     right: 0,
-                    top: 0
+                    top: 0,
                   }}
                   onPress={addQty}>
                   <Icon name="add" size={height * 0.03} color="white" />
@@ -284,7 +291,7 @@ function Items({route, navigation}) {
             </View> */}
           </View>
         </View>
-      </ScrollView>
+      </View>
       <View
         style={{
           width: '100%',

@@ -1,10 +1,11 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 
 const styles = StyleSheet.create({
   inputStyle: {
     width: SCREEN_WIDTH * 0.8,
-    height: SCREEN_HEIGHT * 0.07,
+    height: moderateVerticalScale(40),
     borderRadius: SCREEN_HEIGHT * 0.005,
     borderWidth: SCREEN_HEIGHT * 0.001,
     marginVertical: SCREEN_HEIGHT * 0.01,
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: '#11a79c',
     width: SCREEN_WIDTH * 0.8,
-    height: SCREEN_HEIGHT * 0.07,
+    height: moderateVerticalScale(45),
     borderRadius: SCREEN_HEIGHT * 0.005,
     paddingLeft: SCREEN_HEIGHT * 0.015,
     marginVertical: SCREEN_HEIGHT * 0.01,
