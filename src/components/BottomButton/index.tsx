@@ -33,17 +33,33 @@ export default function BottomButton({
           backgroundColor: enabled ? colors.primary : 'silver',
         }}
         onPress={onPress}>
-        {/* <View /> */}
-        <MyText
-          label={label}
-          size={SCREEN_HEIGHT * 0.032}
-          textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
-        />
-        <MyText
-          label={`${count}/${totalCount}`}
-          size={SCREEN_HEIGHT * 0.032}
-          textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
-        />
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            bottom: 2,
+            paddingHorizontal: 20,
+          }}>
+          <MyText
+            label={label}
+            size={20}
+            textStyle={{
+              color: colors.text_inverse,
+              fontWeight: 'bold',
+              textAlignVertical: 'center',
+            }}
+          />
+          <MyText
+            label={`${count}/${totalCount}`}
+            size={20}
+            textStyle={{
+              color: colors.text_inverse,
+              fontWeight: 'bold',
+              textAlignVertical: 'center',
+            }}
+          />
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -51,12 +67,11 @@ export default function BottomButton({
 
 const styles = StyleSheet.create({
   bottomButton: {
+    flex: 1,
     width: '95%',
-    flexDirection: 'row',
+    height: SCREEN_HEIGHT * 0.06,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 10,
-    paddingHorizontal: 20,
+    justifyContent: 'center',
     borderRadius: 10,
   },
 });

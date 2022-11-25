@@ -66,13 +66,21 @@ export default function SearchBar({
         onSubmit={onSubmit}
       />
       {icon && !Loader && (
-        <View style={{flexDirection: 'row-reverse', width: SCREEN_WIDTH * 0.1}}>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <Icon
             name={icon!!}
             size={34}
-            type="ionicon"
-            style={{padding: 5}}
-            containerStyle={{borderRadius: 100, alignSelf: 'center'}}
+            type="material-community"
+            style={{justifyContent: 'center', alignItems: 'center'}}
+            containerStyle={{
+              borderRadius: 100,
+              padding: 5,
+              alignSelf: 'center',
+            }}
             pressableProps={{
               android_ripple: {borderless: true, color: '#f5f5f533'},
             }}
@@ -84,8 +92,8 @@ export default function SearchBar({
 
       {Loader && (
         <ActivityIndicator
-          size={25}
-          style={{padding: 5, width: SCREEN_WIDTH * 0.1}}
+          size={34}
+          style={{padding: 5}}
           color={colors.text_inverse}
         />
       )}
@@ -99,7 +107,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     padding: 10,
     elevation: 5,
-    borderRadius: 2,
     flexDirection: 'row',
   },
 });

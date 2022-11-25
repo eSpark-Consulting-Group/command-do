@@ -67,8 +67,6 @@ export default function Items() {
     });
   };
 
-  // console.log('LaodITems Error', error);
-
   useEffect(() => {
     console.log(
       'cursor itemData?.getAllItems?.data',
@@ -186,6 +184,16 @@ export default function Items() {
             data={[{name: 'All', id: 0}, ...categoryData.getAllCategories.data]}
             horizontal
             showsHorizontalScrollIndicator={false}
+            ListEmptyComponent={
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <MyText label={'No Categories Found'} size={'title'} />
+              </View>
+            }
             contentContainerStyle={styles.categoryContainer}
             renderItem={({item, index}) => (
               <MyCard
@@ -199,6 +207,7 @@ export default function Items() {
                 }}>
                 <TouchableOpacity
                   style={{padding: 10}}
+                  disabled={item.id == selectedCategoryId}
                   onPress={() => {
                     handlePress(item.id);
                   }}>
@@ -231,13 +240,22 @@ export default function Items() {
             data={data}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.itemContainer}
-            // onEndReachedThreshold={1}
             onEndReached={() => {
               console.log('Load');
               if (cursor != null) {
                 getOnEnd();
               }
             }}
+            ListEmptyComponent={
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <MyText label={'No Items Found'} size={'title'} />
+              </View>
+            }
             ListFooterComponent={
               itemsLoading &&
               data.length > 0 && <ActivityIndicator size={'large'} />
