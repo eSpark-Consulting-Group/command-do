@@ -42,8 +42,9 @@ function Home({route, navigation}) {
   const dispatch = useDispatch();
 
   const [isModal, setIsModal] = useState(false);
+  const [cursor, setCursor] = useState(null);
   const [press, setPress] = useState(false);
-  const [toggle, setToggle] = useState(false);
+  const [reachedEnd, setReachedEnd] = useState(false);
   const [allData, setAllData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({
     name: 'All',
@@ -119,6 +120,10 @@ function Home({route, navigation}) {
     } else {
       LoadItems({
         variables: {
+          pagination: {
+            cursor: null,
+            limit: 20,
+          },
           where: {
             categoryId: item?.id,
           },
@@ -189,6 +194,14 @@ function Home({route, navigation}) {
       },
     });
     setIsModal(!isModal);
+  };
+
+  const onReachEnd = () => {
+    setReachedEnd(true);
+  };
+
+  const onScrollToTopStart = () => {
+    setReachedEnd(false);
   };
 
   const goToNavigation = navigate => {
@@ -316,7 +329,7 @@ function Home({route, navigation}) {
           style={{
             flex: 0.5,
             justifyContent: 'center',
-            paddingHorizontal: height * 0.02,
+            paddingHorizontal: 15,
             paddingVertical: height * 0.0001,
             // backgroundColor: 'red'
           }}>
@@ -327,7 +340,8 @@ function Home({route, navigation}) {
           <MyText label={greetMessage()} subHeading />
         </View>
 
-        {remainingAmount?.getCurrentRemainingAmount?.data && (
+        {remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount >
+          0 && (
           <View
             style={{
               justifyContent: 'center',
@@ -345,10 +359,7 @@ function Home({route, navigation}) {
               textStyle={{justifyContent: 'center', textAlign: 'center'}}
             />
             <MyText
-              label={`Rs:${
-                remainingAmount?.getCurrentRemainingAmount?.data
-                  ?.remainingAmount || 0
-              }`}
+              label={`Rs:${remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount}`}
               textStyle={{
                 justifyContent: 'center',
                 textAlign: 'center',
@@ -377,29 +388,35 @@ function Home({route, navigation}) {
                         : height * 0.02,
                       borderWidth:
                         selectedCategory?.id == item?.id ? 0 : height * 0.001,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                       paddingVertical: height * 0.005,
                       borderColor: '#00000030',
                       marginHorizontal: height * 0.005,
                       borderRadius: height * 0.01,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
+                      // width: width * 0.3,
                     }}
                     onPress={() => isSelect(item)}>
-                    {item.image && (
-                      <Image
-                        source={{uri: item?.image}}
-                        style={styles.categoryImage}
+                    <View>
+                      {item.image && (
+                        <Image
+                          source={{uri: item?.image}}
+                          style={styles.categoryImage}
+                        />
+                      )}
+                    </View>
+
+                    <View>
+                      <MyText
+                        label={item?.name}
+                        size={'title'}
+                        textStyle={{
+                          color:
+                            selectedCategory?.id == item?.id ? '#fff' : '#000',
+                        }}
                       />
-                    )}
-                    <MyText
-                      label={item?.name}
-                      size={'title'}
-                      textStyle={{
-                        color:
-                          selectedCategory?.id == item?.id ? '#fff' : '#000',
-                      }}
-                    />
+                    </View>
                   </TouchableOpacity>
                 ),
               )}
@@ -420,27 +437,71 @@ function Home({route, navigation}) {
                 data={items || []}
                 loading={LoadItemsLoading}
                 navigation={navigation}
+                onReachEnd={onReachEnd}
+                onScrollToTopStart={onScrollToTopStart}
               />
             )}
           </View>
         }
-        <TouchableOpacity
-          style={styles.cartContainerStyle}
-          disabled={reduxData?.cart?.amount == 0 && press}
-          onPress={_onSelect}>
-          <Icon name="cart-outline" size={height * 0.035} color="white" />
-          {reduxData?.cart?.amount != 0 && (
-            <View style={styles.cartAmountStyle}>
-              <MyText
-                label={
-                  reduxData?.cart?.amount > 99 ? '99+' : reduxData?.cart?.amount
-                }
-                subTitle
-                textStyle={{color: '#000'}}
-              />
-            </View>
-          )}
-        </TouchableOpacity>
+
+        {!reachedEnd ? (
+          <TouchableOpacity
+            style={styles.cartContainerStyle}
+            disabled={reduxData?.cart?.amount == 0 && press}
+            onPress={_onSelect}>
+            <Icon name="cart-outline" size={height * 0.035} color="white" />
+            {reduxData?.cart?.amount != 0 && (
+              <View style={styles.cartAmountStyle}>
+                <MyText
+                  label={
+                    reduxData?.cart?.amount > 99
+                      ? '99+'
+                      : reduxData?.cart?.amount
+                  }
+                  subTitle
+                  textStyle={{color: '#000'}}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            ddisabled={reduxData?.cart?.amount == 0 && press}
+            style={{
+              ...styles.cartButtonStyle,
+              // borderRadius: reachedEnd ? height * 0.1 : 0,
+            }}
+            onPress={_onSelect}>
+            <Icon
+              name="cart-outline"
+              size={height * 0.04}
+              color="#fff"
+              style={{
+                position: 'absolute',
+                left: height * 0.02,
+                // transform: [{scaleX: -1}],
+              }}
+            />
+            <MyText
+              label={'Checkout Cart'}
+              title
+              textStyle={{color: 'white'}}
+            />
+            {reduxData?.cart?.amount != 0 && (
+              <View style={styles.cartCountStyle}>
+                <MyText
+                  label={
+                    reduxData?.cart?.amount > 99
+                      ? '99+'
+                      : reduxData?.cart?.amount
+                  }
+                  subTitle
+                  textStyle={{color: 'white'}}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

@@ -1,8 +1,8 @@
-import { is } from 'immer/dist/internal';
-import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, Text, View, Dimensions } from 'react-native';
+import {is} from 'immer/dist/internal';
+import React, {useRef, useState, useEffect} from 'react';
+import {StyleSheet, SafeAreaView, Text, View, Dimensions} from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
-import { Fonts } from '../../utils/fonts';
+import {Fonts} from '../../utils/fonts';
 
 const Color = {
   info: '#11a79c',
@@ -13,10 +13,10 @@ const Color = {
   white: 'whitesmoke',
 };
 
-
-const { width, height } = Dimensions.get('window');
-const DropdownAlertCom = (props) => {
-  const { label, data, navigation, childFunc, type, title, message, setPress } = props;
+const {width, height} = Dimensions.get('window');
+const DropdownAlertCom = props => {
+  const {label, data, navigation, childFunc, type, title, message, setPress} =
+    props;
 
   const items = [
     {
@@ -50,9 +50,9 @@ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
     },
-    { type: 'close', title: 'close' },
-    { type: 'show', title: 'enqueue all alerts' },
-    { type: 'clear', title: 'clear queue' },
+    {type: 'close', title: 'close'},
+    {type: 'show', title: 'enqueue all alerts'},
+    {type: 'clear', title: 'clear queue'},
   ];
   const reactNativeLogo = 'https://reactnative.dev/docs/assets/favicon.png';
 
@@ -68,9 +68,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
   };
 
   useEffect(() => {
-    childFunc.current = _onSelect
-  }, [])
-
+    childFunc.current = _onSelect;
+  }, []);
 
   const _showAlertQueue = () => {
     const types = ['info', 'warn', 'error', 'success', 'custom'];
@@ -92,23 +91,19 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     // const inSeconds = (inMilliSeconds / 1000).toFixed(2);
 
     // _onTap()
-    dropDownAlertRef.alertWithType(
-      type,
-      title,
-      message,
-    );
+    dropDownAlertRef.alertWithType(type, title, message);
     _updateQueueSize();
     // onSelect(e)
   };
 
   const _onClose = data => {
     // _log(data);
-    setPress(false)
+    setPress(false);
     _updateQueueSize();
   };
 
   const _onCancel = data => {
-    setPress(false)
+    setPress(false);
     // _log(data);
     _updateQueueSize();
   };
@@ -134,7 +129,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
             dropDownAlertRef = ref;
           }
         }}
-        containerStyle={{ backgroundColor: 'white' }}
+        containerStyle={{backgroundColor: 'white'}}
         showCancel={true}
         onCancel={_onCancel}
         // onTap={_onTap}
@@ -144,10 +139,22 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         zIndex={1}
         closeInterval={3000}
         infoColor="#11a79c"
-        titleStyle={{ fontSize: height * .03,fontFamily: Fonts.Roboto_Bold,color:'white' }}
-        messageStyle={{ fontSize: height * .018,fontFamily: Fonts.Roboto_Regular,color:'white' }}
-        imageStyle={{width: height * .05, height: height * .05,alignSelf: 'center'}}
-        cancelBtnImageStyle={{width: height * .04, height: height * .04}}
+        titleStyle={{
+          fontSize: height * 0.03,
+          fontFamily: Fonts.Roboto_Bold,
+          color: 'white',
+        }}
+        messageStyle={{
+          fontSize: height * 0.018,
+          fontFamily: Fonts.Roboto_Regular,
+          color: 'white',
+        }}
+        imageStyle={{
+          width: height * 0.05,
+          height: height * 0.05,
+          alignSelf: 'center',
+        }}
+        cancelBtnImageStyle={{width: height * 0.04, height: height * 0.04}}
       />
     </View>
   );
