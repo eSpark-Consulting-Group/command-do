@@ -1,17 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Dimensions,
-  ScrollView,
-  Image,
-  Pressable,
-} from 'react-native';
+import {View, Dimensions, ScrollView, Image, Pressable} from 'react-native';
 import {MyText} from '..';
 import {useSelector} from 'react-redux';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 const {width, height} = Dimensions.get('window');
 
 const Cards = props => {
@@ -56,7 +50,7 @@ const Cards = props => {
                         style={{
                           paddingHorizontal: height * 0.01,
                           paddingTop: height * 0.01,
-                          flex: 1
+                          flex: 1,
                         }}
                         onPress={() =>
                           navigation.navigate('Item', {
