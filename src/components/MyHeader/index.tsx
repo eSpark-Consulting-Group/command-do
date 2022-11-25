@@ -6,6 +6,7 @@ import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
 import GapView from '../GapView';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function MyHeader({
   headerStyle,
@@ -75,7 +76,7 @@ export default function MyHeader({
         <View style={{flex: 1, flexDirection: 'row-reverse'}}>
           <Icon
             name={icon!!}
-            size={30}
+            size={moderateVerticalScale(30)}
             type={rightIconType}
             style={{
               alignItems: 'center',
