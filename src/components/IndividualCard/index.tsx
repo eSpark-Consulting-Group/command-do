@@ -18,9 +18,7 @@ import {MyText} from '..';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
-
 const {width, height} = Dimensions.get('window');
-
 type Item = {
   id: number;
   name: string;
@@ -41,7 +39,6 @@ const IndividualCard = props => {
     setIsLoading(true);
     // }
   }, [allData]);
-
   useEffect(() => {
     const menuData = count?.cart?.menuItems?.find(
       item => item.name === count?.cart?.foodType,
@@ -49,7 +46,6 @@ const IndividualCard = props => {
     // console.log('navigaiton-->', menuData?.data);
     setAllData(menuData);
   }, [count?.cart?.foodType, count?.cart]);
-
   return (
     isLoading && (
       <View style={{flex: 1}}>
@@ -58,16 +54,14 @@ const IndividualCard = props => {
           textStyle={{
             fontSize: height * 0.03,
             color: '#000',
-            margin: height * 0.02,
+            marginHorizontal: height * 0.02,
           }}
         />
         <View
           style={{
-            padding: height * 0.02,
-            marginBottom: height * 0.02,
             flex: 1,
+            alignItems: 'center',
           }}>
-          {/* <ScrollView horizontal> */}
           <FlatList
             data={data || []}
             showsVerticalScrollIndicator={false}
@@ -89,8 +83,8 @@ const IndividualCard = props => {
                 <Pressable
                   key={dataIndex}
                   style={{
-                    paddingHorizontal: height * 0.01,
-                    marginVertical: height * 0.04,
+                    marginVertical: 5,
+                    paddingHorizontal: 5,
                     // marginBottom: dataIndex == 0 ? height * 0.04 : 0,
                   }}
                   onPress={() =>
@@ -102,7 +96,7 @@ const IndividualCard = props => {
                   <View
                     style={{
                       height: height * 0.25,
-                      width: width * 0.88,
+                      width: width * 0.9,
                       backgroundColor: 'white',
                       borderRadius: height * 0.02,
                       elevation: height * 0.003,
@@ -112,7 +106,7 @@ const IndividualCard = props => {
                       style={{
                         borderRadius: height * 0.02,
                         height: height * 0.25,
-                        width: width * 0.88,
+                        width: width * 0.9,
                         backgroundColor: 'white',
                       }}
                     />
@@ -122,7 +116,7 @@ const IndividualCard = props => {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <>
+                    <View style={{alignItems: 'flex-start'}}>
                       <MyText
                         label={dataItem?.name}
                         textStyle={{marginTop: height * 0.02}}
@@ -131,15 +125,13 @@ const IndividualCard = props => {
                         style={{
                           borderColor: '#00000030',
                           borderWidth: height * 0.001,
-                          padding: height * 0.005,
-                          position: 'absolute',
-                          bottom: -40,
-                          // left: height * 0.01,
+                          paddingHorizontal: 5,
+
                           borderRadius: height * 0.005,
                         }}>
                         <MyText label={`Rs.${dataItem?.price}`} />
                       </View>
-                    </>
+                    </View>
                     <View style={{top: 20}}>
                       <AddToCartBtn
                         item={{
@@ -154,7 +146,7 @@ const IndividualCard = props => {
                       style={{
                         height: height * 0.04,
                         width: height * 0.04,
-                        backgroundColor: '#11a79c',
+                        backgroundColor: '#11A79C',
                         borderRadius: height * 1,
                         position: 'absolute',
                         right: height * -0.005,
@@ -184,11 +176,9 @@ const IndividualCard = props => {
               </View>
             }
           />
-          {/* </ScrollView> */}
         </View>
       </View>
     )
   );
 };
-
 export default IndividualCard;
