@@ -9,6 +9,8 @@ import {
   ScrollView,
   Image,
   Pressable,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {Fonts} from '../../utils/fonts';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
@@ -27,7 +29,7 @@ type Item = {
   quantity: number;
 };
 const IndividualCard = props => {
-  const {label, data, navigation} = props;
+  const {label, data, navigation, fetchMoreOnEnd, loading, cursor} = props;
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const count = useSelector((store: any) => store);
@@ -59,15 +61,28 @@ const IndividualCard = props => {
             margin: height * 0.02,
           }}
         />
-        <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
           <View
             style={{
               padding: height * 0.02,
               marginBottom: height * 0.02,
+              flex: 1
             }}>
             {/* <ScrollView horizontal> */}
-            {data?.length > 0 ? (
-              data?.map((dataItem: Item, dataIndex) => {
+            <FlatList
+              data={data || []}
+              showsVerticalScrollIndicator={false}
+              onEndReachedThreshold={1}
+              onEndReached={() => {
+                console.log('Load', cursor);
+                if (cursor != null) {
+                  fetchMoreOnEnd();
+                }
+              }}
+              ListFooterComponent={
+                loading &&
+                data.length > 0 && <ActivityIndicator size={'large'} />
+              }
+              renderItem={({item: dataItem, index: dataIndex}) => {
                 var cartItem = cart?.cartItems?.find(
                   value => value?.id == dataItem?.id,
                 );
@@ -160,18 +175,17 @@ const IndividualCard = props => {
                     )}
                   </Pressable>
                 );
-              })
-            ) : (
+              }}
+              ListEmptyComponent={
               <View>
                 <Image
                   source={NotFound}
                   style={{height: height / 2.4, width: width - 30}}
                 />
-              </View>
-            )}
+              </View>}
+            />
             {/* </ScrollView> */}
           </View>
-        </ScrollView>
       </View>
     )
   );

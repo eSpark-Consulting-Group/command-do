@@ -1,10 +1,12 @@
-import React, {useState, useReducer, useCallback} from 'react';
+import React, {useState, useReducer, useCallback, useEffect} from 'react';
 import {
   FlatList,
   StyleSheet,
   View,
   TouchableOpacity,
   Image,
+  Text,
+  ActivityIndicator,
 } from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
@@ -24,6 +26,7 @@ import {initialState} from '../../../app/store';
 import OverlayLoader from '../../../components/OverlayLoader';
 import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
+import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
 
 export default function Items() {
   let categoryPrefix = {name: 'All', color: true, id: undefined};
@@ -43,31 +46,56 @@ export default function Items() {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const [visible, setVisible] = useState(false);
+  const [cursor, setCursor] = useState(null);
+  const [data, setData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      LoadItems({
-        variables: undefined,
-      });
-      getAllCategories();
-    }, [refetch, refetchItems]),
-  );
+  useEffect(() => {
+    fetchItems();
+    getAllCategories();
+  }, []);
 
-  const getItems = async selected => {
-    if (selected?.id == undefined) {
-      await LoadItems({
-        variables: undefined,
-      });
-    } else {
-      await LoadItems({
-        variables: {
-          where: {
-            categoryId: selected?.id,
-          },
+  const fetchItems = selected => {
+    console.log('Selected', selected);
+    LoadItems({
+      variables: {
+        pagination: {
+          cursor: selected ? null : cursor,
+          limit: 20,
         },
-      });
+        where: {
+          categoryId: selected ?? undefined,
+        },
+      },
+    });
+  };
+
+  useEffect(() => {
+    console.log(
+      'itemData?.getAllItems?.data',
+      itemData?.getAllItems?.data?.length,
+    );
+    console.log(
+      'cursor itemData?.getAllItems?.data',
+      cursor,
+      itemData?.getAllItems?.pagination?.nextCursor,
+    );
+    if (
+      itemData?.getAllItems?.data &&
+      cursor != itemData?.getAllItems?.pagination?.nextCursor
+    ) {
+      console.log('update huwa');
+      setData(prv => [...prv, ...(itemData?.getAllItems?.data || [])]);
+      setCursor(itemData?.getAllItems?.pagination?.nextCursor);
     }
+    if (itemData?.getAllItems?.data && !categoryData[0]?.color) {
+      console.log('update huwa category wala');
+      setData(itemData?.getAllItems?.data);
+      setCursor(itemData?.getAllItems?.pagination?.nextCursor);
+    }
+  }, [itemData?.getAllItems?.data]);
+  const getOnEnd = async () => {
+    fetchItems();
   };
 
   const getAllCategories = async () => {
@@ -84,22 +112,27 @@ export default function Items() {
     }
   };
 
-  const handlePress = index => {
+  const handlePress = (index, id) => {
+    console.log(' fetching');
     let selected = {};
     let temp = [...categoryData];
     temp.forEach((item, index2) =>
       index == index2 ? (item.color = true) : (item.color = false),
     );
     setCategoryData(temp);
-    console.log('kia ha', temp);
     temp.forEach(item => (item.color ? (selected = item) : null));
     forceUpdate();
-    getItems(selected);
+    fetchItems(id);
   };
 
   return (
     <View style={styles.container}>
-      <OverlayLoader show={categoryLoader || itemsLoading} />
+      <OverlayLoader show={categoryLoader} />
+      {data.length < 1 ||
+        (!categoryData[0]?.color ? (
+          <OverlayLoader show={categoryLoader || itemsLoading} />
+        ) : null)}
+
       <MyHeader
         title={'All Items'}
         icon="search"
@@ -155,6 +188,7 @@ export default function Items() {
           contentContainerStyle={styles.categoryContainer}
           renderItem={({item, index}) => (
             <MyCard
+              key={item.id}
               cardStyle={{
                 ...styles.category,
                 backgroundColor: item.color
@@ -164,7 +198,7 @@ export default function Items() {
               <TouchableOpacity
                 style={{padding: 10}}
                 onPress={() => {
-                  handlePress(index);
+                  handlePress(index, item.id);
                 }}>
                 <MyText
                   label={item?.name}
@@ -187,14 +221,25 @@ export default function Items() {
           textStyle={{alignSelf: 'center', paddingVertical: 10}}
         />
       </View>
-      {itemData?.getAllItems?.data && (
+      {data && (
         <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
           <FlatList
-            data={itemData?.getAllItems?.data}
+            data={data}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.itemContainer}
+            onEndReachedThreshold={1}
+            onEndReached={() => {
+              console.log('Load');
+              if (categoryData[0].color && cursor != null) {
+                getOnEnd();
+              }
+            }}
+            ListFooterComponent={
+              itemsLoading &&
+              data.length > 0 && <ActivityIndicator size={'large'} />
+            }
             renderItem={({item, index}) => (
-              <MyCard cardStyle={styles.item}>
+              <MyCard key={item.id} cardStyle={styles.item}>
                 <TouchRipple
                   style={{
                     flexDirection: 'row',
@@ -279,7 +324,6 @@ const styles = StyleSheet.create({
   },
   subHeader: {
     flexDirection: 'row',
-    paddingVertical: 10,
     paddingHorizontal: 10,
     width: SCREEN_WIDTH,
   },
@@ -290,11 +334,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   itemContainer: {
-    paddingVertical: 10,
     marginBottom: 10,
   },
   item: {
-    marginVertical: 10,
+    marginVertical: 5,
     marginHorizontal: 2,
   },
 });
