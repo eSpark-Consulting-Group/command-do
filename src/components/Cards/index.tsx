@@ -19,6 +19,111 @@ const Cards = props => {
   const {label, data, navigation} = props;
   const cart = useSelector((store: any) => store.cart);
 
+  const renderList = ({item: dataItem, index: dataIndex}) => {
+    var cartItem = cart?.cartItems?.find(value => value?.id == dataItem?.id);
+    return (
+      <View style={{opacity: 1}}>
+        <Pressable
+          key={dataIndex}
+          style={{
+            opacity: 1,
+            paddingHorizontal: 10,
+            paddingTop: height * 0.01,
+          }}
+          onPress={() =>
+            navigation.navigate('Item', {
+              foodType: dataItem?.name,
+              item: dataItem,
+            })
+          }>
+          <View
+            style={{
+              opacity: 1,
+              height: height * 0.25,
+              width: width * 0.8,
+              borderRadius: height * 0.02,
+              elevation: width * 0.003,
+            }}>
+            <Image
+              source={{uri: dataItem?.image}}
+              style={{
+                opacity: 1,
+                borderRadius: height * 0.02,
+                height: height * 0.25,
+                width: width * 0.8,
+                backgroundColor: 'white',
+              }}
+            />
+            {cartItem != undefined && cartItem?.quantity != 0 && (
+              <View
+                style={{
+                  opacity: 1,
+                  height: height * 0.04,
+                  width: height * 0.04,
+                  backgroundColor: '#11a79c',
+                  borderRadius: height * 1,
+                  position: 'absolute',
+                  right: height * -0.01,
+                  top: height * -0.01,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <MyText
+                  label={
+                    cartItem?.quantity > 99
+                      ? '99+'
+                      : Number(cartItem?.quantity).toString()
+                  }
+                  textStyle={{
+                    color: colors.background,
+                    opacity: 1,
+                  }}
+                />
+              </View>
+            )}
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{
+                alignItems: 'flex-start',
+              }}>
+              <MyText
+                label={dataItem?.name}
+                textStyle={{marginTop: height * 0.02, opacity: 1}}
+              />
+              <View
+                style={{
+                  borderColor: '#00000030',
+                  borderWidth: height * 0.001,
+                  paddingHorizontal: 5,
+                  borderRadius: height * 0.005,
+                }}>
+                <MyText
+                  label={`Rs.${dataItem?.price}`}
+                  textStyle={{opacity: 1}}
+                />
+              </View>
+            </View>
+
+            <View style={{top: 20, opacity: 1}}>
+              <AddToCartBtn
+                item={{
+                  ...dataItem,
+                  quantity: Number(cartItem?.quantity || 0),
+                }}
+              />
+            </View>
+          </View>
+        </Pressable>
+      </View>
+    );
+  };
+
   return (
     <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
       {data?.length > 0 &&
@@ -29,7 +134,7 @@ const Cards = props => {
               key={index}
               style={{
                 height: height * 0.46,
-                padding: height * 0.02,
+                marginLeft: 15,
                 marginBottom: data.length == index + 1 ? height * 0.04 : 0,
               }}>
               <MyText
@@ -45,101 +150,9 @@ const Cards = props => {
                   flexDirection: 'row',
                 }}>
                 <FlatList
+                  // removeClippedSubviews={false}
                   data={item?.Item || []}
-                  renderItem={({item: dataItem, index: dataIndex}) => {
-                    var cartItem = cart?.cartItems?.find(
-                      value => value?.id == dataItem?.id,
-                    );
-
-                    return (
-                      <Pressable
-                        key={dataIndex}
-                        style={{
-                          paddingHorizontal: height * 0.01,
-                          paddingTop: height * 0.01,
-                        }}
-                        onPress={() =>
-                          navigation.navigate('Item', {
-                            foodType: dataItem?.name,
-                            item: dataItem,
-                          })
-                        }>
-                        <View
-                          style={{
-                            height: height * 0.25,
-                            width: width * 0.8,
-                            backgroundColor: 'white',
-                            borderRadius: height * 0.02,
-                            elevation: width * 0.003,
-                          }}>
-                          <Image
-                            source={{uri: dataItem?.image}}
-                            style={{
-                              borderRadius: height * 0.02,
-                              height: height * 0.25,
-                              width: width * 0.8,
-                              backgroundColor: 'white',
-                            }}
-                          />
-                          {cartItem != undefined && cartItem?.quantity != 0 && (
-                            <View
-                              style={{
-                                height: height * 0.04,
-                                width: height * 0.04,
-                                backgroundColor: '#11a79c',
-                                borderRadius: height * 1,
-                                position: 'absolute',
-                                right: height * -0.005,
-                                top: height * -0.005,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <MyText
-                                label={
-                                  cartItem?.quantity > 99
-                                    ? '99+'
-                                    : Number(cartItem?.quantity).toString()
-                                }
-                                textStyle={{color: colors.background}}
-                              />
-                            </View>
-                          )}
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}>
-                          <>
-                            <MyText
-                              label={dataItem?.name}
-                              textStyle={{marginTop: height * 0.02}}
-                            />
-                            <View
-                              style={{
-                                borderColor: '#00000030',
-                                borderWidth: height * 0.001,
-                                padding: height * 0.005,
-                                position: 'absolute',
-                                bottom: -40,
-                                // left: height * 0.01,
-                                borderRadius: height * 0.005,
-                              }}>
-                              <MyText label={`Rs.${dataItem?.price}`} />
-                            </View>
-                          </>
-                          <View style={{top: 20}}>
-                            <AddToCartBtn
-                              item={{
-                                ...dataItem,
-                                quantity: Number(cartItem?.quantity || 0),
-                              }}
-                            />
-                          </View>
-                        </View>
-                      </Pressable>
-                    );
-                  }}
+                  renderItem={item => renderList(item)}
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   ListEmptyComponent={
