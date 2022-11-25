@@ -52,7 +52,7 @@ export default function MoneyReturn({navigation}) {
       return item.returned == false;
     });
     if (order?.length < 1) {
-      Alert.alert('Alert', 'No return orders left.!', [
+      Alert.alert('No Orders', 'No return orders left.!', [
         {
           text: 'Back to Orders',
           onPress: () => navigateToOrders(),
