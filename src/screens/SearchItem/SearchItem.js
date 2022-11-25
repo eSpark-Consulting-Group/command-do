@@ -32,9 +32,6 @@ export default function SearchItem({route}) {
       },
     });
     setLunchItems(searchedItems.data.searchItem.data);
-    // const items = [...lunchItems];
-    // const filItems = items.filter(item => item.name == text);
-    // console.log('ITEMS', filItems);
   };
 
   return (
@@ -43,7 +40,7 @@ export default function SearchItem({route}) {
         value={search}
         handleChangeText={text => updateSearch(text)}
         leftIcon="arrow-back"
-        icon="close-circle"
+        icon="close-circle-outline"
         onPressLeft={() => navigation.goBack()}
         onPressRight={() => updateSearch('')}
         Loader={searchLoading}
