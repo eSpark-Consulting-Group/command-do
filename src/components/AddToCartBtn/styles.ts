@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import { Fonts } from '../../utils/fonts';
+import {Fonts} from '../../utils/fonts';
 
 const {width, height} = Dimensions.get('window');
 
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     top: -10,
-    right: 0
+    right: 0,
   },
   removeNumericButton: {
     borderRadius: height * 1,
