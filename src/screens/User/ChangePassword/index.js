@@ -16,6 +16,7 @@ import {colors} from '../../../theme';
 import {CHANGE_PASS} from '../../../graphQL/query/user.query';
 import {showMessage} from 'react-native-flash-message';
 import {Icon} from '@rneui/themed';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function ChangePassword({navigation}) {
   const userId = useSelector(store => store.userInfo?.userData.id);
@@ -49,6 +50,7 @@ export default function ChangePassword({navigation}) {
         title="Change Password"
         titleStyle={{
           fontFamily: 'Poppins-Bold',
+          fontSize: moderateVerticalScale(28),
         }}
       />
       <View
@@ -80,7 +82,7 @@ export default function ChangePassword({navigation}) {
           </View>
         </View>
         <View style={{marginVertical: 5}}>
-          <MyText label={'Enter Your Current Password'} />
+          <MyText label={'Enter Your New Password'} />
           <View style={styles.inputStyle}>
             <TextInput
               onChangeText={text => {
@@ -124,10 +126,8 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.8,
     height: SCREEN_HEIGHT * 0.07,
     borderRadius: SCREEN_HEIGHT * 0.005,
-    // paddingHorizontal: SCREEN_HEIGHT * 0.015,
     borderWidth: SCREEN_HEIGHT * 0.001,
     marginVertical: SCREEN_HEIGHT * 0.01,
-    // fontFamily: Fonts.Roboto_Medium,
     color: 'black',
     flexDirection: 'row',
     alignItems: 'center',

@@ -28,27 +28,6 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {GET_ALL_USERS} from '../../../graphQL/query/user.query';
 import {getAllUsers, logout} from '../../../features/userInfo/userInfoSlice';
 
-const sampleData = [
-  {
-    title: 'A',
-    data: ['ALTERED', 'ABBY', 'ACTION U.S.A.', 'AMUCK', 'ANGUISH'],
-  },
-  {
-    title: 'B',
-    data: [
-      'BEST MEN',
-      'BEYOND JUSTICE',
-      'BLACK GUNN',
-      'BLOOD RANCH',
-      'BEASTIES',
-    ],
-  },
-  {
-    title: 'C',
-    data: ['CARTEL', 'CASTLE OF EVIL', 'CHANCE', 'COP GAME', 'CROSS FIRE'],
-  },
-];
-
 export default function Users() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -61,7 +40,6 @@ export default function Users() {
     },
   );
 
-  // const reduxData = useSelector(store => store);
   const dispatch = useDispatch();
 
   const [isModal, setIsModal] = useState(false);
@@ -97,7 +75,6 @@ export default function Users() {
     try {
       const getUsers = await LoadAllUsers();
       console.log('===>>', JSON.stringify(getUsers?.data?.getAllUsers?.data));
-      // dispatch(getAllUsers(getUsers?.data?.getAllUsers?.data));
       const userData = getUsers?.data?.getAllUsers?.data.reduce((acc, curr) => {
         acc.push({
           title: curr.alphabet,
@@ -105,11 +82,13 @@ export default function Users() {
         });
         return acc;
       }, []);
-      
+
       setUserList(userData?.sort((a, b) => a?.title?.localeCompare(b?.title)));
-      // console.log('reduxData', reduxData?.userInfo?.userData);
     } catch (e) {
-      console.log('error while fetching', e?.sort((a, b) => a?.title?.localeCompare(b?.title)));
+      console.log(
+        'error while fetching',
+        e?.sort((a, b) => a?.title?.localeCompare(b?.title)),
+      );
     }
   };
 

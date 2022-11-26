@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Animated,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import * as Progress from 'react-native-progress';
@@ -139,6 +140,7 @@ function Cart({route, navigation}) {
 
   return (
     <View style={{flex: 1, backgroundColor: colors?.background}}>
+      <StatusBar backgroundColor={colors.primary} />
       <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
         <View style={{flex: 1}}>
           <DropDownAlert

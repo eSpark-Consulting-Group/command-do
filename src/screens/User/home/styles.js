@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import { colors } from '../../../theme';
+import {colors} from '../../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   },
   modalInner: {
     height: height * 0.24,
-    // width: width * 0.3,
     position: 'absolute',
     backgroundColor: '#fff',
     borderRadius: height * 0.005,
