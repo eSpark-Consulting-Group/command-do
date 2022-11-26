@@ -3,9 +3,7 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
-  StatusBar,
   Image,
-  StyleSheet,
   Animated,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -15,6 +13,7 @@ import {MyText} from '../../../components';
 import {OrderDone, TickGif} from '../../../assets/images';
 import {clearCart} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
+import {colors} from '../../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -33,7 +32,7 @@ function OrderConfirm({route, navigation}) {
       setTimeout(() => {
         setProgresText('Complete');
         Animated.spring(animatedValue, {
-          toValue: height * 0.0015,
+          toValue: 0.9,
           friction: 1,
           tension: 100,
           useNativeDriver: true,
@@ -57,7 +56,6 @@ function OrderConfirm({route, navigation}) {
 
   return (
     <View style={{height: height * 1, backgroundColor: 'white'}}>
-      {/* <StatusBar barStyle={'dark-content'} backgroundColor="white" /> */}
       <View style={styles.topCurveView}></View>
 
       <View style={styles.mainContent}>
@@ -75,7 +73,7 @@ function OrderConfirm({route, navigation}) {
               }}>
               <MyText
                 label={progressText}
-                subTitle
+                size="default"
                 style={{color: '#00000080'}}
               />
             </Animated.View>
@@ -83,41 +81,30 @@ function OrderConfirm({route, navigation}) {
               size={height * 0.12}
               progress={progress}
               thickness={height * 0.005}
-              color="#11a79c"
+              color={colors.primary}
               borderWidth={0}
               unfilledColor="#00000020"
             />
-            {/* 
-          <Text style={{}}>
-
-          </Text> */}
           </View>
         ) : (
-          <Image
-            // source={OrderDone}
-            source={TickGif}
-            style={styles.gifStyle}
-          />
+          <Image source={TickGif} style={styles.gifStyle} />
         )}
-        {/* <MyText label={'Order Confrim 🎉'} heading style={{ marginLeft: height * .04, }} /> */}
       </View>
       <View style={styles.bottomCurveView}></View>
-      <Image
-        // source={OrderDone}
-        source={OrderDone}
-        style={styles.orderDoneGif}
-      />
+      <Image source={OrderDone} style={styles.orderDoneGif} />
       <View style={styles.completeOrderTextContainer}>
-        <MyText label={'Your order is complete!'} subHeading style={{}} />
-        <MyText label={'Thanks'} heading style={{}} />
+        <MyText label={'Your order is complete!'} size="title" />
+        <MyText label={'Thanks'} size="title" />
         <TouchableOpacity style={styles.backToHomeButton} onPress={backTohome}>
-          <MyText label={'Go back to home'} title style={{color: '#11a79c'}} />
+          <MyText
+            label={'Go back to home'}
+            size={'title'}
+            style={{color: colors.primary}}
+          />
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-// trash-outline
 
 export default OrderConfirm;
