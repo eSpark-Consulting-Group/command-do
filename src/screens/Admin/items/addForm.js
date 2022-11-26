@@ -142,22 +142,23 @@ export default function AddForm() {
   };
 
   const updateItem = async () => {
-    if (fields?.image?.uri.slice(0, 4) == 'file') {
+    const theImage = fields?.image?.uri ?? itemData?.image;
+    if (theImage.slice(0, 4) == 'file') {
       setUploadLoader(true);
     }
     const obj = {
       updateItemId: itemData?.id,
       name: fields?.name,
       image:
-        fields?.image?.uri?.slice(0, 4) == 'file'
+        theImage?.slice(0, 4) == 'file'
           ? await uploadImage(fields?.image)
-          : fields?.image?.uri,
+          : theImage,
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
     UpdateItem({variables: obj})
       .then(res => {
-        if (fields?.image?.uri?.slice(0, 4) == 'file') {
+        if (theImage?.slice(0, 4) == 'file') {
           setUploadLoader(false);
         }
         if (res?.data?.updateItem?.status) {
@@ -240,29 +241,22 @@ export default function AddForm() {
   };
 
   const updateCategory = async () => {
-    if (fields?.image?.uri?.slice(0, 4) == 'file') {
+    const theImage = fields?.image?.uri ?? itemData?.image;
+    if (theImage?.slice(0, 4) == 'file') {
       setUploadLoader(true);
-      console.log('xx=>>', {
-        updateCategoryId: itemData?.id,
-        name: fields?.name,
-        image:
-          fields?.image?.uri?.slice(0, 4) == 'file'
-            ? await uploadImage(fields?.image)
-            : fields?.image?.uri,
-      });
     }
     UpdateCategory({
       variables: {
         updateCategoryId: itemData?.id,
         name: fields?.name,
         image:
-          fields?.image?.uri?.slice(0, 4) == 'file'
+          theImage?.slice(0, 4) == 'file'
             ? await uploadImage(fields?.image)
-            : fields?.image?.uri,
+            : theImage,
       },
     })
       .then(res => {
-        if (fields?.image?.uri?.slice(0, 4) == 'file') {
+        if (theImage?.slice(0, 4) == 'file') {
           setUploadLoader(true);
         }
         if (res?.data?.updateCategory?.status) {

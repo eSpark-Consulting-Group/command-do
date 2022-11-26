@@ -1,6 +1,6 @@
 import {useLazyQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -19,11 +19,12 @@ import {colors} from '../../../theme';
 
 export default function OrderHistory() {
   const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
+  const [ordersData, setOrdersData] = useState([]);
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const reduxData = useSelector(store => store);
   let orderHistory = reduxData.userInfo.orders;
   let userId = reduxData.userInfo.userData.id;
+
   const fetchOrders = async () => {
     console.log('UserID', userId);
     const orders = await GetAllOrders({
@@ -34,7 +35,12 @@ export default function OrderHistory() {
       },
     });
     dispatch(getOrderHistory(orders.data.getAllOrders.data));
-    // console.log('orders.data', orderHistory);
+    const temp = [...orderHistory];
+    console.log(
+      'kia ha sorted',
+      temp?.sort((a, b) => new Date(b.title) - new Date(a.title)),
+    );
+    setOrdersData(temp?.sort((a, b) => new Date(b.title) - new Date(a.title)));
   };
   useEffect(() => {
     fetchOrders()
@@ -45,7 +51,7 @@ export default function OrderHistory() {
   return (
     <View style={{alignItems: 'center'}}>
       <SectionList
-        sections={orderHistory || []}
+        sections={ordersData}
         contentContainerStyle={{
           paddingVertical: 5,
           alignItems: 'center',
@@ -66,7 +72,6 @@ export default function OrderHistory() {
             textStyle={{
               width: SCREEN_WIDTH * 1,
               textAlign: 'center',
-              // paddingVertical: 2,
               fontSize: 22,
               color: colors.text_inverse,
               backgroundColor: colors.primary,
