@@ -8,6 +8,7 @@ import {
   Text,
   ActivityIndicator,
   StatusBar,
+  RefreshControl,
 } from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
@@ -182,6 +183,12 @@ export default function Items() {
         {!categoryLoader && categoryData?.getAllCategories && (
           <FlatList
             data={[{name: 'All', id: 0}, ...categoryData.getAllCategories.data]}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => fetchItems(selectedCategoryId, 1)}
+              />
+            }
             horizontal
             showsHorizontalScrollIndicator={false}
             ListEmptyComponent={

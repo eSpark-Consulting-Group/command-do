@@ -10,7 +10,6 @@ import {
   Cart,
   OrderConfirm,
   Profile,
-  Orders,
   OrderHistory,
   SearchItem,
   ChangePassword,
@@ -21,26 +20,17 @@ import {useSelector} from 'react-redux';
 import {ROLES} from '../constants';
 import {MyHeader} from '../components';
 
-const MyTheme = {
-  dark: false,
-  colors: {
-    primary: 'rgb(255, 45, 85)',
-    background: 'rgb(242, 242, 242)',
-    card: 'rgb(255, 255, 255)',
-    text: 'rgb(28, 28, 30)',
-    border: 'rgb(199, 199, 204)',
-    notification: 'rgb(255, 69, 58)',
-  },
-};
-
 const Stack = createStackNavigator();
+
 function MainStackNavigator() {
   const navigationRef = React.useRef();
   const userData = useSelector(store => store?.userInfo?.userData);
   const initialRouteName = ROLES[userData?.selected] || 'Login';
+
   useEffect(() => {
     SplashScreen.hide(); //hides the splash screen on app load.
   }, []);
+
   return (
     <NavigationContainer theme={DefaultTheme} ref={navigationRef}>
       <Stack.Navigator
