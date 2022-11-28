@@ -48,7 +48,7 @@ const Login = ({navigation}) => {
       const tokenFCM = await sendFCMToken();
       const userData = await LoginUser({
         variables: {
-          email: emailRef.current,
+          email: emailRef.current.toLowerCase(),
           password: passRef.current,
           fcmToken: tokenFCM,
         },
