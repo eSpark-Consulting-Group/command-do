@@ -266,6 +266,20 @@ function Items({route, navigation}) {
           disabled={count?.cart?.amount == 0 && press}
           style={styles.cartButtonStyle}
           onPress={_onSelect}>
+          <Icon
+            name="cart-outline"
+            size={height * 0.04}
+            color={colors.text_inverse}
+            style={{
+              position: 'absolute',
+              left: height * 0.01,
+            }}
+          />
+          <MyText
+            label={'Checkout Cart'}
+            title
+            textStyle={{color: colors.text_inverse}}
+          />
           {count?.cart?.amount != 0 && (
             <View style={styles.cartCountStyle}>
               <MyText
@@ -275,21 +289,6 @@ function Items({route, navigation}) {
               />
             </View>
           )}
-          <MyText
-            label={'Checkout Cart'}
-            title
-            textStyle={{color: colors.text_inverse}}
-          />
-          <Icon
-            name="cart-outline"
-            size={height * 0.03}
-            color="#fff"
-            style={{
-              position: 'absolute',
-              right: height * 0.01,
-              transform: [{scaleX: -1}],
-            }}
-          />
         </TouchableOpacity>
       </View>
     </>
