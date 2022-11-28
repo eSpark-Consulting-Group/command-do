@@ -23,9 +23,7 @@ function RiderNavigator({navigation}) {
   const finishedStatus = useSelector(
     store => store?.riderOrder.collectionFinished,
   );
-  const purchasedStatus = useSelector(
-    store => store?.riderOrder.orderPurchased,
-  );
+
   const dispatch = useDispatch();
   console.log('Finished Status', finishedStatus);
 
@@ -56,15 +54,7 @@ function RiderNavigator({navigation}) {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}
-      // initialRouteName={
-      //   finishedStatus
-      //     ? purchasedStatus
-      //       ? 'MoneyReturn'
-      //       : 'Purchasing_List'
-      //     : 'Orders'
-      // }
-    >
+      }}>
       <Stack.Screen
         name="Orders"
         component={Orders}
@@ -136,7 +126,7 @@ const styles = StyleSheet.create({
     height: moderateVerticalScale(80),
     width: moderateVerticalScale(140),
     position: 'absolute',
-    backgroundColor: '#fff',
+    backgroundColor: colors.text_inverse,
     borderRadius: SCREEN_HEIGHT * 0.005,
     zIndex: 1,
     top: SCREEN_HEIGHT * 0.03,
