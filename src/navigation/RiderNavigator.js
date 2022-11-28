@@ -87,7 +87,7 @@ function RiderNavigator({navigation}) {
                       <MyText
                         label={'Profile'}
                         size={'title'}
-                        textStyle={{color: colors.text_normal}}
+                        textStyle={{color: colors.text_normal + '80'}}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -105,7 +105,7 @@ function RiderNavigator({navigation}) {
                       <MyText
                         label={'Log out'}
                         size={'title'}
-                        textStyle={{color: colors.text_normal}}
+                        textStyle={{color: colors.text_normal + '80'}}
                       />
                     </TouchableOpacity>
                   </View>
@@ -123,8 +123,7 @@ function RiderNavigator({navigation}) {
 
 const styles = StyleSheet.create({
   modalInner: {
-    height: moderateVerticalScale(80),
-    width: moderateVerticalScale(140),
+    width: SCREEN_WIDTH * 0.3,
     position: 'absolute',
     backgroundColor: colors.text_inverse,
     borderRadius: SCREEN_HEIGHT * 0.005,
@@ -136,13 +135,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     padding: SCREEN_HEIGHT * 0.01,
     borderBottomWidth: SCREEN_HEIGHT * 0.0005,
     borderBottomColor: '#00000050',
   },
   btnIcon: {
     paddingRight: SCREEN_HEIGHT * 0.01,
+    top: 1,
   },
 });
 

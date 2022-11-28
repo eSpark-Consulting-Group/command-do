@@ -24,6 +24,7 @@ import {Delivery} from '../../../assets/images';
 import {MyText, DropDownAlert} from '../../../components';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -52,7 +53,7 @@ function Cart({route, navigation}) {
       setTimeout(() => {
         setProgresText('Cart');
         Animated.spring(animatedValue, {
-          toValue: height * 0.0016,
+          toValue: moderateVerticalScale(1.5),
           friction: 1,
           tension: 100,
           useNativeDriver: true,
@@ -179,7 +180,7 @@ function Cart({route, navigation}) {
                 />
               </Animated.View>
               <Progress.Circle
-                size={width * 0.15}
+                size={(width * 0.15).toFixed(0)}
                 progress={progress}
                 thickness={height * 0.005}
                 color={colors.primary}

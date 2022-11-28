@@ -8,6 +8,7 @@ import {GapView, TouchRipple} from '../';
 import {imagePicker} from '../../utils/helperFunctions';
 import MyInput from '../MyInput';
 import {PicBack} from '../../assets/images';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function ImageContainer({
   onImageChange = (image: object) => {},
@@ -57,8 +58,8 @@ export default function ImageContainer({
         }}>
         <View
           style={{
-            height: 80,
-            width: 80,
+            height: moderateVerticalScale(80),
+            width: moderateVerticalScale(80),
             borderWidth: 2,
             borderColor: colors.primary,
           }}>
@@ -75,7 +76,7 @@ export default function ImageContainer({
           {showUrl ? (
             <View
               style={{
-                flex: 0.5,
+                flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
@@ -90,15 +91,14 @@ export default function ImageContainer({
               <View
                 style={{
                   ...styles.btnStyle,
-                  flex: 0.4,
                   marginHorizontal: 10,
-                  height: '80%',
+                  height: moderateVerticalScale(40),
                 }}>
                 <TouchRipple
                   onPress={() => setShowUrl(false)}
                   darkRipple
                   style={{
-                    flex: 1,
+                    height: 'auto',
                     width: '100%',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -125,11 +125,10 @@ export default function ImageContainer({
                 <TouchRipple onPress={onUploadImage} darkRipple>
                   <MyText
                     label={'Upload Image'}
-                    size={12}
+                    size={'title'}
                     textStyle={{
                       color: colors.text_normal,
                       textAlignVertical: 'center',
-                      padding: 5,
                     }}
                   />
                 </TouchRipple>
@@ -143,11 +142,10 @@ export default function ImageContainer({
                 <TouchRipple onPress={() => setShowUrl(true)} darkRipple>
                   <MyText
                     label={'Set Image Url'}
-                    size={12}
+                    size={'title'}
                     textStyle={{
                       color: colors.text_normal,
                       textAlignVertical: 'center',
-                      padding: 5,
                     }}
                   />
                 </TouchRipple>
@@ -169,5 +167,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 5,
   },
 });
