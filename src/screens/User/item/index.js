@@ -18,9 +18,6 @@ import {MyText, DropDownAlert} from '../../../components';
 import {addItem, increase} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
-import {SCREEN_HEIGHT} from '../../../constants';
-import {isValidTimeToOrder} from '../../../utils/helperFunctions';
-import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -32,29 +29,22 @@ function Items({route, navigation}) {
   const [getData, setGetData] = useState(getRouteData?.item);
   const [editData, setEditData] = useState([]);
   const [editMode, setEditMode] = useState(0);
-  const [isDisabled, setIsDisabled] = useState(false);
   const [press, setPress] = useState(false);
   const [message, setMessage] = useState('');
   const [animateToNumber, setAnimateToNumber] = useState(0);
   const dispatch = useDispatch();
-  // const getData = route.params;
 
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
   useEffect(() => {
-    // console.log('count?.cart?.cartItems---->', count?.cart?.cartItems);
-    // console.log(getData.quantity = animateToNumber, 'animateToNumber');
-    // setAllData(foodName[0].data)
     var data = [];
-    // console.log(count?.cart, 'count');
-    // const checkCountData =
+
     data = count?.cart?.cartItems.filter(item => item?.name === getData?.name);
     setEditData(data);
     setEditMode(data.length != 0 ? data[0]?.quantity : 0);
     setAnimateToNumber(data.length != 0 ? data[0]?.quantity : 0);
-    // console.log(editData?.length == 0 ? animateToNumber === editMode : animateToNumber == 0, 'animateToNumber');
   }, [count]);
 
   const addQty = () => {
@@ -101,7 +91,6 @@ function Items({route, navigation}) {
   };
 
   const addToCart = value => {
-    // console.log('value---->', value);
     var changeData = {...getData};
     changeData.quantity = value;
     setGetData(changeData);
@@ -121,28 +110,13 @@ function Items({route, navigation}) {
     }
   };
   useEffect(() => {
-    const payload = {
-      foodType: getRouteData?.foodType,
-      getData,
-    };
-    // setAllData(foodName[0].data)
     if (animateToNumber != 0) {
       dispatch(addItem(getData));
       dispatch(increase());
-      // navigation.goBack()
     }
   }, [getData]);
 
-  // useEffect(() => {
-  // 	if(message.length != 0){
-  // 		console.log(message);
-  // 		childFunc.current()
-  // 		setPress(true)
-  // 	}
-  // }, [message])
-
   const checkSetPress = () => {
-    // console.log("runasldkj");
     setMessage('');
     setPress(false);
   };
@@ -152,7 +126,6 @@ function Items({route, navigation}) {
       setMessage('Cart');
       childFunc.current();
       setPress(true);
-      // setMessage(`Your cart is empty\nPlease add some items in your cart.`)
     } else {
       navigation.goBack();
       navigation.navigate('Cart');
@@ -187,7 +160,7 @@ function Items({route, navigation}) {
                 <Icon
                   name="ios-chevron-back-outline"
                   size={height * 0.03}
-                  color="#11a79cc7"
+                  color={colors.primary}
                 />
               </TouchableOpacity>
             </ImageBackground>
@@ -213,7 +186,11 @@ function Items({route, navigation}) {
                   <TouchableOpacity
                     style={styles.removeNumericButton}
                     onPress={removeQty}>
-                    <Icon name="remove" size={height * 0.03} color="white" />
+                    <Icon
+                      name="remove"
+                      size={height * 0.03}
+                      color={colors.text_inverse}
+                    />
                   </TouchableOpacity>
                   <TextInput
                     style={styles.quantityInput}
@@ -225,14 +202,18 @@ function Items({route, navigation}) {
                   <TouchableOpacity
                     style={styles.addNumericButton}
                     onPress={addQty}>
-                    <Icon name="add" size={height * 0.03} color="white" />
+                    <Icon
+                      name="add"
+                      size={height * 0.03}
+                      color={colors.text_inverse}
+                    />
                   </TouchableOpacity>
                 </View>
               ) : (
                 <TouchableOpacity
                   style={{
                     borderRadius: height * 1,
-                    backgroundColor: '#11a79c',
+                    backgroundColor: colors.primary,
                     elevation: 3,
                     height: height * 0.05,
                     width: height * 0.05,
@@ -243,17 +224,15 @@ function Items({route, navigation}) {
                     top: 0,
                   }}
                   onPress={addQty}>
-                  <Icon name="add" size={height * 0.03} color="white" />
+                  <Icon
+                    name="add"
+                    size={height * 0.03}
+                    color={colors.text_inverse}
+                  />
                 </TouchableOpacity>
               )}
             </View>
-            {/* <View style={{width: '100%', marginTop: height * 0.02}}>
-              <MyText
-                label={getData.desc}
-                subTitle
-                style={{color: 'gray', width: width * 0.7}}
-              />
-            </View> */}
+
             <View style={{width: '100%', marginTop: height * 0.02}}>
               <MyText label={'Amount'} textStyle={{fontSize: height * 0.025}} />
               <MyText
@@ -261,34 +240,6 @@ function Items({route, navigation}) {
                 textStyle={{fontSize: height * 0.025}}
               />
             </View>
-            {/* <View
-              style={{
-                width: '100%',
-                marginTop: height * 0.02,
-                marginBottom: height * 0.01,
-              }}>
-              <MyText label={'Special Instruction'} title />
-              <MyText
-                label={
-                  'Please let us know if you are alergic to anything or if we need to avoid anything'
-                }
-                subTitle
-                textStyle={{color: 'gray', width: width * 0.7}}
-              />
-            </View>
-            <View
-              style={{
-                width: '100%',
-              }}>
-              <TextInput
-                placeholder="e.g no mayo"
-                style={styles.noteStyle}
-                textAlignVertical="top"
-                multiline={true}
-                numberOfLines={8}
-                placeholderTextColor="gray"
-              />
-            </View> */}
           </View>
         </View>
       </View>
@@ -307,11 +258,15 @@ function Items({route, navigation}) {
               <MyText
                 label={count?.cart?.amount > 99 ? '99+' : count?.cart?.amount}
                 subTitle
-                textStyle={{color: 'white'}}
+                textStyle={{color: colors.text_inverse}}
               />
             </View>
           )}
-          <MyText label={'Checkout Cart'} title textStyle={{color: 'white'}} />
+          <MyText
+            label={'Checkout Cart'}
+            title
+            textStyle={{color: colors.text_inverse}}
+          />
           <Icon
             name="cart-outline"
             size={height * 0.03}
