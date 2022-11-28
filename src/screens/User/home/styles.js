@@ -1,12 +1,13 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import { colors } from '../../../theme';
+
+import {colors} from '../../../theme';
 
 const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
   },
   modalContainer: {
     height: height * 1,
@@ -17,9 +18,8 @@ const styles = StyleSheet.create({
   },
   modalInner: {
     height: height * 0.24,
-    // width: width * 0.3,
     position: 'absolute',
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     borderRadius: height * 0.005,
     zIndex: 1,
     top: height * 0.035,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   cartAmountStyle: {
     height: height * 0.038,
     width: height * 0.038,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     borderRadius: height * 1,
     position: 'absolute',
     right: height * -0.008,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: height * 0.02,
     borderWidth: height * 0.002,
-    borderColor: 'white',
+    borderColor: colors.background,
     borderRadius: height * 1,
     height: height * 0.04,
     width: height * 0.04,

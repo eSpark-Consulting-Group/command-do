@@ -13,6 +13,7 @@ export const uploadImage = async image => {
   console.log('storageRef', uploadUri);
   try {
     //  url = await storageRef.getDownloadURL()
+    console.log('aya ha kuch');
     const task = await storageRef.putFile(uploadUri);
     url = await storageRef.getDownloadURL();
   } catch (e) {
