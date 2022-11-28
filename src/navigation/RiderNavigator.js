@@ -17,7 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {moderateVerticalScale} from 'react-native-size-matters';
 
 const Stack = createStackNavigator();
-// 11a79c
+
 function RiderNavigator({navigation}) {
   const [isModal, setIsModal] = useState(false);
   const finishedStatus = useSelector(
@@ -28,6 +28,7 @@ function RiderNavigator({navigation}) {
   );
   const dispatch = useDispatch();
   console.log('Finished Status', finishedStatus);
+
   const isModalVisible = () => {
     LayoutAnimation.configureNext({
       duration: 300,
