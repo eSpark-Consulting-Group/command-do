@@ -20,10 +20,11 @@ import {useMutation} from '@apollo/client';
 
 import {Fonts} from '../../../utils/fonts';
 import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
-import {Delievey} from '../../../assets/images';
+import {Delivery} from '../../../assets/images';
 import {MyText, DropDownAlert} from '../../../components';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -52,7 +53,7 @@ function Cart({route, navigation}) {
       setTimeout(() => {
         setProgresText('Cart');
         Animated.spring(animatedValue, {
-          toValue: height * 0.0016,
+          toValue: moderateVerticalScale(1.5),
           friction: 1,
           tension: 100,
           useNativeDriver: true,
@@ -179,7 +180,7 @@ function Cart({route, navigation}) {
                 />
               </Animated.View>
               <Progress.Circle
-                size={width * 0.15}
+                size={(width * 0.15).toFixed(0)}
                 progress={progress}
                 thickness={height * 0.005}
                 color={colors.primary}
@@ -194,7 +195,7 @@ function Cart({route, navigation}) {
           </View>
           <View style={styles.deliveryOptionContainer}>
             <Image
-              source={Delievey}
+              source={Delivery}
               style={{
                 height: height * 0.1,
                 width: height * 0.12,
@@ -238,7 +239,7 @@ function Cart({route, navigation}) {
                         rounded
                         separatorWidth={0}
                         textColor={colors.primary}
-                        iconStyle={{color: 'black'}}
+                        iconStyle={{color: colors.text_normal}}
                         inputStyle={{
                           fontSize: height * 0.03,
                           fontFamily: Fonts.Roboto_Regular,
@@ -247,7 +248,7 @@ function Cart({route, navigation}) {
                         containerStyle={{
                           position: 'absolute',
                           zIndex: 1,
-                          backgroundColor: 'white',
+                          backgroundColor: colors.background,
                           elevation: height * 0.005,
                           borderWidth: height * 0.001,
                           borderRadius: height * 0.01,
@@ -275,7 +276,7 @@ function Cart({route, navigation}) {
                         elevation: height * 0.003,
                         height: height * 0.08,
                         width: height * 0.1,
-                        backgroundColor: 'white',
+                        backgroundColor: colors.background,
                         marginHorizontal: height * 0.015,
                         borderRadius: height * 0.015,
                       }}>
@@ -360,7 +361,7 @@ function Cart({route, navigation}) {
                         : 'Please add item into cart'
                     }
                     title
-                    textStyle={{color: 'white'}}
+                    textStyle={{color: colors.background}}
                   />
                 ) : (
                   <ActivityIndicator size="large" color={colors.text_inverse} />

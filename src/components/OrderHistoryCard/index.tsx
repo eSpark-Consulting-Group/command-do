@@ -1,3 +1,4 @@
+import {Icon} from '@rneui/themed';
 import {type} from 'os';
 import React from 'react';
 import {
@@ -7,7 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import {colors} from '../../theme';
+import GapView from '../GapView';
 
 import MyText from '../Text';
 
@@ -32,12 +35,14 @@ export default function OrderHistoryCard({
   paid,
   paidAmount,
   remainingAmount,
+  onDelete,
 }: {
   name: string;
   amount: number;
   order: orderListType[];
   onCollect: () => void;
   onRevert: () => void;
+  onDelete: () => void;
   paid: string;
   paidAmount: number;
   remainingAmount: number;
@@ -51,30 +56,42 @@ export default function OrderHistoryCard({
           borderBottomWidth: 1,
         }}>
         <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
-        <View
-          style={{
-            ...styles.cardDataContainer2,
-            borderRadius: 5,
-            backgroundColor:
-              paidAmount == 0
-                ? '#F0AD4E'
-                : remainingAmount > 0
-                ? '#D9534F'
-                : '#5CB85C',
-            elevation: 5,
-            paddingHorizontal: 3,
-            paddingVertical: 1,
-          }}>
-          <MyText
-            label={
-              paidAmount == 0
-                ? 'Not Paid'
-                : remainingAmount > 0
-                ? 'Not Received'
-                : 'Received'
-            }
-            textStyle={{...styles.cardDataText, color: '#fff'}}
-          />
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {paidAmount == 0 && (
+            <TouchableOpacity onPress={onDelete}>
+              <Icon
+                size={moderateVerticalScale(24)}
+                name="trash"
+                type="foundation"
+              />
+            </TouchableOpacity>
+          )}
+          <GapView mode="horizontal" length={moderateVerticalScale(20)} />
+          <View
+            style={{
+              ...styles.cardDataContainer2,
+              borderRadius: 5,
+              backgroundColor:
+                paidAmount == 0
+                  ? '#F0AD4E'
+                  : remainingAmount > 0
+                  ? '#D9534F'
+                  : '#5CB85C',
+              elevation: 5,
+              paddingHorizontal: 3,
+              paddingVertical: 5,
+            }}>
+            <MyText
+              label={
+                paidAmount == 0
+                  ? 'Not Paid'
+                  : remainingAmount > 0
+                  ? 'Not Received'
+                  : 'Received'
+              }
+              textStyle={{...styles.cardDataText, color: '#fff'}}
+            />
+          </View>
         </View>
       </View>
       <View style={{borderBottomWidth: 1, padding: 5}}>
@@ -177,10 +194,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataContainer2: {
+    width: width * 0.18,
     alignItems: 'center',
   },
   cardDataText: {
-    fontSize: width * 0.04,
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
   },

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import {Theme, useTheme} from '@react-navigation/native';
 import MI from 'react-native-vector-icons/MaterialIcons';
 
 import styles from './styles';

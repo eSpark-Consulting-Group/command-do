@@ -1,20 +1,20 @@
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  InputAccessoryViewProps,
-  NativeMethods,
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
 import {Overlay} from '@rneui/themed';
 import FA from 'react-native-vector-icons/FontAwesome';
+
 import MyText from '../Text';
 import {colors} from '../../theme';
 import {SCREEN_HEIGHT} from '../../constants';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function CollectionModal({
   closeModal,
@@ -43,29 +43,33 @@ export default function CollectionModal({
         isVisible={true}
         overlayStyle={{
           width: '90%',
-          borderRadius: 10,
+          borderRadius: moderateVerticalScale(10),
           alignItems: 'center',
           backgroundColor: '#efefef',
         }}>
         <View style={{width: '100%', alignItems: 'flex-end', padding: 5}}>
           <TouchableOpacity onPress={closeModal}>
-            <FA name="close" size={25} />
+            <FA name="close" size={moderateVerticalScale(25)} />
           </TouchableOpacity>
         </View>
         <View style={{alignItems: 'center', marginVertical: 10}}>
           <MyText label={'Amount to be Pay:'} />
           <MyText
             label={'Rs. ' + totAmount}
-            textStyle={{fontWeight: 'bold', fontSize: 25, color: '#444'}}
+            textStyle={{
+              fontWeight: 'bold',
+              fontSize: moderateVerticalScale(25),
+              color: '#444',
+            }}
           />
         </View>
         <View
           style={{
             width: '100%',
             elevation: 2,
-            borderRadius: 10,
+            borderRadius: moderateVerticalScale(10),
             alignItems: 'center',
-            backgroundColor: '#fff',
+            backgroundColor: colors.background,
             padding: 10,
             marginVertical: 20,
           }}>
@@ -83,7 +87,7 @@ export default function CollectionModal({
               children={'Rs. '}
               style={{
                 fontWeight: 'bold',
-                fontSize: 32,
+                fontSize: moderateVerticalScale(32),
                 color: '#444',
               }}
             />
@@ -94,11 +98,11 @@ export default function CollectionModal({
               value={amount}
               maxLength={4}
               placeholder="0"
-              cursorColor={'#fff'}
+              cursorColor={colors.background}
               onChangeText={e => setAmount(e)}
               style={{
                 fontWeight: 'bold',
-                fontSize: 32,
+                fontSize: moderateVerticalScale(32),
                 padding: 0,
               }}
             />
@@ -138,7 +142,7 @@ export default function CollectionModal({
               label={'Collected'}
               textStyle={{
                 fontFamily: 'Poppins-Bold',
-                fontSize: 25,
+                fontSize: moderateVerticalScale(25),
                 color: colors.text_inverse,
               }}
             />

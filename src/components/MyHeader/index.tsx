@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TextStyle, View, ViewStyle} from 'react-native';
 import {Icon} from '@rneui/themed';
 
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
+import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
 import GapView from '../GapView';

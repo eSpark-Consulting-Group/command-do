@@ -208,7 +208,7 @@ function Home({route, navigation}) {
     <View
       style={{
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: colors.background,
       }}>
       <StatusBar backgroundColor={colors.primary} />
       <OverlayLoader
@@ -242,8 +242,8 @@ function Home({route, navigation}) {
               />
               <MyText
                 label={'Profile'}
-                title
-                textStyle={{color: '#00000080'}}
+                size={'title'}
+                textStyle={{color: colors.text_normal + '80'}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -257,8 +257,8 @@ function Home({route, navigation}) {
               />
               <MyText
                 label={'Change Password'}
-                title
-                textStyle={{color: '#00000080'}}
+                size={'title'}
+                textStyle={{color: colors.text_normal + '80'}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -270,7 +270,11 @@ function Home({route, navigation}) {
                 color={colors.primary}
                 style={styles.btnIcon}
               />
-              <MyText label={'Orders'} title textStyle={{color: '#00000080'}} />
+              <MyText
+                label={'Orders'}
+                size={'title'}
+                textStyle={{color: colors.text_normal + '80'}}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.buttonContainer, {borderBottomWidth: height * 0}]}
@@ -283,8 +287,8 @@ function Home({route, navigation}) {
               />
               <MyText
                 label={'Log out'}
-                title
-                textStyle={{color: '#00000080'}}
+                size={'title'}
+                textStyle={{color: colors.text_normal + '80'}}
               />
             </TouchableOpacity>
           </View>
@@ -308,12 +312,12 @@ function Home({route, navigation}) {
             <Icon
               name="search"
               size={height * 0.03}
-              color="black"
+              color={colors.text_normal}
               style={{textAlignVertical: 'center'}}
             />
             <MyText
               label={"What's your order?🍔"}
-              textStyle={{color: '#000000', fontSize: height * 0.024}}
+              textStyle={{color: colors.text_normal, fontSize: height * 0.024}}
             />
           </TouchableOpacity>
 
@@ -406,7 +410,9 @@ function Home({route, navigation}) {
                         size={'title'}
                         textStyle={{
                           color:
-                            selectedCategory?.id == item?.id ? '#fff' : '#000',
+                            selectedCategory?.id == item?.id
+                              ? colors.text_inverse
+                              : colors.text_normal,
                         }}
                       />
                     </View>
@@ -442,7 +448,11 @@ function Home({route, navigation}) {
             style={styles.cartContainerStyle}
             disabled={reduxData?.cart?.amount == 0 && press}
             onPress={_onSelect}>
-            <Icon name="cart-outline" size={height * 0.035} color="white" />
+            <Icon
+              name="cart-outline"
+              size={height * 0.035}
+              color={colors.text_inverse}
+            />
             {reduxData?.cart?.amount != 0 && (
               <View style={styles.cartAmountStyle}>
                 <MyText
@@ -452,7 +462,7 @@ function Home({route, navigation}) {
                       : reduxData?.cart?.amount
                   }
                   subTitle
-                  textStyle={{color: '#000'}}
+                  textStyle={{color: colors.text_normal}}
                 />
               </View>
             )}
@@ -467,7 +477,7 @@ function Home({route, navigation}) {
             <Icon
               name="cart-outline"
               size={height * 0.04}
-              color="#fff"
+              color={colors.text_inverse}
               style={{
                 position: 'absolute',
                 left: height * 0.02,
@@ -476,7 +486,7 @@ function Home({route, navigation}) {
             <MyText
               label={'Checkout Cart'}
               title
-              textStyle={{color: 'white'}}
+              textStyle={{color: colors.text_inverse}}
             />
             {reduxData?.cart?.amount != 0 && (
               <View style={styles.cartCountStyle}>
@@ -487,7 +497,7 @@ function Home({route, navigation}) {
                       : reduxData?.cart?.amount
                   }
                   subTitle
-                  textStyle={{color: 'white'}}
+                  textStyle={{color: colors.text_inverse}}
                 />
               </View>
             )}

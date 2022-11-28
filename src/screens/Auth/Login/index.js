@@ -13,7 +13,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import {CheckBox, Icon} from '@rneui/themed';
 
-import {Fonts} from '../../../utils/fonts';
 import {Logo} from '../../../assets/images';
 import MyText from '../../../components/Text';
 import {LOGIN_USER} from '../../../graphQL/query/user.query';
@@ -48,7 +47,7 @@ const Login = ({navigation}) => {
       const tokenFCM = await sendFCMToken();
       const userData = await LoginUser({
         variables: {
-          email: emailRef.current,
+          email: emailRef.current.toLowerCase(),
           password: passRef.current,
           fcmToken: tokenFCM,
         },
@@ -89,7 +88,7 @@ const Login = ({navigation}) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        backgroundColor: 'white',
+        backgroundColor: colors.background,
       }}>
       <View
         style={{

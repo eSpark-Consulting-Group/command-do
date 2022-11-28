@@ -2,10 +2,6 @@ import React, {useState} from 'react';
 import {
   View,
   Dimensions,
-  ScrollView,
-  Image,
-  Pressable,
-  FlatList,
   LayoutAnimation,
   TouchableOpacity,
   TextInput,
@@ -15,15 +11,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addItem, increase} from '../../features/cart/cartSlice';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {styles} from './styles';
+import {colors} from '../../theme';
 
 const {width, height} = Dimensions.get('window');
 export const AddToCartBtn = ({item}) => {
   const dispatch = useDispatch();
   const qtyWarn = React.useRef(null);
 
-  const [editData, setEditData] = useState([]);
-  const [editMode, setEditMode] = useState(0);
-  const [animateToNumber, setAnimateToNumber] = useState(0);
   const [press, setPress] = useState(false);
 
   const addQty = (item: any) => {
@@ -59,8 +53,7 @@ export const AddToCartBtn = ({item}) => {
     addToCart(item?.quantity - 1, item);
   };
 
-  const addToCart = (updatedQuantity, item) => {
-    // console.log('value---->', value);
+  const addToCart = (updatedQuantity: any, item: any) => {
     var changeData = {...item};
     changeData.quantity = updatedQuantity;
     dispatch(addItem(changeData));
@@ -78,7 +71,6 @@ export const AddToCartBtn = ({item}) => {
   };
 
   const checkSetPress = () => {
-    // console.log("runasldkj");
     setPress(false);
   };
 
@@ -96,11 +88,14 @@ export const AddToCartBtn = ({item}) => {
           <TouchableOpacity
             style={styles.removeNumericButton}
             onPress={() => removeQty(item)}>
-            <Icon name="remove" size={height * 0.03} color="white" />
+            <Icon
+              name="remove"
+              size={height * 0.03}
+              color={colors.text_inverse}
+            />
           </TouchableOpacity>
           <TextInput
             style={styles.quantityInput}
-            // onChangeText={(text) => onChangeNumber(text, item)}
             defaultValue={item?.quantity?.toString()}
             textAlign="center"
             keyboardType="numeric"
@@ -111,14 +106,14 @@ export const AddToCartBtn = ({item}) => {
           <TouchableOpacity
             style={styles.addNumericButton}
             onPress={() => addQty(item)}>
-            <Icon name="add" size={height * 0.03} color="white" />
+            <Icon name="add" size={height * 0.03} color={colors.text_inverse} />
           </TouchableOpacity>
         </View>
       ) : (
         <TouchableOpacity
           style={{
             borderRadius: height * 1,
-            backgroundColor: '#11a79c',
+            backgroundColor: colors.primary,
             elevation: 3,
             height: height * 0.05,
             width: height * 0.05,
@@ -129,7 +124,7 @@ export const AddToCartBtn = ({item}) => {
             top: 0,
           }}
           onPress={() => addQty(item)}>
-          <Icon name="add" size={height * 0.03} color="white" />
+          <Icon name="add" size={height * 0.03} color={colors.text_inverse} />
         </TouchableOpacity>
       )}
     </>

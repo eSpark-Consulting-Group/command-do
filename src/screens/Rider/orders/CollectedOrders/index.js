@@ -139,5 +139,3 @@ export default function CollectedOrders({navigation}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
