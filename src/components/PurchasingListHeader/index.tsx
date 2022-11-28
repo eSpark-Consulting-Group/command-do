@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {CheckBox} from '@rneui/themed';
+
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
 import LineSeparater from '../LineSeparater';
-import {CheckBox} from '@rneui/themed';
 import {colors} from '../../theme';
 import MyText from '../Text';
 
@@ -19,14 +20,6 @@ export default function PurchasingListHeader({}: // onAllCheck,
   return (
     <>
       <View style={styles.headerTitlesContainer}>
-        {/* <View style={styles.headerTitleContainer1}>
-          <CheckBox
-            checked={checked}
-            onPress={updateAllCheck}
-            checkedColor={colors.primary}
-            containerStyle={{height: SCREEN_HEIGHT * 0.06}}
-          />
-        </View> */}
         <View style={styles.headerTitleContainer}>
           <MyText label={'Item'} textStyle={styles.headerTitle} />
         </View>
@@ -49,7 +42,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: SCREEN_WIDTH * 0.02,
     height: SCREEN_HEIGHT * 0.06,
     alignItems: 'center',
-    // marginTop: 5,
   },
   headerTitleContainer: {
     width: '48%',
@@ -58,7 +50,6 @@ const styles = StyleSheet.create({
   headerTitleContainer1: {width: '12%', alignItems: 'center'},
   headerTitleContainer2: {width: '25%', alignItems: 'center'},
   headerTitle: {
-    // fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',
   },
 });

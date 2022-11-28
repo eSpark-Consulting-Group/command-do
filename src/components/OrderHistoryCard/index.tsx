@@ -1,12 +1,5 @@
-import {type} from 'os';
 import React from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {colors} from '../../theme';
 
 import MyText from '../Text';
@@ -27,9 +20,6 @@ export default function OrderHistoryCard({
   name,
   amount,
   order = [],
-  onCollect,
-  onRevert,
-  paid,
   paidAmount,
   remainingAmount,
 }: {
@@ -38,7 +28,6 @@ export default function OrderHistoryCard({
   order: orderListType[];
   onCollect: () => void;
   onRevert: () => void;
-  paid: string;
   paidAmount: number;
   remainingAmount: number;
 }) {
@@ -73,7 +62,7 @@ export default function OrderHistoryCard({
                 ? 'Not Received'
                 : 'Received'
             }
-            textStyle={{...styles.cardDataText, color: '#fff'}}
+            textStyle={{...styles.cardDataText, color: colors.text_inverse}}
           />
         </View>
       </View>
@@ -163,7 +152,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     paddingHorizontal: width * 0.02,
-    backgroundColor: '#fff',
+    backgroundColor: colors.text_inverse,
     elevation: 5,
     marginVertical: 5,
   },
