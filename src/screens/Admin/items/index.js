@@ -183,12 +183,6 @@ export default function Items() {
         {!categoryLoader && categoryData?.getAllCategories && (
           <FlatList
             data={[{name: 'All', id: 0}, ...categoryData.getAllCategories.data]}
-            refreshControl={
-              <RefreshControl
-                refreshing={false}
-                onRefresh={() => fetchItems(selectedCategoryId, 1)}
-              />
-            }
             horizontal
             showsHorizontalScrollIndicator={false}
             ListEmptyComponent={
@@ -253,6 +247,12 @@ export default function Items() {
                 getOnEnd();
               }
             }}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => fetchItems(selectedCategoryId, 1)}
+              />
+            }
             ListEmptyComponent={
               <View
                 style={{
