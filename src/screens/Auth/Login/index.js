@@ -34,6 +34,8 @@ const Login = ({navigation}) => {
 
   const emailRef = useRef('mraza@esparkconsultants.com');
   const passRef = useRef('123456789');
+  // const emailRef = useRef('');
+  // const passRef = useRef('');
 
   const [LoginUser, {loading: userLoader}] = useLazyQuery(LOGIN_USER, {
     notifyOnNetworkStatusChange: true,

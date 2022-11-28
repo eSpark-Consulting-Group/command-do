@@ -7,6 +7,8 @@ import {
   Image,
   Text,
   ActivityIndicator,
+  StatusBar,
+  RefreshControl,
 } from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
@@ -24,7 +26,7 @@ import {colors} from '../../../theme';
 import OverlayLoader from '../../../components/OverlayLoader';
 import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
-import {set} from 'immer/dist/internal';
+import {PicBack} from '../../../assets/images';
 
 export default function Items() {
   const navigation = useNavigation();
@@ -41,6 +43,7 @@ export default function Items() {
   ] = useLazyQuery(GET_ALL_ITEMS);
 
   const [visible, setVisible] = useState(false);
+  const [load, setLoad] = useState(false);
   const [cursor, setCursor] = useState(null);
   const [data, setData] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
@@ -64,8 +67,6 @@ export default function Items() {
       },
     });
   };
-
-  // console.log('LaodITems Error', error);
 
   useEffect(() => {
     console.log(
@@ -121,6 +122,7 @@ export default function Items() {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={visible ? '#000000' : colors.primary} />
       <OverlayLoader show={categoryLoader} />
       {data.length < 1 ||
         (selectedCategoryId > 0 ? (
@@ -183,6 +185,16 @@ export default function Items() {
             data={[{name: 'All', id: 0}, ...categoryData.getAllCategories.data]}
             horizontal
             showsHorizontalScrollIndicator={false}
+            ListEmptyComponent={
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <MyText label={'No Categories Found'} size={'title'} />
+              </View>
+            }
             contentContainerStyle={styles.categoryContainer}
             renderItem={({item, index}) => (
               <MyCard
@@ -196,6 +208,7 @@ export default function Items() {
                 }}>
                 <TouchableOpacity
                   style={{padding: 10}}
+                  disabled={item.id == selectedCategoryId}
                   onPress={() => {
                     handlePress(item.id);
                   }}>
@@ -228,13 +241,28 @@ export default function Items() {
             data={data}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.itemContainer}
-            // onEndReachedThreshold={1}
             onEndReached={() => {
               console.log('Load');
               if (cursor != null) {
                 getOnEnd();
               }
             }}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => fetchItems(selectedCategoryId, 1)}
+              />
+            }
+            ListEmptyComponent={
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <MyText label={'No Items Found'} size={'title'} />
+              </View>
+            }
             ListFooterComponent={
               itemsLoading &&
               data.length > 0 && <ActivityIndicator size={'large'} />
@@ -257,11 +285,16 @@ export default function Items() {
                   }>
                   <View style={{flexDirection: 'row'}}>
                     <Image
-                      source={{uri: item?.image}}
+                      source={load ? {uri: item?.image} : PicBack}
+                      onLoad={() => setLoad(true)}
                       style={{
                         height: 50,
                         width: 50,
-                        backgroundColor: 'teal',
+                        backgroundColor: 'transparent',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderWidth: 2,
+                        borderColor: colors.primary,
                       }}
                     />
                     <GapView mode="horizontal" />
@@ -291,12 +324,12 @@ export default function Items() {
       <SpeedDial
         isOpen={visible}
         color={colors.primary}
-        icon={{name: 'add', color: '#fff'}}
-        openIcon={{name: 'close', color: '#fff'}}
+        icon={{name: 'add', color: colors.text_inverse}}
+        openIcon={{name: 'close', color: colors.text_inverse}}
         onOpen={() => setVisible(!visible)}
         onClose={() => setVisible(!visible)}>
         <SpeedDial.Action
-          icon={{name: 'add', color: '#fff'}}
+          icon={{name: 'add', color: colors.text_inverse}}
           color={colors.primary}
           title="Add Category"
           onPress={() => {
@@ -305,7 +338,7 @@ export default function Items() {
           }}
         />
         <SpeedDial.Action
-          icon={{name: 'add', color: '#fff'}}
+          icon={{name: 'add', color: colors.text_inverse}}
           color={colors.primary}
           title="Add Item"
           onPress={() => {
