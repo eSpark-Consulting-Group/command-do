@@ -7,11 +7,13 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
-import {MyText} from '..';
 import {useSelector} from 'react-redux';
+
+import {MyText} from '..';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
+
 const {width, height} = Dimensions.get('window');
 
 const Cards = props => {
@@ -19,7 +21,9 @@ const Cards = props => {
   const cart = useSelector((store: any) => store.cart);
 
   const renderList = ({item: dataItem, index: dataIndex}) => {
-    var cartItem = cart?.cartItems?.find(value => value?.id == dataItem?.id);
+    var cartItem = cart?.cartItems?.find(
+      (value: any) => value?.id == dataItem?.id,
+    );
     return (
       <View style={{opacity: 1}}>
         <Pressable
@@ -50,7 +54,7 @@ const Cards = props => {
                 borderRadius: height * 0.02,
                 height: height * 0.25,
                 width: width * 0.8,
-                backgroundColor: 'white',
+                backgroundColor: colors.background,
               }}
             />
             {cartItem != undefined && cartItem?.quantity != 0 && (
@@ -59,7 +63,7 @@ const Cards = props => {
                   opacity: 1,
                   height: height * 0.04,
                   width: height * 0.04,
-                  backgroundColor: '#11a79c',
+                  backgroundColor: colors.primary,
                   borderRadius: height * 1,
                   position: 'absolute',
                   right: height * -0.01,
@@ -140,7 +144,7 @@ const Cards = props => {
                 label={item?.name}
                 textStyle={{
                   fontSize: height * 0.03,
-                  color: '#000',
+                  color: colors.text_normal,
                 }}
               />
               <View
