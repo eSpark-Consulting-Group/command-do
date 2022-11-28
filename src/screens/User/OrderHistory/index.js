@@ -1,5 +1,3 @@
-import {useLazyQuery} from '@apollo/client';
-import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -10,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useLazyQuery} from '@apollo/client';
 
 import {GapView, MyHeader, MyText, OrderHistoryCard} from '../../../components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';

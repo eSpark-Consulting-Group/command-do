@@ -114,7 +114,7 @@ export default function MoneyReturn({navigation}) {
       style={{
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#ffffff',
+        backgroundColor: colors.background,
       }}>
       <MyHeader
         title="Return Money"
