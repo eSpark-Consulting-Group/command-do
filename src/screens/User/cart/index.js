@@ -9,21 +9,21 @@ import {
   StyleSheet,
   Animated,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import * as Progress from 'react-native-progress';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import NumericInput from 'react-native-numeric-input';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useMutation} from '@apollo/client';
 
 import {Fonts} from '../../../utils/fonts';
 import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
 import {Delievey} from '../../../assets/images';
 import {MyText, DropDownAlert} from '../../../components';
-import {useMutation} from '@apollo/client';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -139,6 +139,7 @@ function Cart({route, navigation}) {
 
   return (
     <View style={{flex: 1, backgroundColor: colors?.background}}>
+      <StatusBar backgroundColor={colors.primary} />
       <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
         <View style={{flex: 1}}>
           <DropDownAlert
@@ -187,7 +188,6 @@ function Cart({route, navigation}) {
                 style={{
                   width: width * 0.2,
                   alignItems: 'center',
-                  // backgroundColor: 'red',
                 }}
               />
             </View>
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
   // Header Container
   headerContainer: {
     height: height * 0.12,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     elevation: height * 0.003,
     alignItems: 'center',
     flexDirection: 'row',
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
   // Delivery Option Container
   deliveryOptionContainer: {
     height: height * 0.12,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     elevation: height * 0.005,
     alignItems: 'center',
     flexDirection: 'row',
@@ -454,7 +454,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#00000050',
-    // elevation: 1,
   },
   addMoreItemContainer: {
     height: height * 0.06,

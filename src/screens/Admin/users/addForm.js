@@ -42,7 +42,11 @@ export default function AddForm() {
     },
   );
 
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+  });
 
   const [check1, setCheck1] = useState(false);
   const [check2, setCheck2] = useState(false);
@@ -54,10 +58,14 @@ export default function AddForm() {
     check3 && 'RIDER',
   ].filter(item => item != false);
 
-  const condition =
-    (userInfo.firstName && userInfo.lastName && userInfo.email && check1) ||
-    check2 ||
-    check3;
+  const cond2 = check1 || check2 || check3;
+
+  const cond1 =
+    userInfo.firstName !== '' &&
+    userInfo.lastName !== '' &&
+    userInfo.email !== '';
+
+  console.log('suis=>>', userInfo, roleSetter);
 
   const handleDeleteUser = () => {
     const _deleteUser = async () => {
@@ -259,9 +267,9 @@ export default function AddForm() {
         <View style={{height: 60}}>
           <BottomButton
             label="Add User"
-            count={condition ? 1 : 0}
+            count={cond1 && cond2 ? 1 : 0}
             totalCount={1}
-            enabled={condition ? true : false}
+            enabled={cond1 && cond2 ? true : false}
             onPress={handleAddUser}
           />
         </View>
@@ -353,9 +361,9 @@ export default function AddForm() {
         <View style={{height: 60}}>
           <BottomButton
             label="Edit User"
-            count={condition ? 1 : 0}
+            count={cond1 && cond2 ? 1 : 0}
             totalCount={1}
-            enabled={condition ? true : false}
+            enabled={cond1 && cond2 ? true : false}
             onPress={() => handleEditUser()}
           />
         </View>
