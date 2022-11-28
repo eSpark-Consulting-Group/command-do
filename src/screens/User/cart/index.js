@@ -16,6 +16,7 @@ import * as Progress from 'react-native-progress';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import NumericInput from 'react-native-numeric-input';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 
 import {Fonts} from '../../../utils/fonts';
 import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
@@ -24,7 +25,6 @@ import {MyText, DropDownAlert} from '../../../components';
 import {useMutation} from '@apollo/client';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -189,7 +189,6 @@ function Cart({route, navigation}) {
                 style={{
                   width: width * 0.2,
                   alignItems: 'center',
-                  // backgroundColor: 'red',
                 }}
               />
             </View>
