@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {AddFormItem, ItemList, SearchScreen} from '../screens';
+import {AddFormItem, ItemList} from '../screens';
 
 const Stack = createStackNavigator();
 function ItemNavigator() {
