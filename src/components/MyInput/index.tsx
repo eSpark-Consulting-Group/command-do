@@ -6,6 +6,7 @@ import {
   TextInputSubmitEditingEventData,
   View,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 import {SCREEN_HEIGHT} from '../../constants';
 import {colors} from '../../theme';
@@ -57,10 +58,20 @@ export default function MyInput({
 const styles = StyleSheet.create({
   TextInputStyleClass: {
     paddingHorizontal: 10,
-    height: 50,
-    borderWidth: 2,
+    // height: moderateVerticalScale(40),
+    // borderWidth: 2,
+    // borderColor: colors.primary,
+    // borderRadius: 10,
+    backgroundColor: colors.background,
+
+    // height: moderateVerticalScale(40),
+    width: '100%',
+    fontSize: moderateVerticalScale(14),
+    height: moderateVerticalScale(40),
     borderColor: colors.primary,
     borderRadius: 10,
-    backgroundColor: colors.background,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

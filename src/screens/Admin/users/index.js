@@ -110,7 +110,7 @@ export default function Users() {
               onPress={() => goToNavigation('Profile')}>
               <Ionicons
                 name="person"
-                size={SCREEN_HEIGHT * 0.02}
+                size={SCREEN_HEIGHT * 0.025}
                 color={colors.primary}
                 style={styles.btnIcon}
               />
@@ -118,7 +118,7 @@ export default function Users() {
                 label={'Profile'}
                 size={'title'}
                 textStyle={{
-                  color: colors.text_normal,
+                  color: colors.text_normal + '80',
                 }}
               />
             </TouchableOpacity>
@@ -136,8 +136,10 @@ export default function Users() {
               />
               <MyText
                 label={'Log out'}
-                title
-                textStyle={{color: colors.text_normal}}
+                size={'title'}
+                textStyle={{
+                  color: colors.text_normal + '80',
+                }}
               />
             </TouchableOpacity>
           </View>
@@ -219,7 +221,6 @@ const styles = StyleSheet.create({
     height: 44,
   },
   modalInner: {
-    height: SCREEN_HEIGHT * 0.1,
     width: SCREEN_WIDTH * 0.3,
     position: 'absolute',
     backgroundColor: '#fff',
@@ -239,5 +240,6 @@ const styles = StyleSheet.create({
   },
   btnIcon: {
     paddingRight: SCREEN_HEIGHT * 0.01,
+    top: 1,
   },
 });

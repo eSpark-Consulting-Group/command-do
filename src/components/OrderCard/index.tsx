@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import {colors} from '../../theme';
+import GapView from '../GapView';
 
 import MyText from '../Text';
 
@@ -48,7 +50,13 @@ export default function OrderCard({
           padding: 5,
           borderBottomWidth: 1,
         }}>
-        <MyText label={name} size={'heading'} textStyle={styles.cardDataText} />
+        <MyText
+          label={name}
+          textStyle={{
+            ...styles.cardDataText,
+            fontSize: moderateVerticalScale(28),
+          }}
+        />
         <TouchableOpacity
           onPress={paid == 'UNPAID' ? onCollect : onRevert}
           style={{
@@ -60,7 +68,7 @@ export default function OrderCard({
           }}>
           <MyText
             label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
-            textStyle={{...styles.cardDataText, color: colors.text_inverse}}
+            textStyle={{...styles.cardDataText, color: '#fff'}}
           />
         </TouchableOpacity>
       </View>

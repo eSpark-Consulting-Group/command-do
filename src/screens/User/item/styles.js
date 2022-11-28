@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
   },
   cartCountStyle: {
     position: 'absolute',
-    left: height * 0.01,
+    right: height * 0.01,
     borderWidth: height * 0.002,
     borderColor: colors.background,
     borderRadius: height * 1,
