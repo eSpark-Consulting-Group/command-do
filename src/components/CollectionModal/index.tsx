@@ -1,17 +1,16 @@
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  InputAccessoryViewProps,
-  NativeMethods,
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
 import {Overlay} from '@rneui/themed';
 import FA from 'react-native-vector-icons/FontAwesome';
+
 import MyText from '../Text';
 import {colors} from '../../theme';
 import {SCREEN_HEIGHT} from '../../constants';
@@ -65,7 +64,7 @@ export default function CollectionModal({
             elevation: 2,
             borderRadius: 10,
             alignItems: 'center',
-            backgroundColor: '#fff',
+            backgroundColor: colors.background,
             padding: 10,
             marginVertical: 20,
           }}>
@@ -94,7 +93,7 @@ export default function CollectionModal({
               value={amount}
               maxLength={4}
               placeholder="0"
-              cursorColor={'#fff'}
+              cursorColor={colors.background}
               onChangeText={e => setAmount(e)}
               style={{
                 fontWeight: 'bold',

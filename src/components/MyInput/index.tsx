@@ -2,7 +2,6 @@ import React from 'react';
 import {
   NativeSyntheticEvent,
   StyleSheet,
-  Text,
   TextInput,
   TextInputSubmitEditingEventData,
   View,
@@ -62,6 +61,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.primary,
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background,
   },
 });
