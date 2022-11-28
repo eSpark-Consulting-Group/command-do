@@ -238,7 +238,7 @@ function Cart({route, navigation}) {
                         rounded
                         separatorWidth={0}
                         textColor={colors.primary}
-                        iconStyle={{color: 'black'}}
+                        iconStyle={{color: colors.text_normal}}
                         inputStyle={{
                           fontSize: height * 0.03,
                           fontFamily: Fonts.Roboto_Regular,
@@ -247,7 +247,7 @@ function Cart({route, navigation}) {
                         containerStyle={{
                           position: 'absolute',
                           zIndex: 1,
-                          backgroundColor: 'white',
+                          backgroundColor: colors.background,
                           elevation: height * 0.005,
                           borderWidth: height * 0.001,
                           borderRadius: height * 0.01,
@@ -275,7 +275,7 @@ function Cart({route, navigation}) {
                         elevation: height * 0.003,
                         height: height * 0.08,
                         width: height * 0.1,
-                        backgroundColor: 'white',
+                        backgroundColor: colors.background,
                         marginHorizontal: height * 0.015,
                         borderRadius: height * 0.015,
                       }}>
@@ -360,7 +360,7 @@ function Cart({route, navigation}) {
                         : 'Please add item into cart'
                     }
                     title
-                    textStyle={{color: 'white'}}
+                    textStyle={{color: colors.background}}
                   />
                 ) : (
                   <ActivityIndicator size="large" color={colors.text_inverse} />
