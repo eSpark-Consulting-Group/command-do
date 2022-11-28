@@ -7,6 +7,7 @@ import {useLazyQuery} from '@apollo/client';
 import {MyText, SearchBar, TouchRipple} from '../../components';
 import {GET_ALL_ITEMS, SEARCH_ITEMS} from '../../graphQL/query/item.query';
 import {SCREEN_HEIGHT} from '../../constants';
+import {colors} from '../../theme';
 
 export default function SearchItem({route}) {
   const navigation = useNavigation();
@@ -88,7 +89,7 @@ export default function SearchItem({route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background,
   },
   listContainer: {flex: 1},
   item: {

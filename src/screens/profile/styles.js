@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {colors} from '../../theme';
 import {Fonts} from '../../utils/fonts';
 
 const {width, height} = Dimensions.get('window');
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
   modalInner: {
     height: height * 0.3,
     width: width * 0.8,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     borderRadius: height * 0.005,
     elevation: height * 0.003,
     justifyContent: 'center',
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   chooseImageButton: {
     height: height * 0.07,
     width: width * 0.6,
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     borderRadius: height * 0.005,
     elevation: height * 0.005,
     marginVertical: height * 0.01,
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     height: height * 0.05,
     elevation: height * 0.003,
     width: height * 0.05,
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   profileBackground: {
     height: height * 0.15,
     width: height * 0.15,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     borderRadius: height * 1,
     elevation: height * 0.01,
   },
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     elevation: height * 0.003,
     width: height * 0.03,
     margin: height * 0.015,
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: height * 1,
     height: height * 0.15,
     width: height * 0.15,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     resizeMode: 'contain',
   },
   editProfileStyle: {
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     elevation: height * 0.003,
     width: height * 0.05,
     margin: height * 0.015,
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -90,14 +91,14 @@ const styles = StyleSheet.create({
   },
   profileFormStyle: {
     height: height * 0.75,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
   profileFormAlign: {
     height: height * 0.15,
     width: width * 0.9,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     borderRadius: height * 0.005,
     elevation: height * 0.005,
     marginVertical: height * 0.015,

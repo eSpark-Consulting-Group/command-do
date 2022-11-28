@@ -107,7 +107,7 @@ export default function ChangePassword({navigation}) {
           style={styles.loginButton}
           onPress={() => handleChangePass()}>
           {loading ? (
-            <ActivityIndicator size={30} color="white" />
+            <ActivityIndicator size={30} color={colors.text_inverse} />
           ) : (
             <MyText
               label={'Change Password'}
