@@ -6,8 +6,7 @@ import {
   ScrollView,
   Image,
   LayoutAnimation,
-  Platform,
-  ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
@@ -42,10 +41,8 @@ function Home({route, navigation}) {
   const dispatch = useDispatch();
 
   const [isModal, setIsModal] = useState(false);
-  const [cursor, setCursor] = useState(null);
   const [press, setPress] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(false);
-  const [allData, setAllData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({
     name: 'All',
     image: null,
@@ -96,9 +93,6 @@ function Home({route, navigation}) {
     selectedCategory?.id == 0
       ? categoriesWithItemData?.getAllCategories?.data
       : itemData?.getAllItems?.data;
-  if (Platform.OS === 'android') {
-    // UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
 
   useEffect(() => {
     LoadCategories();
@@ -146,7 +140,6 @@ function Home({route, navigation}) {
       return;
     }
     fetchMore({
-      // query: GET_ALL_ITEMS,
       variables: {
         where: {
           categoryId: selectedCategory?.id,
@@ -159,7 +152,6 @@ function Home({route, navigation}) {
       updateQuery: (previousResult, {fetchMoreResult}) => {
         const newItems = fetchMoreResult.getAllItems.data;
         const updatedArr = [...previousResult?.getAllItems?.data, ...newItems];
-        // setToggle(!toggle)
         return {
           getAllItems: {
             ...fetchMoreResult?.getAllItems,
@@ -218,6 +210,7 @@ function Home({route, navigation}) {
         flex: 1,
         backgroundColor: 'white',
       }}>
+      <StatusBar backgroundColor={colors.primary} />
       <OverlayLoader
         show={
           LoadItemsLoading ||
@@ -232,7 +225,6 @@ function Home({route, navigation}) {
         type="info"
         title="Warning"
       />
-      {/* <StatusBar hiddens={true} /> */}
       <CustomizeModal
         isVisible={isModal}
         setBackDrop={isModalVisible}
@@ -245,7 +237,7 @@ function Home({route, navigation}) {
               <Icon
                 name="person"
                 size={height * 0.025}
-                color="#11a79c"
+                color={colors.primary}
                 style={styles.btnIcon}
               />
               <MyText
@@ -260,7 +252,7 @@ function Home({route, navigation}) {
               <Icon
                 name="settings-sharp"
                 size={height * 0.025}
-                color="#11a79c"
+                color={colors.primary}
                 style={styles.btnIcon}
               />
               <MyText
@@ -275,7 +267,7 @@ function Home({route, navigation}) {
               <Icon
                 name="ios-newspaper"
                 size={height * 0.025}
-                color="#11a79c"
+                color={colors.primary}
                 style={styles.btnIcon}
               />
               <MyText label={'Orders'} title textStyle={{color: '#00000080'}} />
@@ -286,7 +278,7 @@ function Home({route, navigation}) {
               <Icon
                 name="ios-exit"
                 size={height * 0.025}
-                color="#11a79c"
+                color={colors.primary}
                 style={styles.btnIcon}
               />
               <MyText
@@ -301,11 +293,11 @@ function Home({route, navigation}) {
 
       <View style={styles.mainContainer}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity style={{}} onPress={() => setIsModal(!isModal)}>
+          <TouchableOpacity onPress={() => setIsModal(!isModal)}>
             <Icon
               name="person-circle-outline"
               size={height * 0.04}
-              color="#11a79c90"
+              color={colors.primary}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -313,16 +305,19 @@ function Home({route, navigation}) {
             onPress={() =>
               navigation.navigate('SearchItem', {navigateTo: 'Item'})
             }>
-            <Icon name="search" size={height * 0.03} color="black" />
+            <Icon
+              name="search"
+              size={height * 0.03}
+              color="black"
+              style={{textAlignVertical: 'center'}}
+            />
             <MyText
               label={"What's your order?🍔"}
               textStyle={{color: '#000000', fontSize: height * 0.024}}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{}}>
-            {/* <Icon name="wallet-sharp" size={height * 0.035} color="#11a79c90" /> */}
-          </TouchableOpacity>
+          <View />
         </View>
 
         <View
@@ -331,7 +326,6 @@ function Home({route, navigation}) {
             justifyContent: 'center',
             paddingHorizontal: 15,
             paddingVertical: height * 0.0001,
-            // backgroundColor: 'red'
           }}>
           <MyText
             label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
@@ -395,7 +389,6 @@ function Home({route, navigation}) {
                       borderColor: '#00000030',
                       marginHorizontal: height * 0.005,
                       borderRadius: height * 0.01,
-                      // width: width * 0.3,
                     }}
                     onPress={() => isSelect(item)}>
                     <View>
@@ -469,7 +462,6 @@ function Home({route, navigation}) {
             ddisabled={reduxData?.cart?.amount == 0 && press}
             style={{
               ...styles.cartButtonStyle,
-              // borderRadius: reachedEnd ? height * 0.1 : 0,
             }}
             onPress={_onSelect}>
             <Icon
@@ -479,7 +471,6 @@ function Home({route, navigation}) {
               style={{
                 position: 'absolute',
                 left: height * 0.02,
-                // transform: [{scaleX: -1}],
               }}
             />
             <MyText
