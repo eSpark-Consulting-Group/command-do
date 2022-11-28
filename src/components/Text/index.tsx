@@ -8,7 +8,7 @@ const {width, height} = Dimensions.get('window');
 const FontSize = {
   heading: moderateVerticalScale(30),
   subHeading: moderateVerticalScale(26),
-  title: moderateVerticalScale(14),
+  title: moderateVerticalScale(16),
   subTitle: moderateVerticalScale(12),
   default: moderateVerticalScale(14),
 };

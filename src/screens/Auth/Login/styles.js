@@ -1,6 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {moderateVerticalScale} from 'react-native-size-matters';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
+import {colors} from '../../../theme';
 
 const styles = StyleSheet.create({
   inputStyle: {
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   loginButton: {
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     width: SCREEN_WIDTH * 0.8,
     height: moderateVerticalScale(45),
     borderRadius: 8,

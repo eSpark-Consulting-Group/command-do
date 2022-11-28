@@ -1,3 +1,4 @@
+import {Icon} from '@rneui/base';
 import {type} from 'os';
 import React from 'react';
 import {
@@ -7,7 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import {colors} from '../../theme';
+import GapView from '../GapView';
 
 import MyText from '../Text';
 
@@ -49,21 +52,35 @@ export default function OrderCard({
           padding: 5,
           borderBottomWidth: 1,
         }}>
-        <MyText label={name} size={'heading'} textStyle={styles.cardDataText} />
-        <TouchableOpacity
-          onPress={paid == 'UNPAID' ? onCollect : onRevert}
-          style={{
-            ...styles.cardDataContainer2,
-            borderRadius: 5,
-            backgroundColor: colors.primary,
-            elevation: 5,
-            paddingVertical: 5,
-          }}>
-          <MyText
-            label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
-            textStyle={{...styles.cardDataText, color: '#fff'}}
+        <MyText
+          label={name}
+          textStyle={{
+            ...styles.cardDataText,
+            fontSize: moderateVerticalScale(28),
+          }}
+        />
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Icon
+            size={moderateVerticalScale(24)}
+            name="trash"
+            type="foundation"
           />
-        </TouchableOpacity>
+          <GapView mode="horizontal" length={moderateVerticalScale(20)} />
+          <TouchableOpacity
+            onPress={paid == 'UNPAID' ? onCollect : onRevert}
+            style={{
+              ...styles.cardDataContainer2,
+              borderRadius: 5,
+              backgroundColor: colors.primary,
+              elevation: 5,
+              paddingVertical: 5,
+            }}>
+            <MyText
+              label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
+              textStyle={{...styles.cardDataText, color: '#fff'}}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={{borderBottomWidth: 1, padding: 5}}>
         <View style={{...styles.cardInnerContainer, marginBottom: 4}}>

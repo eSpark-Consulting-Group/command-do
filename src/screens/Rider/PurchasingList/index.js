@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -13,6 +13,9 @@ import {
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {Icon, SpeedDial} from '@rneui/themed';
 import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
+import {moderateVerticalScale} from 'react-native-size-matters';
+import {useLazyQuery} from '@apollo/client';
 
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {
@@ -23,15 +26,11 @@ import {
 } from '../../../components';
 import {colors} from '../../../theme';
 import {pdfHtml} from '../../../utils/purchasingpdf';
-import {useLazyQuery} from '@apollo/client';
 import {
   ORDERS_PURCHASED,
   ORDERS_SUMMARY,
 } from '../../../graphQL/query/orders.query';
-import {useEffect} from 'react';
 import {toggleOrderPurchased} from '../../../features/riderOrders/riderOrderSlice';
-import {useDispatch} from 'react-redux';
-import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function PurchasingList({navigation}) {
   const [GetOrderSummary, {loading}] = useLazyQuery(ORDERS_SUMMARY);
@@ -70,7 +69,7 @@ export default function PurchasingList({navigation}) {
   };
 
   const orderPurchased = async () => {
-    let purchased = await getPurchasedOrders();
+    await getPurchasedOrders();
     dispatch(toggleOrderPurchased(true));
     navigation.navigate('MoneyReturn');
   };
@@ -130,7 +129,12 @@ export default function PurchasingList({navigation}) {
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ffffff'}}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: colors.background,
+      }}>
       <MyHeader
         title="Purchasing List"
         titleStyle={{fontFamily: 'Poppins-Bold'}}
@@ -144,12 +148,6 @@ export default function PurchasingList({navigation}) {
             itemName={item.item.name}
             quantity={item.quantity}
             totalAmount={item.amount}
-            // checked={item.check}
-            // onCheck={() => {
-            //   let update = [...check];
-            //   update[index].check = !update[index].check;
-            //   setCheck(update);
-            // }}
           />
         )}
         ListEmptyComponent={
@@ -203,11 +201,15 @@ export default function PurchasingList({navigation}) {
             width: '15%',
             height: '100%',
             alignItems: 'center',
-            backgroundColor: '#11a79c',
+            backgroundColor: colors.primary,
             justifyContent: 'center',
             borderRadius: 10,
           }}>
-          <Icon name="print" size={moderateVerticalScale(30)} color={'#fff'} />
+          <Icon
+            name="print"
+            size={moderateVerticalScale(30)}
+            color={colors.text_inverse}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={orderPurchased}
@@ -215,7 +217,7 @@ export default function PurchasingList({navigation}) {
             width: '80%',
             height: '100%',
             alignItems: 'center',
-            backgroundColor: '#11a79c',
+            backgroundColor: colors.primary,
             justifyContent: 'center',
             borderRadius: 10,
           }}>
@@ -236,5 +238,3 @@ export default function PurchasingList({navigation}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {colors} from '../../theme';
 import {Fonts} from '../../utils/fonts';
 
 const {width, height} = Dimensions.get('window');
@@ -6,7 +7,7 @@ const {width, height} = Dimensions.get('window');
 export const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
   },
   itemImageContainer: {
     height: height * 0.72,
@@ -23,7 +24,7 @@ export const styles = StyleSheet.create({
     elevation: height * 0.003,
     width: height * 0.05,
     margin: height * 0.015,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -38,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   removeNumericButton: {
     borderRadius: height * 1,
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     elevation: height * 0.003,
     height: height * 0.05,
     width: height * 0.05,
@@ -49,22 +50,21 @@ export const styles = StyleSheet.create({
     height: height * 0.07,
     maxWidth: width * 0.2,
     fontFamily: Fonts.Roboto_Medium,
-    color: 'black',
+    color: colors.text_normal,
     fontSize: height * 0.028,
   },
   addNumericButton: {
     borderRadius: height * 1,
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     elevation: 3,
     height: height * 0.05,
     width: height * 0.05,
     justifyContent: 'center',
     alignItems: 'center',
-    // marginLeft: height * .01
   },
   itemDetailContainer: {
     height: height * 0.25,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     alignItems: 'center',
     position: 'relative',
     bottom: height * 0.035,
@@ -77,8 +77,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // height: height * 0.055,
-    // backgroundColor: 'red'
   },
   noteStyle: {
     borderRadius: height * 0.005,
@@ -86,11 +84,11 @@ export const styles = StyleSheet.create({
     borderWidth: height * 0.001,
     marginVertical: height * 0.02,
     fontFamily: Fonts.Roboto_Medium,
-    color: 'black',
+    color: colors.text_normal,
     fontSize: height * 0.015,
   },
   cartButtonStyle: {
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     height: height * 0.06,
     borderRadius: height * 0.005,
     paddingLeft: height * 0.015,
@@ -102,7 +100,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     left: height * 0.01,
     borderWidth: height * 0.002,
-    borderColor: 'white',
+    borderColor: colors.background,
     borderRadius: height * 1,
     height: height * 0.04,
     width: height * 0.04,

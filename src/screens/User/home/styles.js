@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   modalInner: {
-    height: height * 0.24,
+    // height: moderateVerticalScale(80),
     position: 'absolute',
     backgroundColor: colors.background,
     borderRadius: height * 0.005,
@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
   },
   btnIcon: {
     paddingRight: height * 0.01,
+    alignSelf: 'center',
+    top: 1,
   },
   headerContainer: {
     flex: 0.5,

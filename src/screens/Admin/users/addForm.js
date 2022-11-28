@@ -144,7 +144,7 @@ export default function AddForm() {
     const data = {
       firstName: firstName,
       lastName: lastName,
-      email: email,
+      email: email.toLowerCase(),
       role: roleSetter,
     };
     const response = await AddUser({
