@@ -20,7 +20,7 @@ import {useMutation} from '@apollo/client';
 
 import {Fonts} from '../../../utils/fonts';
 import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
-import {Delievey} from '../../../assets/images';
+import {Delivery} from '../../../assets/images';
 import {MyText, DropDownAlert} from '../../../components';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
@@ -194,7 +194,7 @@ function Cart({route, navigation}) {
           </View>
           <View style={styles.deliveryOptionContainer}>
             <Image
-              source={Delievey}
+              source={Delivery}
               style={{
                 height: height * 0.1,
                 width: height * 0.12,

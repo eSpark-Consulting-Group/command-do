@@ -1,4 +1,3 @@
-import {type} from 'os';
 import React from 'react';
 import {
   Dimensions,
@@ -61,7 +60,7 @@ export default function OrderCard({
           }}>
           <MyText
             label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
-            textStyle={{...styles.cardDataText, color: '#fff'}}
+            textStyle={{...styles.cardDataText, color: colors.text_inverse}}
           />
         </TouchableOpacity>
       </View>
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     paddingHorizontal: width * 0.02,
-    backgroundColor: '#fff',
+    backgroundColor: colors.text_inverse,
     elevation: 5,
     marginVertical: 5,
   },
