@@ -21,6 +21,7 @@ import {
   imagePicker,
   uploadImage,
 } from '../../utils/helperFunctions';
+import {colors} from '../../theme';
 
 const {width, height} = Dimensions.get('window');
 
@@ -121,21 +122,35 @@ function Profile({route, navigation}) {
             <TouchableOpacity
               style={styles.chooseImageButton}
               onPress={() => onImagePicker(cameraPicker)}>
-              <Icon name="camera-outline" size={height * 0.03} color="#fff" />
+              <Icon
+                name="camera-outline"
+                size={height * 0.03}
+                color={colors.text_inverse}
+              />
               <MyText
                 label={'Launch Camera'}
                 title
-                textStyle={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{
+                  color: colors.text_inverse,
+                  marginLeft: height * 0.01,
+                }}
               />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.chooseImageButton}
               onPress={() => onImagePicker(imagePicker)}>
-              <Icon name="image-outline" size={height * 0.03} color="#fff" />
+              <Icon
+                name="image-outline"
+                size={height * 0.03}
+                color={colors.text_inverse}
+              />
               <MyText
                 label={'Choose in gallery'}
                 title
-                textStyle={{color: '#fff', marginLeft: height * 0.01}}
+                textStyle={{
+                  color: colors.text_inverse,
+                  marginLeft: height * 0.01,
+                }}
               />
             </TouchableOpacity>
           </View>
@@ -150,7 +165,7 @@ function Profile({route, navigation}) {
             <Icon
               name="ios-chevron-back-outline"
               size={height * 0.03}
-              color="#fff"
+              color={colors.text_inverse}
             />
           </View>
         </TouchableOpacity>
@@ -159,7 +174,11 @@ function Profile({route, navigation}) {
             style={styles.profileImage}
             onPress={() => setIsModal(!isModal)}>
             <View>
-              <Icon name="ios-pencil" size={height * 0.018} color="#fff" />
+              <Icon
+                name="ios-pencil"
+                size={height * 0.018}
+                color={colors.text_inverse}
+              />
             </View>
           </TouchableOpacity>
           <Image
@@ -184,7 +203,7 @@ function Profile({route, navigation}) {
             <Icon
               name={editMode ? 'save-sharp' : 'ios-pencil'}
               size={height * 0.025}
-              color="#fff"
+              color={colors.text_inverse}
             />
           </View>
         </TouchableOpacity>
@@ -212,7 +231,10 @@ function Profile({route, navigation}) {
                 <MyText
                   label={item.value}
                   title
-                  textStyle={{color: '#11a79c', marginVertical: height * 0.015}}
+                  textStyle={{
+                    color: colors.primary,
+                    marginVertical: height * 0.015,
+                  }}
                 />
               )}
             </View>
