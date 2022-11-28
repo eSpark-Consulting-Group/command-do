@@ -16,13 +16,12 @@ import * as Progress from 'react-native-progress';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import NumericInput from 'react-native-numeric-input';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import {useMutation} from '@apollo/client';
 
 import {Fonts} from '../../../utils/fonts';
 import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
 import {Delievey} from '../../../assets/images';
 import {MyText, DropDownAlert} from '../../../components';
-import {useMutation} from '@apollo/client';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
 
@@ -418,7 +417,7 @@ const styles = StyleSheet.create({
   // Header Container
   headerContainer: {
     height: height * 0.12,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     elevation: height * 0.003,
     alignItems: 'center',
     flexDirection: 'row',
@@ -436,7 +435,7 @@ const styles = StyleSheet.create({
   // Delivery Option Container
   deliveryOptionContainer: {
     height: height * 0.12,
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     elevation: height * 0.005,
     alignItems: 'center',
     flexDirection: 'row',
@@ -455,7 +454,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#00000050',
-    // elevation: 1,
   },
   addMoreItemContainer: {
     height: height * 0.06,
