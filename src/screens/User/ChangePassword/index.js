@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   loginButton: {
-    backgroundColor: '#11a79c',
+    backgroundColor: colors.primary,
     width: SCREEN_WIDTH * 0.8,
     height: SCREEN_HEIGHT * 0.07,
     borderRadius: SCREEN_HEIGHT * 0.005,
