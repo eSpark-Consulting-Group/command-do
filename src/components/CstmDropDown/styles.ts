@@ -1,6 +1,8 @@
 import {StyleSheet} from 'react-native';
 import {moderateVerticalScale} from 'react-native-size-matters';
 
+import {colors} from '../../theme';
+
 const styles = StyleSheet.create({
   labelText: {
     fontFamily: 'sans-serif-medium',
@@ -10,14 +12,14 @@ const styles = StyleSheet.create({
   },
   dropdownLabelContainer: {
     borderWidth: 2,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     marginHorizontal: 10,
   },
   dropdownLabelInner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 8,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
   },
   dropDownText: {
     fontFamily: 'sans-serif-medium',
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
     padding: 8,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
   },
   itemText: {
     fontFamily: 'sans-serif-medium',

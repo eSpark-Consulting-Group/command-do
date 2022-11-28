@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, StatusBar, View} from 'react-native';
+import {StatusBar} from 'react-native';
 
 const AppStatusBar = ({backgroundColor, ...props}) => {
   return <StatusBar backgroundColor={backgroundColor} {...props} />;

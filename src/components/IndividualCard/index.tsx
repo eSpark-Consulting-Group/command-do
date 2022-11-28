@@ -1,51 +1,36 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
-  Text,
-  TextInput,
   Dimensions,
-  TouchableOpacity,
-  StatusBar,
-  ScrollView,
   Image,
   Pressable,
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
 } from 'react-native';
-import {Fonts} from '../../utils/fonts';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+
 import {MyText} from '..';
 import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
 import {SCREEN_HEIGHT} from '../../constants';
 const {width, height} = Dimensions.get('window');
-type Item = {
-  id: number;
-  name: string;
-  image: any;
-  price: number;
-  quantity: number;
-};
+
 const IndividualCard = props => {
   const {label, data, navigation, fetchMoreOnEnd, loading, cursor} = props;
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const count = useSelector((store: any) => store);
   const [allData, setAllData] = useState<any>([]);
   const cart = useSelector((store: any) => store.cart);
+
   useEffect(() => {
-    // if (menuData?.data) {
-    // console.log('asdjl--->', allData?.data);
     setIsLoading(true);
-    // }
   }, [allData]);
   useEffect(() => {
     const menuData = count?.cart?.menuItems?.find(
-      item => item.name === count?.cart?.foodType,
+      (item: any) => item.name === count?.cart?.foodType,
     );
-    // console.log('navigaiton-->', menuData?.data);
     setAllData(menuData);
   }, [count?.cart?.foodType, count?.cart]);
   return (
@@ -102,7 +87,7 @@ const IndividualCard = props => {
             }
             renderItem={({item: dataItem, index: dataIndex}) => {
               var cartItem = cart?.cartItems?.find(
-                value => value?.id == dataItem?.id,
+                (value: any) => value?.id == dataItem?.id,
               );
               return (
                 <Pressable
@@ -111,7 +96,6 @@ const IndividualCard = props => {
                     marginVertical: 5,
                     paddingHorizontal: 5,
                     marginHorizontal: 10,
-                    // marginBottom: dataIndex == 0 ? height * 0.04 : 0,
                   }}
                   onPress={() =>
                     navigation.navigate('Item', {
@@ -123,7 +107,7 @@ const IndividualCard = props => {
                     style={{
                       height: height * 0.25,
                       width: width * 0.9,
-                      backgroundColor: 'white',
+                      backgroundColor: colors.background,
                       borderRadius: height * 0.02,
                       elevation: height * 0.003,
                     }}>
@@ -133,7 +117,7 @@ const IndividualCard = props => {
                         borderRadius: height * 0.02,
                         height: height * 0.25,
                         width: width * 0.9,
-                        backgroundColor: 'white',
+                        backgroundColor: colors.background,
                       }}
                     />
                   </View>
@@ -172,7 +156,7 @@ const IndividualCard = props => {
                       style={{
                         height: height * 0.04,
                         width: height * 0.04,
-                        backgroundColor: '#11A79C',
+                        backgroundColor: colors.primary,
                         borderRadius: height * 1,
                         position: 'absolute',
                         right: height * -0.005,
@@ -200,11 +184,7 @@ const IndividualCard = props => {
                     source={NotFound}
                     style={{height: height / 2.4, width: width - 30}}
                   />
-                  <MyText
-                    label={'No Items Found'}
-                    size={'subHeading'}
-                    // textStyle={{color: colors.background}}
-                  />
+                  <MyText label={'No Items Found'} size={'subHeading'} />
                 </View>
               ) : null
             }
