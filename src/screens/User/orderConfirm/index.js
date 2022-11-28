@@ -90,7 +90,7 @@ function OrderConfirm({route, navigation}) {
           <Image source={TickGif} style={styles.gifStyle} />
         )}
       </View>
-      <View style={styles.bottomCurveView}></View>
+      <View style={styles.bottomCurveView} />
       <Image source={OrderDone} style={styles.orderDoneGif} />
       <View style={styles.completeOrderTextContainer}>
         <MyText label={'Your order is complete!'} size="title" />
