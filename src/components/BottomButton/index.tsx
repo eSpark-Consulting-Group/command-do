@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+
 import {SCREEN_HEIGHT} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
