@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    top: -10,
+    // top: -10,
     right: 0,
   },
   removeNumericButton: {
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     height: height * 0.07,
     maxWidth: width * 0.2,
     fontFamily: Fonts.Roboto_Medium,
-    color: 'black',
+    color: colors.text_normal,
     fontSize: height * 0.028,
   },
   addNumericButton: {
@@ -85,13 +85,12 @@ export const styles = StyleSheet.create({
     borderWidth: height * 0.001,
     marginVertical: height * 0.02,
     fontFamily: Fonts.Roboto_Medium,
-    color: 'black',
+    color: colors.text_normal,
     fontSize: height * 0.015,
   },
   cartButtonStyle: {
     backgroundColor: colors.primary,
     height: height * 0.06,
-    borderRadius: height * 0.005,
     paddingLeft: height * 0.015,
     justifyContent: 'center',
     alignItems: 'center',
