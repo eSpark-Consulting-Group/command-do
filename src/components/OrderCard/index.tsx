@@ -1,5 +1,3 @@
-import {Icon} from '@rneui/base';
-import {type} from 'os';
 import React from 'react';
 import {
   Dimensions,
@@ -59,28 +57,20 @@ export default function OrderCard({
             fontSize: moderateVerticalScale(28),
           }}
         />
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Icon
-            size={moderateVerticalScale(24)}
-            name="trash"
-            type="foundation"
+        <TouchableOpacity
+          onPress={paid == 'UNPAID' ? onCollect : onRevert}
+          style={{
+            ...styles.cardDataContainer2,
+            borderRadius: 5,
+            backgroundColor: colors.primary,
+            elevation: 5,
+            paddingVertical: 5,
+          }}>
+          <MyText
+            label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
+            textStyle={{...styles.cardDataText, color: '#fff'}}
           />
-          <GapView mode="horizontal" length={moderateVerticalScale(20)} />
-          <TouchableOpacity
-            onPress={paid == 'UNPAID' ? onCollect : onRevert}
-            style={{
-              ...styles.cardDataContainer2,
-              borderRadius: 5,
-              backgroundColor: colors.primary,
-              elevation: 5,
-              paddingVertical: 5,
-            }}>
-            <MyText
-              label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
-              textStyle={{...styles.cardDataText, color: '#fff'}}
-            />
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={{borderBottomWidth: 1, padding: 5}}>
         <View style={{...styles.cardInnerContainer, marginBottom: 4}}>
@@ -176,7 +166,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     paddingHorizontal: width * 0.02,
-    backgroundColor: '#fff',
+    backgroundColor: colors.text_inverse,
     elevation: 5,
     marginVertical: 5,
   },
