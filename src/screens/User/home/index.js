@@ -11,14 +11,15 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {showMessage} from 'react-native-flash-message';
 
 import {
   Cards,
   IndividualCard,
   CustomizeModal,
   MyText,
-  DropDownAlert,
   OverlayLoader,
+  BackButtonHandler,
 } from '../../../components';
 import {AllData, profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
@@ -32,11 +33,10 @@ import styles from './styles';
 import {colors} from '../../../theme';
 import {logout} from '../../../features/userInfo/userInfoSlice';
 import {greetMessage} from '../../../utils/helperFunctions';
+import {moderateVerticalScale} from 'react-native-size-matters';
 const {width, height} = Dimensions.get('window');
 
 function Home({route, navigation}) {
-  const childFunc = useRef(null);
-
   const reduxData = useSelector(store => store);
   const dispatch = useDispatch();
 
@@ -100,6 +100,27 @@ function Home({route, navigation}) {
     LoadCategoriesWithItem();
     dispatch(initialDataUpdate(profileData));
   }, []);
+
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction,
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
+
+  // const backAction = () => {
+  //   Alert.alert('Hold on!', 'Are you sure you want to exit App?', [
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => null,
+  //       style: 'cancel',
+  //     },
+  //     {text: 'YES', onPress: () => BackHandler.exitApp()},
+  //   ]);
+  //   return true;
+  // };
 
   const isSelect = item => {
     setSelectedCategory(item);
@@ -167,8 +188,12 @@ function Home({route, navigation}) {
 
   const _onSelect = () => {
     if (reduxData?.cart?.amount == 0) {
-      childFunc.current();
-      setPress(true);
+      showMessage({
+        message: `Warning`,
+        type: 'warning',
+        icon: 'auto',
+        description: `Your cart is empty\nPlease add some items in your cart.`,
+      });
     } else {
       navigation.navigate('Cart');
     }
@@ -210,6 +235,7 @@ function Home({route, navigation}) {
         flex: 1,
         backgroundColor: colors.background,
       }}>
+      <BackButtonHandler />
       <StatusBar backgroundColor={colors.primary} />
       <OverlayLoader
         show={
@@ -218,13 +244,7 @@ function Home({route, navigation}) {
           LoadCategoriesWithItemLoading
         }
       />
-      <DropDownAlert
-        childFunc={childFunc}
-        setPress={() => setPress(false)}
-        message={`Your cart is empty\nPlease add some items in your cart.`}
-        type="info"
-        title="Warning"
-      />
+
       <CustomizeModal
         isVisible={isModal}
         setBackDrop={isModalVisible}
@@ -300,28 +320,26 @@ function Home({route, navigation}) {
           <TouchableOpacity onPress={() => setIsModal(!isModal)}>
             <Icon
               name="person-circle-outline"
-              size={height * 0.04}
+              size={moderateVerticalScale(28)}
               color={colors.primary}
             />
           </TouchableOpacity>
+          <View style={styles.headerCenterComponentStyle}>
+            <MyText
+              label={"What's your order?🍔"}
+              textStyle={{color: colors.text_normal, fontSize: height * 0.024}}
+            />
+          </View>
           <TouchableOpacity
-            style={styles.headerCenterComponentStyle}
             onPress={() =>
               navigation.navigate('SearchItem', {navigateTo: 'Item'})
             }>
             <Icon
               name="search"
-              size={height * 0.03}
-              color={colors.text_normal}
-              style={{textAlignVertical: 'center'}}
-            />
-            <MyText
-              label={"What's your order?🍔"}
-              textStyle={{color: colors.text_normal, fontSize: height * 0.024}}
+              size={moderateVerticalScale(28)}
+              color={colors.primary}
             />
           </TouchableOpacity>
-
-          <View />
         </View>
 
         <View
@@ -333,9 +351,9 @@ function Home({route, navigation}) {
           }}>
           <MyText
             label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
-            heading
+            size={'subHeading'}
           />
-          <MyText label={greetMessage()} subHeading />
+          <MyText label={greetMessage()} />
         </View>
 
         {remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount >
@@ -450,7 +468,7 @@ function Home({route, navigation}) {
             onPress={_onSelect}>
             <Icon
               name="cart-outline"
-              size={height * 0.035}
+              size={moderateVerticalScale(27)}
               color={colors.text_inverse}
             />
             {reduxData?.cart?.amount != 0 && (

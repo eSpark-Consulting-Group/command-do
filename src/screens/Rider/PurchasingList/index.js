@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   PermissionsAndroid,
   RefreshControl,
@@ -66,6 +67,19 @@ export default function PurchasingList({navigation}) {
     console.log('TotalAmount', TotalAmount);
     setTotalAmount(TotalAmount);
     navigation.navigate('Purchasing_List');
+  };
+
+  const confirmPurchase = () => {
+    Alert.alert('Confirm Purchase', 'Are sure to Confirm Purchase?', [
+      {
+        text: 'Yes',
+        onPress: orderPurchased,
+      },
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+    ]);
   };
 
   const orderPurchased = async () => {
@@ -212,7 +226,7 @@ export default function PurchasingList({navigation}) {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={orderPurchased}
+          onPress={confirmPurchase}
           style={{
             width: '80%',
             height: '100%',
