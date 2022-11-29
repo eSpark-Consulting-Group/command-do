@@ -34,6 +34,7 @@ import {colors} from '../../../theme';
 import {logout} from '../../../features/userInfo/userInfoSlice';
 import {greetMessage} from '../../../utils/helperFunctions';
 import {moderateVerticalScale} from 'react-native-size-matters';
+import {useIsFocused} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 
 function Home({route, navigation}) {
@@ -100,6 +101,8 @@ function Home({route, navigation}) {
     LoadCategoriesWithItem();
     dispatch(initialDataUpdate(profileData));
   }, []);
+
+  const isFocused = useIsFocused();
 
   // useEffect(() => {
   //   const backHandler = BackHandler.addEventListener(
@@ -235,7 +238,7 @@ function Home({route, navigation}) {
         flex: 1,
         backgroundColor: colors.background,
       }}>
-      <BackButtonHandler />
+      {isFocused && <BackButtonHandler />}
       <StatusBar backgroundColor={colors.primary} />
       <OverlayLoader
         show={
