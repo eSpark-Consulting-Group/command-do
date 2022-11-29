@@ -8,6 +8,7 @@ import {GapView, TouchRipple} from '../';
 import {imagePicker} from '../../utils/helperFunctions';
 import MyInput from '../MyInput';
 import {PicBack} from '../../assets/images';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function ImageContainer({
   onImageChange = (image: object) => {},
@@ -57,8 +58,8 @@ export default function ImageContainer({
         }}>
         <View
           style={{
-            height: 80,
-            width: 80,
+            height: moderateVerticalScale(80),
+            width: moderateVerticalScale(80),
             borderWidth: 2,
             borderColor: colors.primary,
           }}>
@@ -75,7 +76,7 @@ export default function ImageContainer({
           {showUrl ? (
             <View
               style={{
-                flex: 0.5,
+                flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
@@ -90,15 +91,14 @@ export default function ImageContainer({
               <View
                 style={{
                   ...styles.btnStyle,
-                  flex: 0.4,
                   marginHorizontal: 10,
-                  height: '80%',
+                  height: moderateVerticalScale(40),
                 }}>
                 <TouchRipple
                   onPress={() => setShowUrl(false)}
                   darkRipple
                   style={{
-                    flex: 1,
+                    height: 'auto',
                     width: '100%',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -106,6 +106,7 @@ export default function ImageContainer({
                   <MyText
                     label={'Done'}
                     textStyle={{
+                      padding: 5,
                       color: colors.text_normal,
                       textAlignVertical: 'center',
                     }}
@@ -119,35 +120,34 @@ export default function ImageContainer({
                 flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
               }}>
               <View style={styles.btnStyle}>
                 <TouchRipple onPress={onUploadImage} darkRipple>
                   <MyText
                     label={'Upload Image'}
-                    size={12}
+                    size={moderateVerticalScale(14, -0.2)}
                     textStyle={{
+                      padding: 5,
                       color: colors.text_normal,
                       textAlignVertical: 'center',
-                      padding: 5,
                     }}
                   />
                 </TouchRipple>
               </View>
               <MyText
                 label="Or"
-                size={12}
+                size={moderateVerticalScale(10)}
                 textStyle={{marginHorizontal: 8, opacity: 0.6}}
               />
               <View style={styles.btnStyle}>
                 <TouchRipple onPress={() => setShowUrl(true)} darkRipple>
                   <MyText
                     label={'Set Image Url'}
-                    size={12}
+                    size={moderateVerticalScale(14, -0.2)}
                     textStyle={{
+                      padding: 5,
                       color: colors.text_normal,
                       textAlignVertical: 'center',
-                      padding: 5,
                     }}
                   />
                 </TouchRipple>

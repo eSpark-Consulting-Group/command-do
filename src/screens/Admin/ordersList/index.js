@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, SectionList, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  SectionList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useLazyQuery} from '@apollo/client';
 import {useDispatch, useSelector} from 'react-redux';
@@ -56,10 +62,17 @@ export default function OrdersList() {
       variables: theDate,
     });
     console.log('bta Date kia ha', theDate);
-    console.log('ordersByDate', orders?.data?.getOrderOverviewByDate?.data);
-    setOrdersByDate(
-      getSortedOrders(orders?.data?.getOrderOverviewByDate?.data),
+    const tempArr = [...orders?.data?.getOrderOverviewByDate?.data];
+    const sortedArr = tempArr?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     );
+
+    console.log('ordersByDate=??>>', tempArr);
+    console.log(
+      'kia ha sorted',
+      tempArr?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    );
+    setOrdersByDate(getSortedOrders(sortedArr));
   };
 
   const fetchUserOrders = async userId => {
@@ -71,8 +84,13 @@ export default function OrdersList() {
         },
       },
     });
-    console.log('orders.data', orders?.data?.getAllOrders?.data);
-    setOrdersByDate(getSortedOrders(orders?.data?.getAllOrders?.data));
+
+    const tempArr = [...orders?.data?.getAllOrders?.data];
+    const sortedArr = tempArr?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    );
+    console.log('ordersByUser=??>>', orders?.data?.getAllOrders?.data);
+    setOrdersByDate(getSortedOrders(sortedArr));
   };
 
   useUpdateEffect(() => {
@@ -202,8 +220,13 @@ export default function OrdersList() {
       <GapView length={4} mode="vertical" />
       <SectionList
         sections={ordersByDate}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => fetchOrders({endDate: null, startDate: null})}
+          />
+        }
         renderItem={({item}) =>
-          // <RenderDatewise item={item} />
           loadingByDate || loading ? (
             <View
               style={{
@@ -280,7 +303,7 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT * 0.1,
     width: SCREEN_WIDTH * 0.3,
     position: 'absolute',
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     borderRadius: SCREEN_HEIGHT * 0.005,
     zIndex: 1,
     top: SCREEN_HEIGHT * 0.13,
