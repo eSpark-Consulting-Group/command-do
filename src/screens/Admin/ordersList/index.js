@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, SectionList, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  SectionList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useLazyQuery} from '@apollo/client';
 import {useDispatch, useSelector} from 'react-redux';
@@ -214,6 +220,12 @@ export default function OrdersList() {
       <GapView length={4} mode="vertical" />
       <SectionList
         sections={ordersByDate}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => fetchOrders({endDate: null, startDate: null})}
+          />
+        }
         renderItem={({item}) =>
           loadingByDate || loading ? (
             <View

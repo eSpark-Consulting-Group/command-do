@@ -305,7 +305,11 @@ export default function Items() {
                     />
                     <GapView mode="horizontal" />
                     <View style={{alignSelf: 'center'}}>
-                      <MyText label={item?.name} size={'title'} />
+                      <MyText
+                        label={item?.name}
+                        size={'title'}
+                        textStyle={{width: SCREEN_WIDTH / 2}}
+                      />
                       <MyText
                         label={item?.Category?.name}
                         size={'title'}

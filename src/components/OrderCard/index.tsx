@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import {moderateVerticalScale} from 'react-native-size-matters';
+import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 import GapView from '../GapView';
 
@@ -55,6 +56,7 @@ export default function OrderCard({
           textStyle={{
             ...styles.cardDataText,
             fontSize: moderateVerticalScale(20),
+            maxWidth: SCREEN_WIDTH * 0.7,
           }}
         />
         <TouchableOpacity

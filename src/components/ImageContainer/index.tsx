@@ -106,6 +106,7 @@ export default function ImageContainer({
                   <MyText
                     label={'Done'}
                     textStyle={{
+                      padding: 5,
                       color: colors.text_normal,
                       textAlignVertical: 'center',
                     }}
@@ -119,14 +120,14 @@ export default function ImageContainer({
                 flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
               }}>
               <View style={styles.btnStyle}>
                 <TouchRipple onPress={onUploadImage} darkRipple>
                   <MyText
                     label={'Upload Image'}
-                    size={'title'}
+                    size={moderateVerticalScale(14, -0.2)}
                     textStyle={{
+                      padding: 5,
                       color: colors.text_normal,
                       textAlignVertical: 'center',
                     }}
@@ -135,15 +136,16 @@ export default function ImageContainer({
               </View>
               <MyText
                 label="Or"
-                size={12}
+                size={moderateVerticalScale(10)}
                 textStyle={{marginHorizontal: 8, opacity: 0.6}}
               />
               <View style={styles.btnStyle}>
                 <TouchRipple onPress={() => setShowUrl(true)} darkRipple>
                   <MyText
                     label={'Set Image Url'}
-                    size={'title'}
+                    size={moderateVerticalScale(14, -0.2)}
                     textStyle={{
+                      padding: 5,
                       color: colors.text_normal,
                       textAlignVertical: 'center',
                     }}
@@ -167,6 +169,5 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 5,
   },
 });
