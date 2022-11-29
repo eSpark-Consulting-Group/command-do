@@ -66,7 +66,7 @@ export default function OrderCard({
             borderRadius: 5,
             backgroundColor: colors.primary,
             elevation: 5,
-            paddingVertical: 5,
+            padding: 5,
           }}>
           <MyText
             label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
