@@ -149,7 +149,7 @@ export default function OrderHistoryCard({
       <View
         style={{
           ...styles.cardInnerContainer,
-          paddingHorizontal: 5,
+          padding: 5,
         }}>
         <MyText
           label={'Paid Amount'}
@@ -158,6 +158,25 @@ export default function OrderHistoryCard({
         />
         <MyText
           label={'Rs. ' + paidAmount}
+          size={'title'}
+          textStyle={{
+            fontFamily: 'Poppins-Bold',
+            textAlign: 'center',
+          }}
+        />
+      </View>
+      <View
+        style={{
+          ...styles.cardInnerContainer,
+          padding: 5,
+        }}>
+        <MyText
+          label={'Remaining Amount'}
+          size={'title'}
+          textStyle={{fontFamily: 'Poppins-Bold'}}
+        />
+        <MyText
+          label={'Rs. ' + remainingAmount}
           size={'title'}
           textStyle={{
             fontFamily: 'Poppins-Bold',
