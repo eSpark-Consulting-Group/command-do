@@ -81,3 +81,24 @@ export const ORDERS_PURCHASED = gql`
     }
   }
 `;
+export const COLLECTED_ORDERS = gql`
+  query GetCollectedOrder($date: Date) {
+    getCollectedOrder(date: $date) {
+      data {
+        id
+        riderId
+        summary
+        totalAmount
+        updatedAt
+        Rider {
+          lastName
+          firstName
+        }
+        createdAt
+      }
+      error
+      message
+      status
+    }
+  }
+`;

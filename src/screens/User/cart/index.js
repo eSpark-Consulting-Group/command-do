@@ -25,6 +25,8 @@ import {MyText, DropDownAlert} from '../../../components';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
 import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import {isValidTimeToOrder} from '../../../utils/helperFunctions';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -347,6 +349,14 @@ function Cart({route, navigation}) {
                   marginVertical: height * 0.009,
                 }}
                 onPress={() => {
+                  if (!isValidTimeToOrder()) {
+                    showMessage({
+                      message: 'Alas! Time is over for placing order😬',
+                      icon: 'auto',
+                      type: 'info',
+                    });
+                    return;
+                  }
                   isShowAlert(true);
                 }}>
                 {!loading ? (
