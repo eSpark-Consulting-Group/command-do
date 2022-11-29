@@ -35,11 +35,11 @@ class Notifications {
     });
   }
 
-  schduleNotification(date) {
+  localPushNotification(title="", message="", date) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
-      title: '🔔 Reminder!',
-      message: 'Now you can place order for todays lunch',
+      title,
+      message,
       date,
     });
   }
