@@ -54,7 +54,7 @@ export default function OrderCard({
           label={name}
           textStyle={{
             ...styles.cardDataText,
-            fontSize: moderateVerticalScale(28),
+            fontSize: moderateVerticalScale(20),
           }}
         />
         <TouchableOpacity
@@ -180,7 +180,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataContainer2: {
-    width: width * 0.18,
     alignItems: 'center',
   },
   cardDataText: {

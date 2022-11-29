@@ -93,8 +93,16 @@ function OrderConfirm({route, navigation}) {
       <View style={styles.bottomCurveView} />
       <Image source={OrderDone} style={styles.orderDoneGif} />
       <View style={styles.completeOrderTextContainer}>
-        <MyText label={'Your order is complete!'} size="title" />
-        <MyText label={'Thanks'} size="title" />
+        <MyText
+          label={'Your order is complete!'}
+          size="title"
+          textStyle={{color: colors.text_inverse}}
+        />
+        <MyText
+          label={'Thanks'}
+          size="title"
+          textStyle={{color: colors.text_inverse}}
+        />
         <TouchableOpacity style={styles.backToHomeButton} onPress={backTohome}>
           <MyText
             label={'Go back to home'}

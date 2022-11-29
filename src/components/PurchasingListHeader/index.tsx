@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: SCREEN_WIDTH * 0.95,
     paddingHorizontal: SCREEN_WIDTH * 0.02,
-    height: SCREEN_HEIGHT * 0.06,
+    height: SCREEN_HEIGHT * 0.05,
     alignItems: 'center',
   },
   headerTitleContainer: {
