@@ -21,6 +21,7 @@ import {
   MyText,
   TouchRipple,
   MyCard,
+  BackButtonHandler,
 } from '../../../components';
 import {colors} from '../../../theme';
 import OverlayLoader from '../../../components/OverlayLoader';
@@ -123,6 +124,7 @@ export default function Items() {
 
   return (
     <View style={styles.container}>
+      <BackButtonHandler />
       <StatusBar backgroundColor={visible ? '#000000' : colors.primary} />
       <OverlayLoader show={categoryLoader || itemsLoading} />
 

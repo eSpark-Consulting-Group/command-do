@@ -28,13 +28,13 @@ export default function CollectedOrders({navigation}) {
   const dispatch = useDispatch();
 
   const updateOrder = async finalOrders => {
-    const update = await UpdateOrder({
-      variables: {
-        input: finalOrders,
-      },
-    });
-    dispatch(toggleFinishCollection(true));
-    dispatch(getReturnMoneyData());
+    // const update = await UpdateOrder({
+    //   variables: {
+    //     input: finalOrders,
+    //   },
+    // });
+    // dispatch(toggleFinishCollection(true));
+    // dispatch(getReturnMoneyData());
     navigation.navigate('Purchasing_List');
   };
 
@@ -111,9 +111,9 @@ export default function CollectedOrders({navigation}) {
       />
       <TouchableOpacity
         onPress={finishCollection}
-        disabled={
-          !orders.some(val => val.status == 'PAID' && val.returned == false)
-        }
+        // disabled={
+        //   !orders.some(val => val.status == 'PAID' && val.returned == false)
+        // }
         style={{
           width: '95%',
           alignItems: 'center',
