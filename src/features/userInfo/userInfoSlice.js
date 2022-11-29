@@ -34,6 +34,8 @@ const userInfoSlice = createSlice({
     },
     logout: (state, action) => {
       state.userData = null;
+      state.orders = null;
+      state.users = [];
     },
   },
 });
