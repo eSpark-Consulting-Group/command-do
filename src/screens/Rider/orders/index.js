@@ -5,19 +5,28 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import CollectedOrders from './CollectedOrders';
 import CurrentOrders from './CurrentOrders';
 import {colors} from '../../../theme';
-import {MyText} from '../../../components';
+import {BackButtonHandler, MyText} from '../../../components';
 import {SCREEN_WIDTH} from '../../../constants';
+import {useIsFocused} from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function Rider() {
+  const isFocused = useIsFocused();
   const now = new Date().toTimeString();
   console.log('now', now);
   const state =
     now >= '12:30:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   // const state = true;
 
-  return state ? <Orders /> : <Empty />;
+  return state ? (
+    <Orders />
+  ) : (
+    <>
+      {isFocused && <BackButtonHandler />}
+      <Empty />
+    </>
+  );
 }
 
 function Empty() {

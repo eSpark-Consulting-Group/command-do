@@ -23,6 +23,7 @@ import {
 } from '../../../../features/riderOrders/riderOrderSlice';
 import {ALL_ORDERS} from '../../../../graphQL/query/orders.query';
 import {colors} from '../../../../theme';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function CurrentOrders({navigation}) {
   const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
@@ -34,6 +35,8 @@ export default function CurrentOrders({navigation}) {
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     fetchOrders();
@@ -88,7 +91,7 @@ export default function CurrentOrders({navigation}) {
 
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
-      <BackButtonHandler />
+      {isFocused && <BackButtonHandler />}
       <FlatList
         data={orders.some(val => val.status == 'UNPAID') ? orders : []}
         style={{width: '100%'}}
