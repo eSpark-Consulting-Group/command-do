@@ -1,47 +1,28 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
-import {CheckBox} from '@rneui/themed';
-import {useState} from 'react';
-import {colors} from '../../theme';
+import MyText from '../Text';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function PurchasingOrderCard({
   itemName,
   quantity,
   totalAmount,
-}: // checked,
-// onCheck,
-{
+}: {
   itemName: string;
   quantity: number;
   totalAmount: number;
-  // checked: boolean;
-  // onCheck: (val: boolean) => void;
 }) {
-  // const [check, setCheck] = useState(false);
-
-  // const onChecked = () => {
-  //   onCheck(!checked);
-  // };
-
   return (
     <View style={styles.cardContainer}>
-      {/* <View style={styles.cardDataContainer1}>
-        <CheckBox
-          checked={checked}
-          onPress={onChecked}
-          checkedColor={colors.primary}
-          containerStyle={{height: SCREEN_HEIGHT * 0.06}}
-        />
-      </View> */}
       <View style={styles.cardDataContainer}>
-        <Text style={styles.cardDataText}>{itemName}</Text>
+        <MyText label={itemName} textStyle={styles.cardDataText} />
       </View>
       <View style={styles.cardDataContainer2}>
-        <Text style={styles.cardDataText}>{quantity}</Text>
+        <MyText label={quantity} textStyle={styles.cardDataText} />
       </View>
       <View style={styles.cardDataContainer2}>
-        <Text style={styles.cardDataText}>Rs. {totalAmount}</Text>
+        <MyText label={`Rs.  ${totalAmount}`} textStyle={styles.cardDataText} />
       </View>
     </View>
   );
@@ -53,18 +34,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: SCREEN_WIDTH * 0.02,
-    paddingVertical: 0,
+    paddingVertical: moderateVerticalScale(7),
     width: SCREEN_WIDTH * 0.95,
     marginVertical: 5,
-    height: SCREEN_HEIGHT * 0.06,
+    marginHorizontal: 5,
     borderRadius: 10,
-    elevation: 2,
+    elevation: 5,
   },
   cardDataContainer: {width: '48%', paddingLeft: '2%'},
   cardDataContainer1: {width: '12%', alignItems: 'center'},
   cardDataContainer2: {width: '25%', alignItems: 'center'},
   cardDataText: {
-    fontSize: SCREEN_WIDTH * 0.04,
     fontWeight: '600',
   },
 });

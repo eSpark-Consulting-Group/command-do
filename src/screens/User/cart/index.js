@@ -24,7 +24,7 @@ import {Delivery} from '../../../assets/images';
 import {MyText, DropDownAlert} from '../../../components';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -180,16 +180,12 @@ function Cart({route, navigation}) {
                 />
               </Animated.View>
               <Progress.Circle
-                size={(width * 0.15).toFixed(0)}
+                size={width * 0.18}
                 progress={progress}
                 thickness={height * 0.005}
                 color={colors.primary}
                 borderWidth={0}
                 unfilledColor="#00000020"
-                style={{
-                  width: width * 0.2,
-                  alignItems: 'center',
-                }}
               />
             </View>
           </View>
