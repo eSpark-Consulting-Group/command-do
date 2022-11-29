@@ -1,4 +1,3 @@
-import {type} from 'os';
 import React from 'react';
 import {
   Dimensions,
@@ -56,7 +55,7 @@ export default function MoneyReturnCard({
           }}>
           <MyText
             label={'Return'}
-            textStyle={{...styles.cardDataText, color: '#fff'}}
+            textStyle={{...styles.cardDataText, color: colors.background}}
           />
         </TouchableOpacity>
       </View>
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     paddingHorizontal: width * 0.02,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     elevation: 5,
     marginVertical: 5,
   },

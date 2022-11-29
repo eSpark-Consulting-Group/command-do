@@ -3,6 +3,7 @@ import React from 'react';
 import MyText from '../Text';
 import GapView from '../GapView';
 import {Divider} from '@rneui/base';
+import {colors} from '../../theme';
 
 export default function MySubHeader({
   title,
@@ -16,7 +17,11 @@ export default function MySubHeader({
       <MyText label={title} size={'subHeading'} />
       <GapView mode="vertical" />
       {divider && (
-        <Divider orientation="horizontal" width={1} color={'#000000'} />
+        <Divider
+          orientation="horizontal"
+          width={1}
+          color={colors.text_normal}
+        />
       )}
     </View>
   );

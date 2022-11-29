@@ -25,6 +25,7 @@ import SearchBar from './SearchBar';
 import MoneyReturnCard from './MoneyReturnCard';
 import OrderHistoryCard from './OrderHistoryCard';
 import OverlayLoader from './OverlayLoader';
+import BackButtonHandler from './BackButtonHandler';
 
 export {
   Cards,
@@ -51,4 +52,5 @@ export {
   MoneyReturnCard,
   OrderHistoryCard,
   OverlayLoader,
+  BackButtonHandler,
 };

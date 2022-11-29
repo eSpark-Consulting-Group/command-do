@@ -21,12 +21,14 @@ import {
   MyText,
   TouchRipple,
   MyCard,
+  BackButtonHandler,
 } from '../../../components';
 import {colors} from '../../../theme';
 import OverlayLoader from '../../../components/OverlayLoader';
 import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import {PicBack} from '../../../assets/images';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function Items() {
   const navigation = useNavigation();
@@ -122,12 +124,9 @@ export default function Items() {
 
   return (
     <View style={styles.container}>
+      <BackButtonHandler />
       <StatusBar backgroundColor={visible ? '#000000' : colors.primary} />
-      <OverlayLoader show={categoryLoader} />
-      {data.length < 1 ||
-        (selectedCategoryId > 0 ? (
-          <OverlayLoader show={categoryLoader || itemsLoading} />
-        ) : null)}
+      <OverlayLoader show={categoryLoader || itemsLoading} />
 
       <MyHeader
         title={'All Items'}
@@ -158,7 +157,7 @@ export default function Items() {
                     name="edit"
                     style={{
                       textAlignVertical: 'center',
-                      padding: 10,
+                      padding: moderateVerticalScale(10),
                     }}
                     containerStyle={{borderRadius: 100}}
                     pressableProps={{
@@ -205,9 +204,10 @@ export default function Items() {
                     selectedCategoryId == item.id
                       ? colors.primary
                       : colors.background,
+
+                  alignItems: 'center',
                 }}>
                 <TouchableOpacity
-                  style={{padding: 10}}
                   disabled={item.id == selectedCategoryId}
                   onPress={() => {
                     handlePress(item.id);
@@ -250,18 +250,24 @@ export default function Items() {
             refreshControl={
               <RefreshControl
                 refreshing={false}
-                onRefresh={() => fetchItems(selectedCategoryId, 1)}
+                onRefresh={() => {
+                  setCursor(null);
+                  fetchItems(selectedCategoryId, 1);
+                }}
               />
             }
             ListEmptyComponent={
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <MyText label={'No Items Found'} size={'title'} />
-              </View>
+              categoryLoader &&
+              itemsLoading && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <MyText label={'No Items Found'} size={'title'} />
+                </View>
+              )
             }
             ListFooterComponent={
               itemsLoading &&
@@ -288,8 +294,8 @@ export default function Items() {
                       source={load ? {uri: item?.image} : PicBack}
                       onLoad={() => setLoad(true)}
                       style={{
-                        height: 50,
-                        width: 50,
+                        height: moderateVerticalScale(50),
+                        width: moderateVerticalScale(50),
                         backgroundColor: 'transparent',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -299,7 +305,11 @@ export default function Items() {
                     />
                     <GapView mode="horizontal" />
                     <View style={{alignSelf: 'center'}}>
-                      <MyText label={item?.name} size={'title'} />
+                      <MyText
+                        label={item?.name}
+                        size={'title'}
+                        textStyle={{width: SCREEN_WIDTH / 2}}
+                      />
                       <MyText
                         label={item?.Category?.name}
                         size={'title'}
@@ -366,6 +376,10 @@ const styles = StyleSheet.create({
   },
   category: {
     marginHorizontal: 10,
+    padding: 5,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    minWidth: moderateVerticalScale(50),
   },
   itemContainer: {
     marginBottom: 10,

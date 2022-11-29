@@ -21,3 +21,13 @@ export const UPDATE_ORDER = gql`
     }
   }
 `;
+
+export const DELETE_ORDER = gql`
+  mutation DeleteOrder($deleteOrderId: Int!) {
+    deleteOrder(id: $deleteOrderId) {
+      error
+      message
+      status
+    }
+  }
+`;

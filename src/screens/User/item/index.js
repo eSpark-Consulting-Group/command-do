@@ -14,7 +14,7 @@ import {
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {MyText, DropDownAlert} from '../../../components';
+import {MyText, DropDownAlert, GapView} from '../../../components';
 import {addItem, increase} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
@@ -170,8 +170,8 @@ function Items({route, navigation}) {
               <MyText
                 numberOfLines={2}
                 label={getData?.name}
+                size="subHeading"
                 textStyle={{
-                  fontSize: height * 0.03,
                   width: (
                     editData?.length == 0 ? animateToNumber != 0 : editMode != 0
                   )
@@ -219,9 +219,6 @@ function Items({route, navigation}) {
                     width: height * 0.05,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    position: 'absolute',
-                    right: 0,
-                    top: 0,
                   }}
                   onPress={addQty}>
                   <Icon
@@ -232,13 +229,29 @@ function Items({route, navigation}) {
                 </TouchableOpacity>
               )}
             </View>
+            <GapView mode="vertical" length={20} />
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <MyText label={'Price'} size="title" />
 
-            <View style={{width: '100%', marginTop: height * 0.02}}>
-              <MyText label={'Amount'} textStyle={{fontSize: height * 0.025}} />
-              <MyText
-                label={getData?.price}
-                textStyle={{fontSize: height * 0.025}}
-              />
+              <View style={{flexDirection: 'row'}}>
+                <MyText label={'Rs.  '} size="title" />
+                <View
+                  style={{
+                    backgroundColor: '#ffffff',
+                    elevation: 1,
+                    borderWidth: 0.7,
+                    borderColor: '#c2c2c2',
+                    borderRadius: 5,
+                    paddingHorizontal: 10,
+                  }}>
+                  <MyText label={getData?.price} size="title" />
+                </View>
+              </View>
             </View>
           </View>
         </View>
@@ -253,6 +266,20 @@ function Items({route, navigation}) {
           disabled={count?.cart?.amount == 0 && press}
           style={styles.cartButtonStyle}
           onPress={_onSelect}>
+          <Icon
+            name="cart-outline"
+            size={height * 0.04}
+            color={colors.text_inverse}
+            style={{
+              position: 'absolute',
+              left: height * 0.01,
+            }}
+          />
+          <MyText
+            label={'Checkout Cart'}
+            title
+            textStyle={{color: colors.text_inverse}}
+          />
           {count?.cart?.amount != 0 && (
             <View style={styles.cartCountStyle}>
               <MyText
@@ -262,21 +289,6 @@ function Items({route, navigation}) {
               />
             </View>
           )}
-          <MyText
-            label={'Checkout Cart'}
-            title
-            textStyle={{color: colors.text_inverse}}
-          />
-          <Icon
-            name="cart-outline"
-            size={height * 0.03}
-            color="#fff"
-            style={{
-              position: 'absolute',
-              right: height * 0.01,
-              transform: [{scaleX: -1}],
-            }}
-          />
         </TouchableOpacity>
       </View>
     </>

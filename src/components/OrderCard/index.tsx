@@ -1,4 +1,3 @@
-import {type} from 'os';
 import React from 'react';
 import {
   Dimensions,
@@ -7,7 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
+import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
+import GapView from '../GapView';
 
 import MyText from '../Text';
 
@@ -49,7 +51,14 @@ export default function OrderCard({
           padding: 5,
           borderBottomWidth: 1,
         }}>
-        <MyText label={name} size={'heading'} textStyle={styles.cardDataText} />
+        <MyText
+          label={name}
+          textStyle={{
+            ...styles.cardDataText,
+            fontSize: moderateVerticalScale(20),
+            maxWidth: SCREEN_WIDTH * 0.7,
+          }}
+        />
         <TouchableOpacity
           onPress={paid == 'UNPAID' ? onCollect : onRevert}
           style={{
@@ -159,7 +168,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     paddingHorizontal: width * 0.02,
-    backgroundColor: '#fff',
+    backgroundColor: colors.text_inverse,
     elevation: 5,
     marginVertical: 5,
   },
@@ -173,7 +182,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataContainer2: {
-    width: width * 0.18,
     alignItems: 'center',
   },
   cardDataText: {
