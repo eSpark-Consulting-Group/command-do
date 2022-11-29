@@ -6385,11 +6385,6 @@ react-native-codegen@^0.69.2:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
-react-native-cron-job@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-cron-job/-/react-native-cron-job-1.0.2.tgz#144837e6662f29042fc299ae69fcc9e84d1cc9a7"
-  integrity sha512-BMHbOtsT4VtAQ0YXZbnK22wUGS8XhhADmO5tJOC1NzRaUuHM28eZe1Uw1t9kOBZV+TltPKF/rAaMrSicR+5Q6w==
-
 react-native-date-ranges@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-native-date-ranges/-/react-native-date-ranges-2.5.0.tgz#aab58a3351606ce7a8a35a12e7d1c4e00db4a75d"
