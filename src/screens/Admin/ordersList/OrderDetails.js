@@ -1,43 +1,40 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import {useLazyQuery} from '@apollo/client';
 
 import {GapView, MyCard, MyHeader, MyText} from '../../../components';
 import {colors} from '../../../theme';
-import { useLazyQuery } from '@apollo/client';
-import { ALL_ORDERS } from '../../../graphQL/query/orders.query';
-import { useEffect } from 'react';
+import {ALL_ORDERS} from '../../../graphQL/query/orders.query';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
 
 export default function OrderDetails() {
   const navigation = useNavigation();
   const route = useRoute();
-  const isFocused = useIsFocused();
   const {mode, data} = route?.params;
   const [GetAllOrders, {data: OrderData, refetch}] = useLazyQuery(ALL_ORDERS, {
     fetchPolicy: 'cache-and-network',
     notifyOnNetworkStatusChange: true,
     variables: {
-      "getOrderInput": data
-    }
-  })
+      getOrderInput: data,
+    },
+  });
 
   useEffect(() => {
     GetAllOrders({
       variables: {
-        "getOrderInput": data
-      }
-    })
-  }, [])
+        getOrderInput: data,
+      },
+    });
+  }, []);
 
   useUpdateEffect(() => {
-    refetch()
-  }, [data])
+    refetch();
+  }, [data]);
 
-  const OrderDetails = OrderData?.getAllOrders?.data[0]
-  console.log("isFocused isFocused", OrderDetails, data)
+  const OrderDetails = OrderData?.getAllOrders?.data[0];
+  console.log('isFocused isFocused', OrderDetails, data);
 
-  
   const renderDayOrder = () => {
     return (
       <>
@@ -50,12 +47,20 @@ export default function OrderDetails() {
           <View style={{paddingHorizontal: 10}}>
             <View style={styles.rowSpacer}>
               <MyText label="Details" />
-              <MyText label={`Rider/ ${OrderDetails?.Rider?.firstName ?? "order Not Picked yet"}`} textStyle={{color: 'grey'}} />
+              <MyText
+                label={`Rider/ ${
+                  OrderDetails?.Rider?.firstName ?? 'order Not Picked yet'
+                }`}
+                textStyle={{color: 'grey'}}
+              />
             </View>
             <GapView mode="vertical" length={8} />
             <View style={styles.rowSpacer}>
               <MyText label="Dated: 2 Nov, 14:00" textStyle={{color: 'grey'}} />
-              <MyText label={`Order #${OrderDetails?.id}`} textStyle={{color: 'grey'}} />
+              <MyText
+                label={`Order #${OrderDetails?.id}`}
+                textStyle={{color: 'grey'}}
+              />
             </View>
           </View>
           <View style={styles.listHeader}>
@@ -130,7 +135,11 @@ export default function OrderDetails() {
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
             <MyText
-              label={`Rs. ${OrderDetails?.remainingAmount > 0 ? OrderDetails?.remainingAmount : 0}`}
+              label={`Rs. ${
+                OrderDetails?.remainingAmount > 0
+                  ? OrderDetails?.remainingAmount
+                  : 0
+              }`}
               size={'subHeading'}
               textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
             />
@@ -241,11 +250,7 @@ export default function OrderDetails() {
     );
   };
 
-  return (
-    <View style={styles.container}>
-       {renderDayOrder()} 
-    </View>
-  );
+  return <View style={styles.container}>{renderDayOrder()}</View>;
 }
 
 const styles = StyleSheet.create({
