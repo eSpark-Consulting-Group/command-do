@@ -42,15 +42,30 @@ export default function CurrentOrders({navigation}) {
   const fetchOrders = async () => {
     const currDate = new Date().setUTCHours(0);
     console.log('Date', currDate);
-    const orders = await GetAllOrders({
+    const newOrders = await GetAllOrders({
       variables: {
         getOrderInput: {
           createdAt: currDate,
         },
       },
     });
-    dispatch(getOrders(orders.data.getAllOrders.data));
-    console.log('orders.data', orders.data.getAllOrders.data);
+    dispatch(
+      getOrders(
+        newOrders.data.getAllOrders.data?.map(value => {
+          var order = orders?.find(redOrder => redOrder?.id == value?.id);
+          if (order) {
+            return {
+              ...value,
+              status: order?.status,
+              paidAmount: order?.paidAmount,
+              riderId: order?.riderId,
+            };
+          } else {
+            return value;
+          }
+        }),
+      ),
+    );
   };
 
   const openOverlay = (val, id) => {
