@@ -51,7 +51,7 @@ export default function MoneyReturnCard({
             borderRadius: 5,
             backgroundColor: colors.primary,
             elevation: 5,
-            paddingVertical: 1,
+            padding: 5,
           }}>
           <MyText
             label={'Return'}
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataContainer2: {
-    width: width * 0.18,
     alignItems: 'center',
   },
   cardDataText: {
