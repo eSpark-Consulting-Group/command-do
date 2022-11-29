@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 
 import {SCREEN_HEIGHT} from '../../constants';
@@ -14,6 +14,8 @@ export default function ImageContainer({
   onImageChange = (image: object) => {},
   url = null,
 }) {
+  const [imageHolder, setImageHolder] = useState<any>(url);
+
   const [image, setImage] = useState<any>(url);
   const [load, setLoad] = useState<boolean>(false);
   const [showUrl, setShowUrl] = useState<boolean>(false);
@@ -25,6 +27,9 @@ export default function ImageContainer({
   const onUploadImage = async () => {
     try {
       const result: any = await imagePicker();
+      if (result === undefined) {
+        return;
+      }
       setImage(result);
       onImageChange(result);
       setLoad(true);
@@ -81,11 +86,10 @@ export default function ImageContainer({
                 alignItems: 'center',
               }}>
               <MyInput
-                value={image?.uri}
+                value={imageHolder.uri}
                 handleChangeText={text => {
                   const Image = {uri: text};
-                  setImage(Image);
-                  onImageChange(Image);
+                  setImageHolder(Image);
                 }}
               />
               <View
@@ -95,7 +99,11 @@ export default function ImageContainer({
                   height: moderateVerticalScale(40),
                 }}>
                 <TouchRipple
-                  onPress={() => setShowUrl(false)}
+                  onPress={() => {
+                    setImage(imageHolder);
+                    onImageChange(imageHolder);
+                    setShowUrl(false);
+                  }}
                   darkRipple
                   style={{
                     height: 'auto',
