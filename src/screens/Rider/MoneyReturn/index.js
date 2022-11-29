@@ -49,7 +49,7 @@ export default function MoneyReturn({navigation}) {
     });
     console.log('orders.data', orders?.data?.getAllOrders?.data);
     let order = orders?.data?.getAllOrders?.data?.filter(item => {
-      return item.returned == false;
+      return item.returned == false && item.status == 'PAID';
     });
     if (order?.length < 1) {
       Alert.alert('No Orders', 'No return orders left.!', [
