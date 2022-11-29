@@ -46,9 +46,12 @@ export default function CollectedOrders({navigation}) {
         status: item.status,
         paidAmount: Number(item.paidAmount),
       };
-      item?.riderId && (obj['riderId'] = item.riderId);
-      finalOrders.push(obj);
+      if (item?.riderId) {
+        obj['riderId'] = item.riderId;
+        finalOrders.push(obj);
+      }
     });
+    // console.log('Final Orders', finalOrders);
     Alert.alert('Confirmation', 'Are you sure you want to Finish Collection?', [
       {text: 'Yes', onPress: () => updateOrder(finalOrders)},
       {text: 'No', style: 'cancel'},
@@ -86,7 +89,8 @@ export default function CollectedOrders({navigation}) {
             : []
         }
         renderItem={({item}) =>
-          item.status == 'PAID' && (
+          item.status == 'PAID' &&
+          item.returned == false && (
             <OrderCard
               name={item.User.firstName + ' ' + item.User.lastName}
               amount={item.totalAmount}
