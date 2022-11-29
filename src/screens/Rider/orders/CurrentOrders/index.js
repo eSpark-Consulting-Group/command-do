@@ -10,7 +10,12 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {CollectionModal, MyText, OrderCard} from '../../../../components';
+import {
+  BackButtonHandler,
+  CollectionModal,
+  MyText,
+  OrderCard,
+} from '../../../../components';
 import {SCREEN_HEIGHT} from '../../../../constants';
 import {
   collectAmouunt,
@@ -68,6 +73,7 @@ export default function CurrentOrders({navigation}) {
 
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
+      <BackButtonHandler />
       <FlatList
         data={orders.some(val => val.status == 'UNPAID') ? orders : []}
         style={{width: '100%'}}
