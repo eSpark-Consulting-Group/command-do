@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 import {colors} from '../../../theme';
 
@@ -53,12 +54,12 @@ export const styles = StyleSheet.create({
   },
   backToHomeButton: {
     backgroundColor: colors.background,
-    height: height * 0.06,
-    borderRadius: height * 0.005,
-    padding: height * 0.015,
+    height: moderateVerticalScale(40),
+    borderRadius: moderateVerticalScale(5),
+    paddingHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: height * 0.003,
+    elevation: 5,
     position: 'absolute',
     bottom: height * 0.03,
   },

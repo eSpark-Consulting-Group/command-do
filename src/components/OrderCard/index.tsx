@@ -182,7 +182,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataContainer2: {
-    width: width * 0.18,
     alignItems: 'center',
   },
   cardDataText: {
