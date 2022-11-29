@@ -10,7 +10,11 @@ import {
   StatusBar,
   RefreshControl,
 } from 'react-native';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+  useIsFocused,
+} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
 import {useLazyQuery} from '@apollo/client';
 
@@ -32,6 +36,7 @@ import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function Items() {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [LoadCategories, {data: categoryData, loading: categoryLoader}] =
     useLazyQuery(GET_CATEGORIES_WITH_ID, {
@@ -124,7 +129,7 @@ export default function Items() {
 
   return (
     <View style={styles.container}>
-      <BackButtonHandler />
+      {isFocused && <BackButtonHandler />}
       <StatusBar backgroundColor={visible ? '#000000' : colors.primary} />
       <OverlayLoader show={categoryLoader || itemsLoading} />
 
