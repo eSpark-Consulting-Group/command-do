@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {colors} from '../../theme';
 
 export default function MyCard({
   children,
@@ -13,7 +14,7 @@ export default function MyCard({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     elevation: 4,
     borderRadius: 2,
   },

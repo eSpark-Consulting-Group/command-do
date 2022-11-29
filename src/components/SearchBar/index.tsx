@@ -13,6 +13,7 @@ import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 import GapView from '../GapView';
 import MyInput from '../MyInput';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function SearchBar({
   headerStyle,
@@ -45,9 +46,9 @@ export default function SearchBar({
       {leftIcon && (
         <Icon
           name={leftIcon!!}
-          size={28}
+          size={moderateVerticalScale(28)}
           color={colors.text_inverse}
-          style={{padding: 5}}
+          style={{padding: moderateVerticalScale(5)}}
           onPress={onPressLeft}
           containerStyle={{
             borderRadius: 100,
@@ -73,12 +74,12 @@ export default function SearchBar({
           }}>
           <Icon
             name={icon!!}
-            size={34}
+            size={moderateVerticalScale(28)}
             type="material-community"
             style={{justifyContent: 'center', alignItems: 'center'}}
             containerStyle={{
               borderRadius: 100,
-              padding: 5,
+              padding: moderateVerticalScale(5),
               alignSelf: 'center',
             }}
             pressableProps={{
@@ -92,8 +93,8 @@ export default function SearchBar({
 
       {Loader && (
         <ActivityIndicator
-          size={34}
-          style={{padding: 5}}
+          size={moderateVerticalScale(28)}
+          style={{padding: moderateVerticalScale(5)}}
           color={colors.text_inverse}
         />
       )}
@@ -108,5 +109,6 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 5,
     flexDirection: 'row',
+    alignItems: 'center',
   },
 });

@@ -13,6 +13,7 @@ export default function Orders() {
       screenOptions={{
         tabBarIndicatorStyle: {backgroundColor: colors.primary},
         tabBarLabelStyle: {fontFamily: 'Poppins-Bold'},
+        tabBarPressColor: colors.primary + '33',
       }}>
       <Tab.Screen name="Current Orders" component={CurrentOrders} />
       <Tab.Screen name="Collected Orders" component={CollectedOrders} />

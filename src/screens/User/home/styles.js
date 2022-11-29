@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 import {colors} from '../../../theme';
 
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   modalInner: {
-    height: height * 0.24,
+    // height: moderateVerticalScale(80),
     position: 'absolute',
     backgroundColor: colors.background,
     borderRadius: height * 0.005,
@@ -36,9 +37,12 @@ const styles = StyleSheet.create({
   },
   btnIcon: {
     paddingRight: height * 0.01,
+    alignSelf: 'center',
+    top: 1,
   },
   headerContainer: {
     flex: 0.5,
+    width: width,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -62,8 +66,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: height * 0.02,
     right: height * 0.015,
-    width: height * 0.08,
-    height: height * 0.08,
+    width: moderateVerticalScale(55),
+    height: moderateVerticalScale(55),
     borderRadius: height * 0.1,
     backgroundColor: colors?.primary,
     alignItems: 'center',
@@ -86,7 +90,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: width,
-    height: height * 0.08,
+    height: moderateVerticalScale(55),
     backgroundColor: colors?.primary,
     alignItems: 'center',
     justifyContent: 'center',

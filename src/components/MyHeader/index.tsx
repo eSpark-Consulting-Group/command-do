@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TextStyle, View, ViewStyle} from 'react-native';
 import {Icon} from '@rneui/themed';
 
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
+import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 import MyText from '../Text';
 import GapView from '../GapView';
@@ -42,7 +42,7 @@ export default function MyHeader({
         <Icon
           name={leftIcon!!}
           type={leftIconType}
-          size={28}
+          size={moderateVerticalScale(28)}
           color={colors.text_inverse}
           style={{
             alignItems: 'center',
@@ -75,7 +75,7 @@ export default function MyHeader({
         <View style={{flex: 1, flexDirection: 'row-reverse'}}>
           <Icon
             name={icon!!}
-            size={moderateVerticalScale(30)}
+            size={moderateVerticalScale(28)}
             type={rightIconType}
             style={{
               alignItems: 'center',

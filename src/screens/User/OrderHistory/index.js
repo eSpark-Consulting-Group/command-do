@@ -1,8 +1,7 @@
-import {useLazyQuery} from '@apollo/client';
-import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   RefreshControl,
   SectionList,
@@ -10,15 +9,20 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useLazyQuery, useMutation} from '@apollo/client';
 
 import {GapView, MyHeader, MyText, OrderHistoryCard} from '../../../components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {getOrderHistory} from '../../../features/userInfo/userInfoSlice';
 import {ALL_ORDERS} from '../../../graphQL/query/orders.query';
 import {colors} from '../../../theme';
+import {DELETE_ORDER} from '../../../graphQL/mutation/order.mutation';
+import {showMessage} from 'react-native-flash-message';
 
 export default function OrderHistory() {
-  const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
+  const [GetAllOrders, {loading, refetch, data}] = useLazyQuery(ALL_ORDERS);
+  const [DeleteOrder, {loading: delLoader, data: delData}] =
+    useMutation(DELETE_ORDER);
   const [ordersData, setOrdersData] = useState([]);
   const dispatch = useDispatch();
   const reduxData = useSelector(store => store);
@@ -27,26 +31,67 @@ export default function OrderHistory() {
 
   const fetchOrders = async () => {
     console.log('UserID', userId);
-    const orders = await GetAllOrders({
+    GetAllOrders({
       variables: {
         getOrderInput: {
           userId: userId,
         },
       },
     });
-    dispatch(getOrderHistory(orders.data.getAllOrders.data));
-    const temp = [...orderHistory];
-    console.log(
-      'kia ha sorted',
-      temp?.sort((a, b) => new Date(b.title) - new Date(a.title)),
-    );
-    setOrdersData(temp?.sort((a, b) => new Date(b.title) - new Date(a.title)));
   };
+
+  const delAlert = id => {
+    Alert.alert('Delete Order', 'Are you sure you want to Delete', [
+      {onPress: () => DelOrder(id), text: 'Yes'},
+      {text: 'No'},
+    ]);
+  };
+
+  const DelOrder = id => {
+    console.log('ID', id);
+    DeleteOrder({
+      variables: {
+        deleteOrderId: id,
+      },
+    }).then(res => {
+      if (res.data.deleteOrder.status) {
+        showMessage({
+          message: res.data.deleteOrder.message,
+          type: 'success',
+          icon: 'auto',
+        });
+        refetch();
+      } else {
+        showMessage({
+          message: res.data.deleteOrder.message,
+          type: 'danger',
+          icon: 'auto',
+        });
+      }
+    });
+  };
+
   useEffect(() => {
     fetchOrders()
       // make sure to catch any error
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    let order = [];
+    data?.getAllOrders?.data?.map(item => {
+      order.push({
+        title: new Date(item.createdAt).toString().slice(0, 15),
+        data: [item],
+      });
+    });
+    const temp = [...order];
+    console.log(
+      'kia ha sorted',
+      temp?.sort((a, b) => new Date(b.title) - new Date(a.title)),
+    );
+    setOrdersData(temp?.sort((a, b) => new Date(b.title) - new Date(a.title)));
+  }, [data?.getAllOrders?.data]);
 
   return (
     <View style={{alignItems: 'center'}}>
@@ -64,6 +109,7 @@ export default function OrderHistory() {
             paid={item.status}
             paidAmount={item.paidAmount}
             remainingAmount={item.remainingAmount}
+            onDelete={() => delAlert(item.id)}
           />
         )}
         SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
