@@ -74,8 +74,7 @@ export default function OrderHistoryCard({
                   ? '#D9534F'
                   : '#5CB85C',
               elevation: 5,
-              paddingHorizontal: 3,
-              paddingVertical: 5,
+              padding: 5,
             }}>
             <MyText
               label={
@@ -190,7 +189,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataContainer2: {
-    width: width * 0.18,
     alignItems: 'center',
   },
   cardDataText: {
