@@ -22,6 +22,8 @@ export default function ImageContainer({
 
   useEffect(() => {
     setImage(url);
+    console.log('url', url);
+    setImageHolder(url);
   }, [url]);
 
   const onUploadImage = async () => {
@@ -86,7 +88,7 @@ export default function ImageContainer({
                 alignItems: 'center',
               }}>
               <MyInput
-                value={imageHolder.uri}
+                value={imageHolder?.uri}
                 handleChangeText={text => {
                   const Image = {uri: text};
                   setImageHolder(Image);
@@ -101,7 +103,9 @@ export default function ImageContainer({
                 <TouchRipple
                   onPress={() => {
                     setImage(imageHolder);
-                    onImageChange(imageHolder);
+                    onImageChange(
+                      imageHolder == null ? {uri: ''} : imageHolder,
+                    );
                     setShowUrl(false);
                   }}
                   darkRipple

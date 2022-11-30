@@ -116,8 +116,7 @@ export default function OrdersList() {
             navigation.navigate('Order_Details', {
               mode: 'date',
               data: {
-                userId: undefined,
-                createdAt: new Date(item?.createdAt).setUTCHours(0),
+                date: new Date(item?.createdAt).setUTCHours(0),
               },
             })
           }>
