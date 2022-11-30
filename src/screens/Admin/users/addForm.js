@@ -21,6 +21,7 @@ import {
   DELETE_USER,
   CREATE_USER,
 } from '../../../graphQL/mutation/user.mutation';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function AddForm() {
   const navigation = useNavigation();
@@ -321,7 +322,7 @@ export default function AddForm() {
                 checked={check1}
                 checkedColor={colors.primary}
                 textStyle={{
-                  fontSize: 12,
+                  fontSize: moderateVerticalScale(12),
                   marginLeft: 0,
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
@@ -334,7 +335,7 @@ export default function AddForm() {
                 checked={check2}
                 checkedColor={colors.primary}
                 textStyle={{
-                  fontSize: 12,
+                  fontSize: moderateVerticalScale(12),
                   marginLeft: 0,
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
@@ -347,7 +348,7 @@ export default function AddForm() {
                 checked={check3}
                 checkedColor={colors.primary}
                 textStyle={{
-                  fontSize: 12,
+                  fontSize: moderateVerticalScale(12),
                   marginLeft: 0,
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
