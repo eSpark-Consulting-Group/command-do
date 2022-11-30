@@ -14,7 +14,7 @@ export default function ImageContainer({
   onImageChange = (image: object) => {},
   url = null,
 }) {
-  const [imageHolder, setImageHolder] = useState<any>(url);
+  const [imageHolder, setImageHolder] = useState<any>({uri: ''});
 
   const [image, setImage] = useState<any>(url);
   const [load, setLoad] = useState<boolean>(false);
@@ -22,6 +22,8 @@ export default function ImageContainer({
 
   useEffect(() => {
     setImage(url);
+    console.log('url', url);
+    setImageHolder(url);
   }, [url]);
 
   const onUploadImage = async () => {
@@ -86,7 +88,7 @@ export default function ImageContainer({
                 alignItems: 'center',
               }}>
               <MyInput
-                value={imageHolder.uri}
+                value={imageHolder?.uri}
                 handleChangeText={text => {
                   const Image = {uri: text};
                   setImageHolder(Image);
