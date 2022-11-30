@@ -14,7 +14,7 @@ export default function ImageContainer({
   onImageChange = (image: object) => {},
   url = null,
 }) {
-  const [imageHolder, setImageHolder] = useState<any>({uri: ''});
+  const [imageHolder, setImageHolder] = useState<any>(url);
 
   const [image, setImage] = useState<any>(url);
   const [load, setLoad] = useState<boolean>(false);
@@ -103,7 +103,9 @@ export default function ImageContainer({
                 <TouchRipple
                   onPress={() => {
                     setImage(imageHolder);
-                    onImageChange(imageHolder);
+                    onImageChange(
+                      imageHolder == null ? {uri: ''} : imageHolder,
+                    );
                     setShowUrl(false);
                   }}
                   darkRipple
