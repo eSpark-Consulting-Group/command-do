@@ -10,20 +10,27 @@ import {DropDownAlert, MyText} from '..';
 import {useDispatch, useSelector} from 'react-redux';
 import {addItem, increase} from '../../features/cart/cartSlice';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AD from 'react-native-vector-icons/AntDesign';
 import {styles} from './styles';
 import {colors} from '../../theme';
+import {moderateVerticalScale} from 'react-native-size-matters';
+import {Text} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 export const AddToCartBtn = ({item}) => {
   const dispatch = useDispatch();
   const qtyWarn = React.useRef(null);
 
-  const [press, setPress] = useState(false);
-
   const addQty = (item: any) => {
     if (item?.quantity > 998) {
       // @ts-ignore
-      qtyWarn.current();
+      showMessage({
+        message: 'Warning',
+        description: 'Woah! you have reached the limit!!!',
+        type: 'info',
+        icon: 'auto',
+      });
     } else {
       LayoutAnimation.configureNext({
         duration: 300,
@@ -64,33 +71,34 @@ export const AddToCartBtn = ({item}) => {
   const onChangeNumber = (value, item) => {
     if (Number(value) > 999) {
       // @ts-ignore
-      qtyWarn.current();
+      showMessage({
+        message: 'Warning',
+        description: 'Woah! you have reached the limit!!!',
+        type: 'info',
+        icon: 'auto',
+      });
     } else {
       addToCart(Number(value), item);
     }
   };
 
-  const checkSetPress = () => {
-    setPress(false);
-  };
-
   return (
     <>
-      <DropDownAlert
+      {/* <DropDownAlert
         childFunc={qtyWarn}
         setPress={checkSetPress}
         message={'Woah! you have reached the limit!!!'}
         type="info"
         title="Warning"
-      />
+      /> */}
       {item?.quantity ? (
         <View style={styles.numericBtnContainer}>
           <TouchableOpacity
             style={styles.removeNumericButton}
             onPress={() => removeQty(item)}>
-            <Icon
-              name="remove"
-              size={height * 0.03}
+            <AD
+              name="minus"
+              size={moderateVerticalScale(18)}
               color={colors.text_inverse}
             />
           </TouchableOpacity>
@@ -106,25 +114,30 @@ export const AddToCartBtn = ({item}) => {
           <TouchableOpacity
             style={styles.addNumericButton}
             onPress={() => addQty(item)}>
-            <Icon name="add" size={height * 0.03} color={colors.text_inverse} />
+            <AD
+              name="plus"
+              size={moderateVerticalScale(18)}
+              color={colors.text_inverse}
+            />
           </TouchableOpacity>
         </View>
       ) : (
         <TouchableOpacity
           style={{
-            borderRadius: height * 1,
+            borderRadius: moderateVerticalScale(20),
             backgroundColor: colors.primary,
             elevation: 3,
-            height: height * 0.05,
-            width: height * 0.05,
+            height: moderateVerticalScale(35),
+            width: moderateVerticalScale(35),
             justifyContent: 'center',
             alignItems: 'center',
-            position: 'absolute',
-            right: 0,
-            top: 0,
           }}
           onPress={() => addQty(item)}>
-          <Icon name="add" size={height * 0.03} color={colors.text_inverse} />
+          <AD
+            name="plus"
+            size={moderateVerticalScale(18)}
+            color={colors.text_inverse}
+          />
         </TouchableOpacity>
       )}
     </>

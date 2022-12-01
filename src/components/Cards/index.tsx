@@ -7,10 +7,12 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 
 import {MyText} from '..';
 import {NotFound} from '../../assets/images';
+import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
 
@@ -42,8 +44,8 @@ const Cards = props => {
           <View
             style={{
               opacity: 1,
-              height: height * 0.25,
-              width: width * 0.8,
+              height: moderateVerticalScale(170),
+              width: moderateVerticalScale(330),
               borderRadius: height * 0.02,
               elevation: width * 0.003,
             }}>
@@ -52,8 +54,8 @@ const Cards = props => {
               style={{
                 opacity: 1,
                 borderRadius: height * 0.02,
-                height: height * 0.25,
-                width: width * 0.8,
+                height: moderateVerticalScale(170),
+                width: moderateVerticalScale(330),
                 backgroundColor: colors.background,
               }}
             />
@@ -88,17 +90,14 @@ const Cards = props => {
           <View
             style={{
               flexDirection: 'row',
-              alignItems: 'flex-start',
+              alignItems: 'center',
               justifyContent: 'space-between',
             }}>
             <View
               style={{
                 alignItems: 'flex-start',
               }}>
-              <MyText
-                label={dataItem?.name}
-                textStyle={{marginTop: height * 0.02, opacity: 1}}
-              />
+              <MyText label={dataItem?.name} />
               <View
                 style={{
                   borderColor: '#00000030',
@@ -113,7 +112,7 @@ const Cards = props => {
               </View>
             </View>
 
-            <View style={{top: 20, opacity: 1}}>
+            <View style={{opacity: 1}}>
               <AddToCartBtn
                 item={{
                   ...dataItem,
@@ -136,9 +135,9 @@ const Cards = props => {
             <View
               key={index}
               style={{
-                height: height * 0.46,
+                height: moderateVerticalScale(300),
                 marginLeft: 15,
-                marginBottom: data.length == index + 1 ? height * 0.04 : 0,
+                marginBottom: 10,
               }}>
               <MyText
                 label={item?.name}
