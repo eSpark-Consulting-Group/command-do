@@ -1,4 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
 
 import {colors} from '../../../theme';
 import {Fonts} from '../../../utils/fonts';
@@ -42,13 +43,13 @@ export const styles = StyleSheet.create({
     borderRadius: height * 1,
     backgroundColor: colors.primary,
     elevation: height * 0.003,
-    height: height * 0.05,
-    width: height * 0.05,
+    height: moderateVerticalScale(35),
+    width: moderateVerticalScale(35),
     justifyContent: 'center',
     alignItems: 'center',
   },
   quantityInput: {
-    height: height * 0.07,
+    height: moderateVerticalScale(50),
     maxWidth: width * 0.2,
     fontFamily: Fonts.Roboto_Medium,
     color: colors.text_normal,
@@ -58,13 +59,12 @@ export const styles = StyleSheet.create({
     borderRadius: height * 1,
     backgroundColor: colors.primary,
     elevation: 3,
-    height: height * 0.05,
-    width: height * 0.05,
+    height: moderateVerticalScale(35),
+    width: moderateVerticalScale(35),
     justifyContent: 'center',
     alignItems: 'center',
   },
   itemDetailContainer: {
-    height: height * 0.25,
     backgroundColor: colors.background,
     alignItems: 'center',
     position: 'relative',
