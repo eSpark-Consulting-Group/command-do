@@ -7,65 +7,41 @@ import {
   ScrollView,
   Image,
   StyleSheet,
-  Animated,
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import * as Progress from 'react-native-progress';
+import {useDispatch, useSelector} from 'react-redux';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import NumericInput from 'react-native-numeric-input';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import {useMutation} from '@apollo/client';
 
-import {Fonts} from '../../../utils/fonts';
 import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
 import {Delivery} from '../../../assets/images';
-import {MyText, DropDownAlert} from '../../../components';
+import {MyText} from '../../../components';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import {moderateVerticalScale} from 'react-native-size-matters';
 import {isValidTimeToOrder} from '../../../utils/helperFunctions';
 import {showMessage} from 'react-native-flash-message';
 import {KeyboardAvoidingView} from 'react-native';
 import {SCREEN_WIDTH} from '../../../constants';
+import {useLayoutAnimation} from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
 const {width, height} = Dimensions.get('window');
 
 function Cart({route, navigation}) {
-  const qtyWarn = React.useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const timer = useRef();
   const [isEditQty, setIsEditQty] = useState(false);
   const [showAlert, isShowAlert] = useState(false);
   const [getData, setGetData] = useState({});
-  const [progress, setProgress] = useState(0.3);
   const [isIndexSame, setIsIndexSame] = useState(0);
   const [total, setTotal] = useState(0);
-  const [animatedValue, setAnimatedValue] = useState(
-    new Animated.Value(height * 0.0012),
-  );
-  const [progressText, setProgresText] = useState('Menu');
+
   const dispatch = useDispatch();
   const count = useSelector(store => store);
-  const [press, setPress] = useState(false);
   const userData = useSelector(store => store?.userInfo?.userData);
   const [CreateOrder, {loading, error}] = useMutation(PLACE_ORDER);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setProgress(0.7);
-      setTimeout(() => {
-        setProgresText('Cart');
-        Animated.spring(animatedValue, {
-          toValue: moderateVerticalScale(1.5),
-          friction: 1,
-          tension: 100,
-          useNativeDriver: true,
-        }).start();
-      }, 200);
-    }, 300);
-  }, []);
 
   useEffect(() => {
     var makeTotal = 0;
@@ -89,28 +65,37 @@ function Cart({route, navigation}) {
     }
   }, [count?.cart?.cartItems]);
 
+  useEffect(() => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+    timer.current = setTimeout(() => {
+      setIsEditQty(false);
+    }, 3000);
+  }, [isEditQty, getData]);
+
   const onHandleEditQty = index => {
-    setIsEditQty(false);
-    clearTimeout(timer);
     setIsEditQty(true);
     setIsIndexSame(index);
-    setIsEditQty(true);
-    const timer = setTimeout(() => {
-      setIsEditQty(false);
-      clearTimeout(timer);
-    }, 3000);
   };
 
+  useEffect(() => {
+    useLayoutAnimation();
+  }, [isEditQty, isIndexSame]);
+
   const addToCart = (item, value) => {
-    if (value != '') {
-      if (Number(value) > 999) {
-        qtyWarn.current();
-        setIsEditQty(false);
-      } else {
-        var changeData = {...item};
-        changeData.quantity = value;
-        setGetData(changeData);
-      }
+    if (Number(value) > 99) {
+      showMessage({
+        message: 'Warning',
+        description: 'Woah! you have reached the limit!!!',
+        type: 'info',
+        icon: 'auto',
+      });
+      setIsEditQty(false);
+    } else {
+      var changeData = {...item};
+      changeData.quantity = value;
+      setGetData(changeData);
     }
   };
 
@@ -160,13 +145,6 @@ function Cart({route, navigation}) {
       <StatusBar backgroundColor={colors.primary} />
       <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
         <View style={{flex: 1}}>
-          <DropDownAlert
-            childFunc={qtyWarn}
-            setPress={() => setPress(false)}
-            message={'Woah! you have reached the limit!!!'}
-            type="info"
-            title="Warning"
-          />
           <View style={styles.headerContainer}>
             <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
               <Icon
@@ -207,102 +185,128 @@ function Cart({route, navigation}) {
             <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
               {count?.cart?.cartItems &&
                 count?.cart?.cartItems.map((item, index) => (
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={styles.cartItemInner}
-                    key={index}
-                    onPress={() =>
-                      navigation.navigate('Item', {
-                        foodType: item.foodType,
-                        item: item,
-                      })
-                    }>
-                    {isEditQty && isIndexSame == index && (
-                      <NumericInput
-                        value={Number(item.quantity)}
-                        onChange={value => addToCart(item, value)}
-                        maxValue={999}
-                        extraTextInputProps={{
-                          onSubmitEditing: () => setIsEditQty(false),
-                        }}
-                        totalWidth={height * 0.17}
-                        totalHeight={height * 0.09}
-                        iconSize={height * 0.01}
-                        valueType="integer"
-                        rounded
-                        separatorWidth={0}
-                        textColor={colors.primary}
-                        iconStyle={{color: colors.text_normal}}
-                        inputStyle={{
-                          fontSize: height * 0.03,
-                          fontFamily: Fonts.Roboto_Regular,
-                        }}
-                        borderColor="#00000050"
-                        containerStyle={{
-                          position: 'absolute',
-                          zIndex: 1,
-                          backgroundColor: colors.background,
-                          elevation: height * 0.005,
-                          borderWidth: height * 0.001,
-                          borderRadius: height * 0.01,
-                        }}
-                        rightButtonBackgroundColor="#fff"
-                        leftButtonBackgroundColor="#fff"
-                      />
-                    )}
-                    <TouchableOpacity
-                      style={styles.qtyButtonContainer}
-                      onPress={() => onHandleEditQty(index)}>
-                      <MyText label={item.quantity} />
-                      <Icon
-                        name="caret-down"
-                        size={height * 0.02}
-                        color="#000"
+                  <View style={styles.cartItemInner} key={index}>
+                    <View>
+                      {isEditQty && isIndexSame == index && (
+                        <TouchableOpacity
+                          style={{
+                            width: moderateVerticalScale(40),
+                            justifyContent: 'center',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderWidth: height * 0.001,
+                            borderColor: '#00000050',
+                            borderRadius: 5,
+                            backgroundColor: colors.background,
+                            padding: moderateVerticalScale(3),
+                            elevation: 5,
+                          }}
+                          onPress={() => addToCart(item, item.quantity + 1)}>
+                          <Icon
+                            name="caret-up"
+                            size={moderateVerticalScale(15)}
+                            color={colors.primary}
+                          />
+                        </TouchableOpacity>
+                      )}
+                      <TouchableOpacity
+                        disabled={isEditQty && isIndexSame == index}
                         style={{
-                          paddingRight: height * 0.005,
-                          left: height * 0.005,
+                          width: moderateVerticalScale(40),
+                          justifyContent: 'center',
+                          marginVertical: moderateVerticalScale(5),
+                          borderColor:
+                            isEditQty && isIndexSame == index
+                              ? '#00000050'
+                              : '#000',
+                          ...styles.qtyButtonContainer,
+                        }}
+                        onPress={() => onHandleEditQty(index)}>
+                        <MyText label={item.quantity} />
+                        {!(isEditQty && isIndexSame == index) && (
+                          <Icon
+                            name="caret-down"
+                            size={moderateVerticalScale(15)}
+                            color="#000"
+                          />
+                        )}
+                      </TouchableOpacity>
+                      {isEditQty && isIndexSame == index && (
+                        <TouchableOpacity
+                          style={{
+                            width: moderateVerticalScale(40),
+                            justifyContent: 'center',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderWidth: height * 0.001,
+                            borderColor: '#00000050',
+                            borderRadius: 5,
+                            backgroundColor: colors.background,
+                            padding: moderateVerticalScale(3),
+                            elevation: 5,
+                          }}
+                          onPress={() => addToCart(item, item.quantity - 1)}>
+                          <Icon
+                            name="caret-down"
+                            size={moderateVerticalScale(15)}
+                            color={colors.primary}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() =>
+                        navigation.navigate('Item', {
+                          foodType: item.foodType,
+                          item: item,
+                        })
+                      }
+                      style={{
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View
+                          style={{
+                            elevation: height * 0.003,
+                            height: height * 0.08,
+                            width: height * 0.1,
+                            backgroundColor: colors.background,
+                            marginHorizontal: height * 0.015,
+                            borderRadius: height * 0.015,
+                          }}>
+                          <Image
+                            source={{uri: item.image}}
+                            style={{
+                              height: height * 0.08,
+                              width: height * 0.1,
+                              borderRadius: height * 0.015,
+                              resizeMode: 'contain',
+                            }}
+                          />
+                        </View>
+                        <MyText
+                          label={item.name}
+                          numberOfLines={0}
+                          textStyle={{
+                            color: colors.primary,
+                            width: SCREEN_WIDTH * 0.42,
+                          }}
+                        />
+                      </View>
+                      <MyText
+                        label={`Rs. ${item.price * item.quantity}`}
+                        size={'title'}
+                        textStyle={{
+                          textAlign: 'right',
+                          width: height * 0.1,
+                          flexWrap: 'wrap',
                         }}
                       />
                     </TouchableOpacity>
-                    <View
-                      style={{
-                        elevation: height * 0.003,
-                        height: height * 0.08,
-                        width: height * 0.1,
-                        backgroundColor: colors.background,
-                        marginHorizontal: height * 0.015,
-                        borderRadius: height * 0.015,
-                      }}>
-                      <Image
-                        source={{uri: item.image}}
-                        style={{
-                          height: height * 0.08,
-                          width: height * 0.1,
-                          borderRadius: height * 0.015,
-                          resizeMode: 'contain',
-                        }}
-                      />
-                    </View>
-                    <MyText
-                      label={item.name}
-                      numberOfLines={0}
-                      textStyle={{
-                        color: colors.primary,
-                        width: SCREEN_WIDTH * 0.42,
-                      }}
-                    />
-                    <MyText
-                      label={`Rs. ${item.price * item.quantity}`}
-                      size={'title'}
-                      textStyle={{
-                        textAlign: 'right',
-                        position: 'absolute',
-                        right: '5%',
-                        top: '40%',
-                        width: height * 0.1,
-                        flexWrap: 'wrap',
-                      }}
-                    />
                     <TouchableOpacity
                       style={styles.deleteItem}
                       onPress={() => removefromCart(item, 0)}>
@@ -312,7 +316,7 @@ function Cart({route, navigation}) {
                         color="#fff"
                       />
                     </TouchableOpacity>
-                  </TouchableOpacity>
+                  </View>
                 ))}
             </ScrollView>
           </KeyboardAvoidingView>
@@ -347,14 +351,14 @@ function Cart({route, navigation}) {
                   marginVertical: height * 0.009,
                 }}
                 onPress={() => {
-                  // if (!isValidTimeToOrder()) {
-                  //   showMessage({
-                  //     message: 'Alas! Time is over for placing order😬',
-                  //     icon: 'auto',
-                  //     type: 'info',
-                  //   });
-                  //   return;
-                  // }
+                  if (!isValidTimeToOrder()) {
+                    showMessage({
+                      message: 'Alas! Time is over for placing order😬',
+                      icon: 'auto',
+                      type: 'info',
+                    });
+                    return;
+                  }
                   isShowAlert(true);
                 }}>
                 {!loading ? (
@@ -380,23 +384,26 @@ function Cart({route, navigation}) {
                 closeOnHardwareBackPress={false}
                 showCancelButton={true}
                 showConfirmButton={true}
+                contentContainerStyle={{
+                  borderRadius: moderateVerticalScale(10),
+                }}
                 titleStyle={{
-                  fontSize: height * 0.03,
-                  fontFamily: Fonts.Roboto_Bold,
+                  fontSize: moderateVerticalScale(20),
+                  fontFamily: 'Poppins-Bold',
                 }}
                 messageStyle={{
-                  fontSize: height * 0.018,
-                  fontFamily: Fonts.Roboto_Medium,
+                  fontSize: moderateVerticalScale(12),
+                  fontFamily: 'Poppins-Regular',
                   textAlign: 'center',
                 }}
                 cancelButtonTextStyle={{
-                  fontSize: height * 0.018,
-                  fontFamily: Fonts.Roboto_Regular,
+                  fontSize: moderateVerticalScale(13),
+                  fontFamily: 'Poppins-Regular',
                   textAlign: 'center',
                 }}
                 confirmButtonTextStyle={{
-                  fontSize: height * 0.018,
-                  fontFamily: Fonts.Roboto_Regular,
+                  fontSize: moderateVerticalScale(13),
+                  fontFamily: 'Poppins-Regular',
                   textAlign: 'center',
                 }}
                 cancelText="No, Cancel"
@@ -454,7 +461,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: height * 0.02,
   },
   cartItemInner: {
-    height: height * 0.12,
+    // height: moderateVerticalScale(110),
+    paddingVertical: moderateVerticalScale(5),
     alignItems: 'center',
     flexDirection: 'row',
     borderBottomWidth: 1,
@@ -467,23 +475,22 @@ const styles = StyleSheet.create({
   },
   qtyButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: height * 0.001,
     borderRadius: height * 0.005,
-    padding: height * 0.007,
+    padding: moderateVerticalScale(5),
   },
   deleteItem: {
-    height: moderateVerticalScale(25),
-    elevation: height * 0.003,
-    width: moderateVerticalScale(25),
+    height: moderateVerticalScale(22),
+    elevation: 5,
+    width: moderateVerticalScale(22),
     backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: 0,
-    top: height * 0.01,
+    right: moderateVerticalScale(2),
+    top: moderateVerticalScale(2),
   },
   // Footer Container
   footerContainer: {
