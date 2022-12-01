@@ -51,6 +51,7 @@ export default function SearchItem({route}) {
       <View style={styles.listContainer}>
         <FlatList
           data={lunchItems}
+          keyboardShouldPersistTaps={'handled'}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => (

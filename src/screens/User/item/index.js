@@ -13,11 +13,17 @@ import {
 } from 'react-native';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AD from 'react-native-vector-icons/AntDesign';
 
 import {MyText, DropDownAlert, GapView} from '../../../components';
 import {addItem, increase} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
+import {moderateVerticalScale} from 'react-native-size-matters';
+import {Keyboard} from 'react-native';
+import {KeyboardAvoidingView} from 'react-native';
+import {SCREEN_HEIGHT} from '../../../constants';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -29,8 +35,6 @@ function Items({route, navigation}) {
   const [getData, setGetData] = useState(getRouteData?.item);
   const [editData, setEditData] = useState([]);
   const [editMode, setEditMode] = useState(0);
-  const [press, setPress] = useState(false);
-  const [message, setMessage] = useState('');
   const [animateToNumber, setAnimateToNumber] = useState(0);
   const dispatch = useDispatch();
 
@@ -49,7 +53,11 @@ function Items({route, navigation}) {
 
   const addQty = () => {
     if (editMode > 998) {
-      qtyWarn.current();
+      showMessage({
+        message: 'Woah! you have reached the limit!!!',
+        type: 'info',
+        title: 'Warning',
+      });
     } else {
       LayoutAnimation.configureNext({
         duration: 300,
@@ -98,7 +106,12 @@ function Items({route, navigation}) {
 
   const onChangeNumber = value => {
     if (Number(value) > 999) {
-      qtyWarn.current();
+      showMessage({
+        message: 'Woah! you have reached the limit!!!',
+        type: 'info',
+        title: 'Warning',
+      });
+      onChangeNumber(1);
     } else {
       if (editData?.length != 0) {
         setEditMode(Number(value));
@@ -116,39 +129,24 @@ function Items({route, navigation}) {
     }
   }, [getData]);
 
-  const checkSetPress = () => {
-    setMessage('');
-    setPress(false);
-  };
-
   const _onSelect = () => {
     if (count?.cart?.amount == 0) {
-      setMessage('Cart');
-      childFunc.current();
-      setPress(true);
+      showMessage({
+        message: 'Warning',
+        description: `Your cart is empty\nPlease add some items in your cart.`,
+        type: 'info',
+        icon: 'auto',
+      });
     } else {
       navigation.goBack();
       navigation.navigate('Cart');
     }
   };
 
+  console.log(Keyboard);
   return (
     <>
       <View style={{flex: 1}}>
-        <DropDownAlert
-          childFunc={childFunc}
-          setPress={checkSetPress}
-          message={`Your cart is empty\nPlease add some items in your cart.`}
-          type="info"
-          title="Warning"
-        />
-        <DropDownAlert
-          childFunc={qtyWarn}
-          setPress={checkSetPress}
-          message={'Woah! you have reached the limit!!!'}
-          type="info"
-          title="Warning"
-        />
         <View style={styles.mainContainer}>
           <View style={styles.itemImageContainer}>
             <ImageBackground
@@ -194,17 +192,19 @@ function Items({route, navigation}) {
                   </TouchableOpacity>
                   <TextInput
                     style={styles.quantityInput}
-                    onChangeText={onChangeNumber}
-                    value={editMode?.toString()}
+                    onSubmitEditing={val =>
+                      onChangeNumber(val?.nativeEvent?.text)
+                    }
+                    defaultValue={editMode?.toString()}
                     textAlign="center"
                     keyboardType="numeric"
                   />
                   <TouchableOpacity
                     style={styles.addNumericButton}
                     onPress={addQty}>
-                    <Icon
-                      name="add"
-                      size={height * 0.03}
+                    <AD
+                      name="plus"
+                      size={moderateVerticalScale(18)}
                       color={colors.text_inverse}
                     />
                   </TouchableOpacity>
@@ -221,9 +221,9 @@ function Items({route, navigation}) {
                     alignItems: 'center',
                   }}
                   onPress={addQty}>
-                  <Icon
-                    name="add"
-                    size={height * 0.03}
+                  <AD
+                    name="plus"
+                    size={moderateVerticalScale(18)}
                     color={colors.text_inverse}
                   />
                 </TouchableOpacity>
@@ -262,10 +262,7 @@ function Items({route, navigation}) {
           position: 'absolute',
           bottom: 0,
         }}>
-        <TouchableOpacity
-          disabled={count?.cart?.amount == 0 && press}
-          style={styles.cartButtonStyle}
-          onPress={_onSelect}>
+        <TouchableOpacity style={styles.cartButtonStyle} onPress={_onSelect}>
           <Icon
             name="cart-outline"
             size={height * 0.04}
