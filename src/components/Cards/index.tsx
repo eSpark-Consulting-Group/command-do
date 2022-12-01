@@ -33,7 +33,7 @@ const Cards = props => {
           style={{
             opacity: 1,
             paddingHorizontal: 10,
-            paddingTop: height * 0.01,
+            paddingTop: moderateVerticalScale(10),
           }}
           onPress={() =>
             navigation.navigate('Item', {
@@ -135,9 +135,9 @@ const Cards = props => {
             <View
               key={index}
               style={{
-                height: moderateVerticalScale(300),
                 marginLeft: 15,
-                marginBottom: 10,
+                marginVertical: 10,
+                justifyContent: 'center',
               }}>
               <MyText
                 label={item?.name}
@@ -148,7 +148,6 @@ const Cards = props => {
               />
               <View
                 style={{
-                  flex: 1,
                   flexDirection: 'row',
                 }}>
                 <FlatList
