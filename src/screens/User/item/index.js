@@ -24,6 +24,7 @@ import {Keyboard} from 'react-native';
 import {KeyboardAvoidingView} from 'react-native';
 import {SCREEN_HEIGHT} from '../../../constants';
 import {showMessage} from 'react-native-flash-message';
+import { useKeyboard } from '../../../utils/hooks/useUpdateEffect/useKeyBoard';
 
 const {width, height} = Dimensions.get('window');
 
@@ -37,11 +38,11 @@ function Items({route, navigation}) {
   const [editMode, setEditMode] = useState(0);
   const [animateToNumber, setAnimateToNumber] = useState(0);
   const dispatch = useDispatch();
-
+  const keyBoardHeight = useKeyboard()
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-
+  console.log("keyBoardHeight", keyBoardHeight);
   useEffect(() => {
     var data = [];
 
@@ -148,7 +149,7 @@ function Items({route, navigation}) {
     <>
       <View style={{flex: 1}}>
         <View style={styles.mainContainer}>
-          <View style={styles.itemImageContainer}>
+          <View style={[styles.itemImageContainer, {height: (height * 0.72) - keyBoardHeight,}]}>
             <ImageBackground
               source={{uri: getData?.image}}
               style={styles.imageBackground}>
