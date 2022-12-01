@@ -15,14 +15,12 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 
-import {MyText, DropDownAlert, GapView} from '../../../components';
+import {MyText, GapView} from '../../../components';
 import {addItem, increase} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
 import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
 import {Keyboard} from 'react-native';
-import {KeyboardAvoidingView} from 'react-native';
-import {SCREEN_HEIGHT} from '../../../constants';
 import {showMessage} from 'react-native-flash-message';
 import {useKeyboard} from '../../../utils/hooks/useUpdateEffect/useKeyBoard';
 
@@ -53,7 +51,7 @@ function Items({route, navigation}) {
   }, [count]);
 
   const addQty = () => {
-    if (editMode > 998) {
+    if (editMode > 98) {
       showMessage({
         message: 'Woah! you have reached the limit!!!',
         type: 'info',
@@ -106,7 +104,7 @@ function Items({route, navigation}) {
   };
 
   const onChangeNumber = value => {
-    if (Number(value) > 999) {
+    if (Number(value) > 99) {
       showMessage({
         message: 'Woah! you have reached the limit!!!',
         type: 'info',
@@ -203,6 +201,7 @@ function Items({route, navigation}) {
                     defaultValue={editMode?.toString()}
                     textAlign="center"
                     keyboardType="numeric"
+                    editable={false}
                   />
                   <TouchableOpacity
                     style={styles.addNumericButton}

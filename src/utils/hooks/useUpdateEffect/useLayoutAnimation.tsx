@@ -1,9 +1,9 @@
 import React from 'react';
-import {LayoutAnimation} from 'react-native';
+import {LayoutAnimation, LayoutAnimationConfig} from 'react-native';
 
-export const useLayoutAnimation = () => {
+export const useLayoutAnimation = (duration?) => {
   LayoutAnimation.configureNext({
-    duration: 100,
+    duration: duration ? duration : 300,
     create: {
       type: LayoutAnimation.Types.easeInEaseOut,
       property: LayoutAnimation.Properties.opacity,

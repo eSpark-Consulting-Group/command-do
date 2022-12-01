@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   quantityInput: {
-    height: moderateVerticalScale(50),
+    // height: moderateVerticalScale(35),
     maxWidth: width * 0.2,
     fontFamily: Fonts.Roboto_Medium,
     color: colors.text_normal,

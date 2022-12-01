@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {showMessage} from 'react-native-flash-message';
 
 import {
@@ -254,8 +255,8 @@ function Home({route, navigation}) {
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => goToNavigation('ChangePassword')}>
-              <Icon
-                name="settings-sharp"
+              <MCI
+                name="lastpass"
                 size={height * 0.025}
                 color={colors.primary}
                 style={styles.btnIcon}
