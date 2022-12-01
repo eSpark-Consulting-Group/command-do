@@ -16,6 +16,7 @@ import * as Progress from 'react-native-progress';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import NumericInput from 'react-native-numeric-input';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AD from 'react-native-vector-icons/AntDesign';
 import {useMutation} from '@apollo/client';
 
 import {Fonts} from '../../../utils/fonts';
@@ -27,6 +28,8 @@ import {colors} from '../../../theme';
 import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 import {isValidTimeToOrder} from '../../../utils/helperFunctions';
 import {showMessage} from 'react-native-flash-message';
+import {KeyboardAvoidingView} from 'react-native';
+import {SCREEN_WIDTH} from '../../../constants';
 
 const {width, height} = Dimensions.get('window');
 
@@ -168,28 +171,6 @@ function Cart({route, navigation}) {
                 textStyle={{color: '#00000060'}}
               />
             </View>
-            <View style={styles.headerProgressContiner}>
-              <Animated.View
-                useNativeDriver={true}
-                style={{
-                  position: 'absolute',
-                  transform: [{scale: animatedValue}],
-                }}>
-                <MyText
-                  label={progressText}
-                  size={'subTitle'}
-                  textStyle={{color: '#00000080'}}
-                />
-              </Animated.View>
-              <Progress.Circle
-                size={width * 0.18}
-                progress={progress}
-                thickness={height * 0.005}
-                color={colors.primary}
-                borderWidth={0}
-                unfilledColor="#00000020"
-              />
-            </View>
           </View>
           <View style={styles.deliveryOptionContainer}>
             <Image
@@ -208,7 +189,9 @@ function Cart({route, navigation}) {
               />
             </View>
           </View>
-          <View style={styles.cartItemContainer}>
+          <KeyboardAvoidingView
+            behavior="padding"
+            style={styles.cartItemContainer}>
             <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
               {count?.cart?.cartItems &&
                 count?.cart?.cartItems.map((item, index) => (
@@ -290,8 +273,11 @@ function Cart({route, navigation}) {
                     </View>
                     <MyText
                       label={item.name}
-                      size={'title'}
-                      textStyle={{color: colors.primary, width: height * 0.13}}
+                      numberOfLines={0}
+                      textStyle={{
+                        color: colors.primary,
+                        width: SCREEN_WIDTH * 0.42,
+                      }}
                     />
                     <MyText
                       label={`Rs. ${item.price * item.quantity}`}
@@ -308,20 +294,20 @@ function Cart({route, navigation}) {
                     <TouchableOpacity
                       style={styles.deleteItem}
                       onPress={() => removefromCart(item, 0)}>
-                      <Icon
-                        name="md-trash-outline"
-                        size={height * 0.02}
+                      <AD
+                        name="delete"
+                        size={moderateVerticalScale(15)}
                         color="#fff"
                       />
                     </TouchableOpacity>
                   </TouchableOpacity>
                 ))}
             </ScrollView>
-          </View>
+          </KeyboardAvoidingView>
           <View style={styles.addMoreItemContainer}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <MyText
-                label={'Add more Items 😋'}
+                label={'Add more Items'}
                 title
                 textStyle={{
                   color: colors.primary,
@@ -476,9 +462,9 @@ const styles = StyleSheet.create({
     padding: height * 0.007,
   },
   deleteItem: {
-    height: height * 0.03,
+    height: moderateVerticalScale(25),
     elevation: height * 0.003,
-    width: height * 0.03,
+    width: moderateVerticalScale(25),
     backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
