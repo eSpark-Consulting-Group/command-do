@@ -124,10 +124,10 @@ export default function ChangePassword({navigation}) {
 const styles = StyleSheet.create({
   inputStyle: {
     width: SCREEN_WIDTH * 0.8,
-    height: SCREEN_HEIGHT * 0.07,
-    borderRadius: SCREEN_HEIGHT * 0.005,
-    borderWidth: SCREEN_HEIGHT * 0.001,
-    marginVertical: SCREEN_HEIGHT * 0.01,
+    height: moderateVerticalScale(40),
+    borderRadius: 5,
+    borderWidth: 1,
+    marginVertical: 10,
     color: 'black',
     flexDirection: 'row',
     alignItems: 'center',
@@ -136,10 +136,9 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: colors.primary,
     width: SCREEN_WIDTH * 0.8,
-    height: SCREEN_HEIGHT * 0.07,
-    borderRadius: SCREEN_HEIGHT * 0.005,
-    paddingLeft: SCREEN_HEIGHT * 0.015,
-    marginVertical: SCREEN_HEIGHT * 0.01,
+    height: moderateVerticalScale(45),
+    borderRadius: 8,
+    marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: SCREEN_HEIGHT * 0.003,
