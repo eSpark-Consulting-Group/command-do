@@ -7,10 +7,12 @@ import {
   Image,
   LayoutAnimation,
   StatusBar,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AD from 'react-native-vector-icons/AntDesign';
 import {showMessage} from 'react-native-flash-message';
 
 import {
@@ -35,6 +37,7 @@ import {logout} from '../../../features/userInfo/userInfoSlice';
 import {greetMessage} from '../../../utils/helperFunctions';
 import {moderateVerticalScale} from 'react-native-size-matters';
 import {useIsFocused} from '@react-navigation/native';
+import {SCREEN_HEIGHT} from '../../../constants';
 const {width, height} = Dimensions.get('window');
 
 function Home({route, navigation}) {
@@ -103,27 +106,6 @@ function Home({route, navigation}) {
   }, []);
 
   const isFocused = useIsFocused();
-
-  // useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, []);
-
-  // const backAction = () => {
-  //   Alert.alert('Hold on!', 'Are you sure you want to exit App?', [
-  //     {
-  //       text: 'Cancel',
-  //       onPress: () => null,
-  //       style: 'cancel',
-  //     },
-  //     {text: 'YES', onPress: () => BackHandler.exitApp()},
-  //   ]);
-  //   return true;
-  // };
 
   const isSelect = item => {
     setSelectedCategory(item);
@@ -350,7 +332,7 @@ function Home({route, navigation}) {
             flex: 0.5,
             justifyContent: 'center',
             paddingHorizontal: 15,
-            paddingVertical: height * 0.0001,
+            marginVertical: 15,
           }}>
           <MyText
             label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
@@ -446,7 +428,7 @@ function Home({route, navigation}) {
         {
           <View
             style={{
-              flex: 4,
+              height: SCREEN_HEIGHT * 0.72,
             }}>
             {selectedCategory?.id == 0 ? (
               <Cards data={items || []} navigation={navigation} />
@@ -469,10 +451,11 @@ function Home({route, navigation}) {
             style={styles.cartContainerStyle}
             disabled={reduxData?.cart?.amount == 0 && press}
             onPress={_onSelect}>
-            <Icon
-              name="cart-outline"
-              size={moderateVerticalScale(27)}
+            <AD
+              name="shoppingcart"
+              size={moderateVerticalScale(25)}
               color={colors.text_inverse}
+              style={{width: moderateVerticalScale(27)}}
             />
             {reduxData?.cart?.amount != 0 && (
               <View style={styles.cartAmountStyle}>
@@ -495,8 +478,8 @@ function Home({route, navigation}) {
               ...styles.cartButtonStyle,
             }}
             onPress={_onSelect}>
-            <Icon
-              name="cart-outline"
+            <AD
+              name="shoppingcart"
               size={height * 0.04}
               color={colors.text_inverse}
               style={{
