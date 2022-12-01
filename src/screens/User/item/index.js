@@ -19,12 +19,12 @@ import {MyText, DropDownAlert, GapView} from '../../../components';
 import {addItem, increase} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
 import {Keyboard} from 'react-native';
 import {KeyboardAvoidingView} from 'react-native';
 import {SCREEN_HEIGHT} from '../../../constants';
 import {showMessage} from 'react-native-flash-message';
-import { useKeyboard } from '../../../utils/hooks/useUpdateEffect/useKeyBoard';
+import {useKeyboard} from '../../../utils/hooks/useUpdateEffect/useKeyBoard';
 
 const {width, height} = Dimensions.get('window');
 
@@ -38,11 +38,11 @@ function Items({route, navigation}) {
   const [editMode, setEditMode] = useState(0);
   const [animateToNumber, setAnimateToNumber] = useState(0);
   const dispatch = useDispatch();
-  const keyBoardHeight = useKeyboard()
+  const keyBoardHeight = useKeyboard();
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-  console.log("keyBoardHeight", keyBoardHeight);
+  console.log('keyBoardHeight', keyBoardHeight);
   useEffect(() => {
     var data = [];
 
@@ -112,7 +112,7 @@ function Items({route, navigation}) {
         type: 'info',
         title: 'Warning',
       });
-      onChangeNumber(1);
+      addQty();
     } else {
       if (editData?.length != 0) {
         setEditMode(Number(value));
@@ -135,7 +135,7 @@ function Items({route, navigation}) {
       showMessage({
         message: 'Warning',
         description: `Your cart is empty\nPlease add some items in your cart.`,
-        type: 'info',
+        type: 'warning',
         icon: 'auto',
       });
     } else {
@@ -149,7 +149,11 @@ function Items({route, navigation}) {
     <>
       <View style={{flex: 1}}>
         <View style={styles.mainContainer}>
-          <View style={[styles.itemImageContainer, {height: (height * 0.72) - keyBoardHeight,}]}>
+          <View
+            style={[
+              styles.itemImageContainer,
+              {height: height * 0.75 - keyBoardHeight},
+            ]}>
             <ImageBackground
               source={{uri: getData?.image}}
               style={styles.imageBackground}>
@@ -185,9 +189,9 @@ function Items({route, navigation}) {
                   <TouchableOpacity
                     style={styles.removeNumericButton}
                     onPress={removeQty}>
-                    <Icon
-                      name="remove"
-                      size={height * 0.03}
+                    <AD
+                      name="minus"
+                      size={moderateVerticalScale(18)}
                       color={colors.text_inverse}
                     />
                   </TouchableOpacity>
@@ -216,8 +220,8 @@ function Items({route, navigation}) {
                     borderRadius: height * 1,
                     backgroundColor: colors.primary,
                     elevation: 3,
-                    height: height * 0.05,
-                    width: height * 0.05,
+                    height: moderateVerticalScale(35),
+                    width: moderateVerticalScale(35),
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
