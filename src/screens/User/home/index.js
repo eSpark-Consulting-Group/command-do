@@ -175,9 +175,9 @@ function Home({route, navigation}) {
     if (reduxData?.cart?.amount == 0) {
       showMessage({
         message: `Warning`,
+        description: `Your cart is empty\nPlease add some items in your cart.`,
         type: 'warning',
         icon: 'auto',
-        description: `Your cart is empty\nPlease add some items in your cart.`,
       });
     } else {
       navigation.navigate('Cart');
