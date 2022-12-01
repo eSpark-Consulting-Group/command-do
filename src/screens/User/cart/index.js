@@ -77,6 +77,18 @@ function Cart({route, navigation}) {
     setTotal(makeTotal);
   }, [count?.cart?.cartItems]);
 
+  useEffect(() => {
+    if (count?.cart?.cartItems.length < 1) {
+      showMessage({
+        message: 'Warning',
+        description: `Your cart is empty\nPlease add some items in your cart.`,
+        type: 'warning',
+        icon: 'auto',
+      });
+      navigation.goBack();
+    }
+  }, [count?.cart?.cartItems]);
+
   const onHandleEditQty = index => {
     setIsEditQty(false);
     clearTimeout(timer);
@@ -335,14 +347,14 @@ function Cart({route, navigation}) {
                   marginVertical: height * 0.009,
                 }}
                 onPress={() => {
-                  if (!isValidTimeToOrder()) {
-                    showMessage({
-                      message: 'Alas! Time is over for placing order😬',
-                      icon: 'auto',
-                      type: 'info',
-                    });
-                    return;
-                  }
+                  // if (!isValidTimeToOrder()) {
+                  //   showMessage({
+                  //     message: 'Alas! Time is over for placing order😬',
+                  //     icon: 'auto',
+                  //     type: 'info',
+                  //   });
+                  //   return;
+                  // }
                   isShowAlert(true);
                 }}>
                 {!loading ? (
