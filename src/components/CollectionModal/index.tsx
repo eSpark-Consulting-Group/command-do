@@ -22,6 +22,7 @@ export default function CollectionModal({
   onCollected,
   type,
   isLoading,
+  isVisible,
 }) {
   const [amount, setAmount] = useState('');
 
@@ -40,7 +41,8 @@ export default function CollectionModal({
     <>
       <StatusBar backgroundColor={'#000000'} />
       <Overlay
-        isVisible={true}
+        animationType="fade"
+        isVisible={isVisible}
         overlayStyle={{
           width: '90%',
           borderRadius: moderateVerticalScale(10),

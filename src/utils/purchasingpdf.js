@@ -7,7 +7,7 @@ export const pdfHtml = order => {
           justify-content: space-evenly;
           align-items: center;
         ">
-        <div style="width: 100vw; background-color: #11a79c">
+        <div style="width: 100vw; background-color: #00a099">
           <p style="font-weight: bold; color: #fff; font-size: x-large">
             Purchasing List
           </p>
@@ -39,10 +39,9 @@ export const pdfHtml = order => {
         height: 3.18vh;
         margin-top: 5px;
         margin-bottom: 5px;
-        // background-color: #C5FAF5;
         background-color: #E1FDFA;
         border-radius: 12px;
-        box-shadow: 2px 2px 5px #11a79c;
+        box-shadow: 2px 2px 5px #00a099;
       ">
       <div
       style="

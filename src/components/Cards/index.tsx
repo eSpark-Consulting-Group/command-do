@@ -1,4 +1,5 @@
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {
   View,
   Dimensions,
@@ -27,102 +28,106 @@ const Cards = props => {
       (value: any) => value?.id == dataItem?.id,
     );
     return (
-      <View style={{opacity: 1}}>
-        <Pressable
-          key={dataIndex}
+      <Pressable
+        key={dataIndex}
+        style={{
+          margin: moderateVerticalScale(5),
+          padding: moderateVerticalScale(10),
+          elevation: moderateVerticalScale(2),
+          backgroundColor: colors.background,
+          borderRadius: height * 0.02,
+        }}
+        onPress={() =>
+          navigation.navigate('Item', {
+            foodType: dataItem?.name,
+            item: dataItem,
+          })
+        }>
+        <View
           style={{
-            opacity: 1,
-            paddingHorizontal: 10,
-            paddingTop: moderateVerticalScale(10),
-          }}
-          onPress={() =>
-            navigation.navigate('Item', {
-              foodType: dataItem?.name,
-              item: dataItem,
-            })
-          }>
-          <View
+            height: moderateVerticalScale(150),
+            width: moderateVerticalScale(310),
+            borderRadius: height * 0.02,
+          }}>
+          <Image
+            source={{uri: dataItem?.image}}
             style={{
-              opacity: 1,
-              height: moderateVerticalScale(170),
-              width: moderateVerticalScale(330),
               borderRadius: height * 0.02,
-              elevation: width * 0.003,
-            }}>
-            <Image
-              source={{uri: dataItem?.image}}
-              style={{
-                opacity: 1,
-                borderRadius: height * 0.02,
-                height: moderateVerticalScale(170),
-                width: moderateVerticalScale(330),
-                backgroundColor: colors.background,
-              }}
-            />
-            {cartItem != undefined && cartItem?.quantity != 0 && (
-              <View
-                style={{
-                  opacity: 1,
-                  height: height * 0.04,
-                  width: height * 0.04,
-                  backgroundColor: colors.primary,
-                  borderRadius: height * 1,
-                  position: 'absolute',
-                  right: height * -0.01,
-                  top: height * -0.01,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <MyText
-                  label={
-                    cartItem?.quantity > 99
-                      ? '99+'
-                      : Number(cartItem?.quantity).toString()
-                  }
-                  textStyle={{
-                    color: colors.background,
-                    opacity: 1,
-                  }}
-                />
-              </View>
-            )}
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              height: moderateVerticalScale(150),
+              width: moderateVerticalScale(310),
+              backgroundColor: colors.background,
+            }}
+          />
+          {cartItem != undefined && cartItem?.quantity != 0 && (
             <View
               style={{
-                alignItems: 'flex-start',
+                height: moderateVerticalScale(28),
+                width: moderateVerticalScale(28),
+                backgroundColor: colors.primary,
+                borderRadius: moderateVerticalScale(40),
+                position: 'absolute',
+                right: moderateVerticalScale(-14),
+                top: moderateVerticalScale(-14),
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              <MyText label={dataItem?.name} />
-              <View
-                style={{
-                  borderColor: '#00000030',
-                  borderWidth: height * 0.001,
-                  paddingHorizontal: 5,
-                  borderRadius: height * 0.005,
-                }}>
-                <MyText
-                  label={`Rs.${dataItem?.price}`}
-                  textStyle={{opacity: 1}}
-                />
-              </View>
-            </View>
-
-            <View style={{opacity: 1}}>
-              <AddToCartBtn
-                item={{
-                  ...dataItem,
-                  quantity: Number(cartItem?.quantity || 0),
+              <MyText
+                label={
+                  cartItem?.quantity > 99
+                    ? '99+'
+                    : Number(cartItem?.quantity).toString()
+                }
+                size={'subTitle'}
+                textStyle={{
+                  color: colors.background,
                 }}
               />
             </View>
+          )}
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: moderateVerticalScale(310),
+          }}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'flex-start',
+            }}>
+            <MyText
+              label={dataItem?.name}
+              numberOfLines={2}
+              textStyle={{
+                marginVertical: moderateVerticalScale(2),
+              }}
+            />
+            <View
+              style={{
+                borderColor: '#00000030',
+                borderWidth: height * 0.001,
+                paddingHorizontal: 5,
+                borderRadius: height * 0.005,
+              }}>
+              <MyText
+                label={`Rs.${dataItem?.price}`}
+                textStyle={{opacity: 1}}
+              />
+            </View>
           </View>
-        </Pressable>
-      </View>
+          <TouchableOpacity activeOpacity={1}>
+            <AddToCartBtn
+              item={{
+                ...dataItem,
+                quantity: Number(cartItem?.quantity || 0),
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </Pressable>
     );
   };
 
@@ -136,7 +141,6 @@ const Cards = props => {
               key={index}
               style={{
                 marginLeft: 15,
-                marginVertical: 10,
                 justifyContent: 'center',
               }}>
               <MyText

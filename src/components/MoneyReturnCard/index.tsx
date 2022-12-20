@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {moderateVerticalScale} from 'react-native-size-matters';
+import {SCREEN_WIDTH} from '../../constants';
 import {colors} from '../../theme';
 
 import MyText from '../Text';
@@ -43,14 +45,21 @@ export default function MoneyReturnCard({
           padding: 5,
           borderBottomWidth: 1,
         }}>
-        <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
+        <MyText
+          label={name}
+          textStyle={{
+            ...styles.cardDataText,
+            fontSize: moderateVerticalScale(20),
+            maxWidth: SCREEN_WIDTH * 0.7,
+          }}
+        />
         <TouchableOpacity
           onPress={onReturn}
           style={{
             ...styles.cardDataContainer2,
             borderRadius: 5,
             backgroundColor: colors.primary,
-            elevation: 5,
+            elevation: 2,
             padding: 5,
           }}>
           <MyText
@@ -86,10 +95,10 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: width * 0.95,
     paddingVertical: 5,
-    borderRadius: 5,
+    borderRadius: moderateVerticalScale(5),
     paddingHorizontal: width * 0.02,
     backgroundColor: colors.background,
-    elevation: 5,
+    elevation: 2,
     marginVertical: 5,
   },
   cardInnerContainer: {
@@ -105,7 +114,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardDataText: {
-    fontSize: width * 0.04,
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
   },

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 5,
     borderRadius: 10,
-    elevation: 5,
+    elevation: 2,
   },
   cardDataContainer: {width: '48%', paddingLeft: '2%'},
   cardDataContainer1: {width: '12%', alignItems: 'center'},
