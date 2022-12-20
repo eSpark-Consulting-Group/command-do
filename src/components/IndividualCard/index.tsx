@@ -7,6 +7,7 @@ import {
   FlatList,
   ActivityIndicator,
   LayoutAnimation,
+  TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -125,12 +126,11 @@ const IndividualCard = props => {
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginTop: 5,
                     }}>
                     <View style={{alignItems: 'flex-start'}}>
-                      <MyText
-                        label={dataItem?.name}
-                        textStyle={{marginTop: height * 0.02}}
-                      />
+                      <MyText label={dataItem?.name} />
                       <View
                         style={{
                           borderColor: '#00000030',
@@ -142,14 +142,14 @@ const IndividualCard = props => {
                         <MyText label={`Rs.${dataItem?.price}`} />
                       </View>
                     </View>
-                    <View style={{top: 20}}>
+                    <TouchableOpacity activeOpacity={1}>
                       <AddToCartBtn
                         item={{
                           ...dataItem,
                           quantity: Number(cartItem?.quantity || 0),
                         }}
                       />
-                    </View>
+                    </TouchableOpacity>
                   </View>
                   {cartItem != undefined && cartItem?.quantity != 0 && (
                     <View

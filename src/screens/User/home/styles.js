@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
   },
   headerCenterComponentStyle: {flexDirection: 'row'},
   categoryContainer: {
-    flex: 0.5,
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexDirection: 'row',
     marginLeft: 15,
+    paddingVertical: moderateVerticalScale(10),
   },
   categoryImage: {
     height: height * 0.05,
