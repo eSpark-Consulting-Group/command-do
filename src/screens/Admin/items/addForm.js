@@ -34,8 +34,6 @@ export default function AddForm() {
   const isFocused = useIsFocused();
   const {mode, type, itemData} = route?.params;
 
-  console.log('ITEM DATA', itemData);
-
   const [catToggle, setCatToggle] = useState(false);
   const [fields, setFields] = useState({
     name: itemData?.name,
@@ -44,6 +42,14 @@ export default function AddForm() {
   });
   const [selectedCategory, setSelectedCategory] = useState(itemData?.Category);
   const [uploadLoader, setUploadLoader] = useState(false);
+  const [imageUploaded, setImageUploaded] = useState(false);
+
+  let edited =
+    itemData?.name == fields.name &&
+    itemData?.price == fields.price &&
+    (itemData?.image == fields.image || fields?.image?.uri) &&
+    itemData?.Category?.id == selectedCategory?.id &&
+    !imageUploaded;
 
   const [LoadCategories, {data: categoryData}] = useLazyQuery(
     GET_ALL_CATEGORIES,
@@ -166,7 +172,7 @@ export default function AddForm() {
             message: res?.data?.updateItem?.message,
             type: 'success',
           });
-          navigation?.goBack();
+          navigation?.navigate('ItemList', {edit: true});
         } else {
           showMessage({
             message: res?.data?.updateItem?.message,
@@ -264,7 +270,7 @@ export default function AddForm() {
             message: res?.data?.updateCategory?.message,
             type: 'success',
           });
-          navigation?.goBack();
+          navigation?.navigate('ItemList', {edit: true, categoryList: true});
         } else {
           showMessage({
             message: res?.data?.updateCategory?.message,
@@ -275,6 +281,7 @@ export default function AddForm() {
       .catch(err => {
         console.log('error', err);
       });
+    setImageUploaded(false);
   };
 
   const deleteCategory = async () => {
@@ -384,8 +391,8 @@ export default function AddForm() {
               }}
             />
             <ImageContainer
-              onImageChange={({uri}) => {
-                setFields({...fields, image: uri});
+              onImageChange={image => {
+                setFields({...fields, image: image});
               }}
             />
           </ScrollView>
@@ -421,7 +428,7 @@ export default function AddForm() {
           <MyHeader
             title="Edit Category"
             leftIcon="arrow-back"
-            onPressLeft={() => navigation.goBack()}
+            onPressLeft={() => navigation.navigate('ItemList')}
             rightIconType="foundation"
             icon="trash"
             onPressRight={() => handleDeleteCategory()}
@@ -439,6 +446,7 @@ export default function AddForm() {
               url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
               onImageChange={image => {
                 setFields({...fields, image: image});
+                setImageUploaded(true);
               }}
             />
           </ScrollView>
@@ -448,7 +456,8 @@ export default function AddForm() {
               count={Object.values(fields).filter(val => Boolean(val))?.length}
               totalCount={2}
               enabled={
-                Object.values(fields).filter(val => Boolean(val))?.length == 2
+                Object.values(fields).filter(val => Boolean(val))?.length ==
+                  2 && !edited
               }
               onPress={() => updateCategory()}
             />
@@ -468,7 +477,7 @@ export default function AddForm() {
           <MyHeader
             title="Edit Item"
             leftIcon="arrow-back"
-            onPressLeft={() => navigation.goBack()}
+            onPressLeft={() => navigation.navigate('ItemList')}
             rightIconType="foundation"
             icon="trash"
             onPressRight={() => handleDeleteItem()}
@@ -502,6 +511,7 @@ export default function AddForm() {
               onImageChange={image => {
                 console.log('kia mil raha ha', image);
                 setFields({...fields, image: image});
+                setImageUploaded(true);
               }}
             />
           </ScrollView>
@@ -511,7 +521,8 @@ export default function AddForm() {
               count={Object.values(fields).filter(val => Boolean(val))?.length}
               totalCount={3}
               enabled={
-                Object.values(fields).filter(val => Boolean(val))?.length == 3
+                Object.values(fields).filter(val => Boolean(val))?.length ==
+                  3 && !edited
               }
               onPress={() => updateItem()}
             />

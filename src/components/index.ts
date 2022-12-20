@@ -5,7 +5,6 @@ import Cards from './Cards';
 import IndividualCard from './IndividualCard';
 import CustomizeModal from './Modal';
 import MyText from './Text';
-import DropDownAlert from './DropDownAlert';
 import OrderCard from './OrderCard';
 import OrderListHeader from './OrderListHeader';
 import LineSeparater from './LineSeparater';
@@ -26,13 +25,14 @@ import MoneyReturnCard from './MoneyReturnCard';
 import OrderHistoryCard from './OrderHistoryCard';
 import OverlayLoader from './OverlayLoader';
 import BackButtonHandler from './BackButtonHandler';
+import NoInternetModal from './NoInternetModal';
+import BlurBackground from './BlurBackground';
 
 export {
   Cards,
   IndividualCard,
   CustomizeModal,
   MyText,
-  DropDownAlert,
   OrderCard,
   OrderListHeader,
   LineSeparater,
@@ -53,4 +53,6 @@ export {
   OrderHistoryCard,
   OverlayLoader,
   BackButtonHandler,
+  NoInternetModal,
+  BlurBackground,
 };

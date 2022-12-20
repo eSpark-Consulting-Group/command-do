@@ -25,6 +25,7 @@ const riderOrderSlice = createSlice({
       state.orders[index].status = 'PAID';
       state.orders[index].paidAmount = action.payload.amount;
       state.orders[index].riderId = action.payload.riderId;
+      state.orders[index].amountCollected = true;
     },
     revertCollection: (state, action) => {
       console.log('Action', action.payload);
@@ -32,6 +33,7 @@ const riderOrderSlice = createSlice({
       state.orders[index].status = 'UNPAID';
       state.orders[index].paidAmount = 0;
       delete state.orders[index].riderId;
+      delete state.orders[index].amountCollected;
     },
     toggleFinishCollection: (state, action) => {
       state.collectionFinished = action.payload;

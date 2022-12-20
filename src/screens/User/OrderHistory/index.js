@@ -96,7 +96,7 @@ export default function OrderHistory() {
   return (
     <View style={{alignItems: 'center'}}>
       <SectionList
-        sections={ordersData}
+        sections={loading || delLoader ? [] : ordersData}
         contentContainerStyle={{
           paddingVertical: 5,
           alignItems: 'center',
@@ -110,6 +110,7 @@ export default function OrderHistory() {
             paidAmount={item.paidAmount}
             remainingAmount={item.remainingAmount}
             onDelete={() => delAlert(item.id)}
+            returned={item.returned}
           />
         )}
         SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
@@ -131,7 +132,7 @@ export default function OrderHistory() {
         }
         keyExtractor={(item, index) => index}
         ListEmptyComponent={
-          loading ? (
+          loading || delLoader ? (
             <View
               style={{
                 height: SCREEN_HEIGHT * 0.6,

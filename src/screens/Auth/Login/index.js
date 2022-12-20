@@ -1,33 +1,31 @@
 // BooksScreen.js
-import React, {useState, useRef, createRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
-  Text,
   TextInput,
-  Dimensions,
   TouchableOpacity,
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
 import {CheckBox, Icon} from '@rneui/themed';
+import {moderateVerticalScale} from 'react-native-size-matters';
+import {useIsFocused} from '@react-navigation/native';
+import {showMessage} from 'react-native-flash-message';
 
 import {Logo} from '../../../assets/images';
 import MyText from '../../../components/Text';
 import {LOGIN_USER} from '../../../graphQL/query/user.query';
 import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
-import {showMessage} from 'react-native-flash-message';
 import {sendFCMToken} from '../../../utils/helperFunctions';
-import {SCREEN_HEIGHT} from '../../../constants';
-import {moderateVerticalScale} from 'react-native-size-matters';
 import {colors} from '../../../theme';
-
-const {width, height} = Dimensions.get('window');
+import {BackButtonHandler} from '../../../components';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const [selectedRole, setselectedRole] = useState('ADMIN');
   const [showPass, setShowPass] = useState(false);
 
@@ -42,88 +40,97 @@ const Login = ({navigation}) => {
   });
 
   console.log('emailRef', emailRef?.current, passRef.current);
-  const handleNavigate = async () => {
-    try {
-      const tokenFCM = await sendFCMToken();
-      const userData = await LoginUser({
-        variables: {
-          email: emailRef.current.toLowerCase(),
-          password: passRef.current,
-          fcmToken: tokenFCM,
-        },
-      });
-      const obj = {...userData.data.loginUser.data};
-      if (userData.data?.loginUser?.status) {
-        if (userData.data?.loginUser?.data?.role?.includes(selectedRole)) {
-          obj.selected = selectedRole;
-          dispatch(getUserDetails(obj));
+  function ValidateEmail(mail, pass) {
+    if (mail) {
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+        if (!pass) {
           showMessage({
-            message: userData.data?.loginUser?.message,
-            type: 'success',
+            message: 'Password is required',
+            type: 'danger',
             icon: 'auto',
-            duration: 500,
           });
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        showMessage({
+          message: 'Please enter a valid email address!',
+          type: 'danger',
+          icon: 'auto',
+        });
+        return false;
+      }
+    } else {
+      showMessage({
+        message: 'Email is required',
+        type: 'danger',
+        icon: 'auto',
+      });
+      return false;
+    }
+  }
+
+  const handleNavigate = async () => {
+    if (ValidateEmail(emailRef.current.toLowerCase(), passRef.current)) {
+      try {
+        const tokenFCM = await sendFCMToken();
+        const userData = await LoginUser({
+          variables: {
+            email: emailRef.current.toLowerCase(),
+            password: passRef.current,
+            fcmToken: tokenFCM,
+          },
+        });
+        const obj = {...userData.data.loginUser.data};
+        if (userData.data?.loginUser?.status) {
+          if (userData.data?.loginUser?.data?.role?.includes(selectedRole)) {
+            obj.selected = selectedRole;
+            dispatch(getUserDetails(obj));
+            showMessage({
+              message: userData.data?.loginUser?.message,
+              type: 'success',
+              icon: 'auto',
+              duration: 500,
+            });
+          } else {
+            showMessage({
+              message: 'This account is not valid for selected role!',
+              type: 'danger',
+              icon: 'auto',
+            });
+          }
         } else {
           showMessage({
-            message: 'This account is not valid for selected role!',
+            message: userData.data?.loginUser?.message,
             type: 'danger',
             icon: 'auto',
           });
         }
-      } else {
-        showMessage({
-          message: userData.data?.loginUser?.message,
-          type: 'danger',
-          icon: 'auto',
-        });
+      } catch (error) {
+        console.log('login error', error);
       }
-    } catch (error) {
-      console.log('login error', error);
     }
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        backgroundColor: colors.background,
-      }}>
-      <View
-        style={{
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-        }}>
-        <Image
-          source={Logo}
-          style={{
-            height: height * 0.1,
-            width: height * 0.243,
-          }}
-        />
+    <View style={styles.container}>
+      {isFocused && <BackButtonHandler />}
+      <View style={styles.mainLogoContainer}>
+        <Image source={Logo} style={styles.logo} />
       </View>
-
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: 80,
-        }}>
-        <View style={styles.inputStyle}>
+      <View style={styles.contentContainer}>
+        <View style={styles.inputContainerStyle}>
           <TextInput
             onChangeText={text => {
               emailRef.current = text;
             }}
             placeholder="Email"
-            style={{
-              width: '100%',
-              paddingHorizontal: 10,
-            }}
+            style={styles.inputStyle}
             placeholderTextColor="gray"
           />
         </View>
-        <View style={styles.inputStyle}>
+        <View style={styles.inputContainerStyle}>
           <TextInput
             onChangeText={text => {
               passRef.current = text;
@@ -131,15 +138,15 @@ const Login = ({navigation}) => {
             placeholder="Password"
             secureTextEntry={!showPass}
             placeholderTextColor="gray"
-            style={{
-              width: '85%',
-              paddingHorizontal: 10,
-            }}
+            style={styles.inputStyle}
           />
           <TouchableOpacity
             onPress={() => setShowPass(!showPass)}
-            style={{paddingHorizontal: SCREEN_HEIGHT * 0.015}}>
-            <Icon name={showPass ? 'visibility' : 'visibility-off'} />
+            style={styles.showHidePassBtn}>
+            <Icon
+              name={showPass ? 'visibility' : 'visibility-off'}
+              size={moderateVerticalScale(20)}
+            />
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -148,13 +155,7 @@ const Login = ({navigation}) => {
           {userLoader ? (
             <ActivityIndicator size={30} color="white" />
           ) : (
-            <MyText
-              label={'Login'}
-              textStyle={{
-                fontSize: moderateVerticalScale(20),
-                color: colors.text_inverse,
-              }}
-            />
+            <MyText label={'Login'} textStyle={styles.loginButtonText} />
           )}
         </TouchableOpacity>
         <View style={styles.radioButtonContainer}>
@@ -165,6 +166,8 @@ const Login = ({navigation}) => {
           />
           <CheckBox
             title="Admin"
+            textStyle={styles.radioButtonText}
+            containerStyle={styles.radioButtonInnerContainer}
             checkedIcon={
               <Icon
                 name="radio-button-checked"
@@ -183,17 +186,13 @@ const Login = ({navigation}) => {
                 iconStyle={{marginRight: 5}}
               />
             }
-            textStyle={{fontSize: 12, marginLeft: 0, marginRight: 5}}
-            containerStyle={{padding: 0, alignSelf: 'center'}}
             checked={selectedRole == 'ADMIN'}
             onPress={() => setselectedRole('ADMIN')}
           />
           <CheckBox
-            containerStyle={{
-              padding: 0,
-              margin: 0,
-              alignSelf: 'center',
-            }}
+            title="User"
+            textStyle={styles.radioButtonText}
+            containerStyle={styles.radioButtonInnerContainer}
             checkedIcon={
               <Icon
                 name="radio-button-checked"
@@ -212,17 +211,13 @@ const Login = ({navigation}) => {
                 iconStyle={{marginRight: 5}}
               />
             }
-            textStyle={{
-              fontSize: 12,
-              marginLeft: 0,
-              marginRight: 5,
-            }}
-            title="User"
             checked={selectedRole == 'USER'}
             onPress={() => setselectedRole('USER')}
           />
           <CheckBox
             title="Rider"
+            textStyle={styles.radioButtonText}
+            containerStyle={styles.radioButtonInnerContainer}
             checkedIcon={
               <Icon
                 name="radio-button-checked"
@@ -241,8 +236,6 @@ const Login = ({navigation}) => {
                 iconStyle={{marginRight: 5}}
               />
             }
-            textStyle={{fontSize: 12, marginLeft: 0, marginRight: 5}}
-            containerStyle={{padding: 0, alignSelf: 'center'}}
             checked={selectedRole == 'RIDER'}
             onPress={() => setselectedRole('RIDER')}
           />

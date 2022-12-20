@@ -3,7 +3,13 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 import {useLazyQuery} from '@apollo/client';
 
-import {GapView, MyCard, MyHeader, MyText} from '../../../components';
+import {
+  GapView,
+  MyCard,
+  MyHeader,
+  MyText,
+  OverlayLoader,
+} from '../../../components';
 import {colors} from '../../../theme';
 import {
   ALL_ORDERS,
@@ -15,15 +21,8 @@ export default function OrderDetails() {
   const navigation = useNavigation();
   const route = useRoute();
   const {mode, data} = route?.params;
-  const [GetAllOrders, {data: OrderData}] = useLazyQuery(ALL_ORDERS, {
-    fetchPolicy: 'cache-and-network',
-    notifyOnNetworkStatusChange: true,
-    variables: {
-      getOrderInput: data,
-    },
-  });
-  const [GetCollectedOrder, {data: CollectedOrderData}] = useLazyQuery(
-    COLLECTED_ORDERS,
+  const [GetAllOrders, {data: OrderData, loading: allLoading}] = useLazyQuery(
+    ALL_ORDERS,
     {
       fetchPolicy: 'cache-and-network',
       notifyOnNetworkStatusChange: true,
@@ -32,6 +31,16 @@ export default function OrderDetails() {
       },
     },
   );
+  const [
+    GetCollectedOrder,
+    {data: CollectedOrderData, loading: collectedLoading},
+  ] = useLazyQuery(COLLECTED_ORDERS, {
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      getOrderInput: data,
+    },
+  });
 
   useEffect(() => {
     console.log('DATa', data);
@@ -42,15 +51,9 @@ export default function OrderDetails() {
           },
         })
       : GetCollectedOrder({
-          variables: {
-            data,
-          },
+          variables: data,
         });
   }, []);
-
-  // useUpdateEffect(() => {
-  //   refetch();
-  // }, [data]);
 
   console.log('getORderData', OrderData?.getAllOrders?.data);
 
@@ -73,7 +76,7 @@ export default function OrderDetails() {
               <MyText label="Details" />
               <MyText
                 label={`Rider/ ${
-                  OrderDetails?.Rider?.firstName ?? 'order Not Picked yet'
+                  OrderDetails?.Rider?.firstName ?? 'Order Not Picked'
                 }`}
                 textStyle={{color: 'grey'}}
               />
@@ -292,7 +295,12 @@ export default function OrderDetails() {
     );
   };
 
-  return <View style={styles.container}>{renderDayOrder()}</View>;
+  return (
+    <View style={styles.container}>
+      <OverlayLoader show={allLoading || collectedLoading} />
+      {renderDayOrder()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
