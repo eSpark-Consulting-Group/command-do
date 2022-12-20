@@ -1,21 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SectionList,
-  TouchableOpacity,
-  LayoutAnimation,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, SectionList} from 'react-native';
 import {Divider, FAB} from '@rneui/themed';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {useLazyQuery} from '@apollo/client';
 import {useFocusEffect} from '@react-navigation/native';
+import {Icon as Icons} from '@rneui/themed';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers,
+} from 'react-native-popup-menu';
 
 import {
-  CustomizeModal,
+  BlurBackground,
   MyHeader,
   MyText,
   OverlayLoader,
@@ -24,13 +26,11 @@ import {
 import {colors} from '../../../theme';
 import {profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {GET_ALL_USERS} from '../../../graphQL/query/user.query';
-import {getAllUsers, logout} from '../../../features/userInfo/userInfoSlice';
+import {logout} from '../../../features/userInfo/userInfoSlice';
 
 export default function Users() {
   const navigation = useNavigation();
-  const route = useRoute();
 
   const [LoadAllUsers, {loading: userLoader, refetch, error}] = useLazyQuery(
     GET_ALL_USERS,
@@ -52,23 +52,9 @@ export default function Users() {
     }, [refetch]),
   );
 
-  const isModalVisible = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
-    setIsModal(!isModal);
-  };
-
   const goToNavigation = navigate => {
-    navigation.navigate(navigate);
     setIsModal(!isModal);
+    navigation.navigate(navigate);
   };
 
   const getUsers = async () => {
@@ -93,63 +79,92 @@ export default function Users() {
   };
 
   const logoutHandler = () => {
+    setIsModal(!isModal);
     dispatch(logout());
   };
 
   return (
     <View style={styles.container}>
       <OverlayLoader show={userLoader} />
-      <CustomizeModal
-        isVisible={isModal}
-        setBackDrop={isModalVisible}
-        navigation={navigation}
-        renderData={
-          <View style={styles.modalInner}>
-            <TouchableOpacity
-              style={{...styles.buttonContainer}}
-              onPress={() => goToNavigation('Profile')}>
-              <Ionicons
-                name="person"
-                size={SCREEN_HEIGHT * 0.025}
-                color={colors.primary}
-                style={styles.btnIcon}
-              />
-              <MyText
-                label={'Profile'}
-                size={'title'}
-                textStyle={{
-                  color: colors.text_normal + '80',
-                }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.buttonContainer,
-                {borderBottomWidth: SCREEN_HEIGHT * 0},
-              ]}
-              onPress={() => logoutHandler()}>
-              <Ionicons
-                name="ios-exit"
-                size={SCREEN_HEIGHT * 0.025}
-                color={colors.primary}
-                style={styles.btnIcon}
-              />
-              <MyText
-                label={'Log out'}
-                size={'title'}
-                textStyle={{
-                  color: colors.text_normal + '80',
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-        }
-      />
       <MyHeader
         title="All Users"
-        icon="user-circle-o"
-        rightIconType="font-awesome"
-        onPressRight={() => setIsModal(true)}
+        iconComponent={
+          <Menu
+            opened={isModal}
+            onBackdropPress={() => setIsModal(false)}
+            renderer={renderers.Popover}
+            rendererProps={{
+              placement: 'bottom',
+            }}>
+            <MenuTrigger
+              children={
+                <Icons
+                  name={'user-circle-o'}
+                  size={moderateVerticalScale(28)}
+                  type={'font-awesome'}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: moderateVerticalScale(50),
+                    width: moderateVerticalScale(50),
+                  }}
+                  containerStyle={{
+                    borderRadius: 100,
+                    alignSelf: 'center',
+                  }}
+                  pressableProps={{
+                    android_ripple: {
+                      borderless: true,
+                      color: '#f5f5f533',
+                    },
+                  }}
+                  color={colors.text_inverse}
+                  onPress={() => setIsModal(!isModal)}
+                />
+              }
+            />
+            <MenuOptions customStyles={{optionsContainer: styles.modalInner}}>
+              <MenuOption
+                style={styles.buttonContainer}
+                onSelect={() => goToNavigation('Profile')}
+                children={
+                  <>
+                    <Icon
+                      name="person"
+                      size={moderateVerticalScale(18)}
+                      color={colors.primary}
+                      style={styles.btnIcon}
+                    />
+                    <MyText
+                      label={'Profile'}
+                      size={'title'}
+                      textStyle={{color: colors.text_normal + '80'}}
+                    />
+                  </>
+                }
+              />
+              <MenuOption
+                style={styles.buttonContainer}
+                onSelect={logoutHandler}
+                children={
+                  <>
+                    <Icon
+                      name="ios-exit"
+                      size={moderateVerticalScale(18)}
+                      color={colors.primary}
+                      style={styles.btnIcon}
+                    />
+                    <MyText
+                      label={'Log out'}
+                      size={'title'}
+                      textStyle={{color: colors.text_normal + '80'}}
+                    />
+                  </>
+                }
+              />
+            </MenuOptions>
+          </Menu>
+        }
       />
       <SectionList
         sections={userList ?? []}
@@ -194,6 +209,7 @@ export default function Users() {
         color={colors.primary}
         placement="right"
       />
+      <BlurBackground show={isModal} />
     </View>
   );
 }
@@ -221,25 +237,19 @@ const styles = StyleSheet.create({
     height: 44,
   },
   modalInner: {
-    width: SCREEN_WIDTH * 0.3,
-    position: 'absolute',
-    backgroundColor: '#fff',
-    borderRadius: SCREEN_HEIGHT * 0.005,
+    width: moderateScale(150),
+    backgroundColor: colors.background,
+    borderRadius: moderateVerticalScale(5),
     zIndex: 1,
-    top: SCREEN_HEIGHT * 0.03,
-    right: SCREEN_HEIGHT * 0.03,
-    elevation: SCREEN_HEIGHT * 0.003,
     justifyContent: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: SCREEN_HEIGHT * 0.01,
-    borderBottomWidth: SCREEN_HEIGHT * 0.0005,
-    borderBottomColor: '#00000050',
+    paddingHorizontal: moderateVerticalScale(10),
   },
   btnIcon: {
-    paddingRight: SCREEN_HEIGHT * 0.01,
+    paddingRight: moderateScale(5),
     top: 1,
   },
 });

@@ -58,13 +58,7 @@ export default function MyInput({
 const styles = StyleSheet.create({
   TextInputStyleClass: {
     paddingHorizontal: 10,
-    // height: moderateVerticalScale(40),
-    // borderWidth: 2,
-    // borderColor: colors.primary,
-    // borderRadius: 10,
     backgroundColor: colors.background,
-
-    // height: moderateVerticalScale(40),
     width: '100%',
     fontSize: moderateVerticalScale(14),
     height: moderateVerticalScale(40),
