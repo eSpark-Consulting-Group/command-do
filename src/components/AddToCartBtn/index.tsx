@@ -6,21 +6,16 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {DropDownAlert, MyText} from '..';
 import {useDispatch, useSelector} from 'react-redux';
 import {addItem, increase} from '../../features/cart/cartSlice';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import {styles} from './styles';
 import {colors} from '../../theme';
 import {moderateVerticalScale} from 'react-native-size-matters';
-import {Text} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 
-const {width, height} = Dimensions.get('window');
 export const AddToCartBtn = ({item}) => {
   const dispatch = useDispatch();
-  const qtyWarn = React.useRef(null);
 
   const addQty = (item: any) => {
     if (item?.quantity > 998) {
@@ -69,7 +64,7 @@ export const AddToCartBtn = ({item}) => {
   };
 
   const onChangeNumber = (value, item) => {
-    if (Number(value) > 999) {
+    if (Number(value) > 99) {
       // @ts-ignore
       showMessage({
         message: 'Warning',
@@ -84,13 +79,6 @@ export const AddToCartBtn = ({item}) => {
 
   return (
     <>
-      {/* <DropDownAlert
-        childFunc={qtyWarn}
-        setPress={checkSetPress}
-        message={'Woah! you have reached the limit!!!'}
-        type="info"
-        title="Warning"
-      /> */}
       {item?.quantity ? (
         <View style={styles.numericBtnContainer}>
           <TouchableOpacity
@@ -110,6 +98,7 @@ export const AddToCartBtn = ({item}) => {
             onSubmitEditing={val =>
               onChangeNumber(val?.nativeEvent?.text, item)
             }
+            editable={false}
           />
           <TouchableOpacity
             style={styles.addNumericButton}
@@ -122,23 +111,26 @@ export const AddToCartBtn = ({item}) => {
           </TouchableOpacity>
         </View>
       ) : (
-        <TouchableOpacity
-          style={{
-            borderRadius: moderateVerticalScale(20),
-            backgroundColor: colors.primary,
-            elevation: 3,
-            height: moderateVerticalScale(35),
-            width: moderateVerticalScale(35),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => addQty(item)}>
-          <AD
-            name="plus"
-            size={moderateVerticalScale(18)}
-            color={colors.text_inverse}
-          />
-        </TouchableOpacity>
+        <View
+          style={{height: moderateVerticalScale(50), justifyContent: 'center'}}>
+          <TouchableOpacity
+            style={{
+              borderRadius: moderateVerticalScale(20),
+              backgroundColor: colors.primary,
+              elevation: 3,
+              height: moderateVerticalScale(35),
+              width: moderateVerticalScale(35),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => addQty(item)}>
+            <AD
+              name="plus"
+              size={moderateVerticalScale(18)}
+              color={colors.text_inverse}
+            />
+          </TouchableOpacity>
+        </View>
       )}
     </>
   );
