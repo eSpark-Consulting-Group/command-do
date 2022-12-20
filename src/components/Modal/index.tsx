@@ -5,32 +5,18 @@ import {
   Dimensions,
   StatusBar,
   TouchableWithoutFeedback,
-  LayoutAnimation,
-  UIManager,
-  Platform,
 } from 'react-native';
 
 import {colors} from '../../theme';
+import {useLayoutAnimation} from '../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
 const {width, height} = Dimensions.get('window');
 
 const CustomizeModal = (props: any) => {
   const {isVisible, setBackDrop, navigation, renderData} = props;
-  if (Platform.OS === 'android') {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
 
   useEffect(() => {
-    LayoutAnimation.configureNext({
-      duration: 200,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
+    useLayoutAnimation(200);
   }, [isVisible]);
 
   return (

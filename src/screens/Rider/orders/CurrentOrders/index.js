@@ -1,17 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {useLazyQuery} from '@apollo/client';
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import {FlatList, View, ActivityIndicator, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
+import {useIsFocused} from '@react-navigation/native';
 
 import {
   BackButtonHandler,
+  BlurBackground,
   CollectionModal,
   MyText,
   OrderCard,
@@ -23,7 +19,6 @@ import {
 } from '../../../../features/riderOrders/riderOrderSlice';
 import {ALL_ORDERS} from '../../../../graphQL/query/orders.query';
 import {colors} from '../../../../theme';
-import {useIsFocused} from '@react-navigation/native';
 
 export default function CurrentOrders({navigation}) {
   const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
@@ -35,16 +30,25 @@ export default function CurrentOrders({navigation}) {
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
+  const [isConnected, setIsConnected] = useState(null);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    fetchOrders();
+    if (isConnected) {
+      fetchOrders();
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+    return () => unsubscribe();
   }, []);
 
   const fetchOrders = async () => {
     const currDate = new Date().setUTCHours(0);
-    console.log('Date', currDate);
     const newOrders = await GetAllOrders({
       variables: {
         getOrderInput: {
@@ -54,7 +58,7 @@ export default function CurrentOrders({navigation}) {
     });
     dispatch(
       getOrders(
-        newOrders.data.getAllOrders.data?.map(value => {
+        newOrders?.data?.getAllOrders?.data?.map(value => {
           var order = orders?.find(redOrder => redOrder?.id == value?.id);
           if (order) {
             return {
@@ -73,18 +77,20 @@ export default function CurrentOrders({navigation}) {
 
   const openOverlay = (val, id) => {
     setShowModal(true);
+    navigation.navigate('Orders', {isModal: true});
     setAmount(val);
     setId(id);
   };
   const closeOverlay = () => {
     setShowModal(false);
+    navigation.navigate('Orders', {isModal: false});
     setAmount('');
     setId(null);
   };
 
   const onCollection = amount => {
-    console.log('Amount', amount);
     dispatch(collectAmouunt({id, amount, riderId}));
+    navigation.navigate('Orders', {isModal: false});
     setShowModal(false);
     setAmount('');
   };
@@ -93,7 +99,7 @@ export default function CurrentOrders({navigation}) {
     <View style={{flex: 1, alignItems: 'center'}}>
       {isFocused && <BackButtonHandler />}
       <FlatList
-        data={orders.some(val => val.status == 'UNPAID') ? orders : []}
+        data={orders?.some(val => val.status == 'UNPAID') ? orders : []}
         style={{width: '100%'}}
         contentContainerStyle={{alignItems: 'center'}}
         refreshControl={
@@ -109,13 +115,13 @@ export default function CurrentOrders({navigation}) {
               <ActivityIndicator size={'large'} color={colors.primary} />
             </View>
           ) : (
-            item.status == 'UNPAID' && (
+            item?.status == 'UNPAID' && (
               <OrderCard
-                name={item.User.firstName + ' ' + item.User.lastName}
-                amount={item.totalAmount}
-                order={item.OrderItems}
-                paid={item.status}
-                onCollect={() => openOverlay(item.totalAmount, item.id)}
+                name={item?.User.firstName + ' ' + item?.User.lastName}
+                amount={item?.totalAmount}
+                order={item?.OrderItems}
+                paid={item?.status}
+                onCollect={() => openOverlay(item?.totalAmount, item?.id)}
               />
             )
           )
@@ -142,14 +148,13 @@ export default function CurrentOrders({navigation}) {
           )
         }
       />
-      {showModal && (
-        <CollectionModal
-          isVisible={showModal}
-          totAmount={amount}
-          closeModal={closeOverlay}
-          onCollected={amount => onCollection(amount)}
-        />
-      )}
+      <CollectionModal
+        isVisible={showModal}
+        totAmount={amount}
+        closeModal={closeOverlay}
+        onCollected={amount => onCollection(amount)}
+      />
+      <BlurBackground show={showModal} />
     </View>
   );
 }

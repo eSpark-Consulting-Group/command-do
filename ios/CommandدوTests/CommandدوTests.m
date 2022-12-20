@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface eSpark_Lunch_AppTests : XCTestCase
+@interface CommandدوTests : XCTestCase
 
 @end
 
-@implementation eSpark_Lunch_AppTests
+@implementation CommandدوTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

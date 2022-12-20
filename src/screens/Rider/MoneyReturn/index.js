@@ -1,21 +1,15 @@
 import {useLazyQuery, useMutation} from '@apollo/client';
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {ActivityIndicator, Alert, FlatList, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import {
+  BlurBackground,
   CollectionModal,
   MoneyReturnCard,
   MyHeader,
-  MyText,
 } from '../../../components';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
+import {SCREEN_HEIGHT} from '../../../constants';
 import {
   toggleFinishCollection,
   toggleOrderPurchased,
@@ -26,8 +20,7 @@ import {colors} from '../../../theme';
 
 export default function MoneyReturn({navigation}) {
   const dispatch = useDispatch();
-  const [orders, setOrders] = useState([false]);
-  const [GetAllOrders, {loading: loadOrders}] = useLazyQuery(ALL_ORDERS);
+  const [GetAllOrders, {data, loading: loadOrders}] = useLazyQuery(ALL_ORDERS);
   const [UpdateOrder, {loading}] = useMutation(UPDATE_ORDER);
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
@@ -38,30 +31,25 @@ export default function MoneyReturn({navigation}) {
   }, []);
 
   const fetchOrders = async () => {
-    const currDate = new Date().setUTCHours(0);
-    console.log('Date', currDate);
-    const orders = await GetAllOrders({
+    GetAllOrders({
       variables: {
-        getOrderInput: {
-          createdAt: currDate,
-        },
+        getOrderInput: {},
       },
     });
-    console.log('orders.data', orders?.data?.getAllOrders?.data);
-    let order = orders?.data?.getAllOrders?.data?.filter(item => {
-      return item.returned == false && item.status == 'PAID';
-    });
-    if (order?.length < 1) {
-      Alert.alert('No Orders', 'No return orders left.!', [
-        {
-          text: 'Back to Orders',
-          onPress: () => navigateToOrders(),
-        },
-      ]);
-    }
-    console.log('orders', order);
-    setOrders(order);
   };
+
+  let order = data?.getAllOrders?.data?.filter(item => {
+    return item.returned == false && item.status == 'PAID';
+  });
+
+  if (order?.length < 1) {
+    Alert.alert('No Orders', 'No return orders left.!', [
+      {
+        text: 'Back to Orders',
+        onPress: () => navigateToOrders(),
+      },
+    ]);
+  }
 
   const navigateToOrders = () => {
     navigation.navigate('Orders');
@@ -83,7 +71,7 @@ export default function MoneyReturn({navigation}) {
 
   const onCollection = async amount => {
     let returnMoneyOrder = {};
-    orders.filter(item => {
+    order.filter(item => {
       if (item.id == id) {
         returnMoneyOrder = item;
       }
@@ -121,7 +109,9 @@ export default function MoneyReturn({navigation}) {
         titleStyle={{fontFamily: 'Poppins-Bold'}}
       />
       <FlatList
-        data={orders}
+        data={order}
+        style={{width: '100%'}}
+        contentContainerStyle={{alignItems: 'center'}}
         renderItem={({item}) =>
           loadOrders ? (
             <View
@@ -151,16 +141,15 @@ export default function MoneyReturn({navigation}) {
           )
         }
       />
-      {showModal && (
-        <CollectionModal
-          type={'return'}
-          isVisible={showModal}
-          totAmount={amount}
-          closeModal={closeOverlay}
-          isLoading={loading}
-          onCollected={amount => onCollection(amount)}
-        />
-      )}
+      <CollectionModal
+        type={'return'}
+        isVisible={showModal}
+        totAmount={amount}
+        closeModal={closeOverlay}
+        isLoading={loading}
+        onCollected={amount => onCollection(amount)}
+      />
+      <BlurBackground show={showModal} />
     </View>
   );
 }

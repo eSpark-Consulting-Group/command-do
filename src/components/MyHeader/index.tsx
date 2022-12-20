@@ -19,6 +19,8 @@ export default function MyHeader({
   onPressRight,
   rightIconType,
   leftIconType,
+  iconComponent,
+  leftIconComponent,
 }: {
   headerStyle?: ViewStyle;
   titleStyle?: TextStyle;
@@ -30,6 +32,8 @@ export default function MyHeader({
   onPressRight?: () => void;
   rightIconType?: string;
   leftIconType?: string;
+  iconComponent: React.ReactNode;
+  leftIconComponent: React.ReactNode;
 }) {
   return (
     <View
@@ -38,6 +42,7 @@ export default function MyHeader({
         backgroundColor: colors.primary,
         ...headerStyle,
       }}>
+      {leftIconComponent && leftIconComponent}
       {leftIcon && (
         <Icon
           name={leftIcon!!}
@@ -90,6 +95,11 @@ export default function MyHeader({
             color={colors.text_inverse}
             onPress={onPressRight}
           />
+        </View>
+      )}
+      {iconComponent && (
+        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
+          {iconComponent}
         </View>
       )}
     </View>

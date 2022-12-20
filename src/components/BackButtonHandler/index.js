@@ -14,7 +14,7 @@ const BackButtonHandler = () => {
   const backAction = () => {
     Alert.alert('Hold on!', 'Are you sure you want to exit App?', [
       {
-        text: 'Cancel',
+        text: 'No',
         onPress: () => null,
         style: 'cancel',
       },

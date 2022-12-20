@@ -7,13 +7,13 @@ import {
   Animated,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import * as Progress from 'react-native-progress';
 
 import {MyText} from '../../../components';
 import {OrderDone, TickGif} from '../../../assets/images';
 import {clearCart} from '../../../features/cart/cartSlice';
 import {styles} from './styles';
 import {colors} from '../../../theme';
+import {BackHandler} from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -27,31 +27,17 @@ function OrderConfirm({route, navigation}) {
   );
 
   useEffect(() => {
-    setTimeout(() => {
-      setProgress(1);
-      setTimeout(() => {
-        setProgresText('Complete');
-        Animated.spring(animatedValue, {
-          toValue: 0.9,
-          friction: 1,
-          tension: 100,
-          useNativeDriver: true,
-        }).start();
-      }, 200);
-    }, 300);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backTohome,
+    );
+    return () => backHandler.remove();
   }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (progressText === 'Complete') {
-        setIsTick(true);
-      }
-    }, 2000);
-  }, [progressText]);
 
   const backTohome = () => {
     dispatch(clearCart());
     navigation.navigate('Home');
+    return true;
   };
 
   return (
@@ -59,36 +45,7 @@ function OrderConfirm({route, navigation}) {
       <View style={styles.topCurveView}></View>
 
       <View style={styles.mainContent}>
-        {!isTick ? (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Animated.View
-              useNativeDriver={true}
-              style={{
-                position: 'absolute',
-                transform: [{scale: animatedValue}],
-              }}>
-              <MyText
-                label={progressText}
-                size="default"
-                style={{color: '#00000080'}}
-              />
-            </Animated.View>
-            <Progress.Circle
-              size={height * 0.12}
-              progress={progress}
-              thickness={height * 0.005}
-              color={colors.primary}
-              borderWidth={0}
-              unfilledColor="#00000020"
-            />
-          </View>
-        ) : (
-          <Image source={TickGif} style={styles.gifStyle} />
-        )}
+        <Image source={TickGif} style={styles.gifStyle} />
       </View>
       <View style={styles.bottomCurveView} />
       <Image source={OrderDone} style={styles.orderDoneGif} />

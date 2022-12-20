@@ -1,12 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {AllData} from '../../utils/data';
 
 const initialState = {
   cartItems: [],
   amount: 0,
   total: 0,
   isLoading: true,
-  menuItems: AllData,
   foodType: '',
 };
 
@@ -17,7 +15,7 @@ const cartSlice = createSlice({
     addItem: (state, action) => {
       const data = action.payload;
       const sameItem = state.cartItems.filter(item => item.name === data.name);
-
+      console.log('data', data);
       if (sameItem.length != 0) {
         state.cartItems.map((item, index) => {
           if (item.name === data.name) {
@@ -27,28 +25,9 @@ const cartSlice = createSlice({
               state.cartItems[index].quantity = data.quantity;
             }
           }
-          AllData?.map((allItems, index) => {
-            if (allItems.name === data.foodType) {
-              allItems.data.map((menuItem, menuIndex) => {
-                if (menuItem.name === data.name) {
-                  state.menuItems[index].data[menuIndex].quantity =
-                    data.quantity;
-                }
-              });
-            }
-          });
         });
       } else {
         state.cartItems = [...state.cartItems, data];
-        AllData?.map((allItems, index) => {
-          if (allItems.name === data.foodType) {
-            allItems.data.map((menuItem, menuIndex) => {
-              if (menuItem.name === data.name) {
-                state.menuItems[index].data[menuIndex].quantity = data.quantity;
-              }
-            });
-          }
-        });
       }
     },
     changeType: (state, action) => {
