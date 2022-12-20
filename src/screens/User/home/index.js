@@ -1,13 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
-  Dimensions,
   TouchableOpacity,
   ScrollView,
   Image,
-  LayoutAnimation,
   StatusBar,
-  KeyboardAvoidingView,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
@@ -15,16 +12,26 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {showMessage} from 'react-native-flash-message';
+import NetInfo from '@react-native-community/netinfo';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers,
+} from 'react-native-popup-menu';
+import {useIsFocused} from '@react-navigation/native';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 import {
   Cards,
   IndividualCard,
-  CustomizeModal,
   MyText,
   OverlayLoader,
   BackButtonHandler,
+  BlurBackground,
 } from '../../../components';
-import {AllData, profileData} from '../../../utils/data';
+import {profileData} from '../../../utils/data';
 import {initialDataUpdate} from '../../../features/profile/profileSlice';
 import {
   GET_ALL_CATEGORIES,
@@ -36,18 +43,17 @@ import styles from './styles';
 import {colors} from '../../../theme';
 import {logout} from '../../../features/userInfo/userInfoSlice';
 import {greetMessage} from '../../../utils/helperFunctions';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {useIsFocused} from '@react-navigation/native';
-import {SCREEN_HEIGHT} from '../../../constants';
-const {width, height} = Dimensions.get('window');
+import {clearCart} from '../../../features/cart/cartSlice';
+import {useLayoutAnimation} from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
-function Home({route, navigation}) {
+function Home({navigation}) {
   const reduxData = useSelector(store => store);
   const dispatch = useDispatch();
 
   const [isModal, setIsModal] = useState(false);
-  const [press, setPress] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(false);
+  const [isConnected, setIsConnected] = useState(null);
+  const [loadMore, setLoadMore] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState({
     name: 'All',
     image: null,
@@ -80,18 +86,11 @@ function Home({route, navigation}) {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
-  const [
-    LoadItems,
-    {
-      data: itemData,
-      refetch: refetchItems,
-      loading: LoadItemsLoading,
-      fetchMore,
-    },
-  ] = useLazyQuery(GET_ALL_ITEMS, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network',
-  });
+  const [LoadItems, {data: itemData, loading: LoadItemsLoading, fetchMore}] =
+    useLazyQuery(GET_ALL_ITEMS, {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-and-network',
+    });
 
   const categories = categoriesData?.getAllCategories?.data;
   const items =
@@ -106,9 +105,24 @@ function Home({route, navigation}) {
     dispatch(initialDataUpdate(profileData));
   }, []);
 
+  useEffect(() => {
+    if (!LoadItemsLoading) {
+      setLoadMore(false);
+    }
+  }, [LoadItemsLoading]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const isFocused = useIsFocused();
 
   const isSelect = item => {
+    onScrollToTopStart();
+    useLayoutAnimation();
     setSelectedCategory(item);
     if (item?.id == 0) {
       LoadItems({
@@ -137,15 +151,11 @@ function Home({route, navigation}) {
     }
   };
 
-  console.log(
-    ' Items itemData?.getAllItems ',
-    itemData?.getAllItems?.pagination,
-  );
-
   const onLoadMore = () => {
     if (itemData?.getAllItems?.pagination?.nextCursor == null) {
       return;
     }
+    setLoadMore(true);
     fetchMore({
       variables: {
         where: {
@@ -175,28 +185,14 @@ function Home({route, navigation}) {
   const _onSelect = () => {
     if (reduxData?.cart?.amount == 0) {
       showMessage({
-        message: `Warning`,
-        description: `Your cart is empty\nPlease add some items in your cart.`,
+        message: `Your cart is empty`,
+        description: `Please add some items in your cart.`,
         type: 'warning',
         icon: 'auto',
       });
     } else {
       navigation.navigate('Cart');
     }
-  };
-
-  const isModalVisible = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
-    setIsModal(!isModal);
   };
 
   const onReachEnd = () => {
@@ -208,308 +204,310 @@ function Home({route, navigation}) {
   };
 
   const goToNavigation = navigate => {
+    setIsModal(false);
     navigation.navigate(navigate);
-    setIsModal(!isModal);
   };
 
   const logoutHandler = () => {
+    setIsModal(false);
     dispatch(logout());
+    dispatch(clearCart());
   };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-      }}>
-      {isFocused && <BackButtonHandler />}
-      <StatusBar backgroundColor={colors.primary} />
-      <OverlayLoader
-        show={
-          LoadItemsLoading ||
-          LoadCategoriesLoading ||
-          LoadCategoriesWithItemLoading
-        }
-      />
-
-      <CustomizeModal
-        isVisible={isModal}
-        setBackDrop={isModalVisible}
-        navigation={navigation}
-        renderData={
-          <View style={styles.modalInner}>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={() => goToNavigation('Profile')}>
-              <Icon
-                name="person"
-                size={height * 0.025}
-                color={colors.primary}
-                style={styles.btnIcon}
-              />
-              <MyText
-                label={'Profile'}
-                size={'title'}
-                textStyle={{color: colors.text_normal + '80'}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={() => goToNavigation('ChangePassword')}>
-              <MCI
-                name="lastpass"
-                size={height * 0.025}
-                color={colors.primary}
-                style={styles.btnIcon}
-              />
-              <MyText
-                label={'Change Password'}
-                size={'title'}
-                textStyle={{color: colors.text_normal + '80'}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={() => goToNavigation('OrderHistory')}>
-              <Icon
-                name="ios-newspaper"
-                size={height * 0.025}
-                color={colors.primary}
-                style={styles.btnIcon}
-              />
-              <MyText
-                label={'Orders'}
-                size={'title'}
-                textStyle={{color: colors.text_normal + '80'}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.buttonContainer, {borderBottomWidth: height * 0}]}
-              onPress={() => logoutHandler()}>
-              <Icon
-                name="ios-exit"
-                size={height * 0.025}
-                color={colors.primary}
-                style={styles.btnIcon}
-              />
-              <MyText
-                label={'Log out'}
-                size={'title'}
-                textStyle={{color: colors.text_normal + '80'}}
-              />
-            </TouchableOpacity>
-          </View>
-        }
-      />
-
-      <View style={styles.mainContainer}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={() => setIsModal(!isModal)}>
-            <Icon
-              name="person-circle-outline"
-              size={moderateVerticalScale(28)}
-              color={colors.primary}
-            />
-          </TouchableOpacity>
-          <View style={styles.headerCenterComponentStyle}>
-            <MyText
-              label={"What's your order?🍔"}
-              textStyle={{color: colors.text_normal, fontSize: height * 0.024}}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('SearchItem', {navigateTo: 'Item'})
-            }>
-            <Icon
-              name="search"
-              size={moderateVerticalScale(28)}
-              color={colors.primary}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View
-          style={{
-            flex: 0.5,
-            justifyContent: 'center',
-            paddingHorizontal: 15,
-            marginVertical: 15,
-          }}>
-          <MyText
-            label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
-            size={'subHeading'}
-          />
-          <MyText label={greetMessage()} />
-        </View>
-
-        {remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount >
-          0 && (
-          <View
-            style={{
-              justifyContent: 'center',
-              flex: 0.5,
-              borderRadius: 15,
-              backgroundColor: '#dff2e4',
-              width: width * 0.9,
-              alignItems: 'center',
-              alignSelf: 'center',
-              flexDirection: 'row',
-              marginVertical: height * 0.007,
-            }}>
-            <MyText
-              label={'You have a remaining amount of '}
-              textStyle={{justifyContent: 'center', textAlign: 'center'}}
-            />
-            <MyText
-              label={`Rs:${remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount}`}
-              textStyle={{
-                justifyContent: 'center',
-                textAlign: 'center',
-                fontWeight: 'bold',
-                bottom: 2,
-              }}
-            />
-          </View>
-        )}
-        <View style={styles.categoryContainer}>
-          {categories && (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {[{name: 'All', image: null, id: 0}, ...categories]?.map(
-                (item, index) => (
+    <>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: colors.background,
+        }}>
+        {isFocused && <BackButtonHandler />}
+        <StatusBar
+          backgroundColor={
+            isModal || isConnected == false
+              ? colors.text_normal
+              : colors.primary
+          }
+        />
+        <OverlayLoader
+          show={
+            !loadMore &&
+            (LoadItemsLoading ||
+              LoadCategoriesLoading ||
+              LoadCategoriesWithItemLoading)
+          }
+        />
+        <View style={styles.mainContainer}>
+          <View style={styles.headerContainer}>
+            <Menu
+              opened={isModal}
+              onBackdropPress={() => setIsModal(false)}
+              renderer={renderers.Popover}
+              rendererProps={{
+                placement: 'bottom',
+              }}>
+              <MenuTrigger
+                children={
                   <TouchableOpacity
-                    key={index}
-                    style={{
-                      backgroundColor:
-                        selectedCategory?.id == item?.id
-                          ? colors.primary
-                          : colors.background,
-                      elevation:
-                        selectedCategory?.id == item?.id ? height * 0.003 : 0,
-                      paddingHorizontal: item.logo
-                        ? height * 0.01
-                        : height * 0.02,
-                      borderWidth:
-                        selectedCategory?.id == item?.id ? 0 : height * 0.001,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      paddingVertical: height * 0.005,
-                      borderColor: '#00000030',
-                      marginHorizontal: height * 0.005,
-                      borderRadius: height * 0.01,
-                    }}
-                    onPress={() => isSelect(item)}>
-                    <View>
-                      {item.image && (
-                        <Image
-                          source={{uri: item?.image}}
-                          style={styles.categoryImage}
-                        />
-                      )}
-                    </View>
-
-                    <View>
-                      <MyText
-                        label={item?.name}
-                        size={'title'}
-                        textStyle={{
-                          color:
-                            selectedCategory?.id == item?.id
-                              ? colors.text_inverse
-                              : colors.text_normal,
-                        }}
-                      />
-                    </View>
+                    style={{zIndex: 2}}
+                    onPress={() => setIsModal(!isModal)}>
+                    <Icon
+                      name="person-circle-outline"
+                      size={moderateVerticalScale(28)}
+                      color={colors.primary}
+                    />
                   </TouchableOpacity>
-                ),
+                }
+              />
+              <MenuOptions customStyles={{optionsContainer: styles.modalInner}}>
+                <MenuOption
+                  style={styles.buttonContainer}
+                  onSelect={() => goToNavigation('Profile')}
+                  children={
+                    <>
+                      <MCI
+                        name="account"
+                        size={moderateVerticalScale(20)}
+                        color={colors.primary}
+                        style={styles.btnIcon}
+                      />
+                      <MyText
+                        label={'Profile'}
+                        size={'title'}
+                        textStyle={{color: colors.text_normal + '80'}}
+                      />
+                    </>
+                  }
+                />
+                <MenuOption
+                  style={styles.buttonContainer}
+                  onSelect={() => goToNavigation('ChangePassword')}
+                  children={
+                    <>
+                      <MCI
+                        name="shield-lock"
+                        size={moderateVerticalScale(20)}
+                        color={colors.primary}
+                        style={styles.btnIcon}
+                      />
+                      <MyText
+                        label={'Change Password'}
+                        size={'title'}
+                        textStyle={{color: colors.text_normal + '80'}}
+                      />
+                    </>
+                  }
+                />
+                <MenuOption
+                  style={styles.buttonContainer}
+                  onSelect={() => goToNavigation('OrderHistory')}
+                  children={
+                    <>
+                      <MCI
+                        name="newspaper-variant-outline"
+                        size={moderateVerticalScale(20)}
+                        color={colors.primary}
+                        style={styles.btnIcon}
+                      />
+                      <MyText
+                        label={'Orders'}
+                        size={'title'}
+                        textStyle={{color: colors.text_normal + '80'}}
+                      />
+                    </>
+                  }
+                />
+                <MenuOption
+                  style={styles.buttonContainer}
+                  onSelect={logoutHandler}
+                  children={
+                    <>
+                      <MCI
+                        name="exit-to-app"
+                        size={moderateVerticalScale(20)}
+                        color={colors.primary}
+                        style={styles.btnIcon}
+                      />
+                      <MyText
+                        label={'Log out'}
+                        size={'title'}
+                        textStyle={{color: colors.text_normal + '80'}}
+                      />
+                    </>
+                  }
+                />
+              </MenuOptions>
+            </Menu>
+            <View style={styles.headerCenterComponentStyle}>
+              <MyText
+                label={"What's your order?🍔"}
+                textStyle={{
+                  fontSize: moderateVerticalScale(20),
+                }}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('SearchItem', {navigateTo: 'Item'})
+              }>
+              <Icon
+                name="search"
+                size={moderateVerticalScale(28)}
+                color={colors.primary}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.greetingMsgContainer}>
+            <MyText
+              label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
+              size={'subHeading'}
+            />
+            <MyText label={greetMessage()} />
+          </View>
+
+          {remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount >
+            0 && (
+            <View style={styles.remainingAmountAlertContainer}>
+              <MyText
+                label={'You have a remaining amount of '}
+                textStyle={styles.remainingAmountText}
+              />
+              <MyText
+                label={`Rs: ${remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount}`}
+                textStyle={{
+                  fontFamily: 'Poppins-Bold',
+                }}
+              />
+            </View>
+          )}
+          <View style={styles.categoryContainer}>
+            {categories && (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {[{name: 'All', image: null, id: 0}, ...categories]?.map(
+                  (item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={{
+                        ...styles.categoryButton,
+                        backgroundColor:
+                          selectedCategory?.id == item?.id
+                            ? colors.primary
+                            : colors.background,
+                        paddingHorizontal: item.logo
+                          ? moderateVerticalScale(7)
+                          : moderateVerticalScale(14),
+                      }}
+                      onPress={() => isSelect(item)}>
+                      <View>
+                        {item.image && (
+                          <Image
+                            source={{uri: item?.image}}
+                            style={styles.categoryImage}
+                          />
+                        )}
+                      </View>
+                      <View>
+                        <MyText
+                          label={item?.name}
+                          size={'title'}
+                          textStyle={{
+                            color:
+                              selectedCategory?.id == item?.id
+                                ? colors.text_inverse
+                                : colors.text_normal,
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ),
+                )}
+              </ScrollView>
+            )}
+          </View>
+          {categories && (
+            <View
+              style={{
+                flex: 1,
+              }}>
+              {selectedCategory?.id == 0 ? (
+                <Cards data={items || []} navigation={navigation} />
+              ) : (
+                <IndividualCard
+                  fetchMoreOnEnd={onLoadMore}
+                  cursor={itemData?.getAllItems?.pagination?.nextCursor}
+                  data={items || []}
+                  loading={LoadItemsLoading}
+                  navigation={navigation}
+                  onReachEnd={onReachEnd}
+                  onScrollToTopStart={onScrollToTopStart}
+                />
               )}
-            </ScrollView>
+            </View>
+          )}
+
+          {!reachedEnd || selectedCategory?.id == 0 ? (
+            <TouchableOpacity
+              style={styles.cartContainerStyle}
+              disabled={reduxData?.cart?.amount == 0}
+              onPress={_onSelect}>
+              <AD
+                name="shoppingcart"
+                size={moderateVerticalScale(25)}
+                color={colors.text_inverse}
+                style={{width: moderateVerticalScale(27)}}
+              />
+              {reduxData?.cart?.amount != 0 && (
+                <View style={styles.cartAmountStyle}>
+                  <MyText
+                    label={
+                      reduxData?.cart?.amount > 99
+                        ? '99+'
+                        : reduxData?.cart?.amount
+                    }
+                    size={'subTitle'}
+                    textStyle={{color: colors.text_normal}}
+                  />
+                </View>
+              )}
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              disabled={reduxData?.cart?.amount == 0}
+              style={styles.cartButtonStyle}
+              onPress={_onSelect}>
+              <AD
+                name="shoppingcart"
+                size={moderateVerticalScale(28)}
+                color={colors.text_inverse}
+                style={{
+                  position: 'absolute',
+                  left: moderateVerticalScale(14),
+                }}
+              />
+              <MyText
+                label={'Checkout Cart'}
+                title
+                textStyle={{color: colors.text_inverse}}
+              />
+              {reduxData?.cart?.amount != 0 && (
+                <View style={styles.cartCountStyle}>
+                  <MyText
+                    label={
+                      reduxData?.cart?.amount > 99
+                        ? '99+'
+                        : reduxData?.cart?.amount
+                    }
+                    textStyle={{color: colors.text_inverse}}
+                  />
+                </View>
+              )}
+            </TouchableOpacity>
           )}
         </View>
-        {
-          <View
-            style={{
-              height: SCREEN_HEIGHT * 0.72,
-            }}>
-            {selectedCategory?.id == 0 ? (
-              <Cards data={items || []} navigation={navigation} />
-            ) : (
-              <IndividualCard
-                fetchMoreOnEnd={onLoadMore}
-                cursor={itemData?.getAllItems?.pagination?.nextCursor}
-                data={items || []}
-                loading={LoadItemsLoading}
-                navigation={navigation}
-                onReachEnd={onReachEnd}
-                onScrollToTopStart={onScrollToTopStart}
-              />
-            )}
-          </View>
-        }
-
-        {!reachedEnd ? (
-          <TouchableOpacity
-            style={styles.cartContainerStyle}
-            disabled={reduxData?.cart?.amount == 0 && press}
-            onPress={_onSelect}>
-            <AD
-              name="shoppingcart"
-              size={moderateVerticalScale(25)}
-              color={colors.text_inverse}
-              style={{width: moderateVerticalScale(27)}}
-            />
-            {reduxData?.cart?.amount != 0 && (
-              <View style={styles.cartAmountStyle}>
-                <MyText
-                  label={
-                    reduxData?.cart?.amount > 99
-                      ? '99+'
-                      : reduxData?.cart?.amount
-                  }
-                  subTitle
-                  textStyle={{color: colors.text_normal}}
-                />
-              </View>
-            )}
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            ddisabled={reduxData?.cart?.amount == 0 && press}
-            style={{
-              ...styles.cartButtonStyle,
-            }}
-            onPress={_onSelect}>
-            <AD
-              name="shoppingcart"
-              size={height * 0.04}
-              color={colors.text_inverse}
-              style={{
-                position: 'absolute',
-                left: height * 0.02,
-              }}
-            />
-            <MyText
-              label={'Checkout Cart'}
-              title
-              textStyle={{color: colors.text_inverse}}
-            />
-            {reduxData?.cart?.amount != 0 && (
-              <View style={styles.cartCountStyle}>
-                <MyText
-                  label={
-                    reduxData?.cart?.amount > 99
-                      ? '99+'
-                      : reduxData?.cart?.amount
-                  }
-                  subTitle
-                  textStyle={{color: colors.text_inverse}}
-                />
-              </View>
-            )}
-          </TouchableOpacity>
-        )}
       </View>
-    </View>
+      <BlurBackground show={isModal} />
+    </>
   );
 }
 

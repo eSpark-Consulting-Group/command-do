@@ -6,7 +6,6 @@ import {
   Pressable,
   FlatList,
   ActivityIndicator,
-  LayoutAnimation,
   TouchableOpacity,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,24 +15,27 @@ import {NotFound} from '../../assets/images';
 import {colors} from '../../theme';
 import {AddToCartBtn} from '../AddToCartBtn';
 import {SCREEN_HEIGHT} from '../../constants';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import {useLayoutAnimation} from '../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 const {width, height} = Dimensions.get('window');
 
 const IndividualCard = props => {
-  const {label, data, navigation, fetchMoreOnEnd, loading, cursor} = props;
+  const {label, data, navigation, fetchMoreOnEnd, loading, cursor, refVal} =
+    props;
   const [isLoading, setIsLoading] = useState(false);
-  const count = useSelector((store: any) => store);
-  const [allData, setAllData] = useState<any>([]);
   const cart = useSelector((store: any) => store.cart);
+  const itemsList = useRef(null);
 
   useEffect(() => {
     setIsLoading(true);
-  }, [allData]);
+  }, []);
+
   useEffect(() => {
-    const menuData = count?.cart?.menuItems?.find(
-      (item: any) => item.name === count?.cart?.foodType,
-    );
-    setAllData(menuData);
-  }, [count?.cart?.foodType, count?.cart]);
+    console.log('data changed');
+    //@ts-ignore
+    itemsList?.current?.scrollToOffset({animated: false, offset: 0});
+  }, [data]);
+
   return (
     isLoading && (
       <View style={{flex: 1}}>
@@ -52,38 +54,44 @@ const IndividualCard = props => {
           }}>
           <FlatList
             data={data || []}
+            ref={itemsList}
             showsVerticalScrollIndicator={false}
             onScroll={event => {
-              LayoutAnimation.configureNext({
-                duration: 300,
-                create: {
-                  type: LayoutAnimation.Types.easeInEaseOut,
-                  property: LayoutAnimation.Properties.opacity,
-                },
-                update: {
-                  type: LayoutAnimation.Types.easeInEaseOut,
-                },
-              });
-
+              useLayoutAnimation();
               if (
                 event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1 <
                 event?.nativeEvent?.contentSize?.height
               ) {
                 props?.onScrollToTopStart();
               } else {
-                props?.onReachEnd();
+                if (cursor == null) {
+                  props?.onReachEnd();
+                }
               }
             }}
             onEndReached={() => {
-              if (cursor != null) {
+              if (cursor != null && !loading) {
                 fetchMoreOnEnd();
+                //@ts-ignore
+                itemsList?.current?.scrollToEnd();
               }
             }}
             ListFooterComponent={
               loading && data.length > 0 ? (
-                <ActivityIndicator size={'large'} />
+                <View
+                  style={{
+                    height: moderateVerticalScale(55),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginVertical: 10,
+                  }}>
+                  <ActivityIndicator size={'large'} />
+                  <MyText
+                    label={`Loading More ${data[0].Category?.name} Items...`}
+                  />
+                </View>
               ) : (
-                <View style={{height: height * 0.08}} />
+                <View style={{height: moderateVerticalScale(55)}} />
               )
             }
             renderItem={({item: dataItem, index: dataIndex}) => {
@@ -94,9 +102,11 @@ const IndividualCard = props => {
                 <Pressable
                   key={dataIndex}
                   style={{
-                    marginVertical: 5,
-                    paddingHorizontal: 5,
-                    marginHorizontal: 10,
+                    margin: moderateVerticalScale(5),
+                    padding: moderateVerticalScale(10),
+                    elevation: 2,
+                    backgroundColor: colors.background,
+                    borderRadius: height * 0.02,
                   }}
                   onPress={() =>
                     navigation.navigate('Item', {
@@ -110,7 +120,6 @@ const IndividualCard = props => {
                       width: width * 0.9,
                       backgroundColor: colors.background,
                       borderRadius: height * 0.02,
-                      elevation: height * 0.003,
                     }}>
                     <Image
                       source={{uri: dataItem?.image}}
@@ -127,16 +136,22 @@ const IndividualCard = props => {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      marginTop: 5,
                     }}>
-                    <View style={{alignItems: 'flex-start'}}>
-                      <MyText label={dataItem?.name} />
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-start',
+                      }}>
+                      <MyText
+                        label={dataItem?.name}
+                        numberOfLines={2}
+                        textStyle={{marginVertical: moderateVerticalScale(2)}}
+                      />
                       <View
                         style={{
                           borderColor: '#00000030',
                           borderWidth: height * 0.001,
                           paddingHorizontal: 5,
-
                           borderRadius: height * 0.005,
                         }}>
                         <MyText label={`Rs.${dataItem?.price}`} />
@@ -154,13 +169,13 @@ const IndividualCard = props => {
                   {cartItem != undefined && cartItem?.quantity != 0 && (
                     <View
                       style={{
-                        height: height * 0.04,
-                        width: height * 0.04,
+                        height: moderateVerticalScale(28),
+                        width: moderateVerticalScale(28),
                         backgroundColor: colors.primary,
                         borderRadius: height * 1,
                         position: 'absolute',
-                        right: height * -0.005,
-                        top: height * -0.005,
+                        right: moderateVerticalScale(-4),
+                        top: moderateVerticalScale(-4),
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}>
@@ -170,6 +185,7 @@ const IndividualCard = props => {
                             ? '99+'
                             : Number(cartItem?.quantity).toString()
                         }
+                        size={'subTitle'}
                         textStyle={{color: colors.background}}
                       />
                     </View>

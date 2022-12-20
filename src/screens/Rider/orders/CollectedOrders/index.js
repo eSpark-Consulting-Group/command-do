@@ -1,13 +1,6 @@
 import {useMutation} from '@apollo/client';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Alert,
-  FlatList,
-} from 'react-native';
+import {Text, View, TouchableOpacity, Alert, FlatList} from 'react-native';
 import {moderateVerticalScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -51,7 +44,6 @@ export default function CollectedOrders({navigation}) {
         finalOrders.push(obj);
       }
     });
-    // console.log('Final Orders', finalOrders);
     Alert.alert('Confirmation', 'Are you sure you want to Finish Collection?', [
       {text: 'Yes', onPress: () => updateOrder(finalOrders)},
       {text: 'No', style: 'cancel'},
@@ -63,7 +55,6 @@ export default function CollectedOrders({navigation}) {
   };
 
   const revertConfirmation = id => {
-    console.log();
     Alert.alert(
       'Confirmation',
       'Are you sure you want to revert the Collection?',
@@ -84,13 +75,19 @@ export default function CollectedOrders({navigation}) {
     <View style={{flex: 1, alignItems: 'center'}}>
       <FlatList
         data={
-          orders.some(val => val.status == 'PAID' && val.returned == false)
+          orders?.some(
+            val =>
+              val.status == 'PAID' &&
+              val.returned == false &&
+              val?.amountCollected,
+          )
             ? orders
             : []
         }
         renderItem={({item}) =>
           item.status == 'PAID' &&
-          item.returned == false && (
+          item.returned == false &&
+          item?.amountCollected && (
             <OrderCard
               name={item.User.firstName + ' ' + item.User.lastName}
               amount={item.totalAmount}
@@ -116,15 +113,23 @@ export default function CollectedOrders({navigation}) {
       <TouchableOpacity
         onPress={finishCollection}
         disabled={
-          !orders.some(val => val.status == 'PAID' && val.returned == false)
+          !orders?.some(
+            val =>
+              val.status == 'PAID' &&
+              val.returned == false &&
+              val?.amountCollected,
+          )
         }
         style={{
           width: '95%',
           alignItems: 'center',
           justifyContent: 'center',
           height: moderateVerticalScale(50),
-          backgroundColor: orders.some(
-            val => val.status == 'PAID' && val.returned == false,
+          backgroundColor: orders?.some(
+            val =>
+              val.status == 'PAID' &&
+              val.returned == false &&
+              val?.amountCollected,
           )
             ? colors.primary
             : '#ccc',

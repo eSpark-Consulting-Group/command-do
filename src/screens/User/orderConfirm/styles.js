@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 5,
+    elevation: 2,
     position: 'absolute',
     bottom: height * 0.03,
   },
