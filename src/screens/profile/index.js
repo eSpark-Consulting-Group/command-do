@@ -22,6 +22,7 @@ import {
   uploadImage,
 } from '../../utils/helperFunctions';
 import {colors} from '../../theme';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -111,7 +112,7 @@ function Profile({route, navigation}) {
     }
   };
   return (
-    <ScrollView style={{height: height * 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: colors.background}}>
       <OverlayLoader show={loader} />
       <CustomizeModal
         isVisible={isModal}
@@ -164,7 +165,7 @@ function Profile({route, navigation}) {
           <View>
             <Icon
               name="ios-chevron-back-outline"
-              size={height * 0.03}
+              size={moderateVerticalScale(20)}
               color={colors.text_inverse}
             />
           </View>
@@ -176,7 +177,7 @@ function Profile({route, navigation}) {
             <View>
               <Icon
                 name="ios-pencil"
-                size={height * 0.018}
+                size={moderateVerticalScale(12)}
                 color={colors.text_inverse}
               />
             </View>
@@ -202,45 +203,47 @@ function Profile({route, navigation}) {
           <View>
             <Icon
               name={editMode ? 'save-sharp' : 'ios-pencil'}
-              size={height * 0.025}
+              size={moderateVerticalScale(18)}
               color={colors.text_inverse}
             />
           </View>
         </TouchableOpacity>
       </View>
-      <View style={styles.profileFormStyle}>
-        {getData &&
-          getData.map((item, index) => (
-            <View key={index} style={styles.profileFormAlign}>
-              <MyText
-                label={item.name}
-                subTitle
-                textStyle={{color: '#00000060'}}
-              />
-              {editMode && item.name != 'Email' ? (
-                <TextInput
-                  style={styles.profileFormMobileNumber}
-                  maxLength={item.name == 'Mobile Number' ? 11 : 30}
-                  onChangeText={value => onChangeNumber(value, index)}
-                  value={item.value}
-                  keyboardType={
-                    item.name == 'Mobile Number' ? 'number-pad' : 'default'
-                  }
-                />
-              ) : (
+      <ScrollView style={{backgroundColor: 'white'}}>
+        <View style={styles.profileFormStyle}>
+          {getData &&
+            getData.map((item, index) => (
+              <View key={index} style={styles.profileFormAlign}>
                 <MyText
-                  label={item.value}
-                  title
-                  textStyle={{
-                    color: colors.primary,
-                    marginVertical: height * 0.015,
-                  }}
+                  label={item.name}
+                  subTitle
+                  textStyle={{color: '#00000060'}}
                 />
-              )}
-            </View>
-          ))}
-      </View>
-    </ScrollView>
+                {editMode && item.name != 'Email' ? (
+                  <TextInput
+                    style={styles.profileFormMobileNumber}
+                    maxLength={item.name == 'Mobile Number' ? 11 : 30}
+                    onChangeText={value => onChangeNumber(value, index)}
+                    value={item.value}
+                    keyboardType={
+                      item.name == 'Mobile Number' ? 'number-pad' : 'default'
+                    }
+                  />
+                ) : (
+                  <MyText
+                    label={item.value}
+                    title
+                    textStyle={{
+                      color: colors.primary,
+                      marginVertical: height * 0.015,
+                    }}
+                  />
+                )}
+              </View>
+            ))}
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 

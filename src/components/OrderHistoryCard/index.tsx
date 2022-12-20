@@ -32,6 +32,7 @@ export default function OrderHistoryCard({
   paidAmount,
   remainingAmount,
   onDelete,
+  returned,
 }: {
   name: string;
   amount: number;
@@ -42,6 +43,7 @@ export default function OrderHistoryCard({
   paid: string;
   paidAmount: number;
   remainingAmount: number;
+  returned: boolean;
 }) {
   return (
     <View style={styles.cardContainer}>
@@ -70,17 +72,17 @@ export default function OrderHistoryCard({
               backgroundColor:
                 paidAmount == 0
                   ? '#F0AD4E'
-                  : remainingAmount > 0
+                  : remainingAmount > 0 && returned == false
                   ? '#D9534F'
                   : '#5CB85C',
-              elevation: 5,
+              elevation: 2,
               padding: 5,
             }}>
             <MyText
               label={
                 paidAmount == 0
                   ? 'Not Paid'
-                  : remainingAmount > 0
+                  : remainingAmount > 0 && returned == false
                   ? 'Not Received'
                   : 'Received'
               }
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: width * 0.02,
     backgroundColor: colors.text_inverse,
-    elevation: 5,
+    elevation: 2,
     marginVertical: 5,
   },
   cardInnerContainer: {

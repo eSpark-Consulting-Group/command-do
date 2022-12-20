@@ -17,7 +17,6 @@ import OrderList from './Admin/ordersList';
 import Users from './Admin/users';
 import AddFormItem from './Admin/items/addForm';
 import AddFormUser from './Admin/users/addForm';
-import SearchScreen from './Admin/items/SearchScreen';
 
 import Orders from './Rider/orders';
 import CollectedOrders from './Rider/orders/CollectedOrders';
@@ -43,7 +42,6 @@ export {
   PurchasingList,
   CurrentOrders,
   AddFormUser,
-  SearchScreen,
   OrderHistory,
   SearchItem,
   ChangePassword,

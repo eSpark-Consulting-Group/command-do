@@ -1,4 +1,4 @@
-package com.espark_lunch_app;
+package com.commanddo;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -14,7 +14,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "eSpark_Lunch_App";
+    return "Commandدو";
   }
 
 

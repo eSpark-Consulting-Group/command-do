@@ -141,6 +141,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: SCREEN_HEIGHT * 0.003,
+    elevation: 2,
   },
 });
