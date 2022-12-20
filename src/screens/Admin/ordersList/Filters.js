@@ -8,6 +8,7 @@ import moment from 'moment';
 import {GapView, MyHeader, MyText, TouchRipple} from '../../../components';
 import {colors} from '../../../theme';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 export default function FilterScreen() {
   const navigation = useNavigation();
@@ -90,13 +91,9 @@ export default function FilterScreen() {
   const handleChangeLabel = (sd, ed) => {
     const startD = moment(sd).utc(true).toISOString().split('T');
     const endD = moment(ed).utc(true).toISOString().split('T');
-    // const startD = moment(sd).utc(true);
-    // const endD = moment(ed).utc(true);
     let tempArr = [...orderFilterFields];
     console.log('sd', startD[0]);
     console.log('ed', endD[0]);
-    // console.log('sd', startD[0]);
-    // console.log('ed', endD[0]);
     tempArr[0]['label'] = `${startD[0].toString()} - ${endD[0].toString()}`;
     setOrderFilterFields(tempArr);
   };
@@ -130,12 +127,23 @@ export default function FilterScreen() {
         }}
       />
       <DatePicker
-        // style={{display: 'none'}}
         isVisible={show}
         onConfirm={value => handleRangeDates(value)}
         closeModal={() => setShow(false)}
         markText={'Select Date Range'}
         ButtonText={'Confirm'}
+        ButtonTextStyle={{
+          color: colors.text_inverse,
+          fontWeight: 'bold',
+          fontSize: moderateVerticalScale(18),
+        }}
+        ButtonStyle={{
+          backgroundColor: colors.primary,
+          alignItems: 'center',
+          paddingVertical: moderateVerticalScale(10),
+          borderRadius: moderateVerticalScale(5),
+          elevation: 2,
+        }}
         selectedBgColor={colors.primary}
         customStyles={{
           placeholderText: {fontSize: 20}, // placeHolder style
@@ -197,7 +205,7 @@ const styles = StyleSheet.create({
   listContainer: {},
   listItem: {
     backgroundColor: '#fff',
-    elevation: 3,
+    elevation: 2,
     marginVertical: 8,
   },
 });

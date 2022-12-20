@@ -65,7 +65,7 @@ export default function OrderCard({
             ...styles.cardDataContainer2,
             borderRadius: 5,
             backgroundColor: colors.primary,
-            elevation: 5,
+            elevation: 2,
             padding: 5,
           }}>
           <MyText
@@ -166,10 +166,10 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: width * 0.95,
     paddingVertical: 5,
-    borderRadius: 5,
+    borderRadius: moderateVerticalScale(5),
     paddingHorizontal: width * 0.02,
-    backgroundColor: colors.text_inverse,
-    elevation: 5,
+    backgroundColor: colors.background,
+    elevation: 2,
     marginVertical: 5,
   },
   cardInnerContainer: {

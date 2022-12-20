@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "eSpark_Lunch_App.app"
-               BlueprintName = "eSpark_Lunch_App"
-               ReferencedContainer = "container:eSpark_Lunch_App.xcodeproj">
+               BuildableName = "Commandدو.app"
+               BlueprintName = "Commandدو"
+               ReferencedContainer = "container:Commandدو.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "eSpark_Lunch_AppTests.xctest"
-               BlueprintName = "eSpark_Lunch_AppTests"
-               ReferencedContainer = "container:eSpark_Lunch_App.xcodeproj">
+               BuildableName = "CommandدوTests.xctest"
+               BlueprintName = "CommandدوTests"
+               ReferencedContainer = "container:Commandدو.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "eSpark_Lunch_App.app"
-            BlueprintName = "eSpark_Lunch_App"
-            ReferencedContainer = "container:eSpark_Lunch_App.xcodeproj">
+            BuildableName = "Commandدو.app"
+            BlueprintName = "Commandدو"
+            ReferencedContainer = "container:Commandدو.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "eSpark_Lunch_App.app"
-            BlueprintName = "eSpark_Lunch_App"
-            ReferencedContainer = "container:eSpark_Lunch_App.xcodeproj">
+            BuildableName = "Commandدو.app"
+            BlueprintName = "Commandدو"
+            ReferencedContainer = "container:Commandدو.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

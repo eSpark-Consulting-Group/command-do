@@ -167,7 +167,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.espark_lunch_app"
+        applicationId "com.commanddo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
