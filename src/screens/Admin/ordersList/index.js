@@ -116,7 +116,7 @@ export default function OrdersList() {
             navigation.navigate('Order_Details', {
               mode: 'date',
               data: {
-                date: new Date(item?.createdAt).setUTCHours(0),
+                date: new Date(new Date(item?.createdAt).setUTCHours(0)),
               },
             })
           }>
@@ -278,40 +278,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  topHeader: {
-    backgroundColor: colors.primary,
-    padding: 8,
-    height: '10%',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    elevation: 5,
-  },
-  outlineBtn: {
-    flexDirection: 'row',
-    width: '40%',
-    height: '80%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    borderRadius: 100,
-    elevation: 2,
-    paddingHorizontal: 10,
-  },
-  modalInner: {
-    height: SCREEN_HEIGHT * 0.1,
-    width: SCREEN_WIDTH * 0.3,
-    position: 'absolute',
-    backgroundColor: colors.background,
-    borderRadius: SCREEN_HEIGHT * 0.005,
-    zIndex: 1,
-    top: SCREEN_HEIGHT * 0.13,
-    left: SCREEN_HEIGHT * 0.19,
-    elevation: SCREEN_HEIGHT * 0.003,
-    justifyContent: 'center',
-  },
-  btnIcon: {
-    paddingRight: SCREEN_HEIGHT * 0.01,
   },
   sectionHeader: {
     paddingTop: 2,

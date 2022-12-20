@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
 
-target 'eSpark_Lunch_App' do
+target 'Commandدو' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -19,7 +19,7 @@ target 'eSpark_Lunch_App' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'eSpark_Lunch_AppTests' do
+  target 'CommandدوTests' do
     inherit! :complete
     # Pods for testing
   end
