@@ -18,10 +18,10 @@ import {useMutation} from '@apollo/client';
 
 import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
 import {Delivery} from '../../../assets/images';
-import {MyText} from '../../../components';
+import {BlurBackground, MyText} from '../../../components';
 import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
 import {colors} from '../../../theme';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 import {isValidTimeToOrder} from '../../../utils/helperFunctions';
 import {showMessage} from 'react-native-flash-message';
 import {KeyboardAvoidingView} from 'react-native';
@@ -54,25 +54,13 @@ function Cart({route, navigation}) {
   }, [count?.cart?.cartItems]);
 
   useEffect(() => {
-    if (count?.cart?.cartItems.length < 1) {
-      showMessage({
-        message: 'Warning',
-        description: `Your cart is empty\nPlease add some items in your cart.`,
-        type: 'warning',
-        icon: 'auto',
-      });
-      navigation.goBack();
-    }
-  }, [count?.cart?.cartItems]);
-
-  useEffect(() => {
     if (timer.current) {
       clearTimeout(timer.current);
     }
     timer.current = setTimeout(() => {
       setIsEditQty(false);
     }, 3000);
-  }, [isEditQty, getData]);
+  }, [isEditQty, getData, isIndexSame]);
 
   const onHandleEditQty = index => {
     setIsEditQty(true);
@@ -83,7 +71,7 @@ function Cart({route, navigation}) {
     useLayoutAnimation();
   }, [isEditQty, isIndexSame]);
 
-  const addToCart = (item, value) => {
+  const addToCart = (item, value, index) => {
     if (Number(value) > 99) {
       showMessage({
         message: 'Warning',
@@ -96,13 +84,32 @@ function Cart({route, navigation}) {
       var changeData = {...item};
       changeData.quantity = value;
       setGetData(changeData);
+      useLayoutAnimation();
+      if (count?.cart?.cartItems.length == 1 && index == 0 && value == 0) {
+        showMessage({
+          message: 'Warning',
+          description: `Your cart is empty\nPlease add some items in your cart.`,
+          type: 'warning',
+          icon: 'auto',
+        });
+        navigation.navigate('Home');
+      }
     }
   };
 
-  const removefromCart = (item, value) => {
+  const removefromCart = (item, value, index) => {
     var changeData = {...item};
     changeData.quantity = value;
     setGetData(changeData);
+    if (count?.cart?.cartItems.length == 1 && index == 0) {
+      showMessage({
+        message: 'Warning',
+        description: `Your cart is empty\nPlease add some items in your cart.`,
+        type: 'warning',
+        icon: 'auto',
+      });
+      navigation.navigate('Home');
+    }
   };
 
   useEffect(() => {
@@ -134,7 +141,6 @@ function Cart({route, navigation}) {
         },
       });
       navigation.navigate('OrderConfirm');
-      dispatch(clearCart());
     } catch (error) {
       console.log('CreateOrder error', error);
     }
@@ -143,35 +149,44 @@ function Cart({route, navigation}) {
   return (
     <View style={{flex: 1, backgroundColor: colors?.background}}>
       <StatusBar backgroundColor={colors.primary} />
-      <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
-        <View style={{flex: 1}}>
-          <View style={styles.headerContainer}>
-            <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
-              <Icon
-                name="md-close"
-                size={height * 0.04}
-                color={colors.primary}
-              />
-            </TouchableOpacity>
-            <View style={styles.headerText}>
-              <MyText label={'Cart'} subHeading />
-              <MyText
-                label={'Check your menu'}
-                subTitle
-                textStyle={{color: '#00000060'}}
-              />
-            </View>
+      <View style={{flex: 1}}>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon
+              name="md-close"
+              size={moderateVerticalScale(28)}
+              color={colors.primary}
+            />
+          </TouchableOpacity>
+          <View style={styles.headerText}>
+            <MyText
+              label={'Cart'}
+              size={'subHeading'}
+              textStyle={{fontFamily: 'Poppins-Medium'}}
+            />
+            <MyText
+              label={'Check your menu'}
+              textStyle={{color: '#00000060'}}
+            />
           </View>
+        </View>
+        <View
+          style={{
+            backgroundColor: colors.background,
+            paddingVertical: moderateVerticalScale(10),
+            borderBottomWidth: moderateVerticalScale(1),
+            borderColor: '#ccc',
+          }}>
           <View style={styles.deliveryOptionContainer}>
             <Image
               source={Delivery}
               style={{
-                height: height * 0.1,
-                width: height * 0.12,
+                height: moderateVerticalScale(75),
+                width: moderateVerticalScale(80),
               }}
             />
             <View style={styles.headerText}>
-              <MyText label={'Hurry up 😀'} subHeading />
+              <MyText label={'Hurry up 😀'} />
               <MyText
                 label={`We are waiting for your order!`}
                 size="subTitle"
@@ -179,147 +194,161 @@ function Cart({route, navigation}) {
               />
             </View>
           </View>
-          <KeyboardAvoidingView
-            behavior="padding"
-            style={styles.cartItemContainer}>
-            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-              {count?.cart?.cartItems &&
-                count?.cart?.cartItems.map((item, index) => (
-                  <View style={styles.cartItemInner} key={index}>
-                    <View>
-                      {isEditQty && isIndexSame == index && (
-                        <TouchableOpacity
-                          style={{
-                            width: moderateVerticalScale(40),
-                            justifyContent: 'center',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderWidth: height * 0.001,
-                            borderColor: '#00000050',
-                            borderRadius: 5,
-                            backgroundColor: colors.background,
-                            padding: moderateVerticalScale(3),
-                            elevation: 5,
-                          }}
-                          onPress={() => addToCart(item, item.quantity + 1)}>
-                          <Icon
-                            name="caret-up"
-                            size={moderateVerticalScale(15)}
-                            color={colors.primary}
-                          />
-                        </TouchableOpacity>
-                      )}
-                      <TouchableOpacity
-                        disabled={isEditQty && isIndexSame == index}
-                        style={{
-                          width: moderateVerticalScale(40),
-                          justifyContent: 'center',
-                          marginVertical: moderateVerticalScale(5),
-                          borderColor:
-                            isEditQty && isIndexSame == index
-                              ? '#00000050'
-                              : '#000',
-                          ...styles.qtyButtonContainer,
-                        }}
-                        onPress={() => onHandleEditQty(index)}>
-                        <MyText label={item.quantity} />
-                        {!(isEditQty && isIndexSame == index) && (
-                          <Icon
-                            name="caret-down"
-                            size={moderateVerticalScale(15)}
-                            color="#000"
-                          />
+        </View>
+        <View style={styles.cartItemContainer}>
+          <ScrollView
+            style={{flex: 1}}
+            contentContainerStyle={{alignItems: 'center'}}
+            showsVerticalScrollIndicator={false}>
+            <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
+              <View>
+                {count?.cart?.cartItems &&
+                  count?.cart?.cartItems.map((item, index) => (
+                    <View style={styles.cartItemInner} key={index}>
+                      <View style={{alignItems: 'center'}}>
+                        {isEditQty && isIndexSame == index && (
+                          <TouchableOpacity
+                            style={{
+                              width: moderateVerticalScale(33),
+                              justifyContent: 'center',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              borderWidth: 1,
+                              borderColor: '#00000050',
+                              borderRadius: 5,
+                              backgroundColor: colors.background,
+                              padding: moderateVerticalScale(3),
+                              elevation: 2,
+                            }}
+                            onPress={() => addToCart(item, item.quantity + 1)}>
+                            <Icon
+                              name="caret-up"
+                              size={moderateVerticalScale(15)}
+                              color={colors.primary}
+                            />
+                          </TouchableOpacity>
                         )}
-                      </TouchableOpacity>
-                      {isEditQty && isIndexSame == index && (
                         <TouchableOpacity
+                          disabled={isEditQty && isIndexSame == index}
                           style={{
-                            width: moderateVerticalScale(40),
-                            justifyContent: 'center',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            borderWidth: height * 0.001,
-                            borderColor: '#00000050',
-                            borderRadius: 5,
-                            backgroundColor: colors.background,
-                            padding: moderateVerticalScale(3),
-                            elevation: 5,
+                            borderColor:
+                              isEditQty && isIndexSame == index
+                                ? '#00000050'
+                                : '#000',
+                            ...styles.qtyButtonContainer,
                           }}
-                          onPress={() => addToCart(item, item.quantity - 1)}>
-                          <Icon
-                            name="caret-down"
-                            size={moderateVerticalScale(15)}
-                            color={colors.primary}
+                          onPress={() => onHandleEditQty(index)}>
+                          <MyText
+                            label={item.quantity}
+                            textStyle={{margin: moderateVerticalScale(1)}}
                           />
+                          {!(isEditQty && isIndexSame == index) && (
+                            <Icon
+                              name="caret-down"
+                              size={moderateVerticalScale(11)}
+                              color="#000"
+                            />
+                          )}
                         </TouchableOpacity>
-                      )}
-                    </View>
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      onPress={() =>
-                        navigation.navigate('Item', {
-                          foodType: item.foodType,
-                          item: item,
-                        })
-                      }
-                      style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        {isEditQty && isIndexSame == index && (
+                          <TouchableOpacity
+                            style={{
+                              width: moderateVerticalScale(33),
+                              justifyContent: 'center',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              borderWidth: 1,
+                              borderColor: '#00000050',
+                              borderRadius: 5,
+                              backgroundColor: colors.background,
+                              padding: moderateVerticalScale(3),
+                              elevation: 2,
+                            }}
+                            onPress={() =>
+                              addToCart(item, item.quantity - 1, index)
+                            }>
+                            <Icon
+                              name="caret-down"
+                              size={moderateVerticalScale(15)}
+                              color={colors.primary}
+                            />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() =>
+                          navigation.navigate('Item', {
+                            foodType: item.foodType,
+                            item: item,
+                          })
+                        }
+                        style={{
+                          flex: 1,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
                         <View
                           style={{
-                            elevation: height * 0.003,
-                            height: height * 0.08,
-                            width: height * 0.1,
-                            backgroundColor: colors.background,
-                            marginHorizontal: height * 0.015,
-                            borderRadius: height * 0.015,
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
                           }}>
-                          <Image
-                            source={{uri: item.image}}
+                          <View
                             style={{
-                              height: height * 0.08,
-                              width: height * 0.1,
+                              height: moderateVerticalScale(45),
+                              width: moderateVerticalScale(60),
+                              backgroundColor: colors.background,
                               borderRadius: height * 0.015,
-                              resizeMode: 'contain',
-                            }}
-                          />
+                              elevation: 2,
+                              marginHorizontal: moderateVerticalScale(5),
+                            }}>
+                            <Image
+                              source={{uri: item.image}}
+                              style={{
+                                height: moderateVerticalScale(45),
+                                width: moderateVerticalScale(60),
+                                borderRadius: height * 0.015,
+                                resizeMode: 'contain',
+                              }}
+                            />
+                          </View>
+                          <View style={{flex: 1}}>
+                            <MyText
+                              label={item.name}
+                              numberOfLines={2}
+                              textStyle={{
+                                color: colors.primary,
+                              }}
+                            />
+                          </View>
                         </View>
                         <MyText
-                          label={item.name}
-                          numberOfLines={0}
+                          label={`Rs. ${item.price * item.quantity}`}
+                          size={'title'}
                           textStyle={{
-                            color: colors.primary,
-                            width: SCREEN_WIDTH * 0.42,
+                            alignItems: 'flex-end',
+                            marginLeft: moderateVerticalScale(10),
                           }}
                         />
-                      </View>
-                      <MyText
-                        label={`Rs. ${item.price * item.quantity}`}
-                        size={'title'}
-                        textStyle={{
-                          textAlign: 'right',
-                          width: height * 0.1,
-                          flexWrap: 'wrap',
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.deleteItem}
-                      onPress={() => removefromCart(item, 0)}>
-                      <AD
-                        name="delete"
-                        size={moderateVerticalScale(15)}
-                        color="#fff"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                ))}
-            </ScrollView>
-          </KeyboardAvoidingView>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.deleteItem}
+                        onPress={() => removefromCart(item, 0, index)}>
+                        <AD
+                          name="delete"
+                          size={moderateVerticalScale(15)}
+                          color="#fff"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+              </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        </View>
+        <View style={styles.footerContainer}>
           <View style={styles.addMoreItemContainer}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <MyText
@@ -332,93 +361,106 @@ function Cart({route, navigation}) {
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.footerContainer}>
-            <View style={styles.totalAmountContainer}>
-              <MyText label={'Total'} subHeading />
-              <MyText label={`Rs. ${total}`} title />
-            </View>
-            <View style={styles.ProceedToCheckOut}>
-              <TouchableOpacity
-                disabled={count?.cart?.cartItems.length == 0}
-                style={{
-                  backgroundColor: colors.primary,
-                  height: height * 0.06,
-                  borderRadius: height * 0.005,
-                  paddingLeft: height * 0.015,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  elevation: height * 0.003,
-                  marginVertical: height * 0.009,
-                }}
-                onPress={() => {
-                  if (!isValidTimeToOrder()) {
-                    showMessage({
-                      message: 'Alas! Time is over for placing order😬',
-                      icon: 'auto',
-                      type: 'info',
-                    });
-                    return;
+          <View style={styles.totalAmountContainer}>
+            <MyText
+              label={'Total'}
+              size={moderateVerticalScale(20)}
+              textStyle={{fontFamily: 'Poppins-SemiBold'}}
+            />
+            <MyText
+              label={`Rs. ${total}`}
+              size={moderateVerticalScale(20)}
+              textStyle={{fontFamily: 'Poppins-SemiBold'}}
+            />
+          </View>
+          <View style={styles.ProceedToCheckOut}>
+            <TouchableOpacity
+              disabled={count?.cart?.cartItems.length == 0}
+              style={{
+                backgroundColor: colors.primary,
+                height: moderateVerticalScale(40),
+                borderRadius: height * 0.005,
+                paddingLeft: height * 0.015,
+                justifyContent: 'center',
+                alignItems: 'center',
+                elevation: 2,
+                marginVertical: moderateVerticalScale(10),
+              }}
+              onPress={() => {
+                // if (!isValidTimeToOrder()) {
+                //   showMessage({
+                //     message: 'Alas! Time is over for placing order😬',
+                //     icon: 'auto',
+                //     type: 'info',
+                //   });
+                //   return;
+                // }
+                isShowAlert(true);
+              }}>
+              {!loading ? (
+                <MyText
+                  label={
+                    count?.cart?.cartItems?.length != 0
+                      ? 'Proceed to checkout'
+                      : 'Please add item into cart'
                   }
-                  isShowAlert(true);
-                }}>
-                {!loading ? (
-                  <MyText
-                    label={
-                      count?.cart?.cartItems?.length != 0
-                        ? 'Proceed to checkout'
-                        : 'Please add item into cart'
-                    }
-                    title
-                    textStyle={{color: colors.background}}
-                  />
-                ) : (
-                  <ActivityIndicator size="large" color={colors.text_inverse} />
-                )}
-              </TouchableOpacity>
-              <AwesomeAlert
-                show={showAlert}
-                showProgress={false}
-                title="Confirm Order"
-                message="Are you sure you want to confirm your order?"
-                closeOnTouchOutside={false}
-                closeOnHardwareBackPress={false}
-                showCancelButton={true}
-                showConfirmButton={true}
-                contentContainerStyle={{
-                  borderRadius: moderateVerticalScale(10),
-                }}
-                titleStyle={{
-                  fontSize: moderateVerticalScale(20),
-                  fontFamily: 'Poppins-Bold',
-                }}
-                messageStyle={{
-                  fontSize: moderateVerticalScale(12),
-                  fontFamily: 'Poppins-Regular',
-                  textAlign: 'center',
-                }}
-                cancelButtonTextStyle={{
-                  fontSize: moderateVerticalScale(13),
-                  fontFamily: 'Poppins-Regular',
-                  textAlign: 'center',
-                }}
-                confirmButtonTextStyle={{
-                  fontSize: moderateVerticalScale(13),
-                  fontFamily: 'Poppins-Regular',
-                  textAlign: 'center',
-                }}
-                cancelText="No, Cancel"
-                confirmText="Yes, Confirm"
-                cancelButtonColor="#00000060"
-                confirmButtonColor={colors.primary}
-                onCancelPressed={() => {
-                  isShowAlert(false);
-                }}
-                onConfirmPressed={handleShowAlert}
-              />
-            </View>
+                  title
+                  textStyle={{color: colors.background}}
+                />
+              ) : (
+                <ActivityIndicator size="large" color={colors.text_inverse} />
+              )}
+            </TouchableOpacity>
+            <AwesomeAlert
+              show={showAlert}
+              showProgress={false}
+              title="Confirm Order"
+              message="Are you sure you want to confirm your order?"
+              closeOnTouchOutside={false}
+              closeOnHardwareBackPress={false}
+              showCancelButton={true}
+              showConfirmButton={true}
+              alertContainerStyle={{
+                backgroundColor: 'rgba(52,52,52,0.5)',
+              }}
+              overlayStyle={{
+                backgroundColor: 'transparent',
+              }}
+              contentContainerStyle={{
+                borderRadius: moderateVerticalScale(10),
+              }}
+              titleStyle={{
+                fontSize: moderateVerticalScale(20),
+                fontFamily: 'Poppins-Bold',
+              }}
+              messageStyle={{
+                fontSize: moderateVerticalScale(12),
+                fontFamily: 'Poppins-Regular',
+                textAlign: 'center',
+              }}
+              cancelButtonTextStyle={{
+                fontSize: moderateVerticalScale(13),
+                fontFamily: 'Poppins-Regular',
+                textAlign: 'center',
+              }}
+              confirmButtonTextStyle={{
+                fontSize: moderateVerticalScale(13),
+                fontFamily: 'Poppins-Regular',
+                textAlign: 'center',
+              }}
+              cancelText="No, Cancel"
+              confirmText="Yes, Confirm"
+              cancelButtonColor="#00000060"
+              confirmButtonColor={colors.primary}
+              onCancelPressed={() => {
+                isShowAlert(false);
+              }}
+              onConfirmPressed={handleShowAlert}
+            />
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
+      <BlurBackground show={showAlert} />
     </View>
   );
 }
@@ -428,9 +470,9 @@ export default Cart;
 const styles = StyleSheet.create({
   // Header Container
   headerContainer: {
-    height: height * 0.12,
+    height: moderateVerticalScale(80),
     backgroundColor: colors.background,
-    elevation: height * 0.003,
+    elevation: moderateVerticalScale(2),
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: height * 0.02,
@@ -446,61 +488,68 @@ const styles = StyleSheet.create({
   },
   // Delivery Option Container
   deliveryOptionContainer: {
-    height: height * 0.12,
+    height: moderateVerticalScale(80),
     backgroundColor: colors.background,
-    elevation: height * 0.005,
+    elevation: moderateVerticalScale(2),
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: height * 0.02,
-    margin: height * 0.02,
+    paddingHorizontal: moderateVerticalScale(15),
+    marginHorizontal: moderateVerticalScale(15),
   },
   // Cart Item Container
   cartItemContainer: {
-    maxHeight: height * 0.52,
+    flex: 1,
+    // maxHeight: height * 0.52,
     flexDirection: 'row',
-    paddingHorizontal: height * 0.02,
   },
   cartItemInner: {
-    // height: moderateVerticalScale(110),
-    paddingVertical: moderateVerticalScale(5),
-    alignItems: 'center',
+    width: '95%',
+    padding: moderateVerticalScale(5),
+    margin: moderateVerticalScale(5),
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#00000050',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#fff',
+    borderRadius: moderateVerticalScale(5),
+    elevation: moderateVerticalScale(2),
   },
   addMoreItemContainer: {
-    height: height * 0.06,
+    width: '97%',
     paddingLeft: height * 0.025,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   qtyButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: height * 0.001,
-    borderRadius: height * 0.005,
-    padding: moderateVerticalScale(5),
+    borderWidth: 1,
+    width: moderateVerticalScale(33),
+    height: moderateVerticalScale(33),
+    justifyContent: 'center',
+    marginVertical: moderateVerticalScale(5),
+    borderRadius: moderateVerticalScale(5),
   },
   deleteItem: {
     height: moderateVerticalScale(22),
-    elevation: 5,
     width: moderateVerticalScale(22),
+    elevation: moderateVerticalScale(2),
     backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: moderateVerticalScale(2),
-    top: moderateVerticalScale(2),
+    right: moderateVerticalScale(-5),
+    top: moderateVerticalScale(-4),
   },
   // Footer Container
   footerContainer: {
     width: width * 1,
-    flex: 1,
     alignItems: 'center',
     position: 'relative',
     bottom: 0,
     alignSelf: 'center',
     justifyContent: 'flex-end',
+    borderTopWidth: moderateVerticalScale(1),
+    borderColor: '#ccc',
   },
   totalAmountContainer: {
     alignItems: 'center',
@@ -509,7 +558,7 @@ const styles = StyleSheet.create({
     width: width * 0.9,
   },
   ProceedToCheckOut: {
-    height: height * 0.09,
+    // height: height * 0.09,
     width: width * 0.9,
   },
 });

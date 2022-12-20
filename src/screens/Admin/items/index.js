@@ -1,24 +1,20 @@
-import React, {useState, useReducer, useCallback, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   FlatList,
   StyleSheet,
   View,
   TouchableOpacity,
   Image,
-  Text,
   ActivityIndicator,
   StatusBar,
   RefreshControl,
 } from 'react-native';
-import {
-  useNavigation,
-  useFocusEffect,
-  useIsFocused,
-} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
 import {Icon, SpeedDial} from '@rneui/themed';
 import {useLazyQuery} from '@apollo/client';
+import NetInfo from '@react-native-community/netinfo';
 
-import {SCREEN_WIDTH} from '../../../constants';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {
   GapView,
   MyHeader,
@@ -34,30 +30,65 @@ import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import {PicBack} from '../../../assets/images';
 import {moderateVerticalScale} from 'react-native-size-matters';
 
-export default function Items() {
+export default function Items({route}) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const itemsList = useRef(null);
 
-  const [LoadCategories, {data: categoryData, loading: categoryLoader}] =
-    useLazyQuery(GET_CATEGORIES_WITH_ID, {
+  const [
+    LoadCategories,
+    {data: categoryData, loading: categoryLoader, refetch},
+  ] = useLazyQuery(GET_CATEGORIES_WITH_ID, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const [LoadItems, {data: itemData, loading: itemsLoading, fetchMore}] =
+    useLazyQuery(GET_ALL_ITEMS, {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
     });
 
-  const [
-    LoadItems,
-    {data: itemData, error, refetch: refetchItems, loading: itemsLoading},
-  ] = useLazyQuery(GET_ALL_ITEMS);
-
   const [visible, setVisible] = useState(false);
   const [load, setLoad] = useState(false);
   const [cursor, setCursor] = useState(null);
-  const [data, setData] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
+  const [isConnected, setIsConnected] = useState(null);
+  const [loadMore, setLoadMore] = useState(true);
+  const [categoryIndex, setCategoryIndex] = useState(null);
+
+  const items = itemData?.getAllItems?.data;
 
   useEffect(() => {
-    fetchItems();
-    LoadCategories();
+    if (isConnected) {
+      fetchItems();
+      LoadCategories();
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    if (!itemsLoading) {
+      setLoadMore(false);
+    }
+  }, [itemsLoading]);
+
+  useEffect(() => {
+    if (route?.params?.categoryList) {
+      console.log('Categories Chala');
+      LoadCategories();
+    }
+    if (route?.params?.edit) {
+      console.log('Chala');
+      setCursor(null);
+      fetchItems(selectedCategoryId, 1);
+    }
+  }, [isFocused, route?.params?.edit]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+    return () => unsubscribe();
   }, []);
 
   const fetchItems = (selected, cur) => {
@@ -75,63 +106,54 @@ export default function Items() {
     });
   };
 
-  useEffect(() => {
-    console.log(
-      'cursor itemData?.getAllItems?.data',
-      cursor,
-      itemData?.getAllItems?.pagination?.nextCursor,
-    );
-    if (
-      itemData?.getAllItems?.data &&
-      cursor != itemData?.getAllItems?.pagination?.nextCursor &&
-      selectedCategoryId < 1
-    ) {
-      console.log('first if');
-      if (cursor != null) {
-        setData(prv => [...prv, ...(itemData?.getAllItems?.data || [])]);
-        setCursor(itemData?.getAllItems?.pagination?.nextCursor);
-      } else {
-        console.log('first else');
-        setData(itemData?.getAllItems?.data);
-        setCursor(itemData?.getAllItems?.pagination?.nextCursor);
-      }
+  const onLoadMore = () => {
+    if (itemData?.getAllItems?.pagination?.nextCursor == null) {
+      return;
     }
-    if (
-      itemData?.getAllItems?.data &&
-      selectedCategoryId > 0 &&
-      cursor != null
-    ) {
-      console.log('second if');
-      setData(prv => [...prv, ...(itemData?.getAllItems?.data || [])]);
-      setCursor(itemData?.getAllItems?.pagination?.nextCursor);
-    } else if (
-      itemData?.getAllItems?.data &&
-      selectedCategoryId > 0 &&
-      cursor == null
-    ) {
-      console.log('second else');
-      setData(itemData?.getAllItems?.data);
-      setCursor(itemData?.getAllItems?.pagination?.nextCursor);
-    }
-  }, [itemData?.getAllItems?.data]);
-
-  const getOnEnd = async () => {
-    console.log('Getting on end');
-    fetchItems(selectedCategoryId);
+    itemsList.current.scrollToEnd();
+    setLoadMore(true);
+    fetchMore({
+      variables: {
+        where: {
+          categoryId: selectedCategoryId > 0 ? selectedCategoryId : undefined,
+        },
+        pagination: {
+          limit: 20,
+          cursor: itemData?.getAllItems?.pagination?.nextCursor,
+        },
+      },
+      updateQuery: (previousResult, {fetchMoreResult}) => {
+        const newItems = fetchMoreResult.getAllItems.data;
+        const updatedArr = [...previousResult?.getAllItems?.data, ...newItems];
+        return {
+          getAllItems: {
+            ...fetchMoreResult?.getAllItems,
+            pagination: fetchMoreResult?.getAllItems?.pagination,
+            data: [
+              ...new Map(updatedArr.map(item => [item['id'], item])).values(),
+            ],
+          },
+        };
+      },
+    });
   };
 
   const handlePress = id => {
-    setData([]);
-    setCursor(null);
     setSelectedCategoryId(id);
+    itemsList.current.scrollToOffset({animated: false, offset: 0});
+    setCursor(null);
     fetchItems(id, 1);
   };
 
   return (
     <View style={styles.container}>
       {isFocused && <BackButtonHandler />}
-      <StatusBar backgroundColor={visible ? '#000000' : colors.primary} />
-      <OverlayLoader show={categoryLoader || itemsLoading} />
+      <StatusBar
+        backgroundColor={
+          visible || isConnected == false ? '#000000' : colors.primary
+        }
+      />
+      <OverlayLoader show={categoryLoader} />
 
       <MyHeader
         title={'All Items'}
@@ -186,13 +208,17 @@ export default function Items() {
       <View style={{width: SCREEN_WIDTH}}>
         {!categoryLoader && categoryData?.getAllCategories && (
           <FlatList
-            data={[{name: 'All', id: 0}, ...categoryData.getAllCategories.data]}
+            data={
+              categoryData.getAllCategories.data.length > 0
+                ? [{name: 'All', id: 0}, ...categoryData.getAllCategories.data]
+                : []
+            }
             horizontal
             showsHorizontalScrollIndicator={false}
             ListEmptyComponent={
               <View
                 style={{
-                  flex: 1,
+                  width: SCREEN_WIDTH,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
@@ -209,12 +235,12 @@ export default function Items() {
                     selectedCategoryId == item.id
                       ? colors.primary
                       : colors.background,
-
                   alignItems: 'center',
                 }}>
                 <TouchableOpacity
                   disabled={item.id == selectedCategoryId}
                   onPress={() => {
+                    setCategoryIndex(index);
                     handlePress(item.id);
                   }}>
                   <MyText
@@ -240,17 +266,15 @@ export default function Items() {
           textStyle={{alignSelf: 'center', paddingVertical: 10}}
         />
       </View>
-      {!categoryLoader && data && (
+      {!categoryLoader && categoryData?.getAllCategories && (
         <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
           <FlatList
-            data={data}
+            data={items || []}
+            ref={itemsList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.itemContainer}
             onEndReached={() => {
-              console.log('Load');
-              if (cursor != null) {
-                getOnEnd();
-              }
+              !itemsLoading && onLoadMore();
             }}
             refreshControl={
               <RefreshControl
@@ -262,25 +286,55 @@ export default function Items() {
               />
             }
             ListEmptyComponent={
-              categoryLoader &&
-              itemsLoading && (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <MyText label={'No Items Found'} size={'title'} />
-                </View>
-              )
+              <>
+                {!categoryLoader && itemsLoading && (
+                  <View
+                    style={{
+                      height: SCREEN_HEIGHT * 0.6,
+                      justifyContent: 'center',
+                    }}>
+                    <ActivityIndicator size={'large'} color={colors.primary} />
+                  </View>
+                )}
+                {categoryLoader || itemsLoading ? null : (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <MyText label={'No Items Found'} size={'title'} />
+                  </View>
+                )}
+              </>
             }
             ListFooterComponent={
               itemsLoading &&
-              data.length > 0 && <ActivityIndicator size={'large'} />
+              loadMore && (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    paddingVertical: 10,
+                  }}>
+                  <ActivityIndicator size={'large'} />
+                  <MyText
+                    label={
+                      categoryIndex > 0
+                        ? `Loading More ${
+                            categoryData?.getAllCategories?.data[
+                              categoryIndex - 1
+                            ]?.name
+                          } Items...`
+                        : 'Loading More Items...'
+                    }
+                  />
+                </View>
+              )
             }
             renderItem={({item, index}) => (
               <MyCard key={item.id} cardStyle={styles.item}>
                 <TouchRipple
+                  borderless
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',

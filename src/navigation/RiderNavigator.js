@@ -1,25 +1,45 @@
-import React, {useState} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  LayoutAnimation,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {MoneyReturn, Orders, PurchasingList} from '../screens';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Icon as Icons} from '@rneui/themed';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers,
+} from 'react-native-popup-menu';
 
-import {CustomizeModal, MyHeader, MyText} from '../components';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../constants';
+import {BlurBackground, MyHeader, MyText} from '../components';
 import {colors} from '../theme';
 import {logout} from '../features/userInfo/userInfoSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import {StatusBar} from 'react-native';
+import {useLazyQuery} from '@apollo/client';
+import {ALL_ORDERS} from '../graphQL/query/orders.query';
 
 const Stack = createStackNavigator();
 
 function RiderNavigator({navigation}) {
   const [isModal, setIsModal] = useState(false);
+  var currDate = new Date().setUTCHours(0);
+  const [GetAllOrders, {data, loading: loadOrders}] = useLazyQuery(ALL_ORDERS);
+
+  useEffect(() => {
+    GetAllOrders({
+      variables: {
+        getOrderInput: {},
+      },
+    });
+  }, []);
+
+  let order = data?.getAllOrders?.data?.filter(item => {
+    return item?.returned == false && item?.status == 'PAID';
+  });
+
   const finishedStatus = useSelector(
     store => store?.riderOrder.collectionFinished,
   );
@@ -27,26 +47,13 @@ function RiderNavigator({navigation}) {
   const dispatch = useDispatch();
   console.log('Finished Status', finishedStatus);
 
-  const isModalVisible = () => {
-    LayoutAnimation.configureNext({
-      duration: 300,
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    });
-    setIsModal(!isModal);
-  };
-
   const goToNavigation = navigate => {
     navigation.navigate(navigate);
     setIsModal(!isModal);
   };
 
   const logoutHandler = () => {
+    setIsModal(false);
     dispatch(logout());
   };
 
@@ -58,59 +65,186 @@ function RiderNavigator({navigation}) {
       <Stack.Screen
         name="Orders"
         component={Orders}
+        initialParams={{isModal: isModal}}
         options={{
           headerShown: true,
-          header: () => (
+          header: ({navigation}) => (
             <>
+              <StatusBar
+                backgroundColor={isModal ? colors.text_normal : colors.primary}
+              />
               <MyHeader
                 title="Today Orders"
-                icon="user-circle-o"
-                rightIconType="font-awesome"
                 onPressRight={() => setIsModal(true)}
                 titleStyle={{fontFamily: 'Poppins-Bold'}}
-              />
-              <CustomizeModal
-                isVisible={isModal}
-                setBackDrop={isModalVisible}
-                navigation={navigation}
-                renderData={
-                  <View style={styles.modalInner}>
-                    <TouchableOpacity
-                      style={styles.buttonContainer}
-                      onPress={() => goToNavigation('Profile')}>
-                      <Ionicons
-                        name="person"
-                        size={moderateVerticalScale(20)}
-                        color={colors.primary}
-                        style={styles.btnIcon}
+                iconComponent={
+                  <Menu
+                    opened={isModal}
+                    onBackdropPress={() => {
+                      setIsModal(false);
+                      console.log(
+                        'setparam',
+                        navigation.navigate('Orders', {isModal: false}),
+                      );
+                    }}
+                    renderer={renderers.Popover}
+                    rendererProps={{
+                      placement: 'bottom',
+                    }}>
+                    <MenuTrigger
+                      children={
+                        <>
+                          {order?.length > 0 && (
+                            <TouchableOpacity
+                              activeOpacity={1}
+                              onPress={() => {
+                                setIsModal(true);
+                                console.log(
+                                  'setparam',
+                                  navigation.navigate('Orders', {
+                                    isModal: true,
+                                  }),
+                                );
+                              }}
+                              style={{
+                                backgroundColor: 'red',
+                                width: moderateVerticalScale(10),
+                                height: moderateVerticalScale(10),
+                                borderRadius: 40,
+                                position: 'absolute',
+                                top: moderateVerticalScale(10),
+                                right: moderateVerticalScale(10),
+                                zIndex: 1,
+                              }}></TouchableOpacity>
+                          )}
+                          <Icons
+                            name={'user-circle-o'}
+                            size={moderateVerticalScale(28)}
+                            type={'font-awesome'}
+                            style={{
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              height: moderateVerticalScale(50),
+                              width: moderateVerticalScale(50),
+                              borderRadius: 100,
+                            }}
+                            containerStyle={{
+                              borderRadius: 100,
+                              alignSelf: 'center',
+                            }}
+                            pressableProps={{
+                              android_ripple: {
+                                borderless: true,
+                                color: '#f5f5f533',
+                              },
+                            }}
+                            color={colors.text_inverse}
+                            onPress={() => {
+                              setIsModal(true);
+                              console.log(
+                                'setparam',
+                                navigation.navigate('Orders', {
+                                  isModal: true,
+                                }),
+                              );
+                            }}
+                          />
+                        </>
+                      }
+                    />
+                    <MenuOptions
+                      customStyles={{optionsContainer: styles.modalInner}}>
+                      <MenuOption
+                        style={styles.buttonContainer}
+                        onSelect={() => {
+                          navigation.navigate('Orders', {isModal: false});
+                          goToNavigation('Profile');
+                        }}
+                        children={
+                          <>
+                            <MCI
+                              name="account"
+                              size={moderateVerticalScale(20)}
+                              color={colors.primary}
+                              style={styles.btnIcon}
+                            />
+                            <MyText
+                              label={'Profile'}
+                              size={'title'}
+                              textStyle={{color: colors.text_normal + '80'}}
+                            />
+                          </>
+                        }
                       />
-                      <MyText
-                        label={'Profile'}
-                        size={'title'}
-                        textStyle={{color: colors.text_normal + '80'}}
+                      <MenuOption
+                        style={styles.buttonContainer}
+                        onSelect={() => {
+                          navigation.navigate('Orders', {isModal: false});
+                          goToNavigation('MoneyReturn');
+                        }}
+                        children={
+                          <>
+                            {order?.length > 0 && (
+                              <TouchableOpacity
+                                activeOpacity={1}
+                                onPress={() => {
+                                  setIsModal(true);
+                                  console.log(
+                                    'setparam',
+                                    navigation.navigate('Orders', {
+                                      isModal: true,
+                                    }),
+                                  );
+                                }}
+                                style={{
+                                  backgroundColor: 'red',
+                                  width: moderateVerticalScale(8),
+                                  height: moderateVerticalScale(8),
+                                  borderRadius: 40,
+                                  position: 'absolute',
+                                  top: moderateVerticalScale(9),
+                                  left: moderateVerticalScale(10),
+                                  zIndex: 1,
+                                }}></TouchableOpacity>
+                            )}
+                            <MCI
+                              name="account-cash"
+                              size={moderateVerticalScale(20)}
+                              color={colors.primary}
+                              style={styles.btnIcon}
+                            />
+                            <MyText
+                              label={'Return Amount'}
+                              size={'title'}
+                              textStyle={{color: colors.text_normal + '80'}}
+                            />
+                          </>
+                        }
                       />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[
-                        styles.buttonContainer,
-                        {borderBottomWidth: SCREEN_HEIGHT * 0},
-                      ]}
-                      onPress={() => logoutHandler()}>
-                      <Ionicons
-                        name="ios-exit"
-                        size={moderateVerticalScale(20)}
-                        color={colors.primary}
-                        style={styles.btnIcon}
+                      <MenuOption
+                        style={styles.buttonContainer}
+                        onSelect={logoutHandler}
+                        children={
+                          <>
+                            <MCI
+                              name="exit-to-app"
+                              size={moderateVerticalScale(20)}
+                              color={colors.primary}
+                              style={styles.btnIcon}
+                            />
+                            <MyText
+                              label={'Log out'}
+                              size={'title'}
+                              textStyle={{color: colors.text_normal + '80'}}
+                            />
+                          </>
+                        }
                       />
-                      <MyText
-                        label={'Log out'}
-                        size={'title'}
-                        textStyle={{color: colors.text_normal + '80'}}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                    </MenuOptions>
+                  </Menu>
                 }
               />
+              <BlurBackground show={isModal} />
             </>
           ),
         }}
@@ -123,25 +257,19 @@ function RiderNavigator({navigation}) {
 
 const styles = StyleSheet.create({
   modalInner: {
-    width: SCREEN_WIDTH * 0.3,
-    position: 'absolute',
-    backgroundColor: colors.text_inverse,
-    borderRadius: SCREEN_HEIGHT * 0.005,
+    width: moderateScale(150),
+    backgroundColor: colors.background,
+    borderRadius: moderateVerticalScale(5),
     zIndex: 1,
-    top: SCREEN_HEIGHT * 0.03,
-    right: SCREEN_HEIGHT * 0.03,
-    elevation: SCREEN_HEIGHT * 0.003,
     justifyContent: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: SCREEN_HEIGHT * 0.01,
-    borderBottomWidth: SCREEN_HEIGHT * 0.0005,
-    borderBottomColor: '#00000050',
+    paddingHorizontal: moderateScale(10),
   },
   btnIcon: {
-    paddingRight: SCREEN_HEIGHT * 0.01,
+    paddingRight: moderateScale(5),
     top: 1,
   },
 });

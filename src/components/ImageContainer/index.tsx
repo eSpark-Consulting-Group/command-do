@@ -8,7 +8,7 @@ import {GapView, TouchRipple} from '../';
 import {imagePicker} from '../../utils/helperFunctions';
 import MyInput from '../MyInput';
 import {PicBack} from '../../assets/images';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 
 export default function ImageContainer({
   onImageChange = (image: object) => {},
@@ -22,7 +22,6 @@ export default function ImageContainer({
 
   useEffect(() => {
     setImage(url);
-    console.log('url', url);
     setImageHolder(url);
   }, [url]);
 
@@ -137,7 +136,8 @@ export default function ImageContainer({
                 <TouchRipple onPress={onUploadImage} darkRipple>
                   <MyText
                     label={'Upload Image'}
-                    size={moderateVerticalScale(14, -0.2)}
+                    // size={moderateVerticalScale(14, -0.2)}
+                    size={moderateScale(13)}
                     textStyle={{
                       padding: 5,
                       color: colors.text_normal,
@@ -155,7 +155,8 @@ export default function ImageContainer({
                 <TouchRipple onPress={() => setShowUrl(true)} darkRipple>
                   <MyText
                     label={'Set Image Url'}
-                    size={moderateVerticalScale(14, -0.2)}
+                    // size={moderateVerticalScale(14, -0.2)}
+                    size={moderateScale(13)}
                     textStyle={{
                       padding: 5,
                       color: colors.text_normal,
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: colors.primary,
-    elevation: 5,
+    elevation: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },

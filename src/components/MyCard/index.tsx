@@ -15,7 +15,7 @@ export default function MyCard({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
-    elevation: 4,
+    elevation: 2,
     borderRadius: 2,
   },
 });
