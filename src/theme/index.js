@@ -4,4 +4,5 @@ export const colors = {
   border: '#00a099',
   text_normal: '#000000',
   text_inverse: '#ffffff',
+  disabledBackground: '#fcfcfc36'
 };
