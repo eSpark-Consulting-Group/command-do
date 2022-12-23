@@ -16,9 +16,12 @@ import {
 } from '../screens';
 import AdminNavigator from './AdminNavigator';
 import RiderNavigator from './RiderNavigator';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {ROLES} from '../constants';
 import {MyHeader} from '../components';
+import { useLazyQuery } from '@apollo/client';
+import { GET_USER_DETAIL } from '../graphQL/query/user.query';
+import { getUserDetails } from '../features/userInfo/userInfoSlice';
 
 const Stack = createStackNavigator();
 
@@ -27,8 +30,28 @@ function MainStackNavigator() {
   const userData = useSelector(store => store?.userInfo?.userData);
   const initialRouteName = ROLES[userData?.selected] || 'Login';
 
+  const [LoadUserDetail, {loading: userLoader}] = useLazyQuery(
+    GET_USER_DETAIL,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-and-network',
+    },
+  );
+
+  const dispatch = useDispatch()
   useEffect(() => {
     SplashScreen.hide(); //hides the splash screen on app load.
+    LoadUserDetail({variables: {
+      "getUserByIdId": userData?.id
+  }})
+  .then((res) => {
+    const obj = {...res?.data?.getUserById?.data}
+    obj.selected = userData?.selected ?? 'USER';
+    console.log("res res res res", Boolean(res?.data?.getUserById?.data));
+    if(Boolean(res?.data?.getUserById?.data)) {
+      dispatch(getUserDetails(obj));
+    }
+  })
   }, []);
 
   return (
