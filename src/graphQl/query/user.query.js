@@ -41,16 +41,23 @@ export const GET_ALL_USERS = gql`
 `;
 
 export const GET_USER_DETAIL = gql`
-  query Query($id: Int) {
-    getUserById(id: $id) {
-      message
+  query GetUserById($getUserByIdId: Int) {
+    getUserById(id: $getUserByIdId) {
       status
-      error
+      message
       data {
-        firstName
-        lastName
+        id
         email
+        firstName
+        userName
+        lastName
+        avatar
+        dob
         role
+        phoneNumber
+        country
+        city
+        createdAt
       }
     }
   }

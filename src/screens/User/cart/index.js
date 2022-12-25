@@ -252,17 +252,21 @@ function Cart({route, navigation}) {
                         </TouchableOpacity>
                         {isEditQty && isIndexSame == index && (
                           <TouchableOpacity
+                            disabled={item.quantity == 1}
                             style={{
                               width: moderateVerticalScale(33),
                               justifyContent: 'center',
                               flexDirection: 'row',
                               alignItems: 'center',
                               borderWidth: 1,
-                              borderColor: '#00000050',
+                              borderColor: item.quantity != 1 ? '#00000050' : '#0000004f',
                               borderRadius: 5,
-                              backgroundColor: colors.background,
+                              backgroundColor:
+                                item.quantity != 1
+                                  ? colors.background
+                                  : colors.disabledBackground,
                               padding: moderateVerticalScale(3),
-                              elevation: 2,
+                              elevation: item.quantity != 1 ? 2 : 0,
                             }}
                             onPress={() =>
                               addToCart(item, item.quantity - 1, index)
@@ -271,6 +275,7 @@ function Cart({route, navigation}) {
                               name="caret-down"
                               size={moderateVerticalScale(15)}
                               color={colors.primary}
+                              style={{opacity: item.quantity != 1 ? 1 : 0.3}}
                             />
                           </TouchableOpacity>
                         )}

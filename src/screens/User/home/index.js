@@ -37,11 +37,11 @@ import {
   GET_ALL_CATEGORIES,
   GET_ALL_CATEGORIES_WITH_ITEMS,
 } from '../../../graphQL/query/categories.query';
-import {GET_CURRENT_REMAINING_AMOUNT} from '../../../graphQL/query/user.query';
+import {GET_CURRENT_REMAINING_AMOUNT, GET_USER_DETAIL} from '../../../graphQL/query/user.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import styles from './styles';
 import {colors} from '../../../theme';
-import {logout} from '../../../features/userInfo/userInfoSlice';
+import {getUserDetails, logout} from '../../../features/userInfo/userInfoSlice';
 import {greetMessage} from '../../../utils/helperFunctions';
 import {clearCart} from '../../../features/cart/cartSlice';
 import {useLayoutAnimation} from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
@@ -91,7 +91,7 @@ function Home({navigation}) {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
     });
-
+  
   const categories = categoriesData?.getAllCategories?.data;
   const items =
     selectedCategory?.id == 0
@@ -99,10 +99,9 @@ function Home({navigation}) {
       : itemData?.getAllItems?.data;
 
   useEffect(() => {
-    LoadCategories();
+    LoadCategories()
     getRemainingAmount();
     LoadCategoriesWithItem();
-    dispatch(initialDataUpdate(profileData));
   }, []);
 
   console.log('reduxData?.cart?.amount', reduxData?.cart?.amount);

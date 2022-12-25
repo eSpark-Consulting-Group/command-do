@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    height: SCREEN_HEIGHT * 0.1,
+    height: SCREEN_HEIGHT * 0.243,
     width: SCREEN_HEIGHT * 0.243,
   },
   contentContainer: {
