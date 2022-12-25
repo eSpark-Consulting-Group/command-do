@@ -37,6 +37,11 @@ export default function CollectionModal({
     onFocusHandler();
   }, []);
 
+  const onCollecion = (amount: string) => {
+    onCollected(amount);
+    setAmount('');
+  };
+
   return (
     <>
       <StatusBar backgroundColor={'#000000'} />
@@ -96,12 +101,17 @@ export default function CollectionModal({
             <TextInput
               ref={inputRef}
               autoFocus={true}
-              keyboardType="decimal-pad"
+              keyboardType="numeric"
               value={amount}
               maxLength={4}
               placeholder="0"
               cursorColor={colors.background}
-              onChangeText={e => setAmount(e)}
+              onChangeText={e => {
+                if (e == '0') {
+                  return;
+                }
+                setAmount(e.replace(/[^0-9]+/g, ''));
+              }}
               style={{
                 fontWeight: 'bold',
                 fontSize: moderateVerticalScale(32),
@@ -111,7 +121,7 @@ export default function CollectionModal({
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => onCollected(amount)}
+          onPress={() => onCollecion(amount)}
           disabled={
             type == 'return'
               ? amount == totAmount
@@ -125,7 +135,6 @@ export default function CollectionModal({
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            height: SCREEN_HEIGHT * 0.07,
             backgroundColor:
               type == 'return'
                 ? amount == totAmount
@@ -134,14 +143,14 @@ export default function CollectionModal({
                 : amount >= totAmount
                 ? colors.primary
                 : '#ccc',
-            paddingVertical: 5,
+            paddingVertical: moderateVerticalScale(5),
             borderRadius: 10,
           }}>
           {isLoading ? (
             <ActivityIndicator size={'large'} color={colors.text_inverse} />
           ) : (
             <MyText
-              label={'Collected'}
+              label={type == 'return' ? 'Returned' : 'Collected'}
               textStyle={{
                 fontFamily: 'Poppins-Bold',
                 fontSize: moderateVerticalScale(25),

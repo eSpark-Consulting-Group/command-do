@@ -22,13 +22,13 @@ export const AddToCartBtn = ({item}) => {
         icon: 'auto',
       });
     } else {
-      useLayoutAnimation();
+      // useLayoutAnimation();
       addToCart((item?.quantity ?? 0) + 1, item);
     }
   };
 
   const removeQty = (item: any) => {
-    useLayoutAnimation();
+    // useLayoutAnimation();
     addToCart(item?.quantity - 1, item);
   };
 

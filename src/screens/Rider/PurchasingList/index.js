@@ -32,6 +32,7 @@ import {
   ORDERS_SUMMARY,
 } from '../../../graphQL/query/orders.query';
 import {toggleOrderPurchased} from '../../../features/riderOrders/riderOrderSlice';
+import {BackHandler} from 'react-native';
 
 export default function PurchasingList({navigation}) {
   const [GetOrderSummary, {loading}] = useLazyQuery(ORDERS_SUMMARY);
@@ -46,6 +47,18 @@ export default function PurchasingList({navigation}) {
   useEffect(() => {
     getSummary();
   }, []);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    return () => backHandler.remove();
+  }, []);
+
+  const backAction = () => {
+    return true;
+  };
 
   const getSummary = async () => {
     const currDate = new Date().setUTCHours(0);

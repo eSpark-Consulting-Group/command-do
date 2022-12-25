@@ -2,21 +2,21 @@ import React, {useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {useMutation} from '@apollo/client';
 import {useSelector} from 'react-redux';
+import {Icon} from '@rneui/themed';
+import {showMessage} from 'react-native-flash-message';
+import {moderateVerticalScale} from 'react-native-size-matters';
 
 import {MyHeader, MyText} from '../../../components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
 import {colors} from '../../../theme';
-import {CHANGE_PASS} from '../../../graphQL/query/user.query';
-import {showMessage} from 'react-native-flash-message';
-import {Icon} from '@rneui/themed';
-import {moderateVerticalScale} from 'react-native-size-matters';
+
+import {CHANGE_PASS} from '../../../graphQL/mutation/user.mutation';
 
 export default function ChangePassword({navigation}) {
   const userId = useSelector(store => store.userInfo?.userData.id);
@@ -27,6 +27,14 @@ export default function ChangePassword({navigation}) {
   const [newShow, setNewShow] = useState(false);
 
   const handleChangePass = async () => {
+    if (newPass.length < 8) {
+      showMessage({
+        message: 'Password must be at least 8 characters',
+        type: 'danger',
+        icon: 'auto',
+      });
+      return true;
+    }
     const userData = await ChangePassword({
       variables: {
         changePasswordId: userId,
@@ -40,6 +48,7 @@ export default function ChangePassword({navigation}) {
       type: status ? 'success' : 'danger',
       icon: 'auto',
     });
+    navigation?.navigate('Home');
   };
 
   return (
@@ -104,7 +113,14 @@ export default function ChangePassword({navigation}) {
           </View>
         </View>
         <TouchableOpacity
-          style={styles.loginButton}
+          disabled={newPass.length < 1 && currPass.length < 1}
+          style={{
+            ...styles.loginButton,
+            backgroundColor:
+              newPass.length < 1 || currPass.length < 1
+                ? '#ccc'
+                : colors.primary,
+          }}
           onPress={() => handleChangePass()}>
           {loading ? (
             <ActivityIndicator size={30} color={colors.text_inverse} />

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 80,
+    // marginTop: 20,
   },
   inputContainerStyle: {
     width: SCREEN_WIDTH * 0.8,

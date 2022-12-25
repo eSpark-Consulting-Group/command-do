@@ -45,7 +45,7 @@ export default function MyInput({
         value={value}
         onSubmitEditing={onSubmit}
         onChangeText={handleChangeText}
-        placeholder="Enter Text in TextInput"
+        placeholder={`Search "Biryani"`}
         keyboardType={numericKeyboard ? 'numeric' : 'default'}
         editable={canEdit}
         underlineColorAndroid="transparent"

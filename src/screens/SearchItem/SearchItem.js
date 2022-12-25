@@ -18,7 +18,6 @@ export default function SearchItem({route}) {
 
   const fetchOrders = async () => {
     const AllItems = await GetAllItems();
-    console.log('All Items', AllItems.data.getAllItems.data);
     setLunchItems(AllItems.data.getAllItems.data);
   };
 
@@ -40,11 +39,12 @@ export default function SearchItem({route}) {
     <View style={styles.container}>
       <SearchBar
         value={search}
-        handleChangeText={text => updateSearch(text)}
+        clearInput={() => setSearch('')}
+        handleChangeText={text => setSearch(text)}
         leftIcon="arrow-back"
-        icon="close-circle-outline"
+        icon="magnify"
         onPressLeft={() => navigation.goBack()}
-        onPressRight={() => updateSearch('')}
+        onPressRight={() => updateSearch(search)}
         Loader={searchLoading}
       />
 
@@ -65,7 +65,7 @@ export default function SearchItem({route}) {
                     : {foodType: item?.name, item: item},
                 )
               }>
-              <Text style={styles.item}>{item.name}</Text>
+              <MyText textStyle={styles.item} label={item.name} />
             </TouchRipple>
           )}
           ItemSeparatorComponent={() => <Divider />}
@@ -77,7 +77,7 @@ export default function SearchItem({route}) {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <MyText label={'Cant Get Items'} />
+                <MyText label={"Can't Get Items"} />
               </View>
             )
           }
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   listContainer: {flex: 1},
   item: {
     padding: 10,
-    fontSize: 18,
-    height: 44,
+    // fontSize: moder,
+    // height: 44,
   },
 });

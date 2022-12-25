@@ -4,6 +4,9 @@
 
 import Home from './User/home';
 import Login from './Auth/Login';
+import ForgotPassword from './Auth/ForgotPassword';
+import OTPVerification from './Auth/OTPVerification';
+import NewPassword from './Auth/NewPassword';
 import Items from './User/item';
 import Cart from './User/cart';
 import OrderConfirm from './User/orderConfirm';
@@ -28,6 +31,9 @@ import OrderHistory from './User/OrderHistory';
 export {
   Home,
   Login,
+  ForgotPassword,
+  OTPVerification,
+  NewPassword,
   Items,
   Cart,
   OrderConfirm,

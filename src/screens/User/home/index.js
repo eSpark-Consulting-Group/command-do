@@ -104,6 +104,8 @@ function Home({navigation}) {
     LoadCategoriesWithItem();
   }, []);
 
+  console.log('reduxData?.cart?.amount', reduxData?.cart?.amount);
+
   useEffect(() => {
     if (!LoadItemsLoading) {
       setLoadMore(false);
@@ -448,7 +450,6 @@ function Home({navigation}) {
           {!reachedEnd || selectedCategory?.id == 0 ? (
             <TouchableOpacity
               style={styles.cartContainerStyle}
-              disabled={reduxData?.cart?.amount == 0}
               onPress={_onSelect}>
               <AD
                 name="shoppingcart"
@@ -472,7 +473,6 @@ function Home({navigation}) {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              disabled={reduxData?.cart?.amount == 0}
               style={styles.cartButtonStyle}
               onPress={_onSelect}>
               <AD
