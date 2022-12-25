@@ -56,43 +56,19 @@ export const GET_USER_DETAIL = gql`
   }
 `;
 
-export const CHANGE_PASS = gql`
-  mutation ChangePassword(
-    $currentPassword: String!
-    $newPassword: String!
-    $changePasswordId: Int!
-  ) {
-    changePassword(
-      currentPassword: $currentPassword
-      newPassword: $newPassword
-      id: $changePasswordId
-    ) {
-      status
-      message
-      data {
-        password
-        id
-        email
-        firstName
-        lastName
-        avatar
-      }
-    }
-  }
-`;
 export const GET_CURRENT_REMAINING_AMOUNT = gql`
-query GetCurrentRemainingAmount($userId: Int!) {
-  getCurrentRemainingAmount(userId: $userId) {
-    data {
-      id
-      paidAmount
-      remainingAmount
-      totalAmount
-      userId
+  query GetCurrentRemainingAmount($userId: Int!) {
+    getCurrentRemainingAmount(userId: $userId) {
+      data {
+        id
+        paidAmount
+        remainingAmount
+        totalAmount
+        userId
+      }
+      error
+      message
+      status
     }
-    error
-    message
-    status
   }
-}
 `;

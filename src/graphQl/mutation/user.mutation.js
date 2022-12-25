@@ -91,3 +91,72 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+export const CHANGE_PASS = gql`
+  mutation ChangePassword(
+    $currentPassword: String!
+    $newPassword: String!
+    $changePasswordId: Int!
+  ) {
+    changePassword(
+      currentPassword: $currentPassword
+      newPassword: $newPassword
+      id: $changePasswordId
+    ) {
+      status
+      message
+      data {
+        password
+        id
+        email
+        firstName
+        lastName
+        avatar
+      }
+    }
+  }
+`;
+
+export const FORGOT_PASS = gql`
+  mutation ForgotPassword($email: String!) {
+    forgotPassword(email: $email) {
+      message
+      status
+      data {
+        firstName
+        lastName
+      }
+      error
+    }
+  }
+`;
+
+export const OTP_VERIFY = gql`
+  mutation VerifyOtp($token: String!, $email: String!) {
+    verifyOtp(token: $token, email: $email) {
+      status
+      message
+      error
+    }
+  }
+`;
+
+export const RESEND_OTP = gql`
+  mutation ResendOtp($email: String!) {
+    resendOtp(email: $email) {
+      message
+      status
+      error
+    }
+  }
+`;
+
+export const RESET_PASS = gql`
+  mutation ResetPassword($email: String!, $newPassword: String!) {
+    resetPassword(email: $email, newPassword: $newPassword) {
+      status
+      message
+      error
+    }
+  }
+`;

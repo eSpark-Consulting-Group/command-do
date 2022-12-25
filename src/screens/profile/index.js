@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useMutation} from '@apollo/client';
 
 import {MyText, CustomizeModal, OverlayLoader} from '../../components';
@@ -22,7 +23,7 @@ import {
   uploadImage,
 } from '../../utils/helperFunctions';
 import {colors} from '../../theme';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
 
 const {width, height} = Dimensions.get('window');
 
@@ -159,29 +160,70 @@ function Profile({route, navigation}) {
       />
 
       <View style={styles.profileContainer}>
-        <TouchableOpacity
-          style={styles.backButtonStyle}
-          onPress={() => navigation.goBack()}>
-          <View>
-            <Icon
-              name="ios-chevron-back-outline"
-              size={moderateVerticalScale(20)}
-              color={colors.text_inverse}
-            />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.profileBackground}>
+        <View
+          style={{
+            width: '100%',
+            height: verticalScale(130),
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            backgroundColor: colors.primary + '99',
+            padding: 5,
+            borderBottomWidth: height * 0.0005,
+            borderBottomColor: '#00000070',
+          }}>
           <TouchableOpacity
-            style={styles.profileImage}
-            onPress={() => setIsModal(!isModal)}>
+            style={styles.backButtonStyle}
+            onPress={() => navigation.goBack()}>
             <View>
               <Icon
-                name="ios-pencil"
-                size={moderateVerticalScale(12)}
+                name="arrow-back"
+                size={moderateVerticalScale(28)}
                 color={colors.text_inverse}
               />
             </View>
           </TouchableOpacity>
+          <View>
+            <MyText
+              label={editMode ? 'Edit Profile' : 'Profile'}
+              size={'subHeading'}
+              textStyle={{
+                fontFamily: 'Poppins-SemiBold',
+                color: colors.text_inverse,
+              }}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => (editMode ? saveModeon() : editModeon())}
+            style={{
+              padding: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <MyText
+              label={editMode ? 'Save' : 'Edit'}
+              textStyle={{
+                fontFamily: 'Poppins-Medium',
+                fontSize: moderateVerticalScale(16),
+                color: colors.text_inverse,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.profileBackground}>
+          {editMode && (
+            <TouchableOpacity
+              style={styles.profileImage}
+              onPress={() => setIsModal(!isModal)}>
+              <View>
+                <MCI
+                  name="camera-image"
+                  size={moderateVerticalScale(18)}
+                  color={colors.primary}
+                />
+              </View>
+            </TouchableOpacity>
+          )}
           <Image
             source={{
               uri:
@@ -197,17 +239,6 @@ function Profile({route, navigation}) {
             animating={imgLoader}
           />
         </View>
-        <TouchableOpacity
-          style={styles.editProfileStyle}
-          onPress={() => (editMode ? saveModeon() : editModeon())}>
-          <View>
-            <Icon
-              name={editMode ? 'save-sharp' : 'ios-pencil'}
-              size={moderateVerticalScale(18)}
-              color={colors.text_inverse}
-            />
-          </View>
-        </TouchableOpacity>
       </View>
       <ScrollView style={{backgroundColor: 'white'}}>
         <View style={styles.profileFormStyle}>

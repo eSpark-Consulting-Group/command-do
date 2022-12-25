@@ -22,6 +22,7 @@ import styles from './styles';
 import {sendFCMToken} from '../../../utils/helperFunctions';
 import {colors} from '../../../theme';
 import {BackButtonHandler} from '../../../components';
+import {SCREEN_WIDTH} from '../../../constants';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -149,6 +150,18 @@ const Login = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
+        <View style={{width: SCREEN_WIDTH * 0.8, alignItems: 'flex-end'}}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ForgotPassword')}>
+            <MyText
+              label={'Forgot Password?'}
+              textStyle={{
+                color: colors.primary,
+                fontFamily: 'Poppins-SemiBold',
+              }}
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => handleNavigate()}>
@@ -240,6 +253,23 @@ const Login = ({navigation}) => {
             onPress={() => setselectedRole('RIDER')}
           />
         </View>
+      </View>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <MyText
+          label={'Not a Member? '}
+          textStyle={{
+            fontFamily: 'Poppins-Medium',
+          }}
+        />
+        <TouchableOpacity onPress={() => console.log('Not a Member?')}>
+          <MyText
+            label={'Contact Administrator'}
+            textStyle={{
+              color: colors.primary,
+              fontFamily: 'Poppins-SemiBold',
+            }}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

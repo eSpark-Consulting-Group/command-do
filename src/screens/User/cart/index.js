@@ -84,7 +84,7 @@ function Cart({route, navigation}) {
       var changeData = {...item};
       changeData.quantity = value;
       setGetData(changeData);
-      useLayoutAnimation();
+      // useLayoutAnimation();
       if (count?.cart?.cartItems.length == 1 && index == 0 && value == 0) {
         showMessage({
           message: 'Warning',
