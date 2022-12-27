@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   mainLogoContainer: {
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: 20,
+    marginBottom: 20,
   },
   inputContainerStyle: {
     width: SCREEN_WIDTH * 0.8,
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   inputStyle: {
     width: '100%',
     paddingHorizontal: 10,
+    padding: 0,
   },
   showHidePassBtn: {
     right: moderateVerticalScale(35),

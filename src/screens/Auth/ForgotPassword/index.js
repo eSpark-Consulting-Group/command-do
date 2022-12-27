@@ -97,6 +97,7 @@ export default function ForgotPassword({navigation}) {
               style={{
                 width: '100%',
                 paddingHorizontal: SCREEN_HEIGHT * 0.015,
+                padding: 0,
               }}
               placeholderTextColor="gray"
             />
