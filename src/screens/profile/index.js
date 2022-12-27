@@ -230,6 +230,7 @@ function Profile({route, navigation}) {
                 userData?.avatar ??
                 'https://www.seekpng.com/png/detail/514-5147412_default-avatar-icon.png',
             }}
+            // resizeMode={'contain'}
             onLoadStart={() => setImgLoader(true)}
             onLoadEnd={() => setImgLoader(false)}
             style={styles.profileImageStyle}
