@@ -63,49 +63,12 @@ export default function SearchBar({
         />
       )}
       {!leftIcon && <GapView mode="horizontal" length={1} />}
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <MyInput
-          value={value}
-          handleChangeText={handleChangeText}
-          onSubmit={onSubmit}
-        />
-        {value && (
-          <View
-            style={{
-              position: 'absolute',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: moderateVerticalScale(40),
-              right: moderateVerticalScale(2),
-            }}>
-            <Icon
-              name={'close-circle'}
-              size={moderateVerticalScale(22)}
-              type="material-community"
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              containerStyle={{
-                borderRadius: 100,
-                padding: moderateVerticalScale(5),
-                // alignSelf: 'center',
-              }}
-              pressableProps={{
-                android_ripple: {borderless: true, color: '#00000013'},
-              }}
-              color={colors.primary + 'bb'}
-              onPress={clearInput}
-            />
-          </View>
-        )}
-      </View>
-
+      <MyInput
+        value={value}
+        handleChangeText={handleChangeText}
+        onSubmit={onSubmit}
+        clearInput={clearInput}
+      />
       {icon && !Loader && (
         <View
           style={{

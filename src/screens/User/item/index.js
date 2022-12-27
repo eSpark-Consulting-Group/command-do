@@ -209,7 +209,6 @@ function Items({route, navigation}) {
           <View style={styles.cartCountStyle}>
             <MyText
               label={count?.cart?.amount > 99 ? '99+' : count?.cart?.amount}
-              subTitle
               textStyle={{color: colors.text_inverse}}
             />
           </View>
