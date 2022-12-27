@@ -14,7 +14,7 @@ export const AddToCartBtn = ({item}) => {
   const dispatch = useDispatch();
 
   const addQty = (item: any) => {
-    if (item?.quantity > 998) {
+    if (item?.quantity > 98) {
       showMessage({
         message: 'Warning',
         description: 'Woah! you have reached the limit!!!',

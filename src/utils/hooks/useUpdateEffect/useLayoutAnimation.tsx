@@ -1,15 +1,22 @@
 import React from 'react';
+import {UIManager} from 'react-native';
+import {Platform} from 'react-native';
 import {LayoutAnimation, LayoutAnimationConfig} from 'react-native';
 
 export const useLayoutAnimation = (duration?) => {
+  if (Platform.OS === 'android') {
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+  }
   LayoutAnimation.configureNext({
     duration: duration ? duration : 300,
     create: {
-      type: LayoutAnimation.Types.easeInEaseOut,
+      type: 'easeInEaseOut',
       property: LayoutAnimation.Properties.opacity,
     },
     update: {
-      type: LayoutAnimation.Types.easeInEaseOut,
+      type: 'easeInEaseOut',
     },
   });
   return true;

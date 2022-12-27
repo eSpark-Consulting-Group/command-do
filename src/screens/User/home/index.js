@@ -37,7 +37,10 @@ import {
   GET_ALL_CATEGORIES,
   GET_ALL_CATEGORIES_WITH_ITEMS,
 } from '../../../graphQL/query/categories.query';
-import {GET_CURRENT_REMAINING_AMOUNT, GET_USER_DETAIL} from '../../../graphQL/query/user.query';
+import {
+  GET_CURRENT_REMAINING_AMOUNT,
+  GET_USER_DETAIL,
+} from '../../../graphQL/query/user.query';
 import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
 import styles from './styles';
 import {colors} from '../../../theme';
@@ -91,7 +94,7 @@ function Home({navigation}) {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
     });
-  
+
   const categories = categoriesData?.getAllCategories?.data;
   const items =
     selectedCategory?.id == 0
@@ -99,7 +102,7 @@ function Home({navigation}) {
       : itemData?.getAllItems?.data;
 
   useEffect(() => {
-    LoadCategories()
+    LoadCategories();
     getRemainingAmount();
     LoadCategoriesWithItem();
   }, []);
@@ -123,7 +126,7 @@ function Home({navigation}) {
 
   const isSelect = item => {
     onScrollToTopStart();
-    useLayoutAnimation();
+    // useLayoutAnimation();
     setSelectedCategory(item);
     if (item?.id == 0) {
       LoadItems({
@@ -497,6 +500,7 @@ function Home({navigation}) {
                         ? '99+'
                         : reduxData?.cart?.amount
                     }
+                    size={'subTitle'}
                     textStyle={{color: colors.text_inverse}}
                   />
                 </View>

@@ -24,6 +24,7 @@ import {
 } from '../../utils/helperFunctions';
 import {colors} from '../../theme';
 import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -54,16 +55,23 @@ function Profile({route, navigation}) {
   const [loader, setLoader] = useState(false);
   const [imgLoader, setImgLoader] = useState(true);
 
-  const [UpdateProfile] = useMutation(UPDATE_USER);
+  const [UpdateProfile, {loading}] = useMutation(UPDATE_USER);
 
   const editModeon = () => {
     setEditMode(true);
   };
 
   const saveModeon = async index => {
-    setEditMode(false);
-    console.log('Save mode');
     const profileUpdate = [...getData];
+    console.log('Save mode', profileUpdate);
+    if (!profileUpdate[0]?.value || !profileUpdate[1]?.value) {
+      showMessage({
+        message: 'First Name and Last Name is required',
+        type: 'danger',
+      });
+      return;
+    }
+    setEditMode(false);
     const data = {
       updateProfileId: userData?.id,
       role: userData?.role,
@@ -114,7 +122,7 @@ function Profile({route, navigation}) {
   };
   return (
     <View style={{flex: 1, backgroundColor: colors.background}}>
-      <OverlayLoader show={loader} />
+      <OverlayLoader show={loader || loading} />
       <CustomizeModal
         isVisible={isModal}
         setBackDrop={isModalVisible}
@@ -204,7 +212,7 @@ function Profile({route, navigation}) {
               label={editMode ? 'Save' : 'Edit'}
               textStyle={{
                 fontFamily: 'Poppins-Medium',
-                fontSize: moderateVerticalScale(16),
+                fontSize: moderateVerticalScale(18),
                 color: colors.text_inverse,
               }}
             />
@@ -248,29 +256,34 @@ function Profile({route, navigation}) {
               <View key={index} style={styles.profileFormAlign}>
                 <MyText
                   label={item.name}
-                  subTitle
-                  textStyle={{color: '#00000060'}}
+                  textStyle={{
+                    color: '#00000060',
+                    fontFamily: 'Poppins-SemiBold',
+                  }}
                 />
-                {editMode && item.name != 'Email' ? (
-                  <TextInput
-                    style={styles.profileFormMobileNumber}
-                    maxLength={item.name == 'Mobile Number' ? 11 : 30}
-                    onChangeText={value => onChangeNumber(value, index)}
-                    value={item.value}
-                    keyboardType={
-                      item.name == 'Mobile Number' ? 'number-pad' : 'default'
-                    }
-                  />
-                ) : (
-                  <MyText
-                    label={item.value}
-                    title
-                    textStyle={{
-                      color: colors.primary,
-                      marginVertical: height * 0.015,
-                    }}
-                  />
-                )}
+                <TextInput
+                  style={{
+                    ...styles.profileFormMobileNumber,
+                    fontFamily: 'Poppins-Regular',
+                    borderBottomColor:
+                      editMode && item.name != 'Email'
+                        ? '#00000090'
+                        : '#00000060',
+                    color:
+                      editMode && item.name != 'Email'
+                        ? 'black'
+                        : colors.primary,
+                  }}
+                  editable={editMode && item.name != 'Email'}
+                  maxLength={item.name == 'Mobile Number' ? 11 : 30}
+                  onChangeText={value => onChangeNumber(value, index)}
+                  value={
+                    !editMode && index == 3 && !item.value ? 'N/A' : item.value
+                  }
+                  keyboardType={
+                    item.name == 'Mobile Number' ? 'number-pad' : 'default'
+                  }
+                />
               </View>
             ))}
         </View>

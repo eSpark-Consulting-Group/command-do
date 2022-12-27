@@ -146,7 +146,7 @@ const Cards = props => {
               <MyText
                 label={item?.name}
                 textStyle={{
-                  fontSize: height * 0.03,
+                  fontSize: moderateVerticalScale(21),
                   color: colors.text_normal,
                 }}
               />
