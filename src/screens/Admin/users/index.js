@@ -183,6 +183,7 @@ export default function Users() {
                 }}>
                 <MyText
                   textStyle={styles.item}
+                  size={'title'}
                   label={item.firstName + ' ' + item.lastName}
                 />
               </TouchRipple>
@@ -234,8 +235,6 @@ const styles = StyleSheet.create({
   item: {
     color: colors.text_normal,
     padding: 10,
-    fontSize: 18,
-    height: 44,
   },
   modalInner: {
     width: moderateScale(150),

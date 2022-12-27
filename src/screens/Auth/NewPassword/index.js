@@ -84,6 +84,7 @@ export default function NewPassword({navigation, route}) {
               style={{
                 width: '85%',
                 paddingHorizontal: SCREEN_HEIGHT * 0.015,
+                padding: 0,
               }}
               placeholderTextColor="gray"
             />
@@ -106,6 +107,7 @@ export default function NewPassword({navigation, route}) {
               style={{
                 width: '85%',
                 paddingHorizontal: SCREEN_HEIGHT * 0.015,
+                padding: 0,
               }}
               placeholderTextColor="gray"
             />

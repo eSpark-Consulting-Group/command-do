@@ -256,7 +256,7 @@ const Login = ({navigation}) => {
           />
         </View>
       </View>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <MyText
           label={'Not a Member? '}
           textStyle={{
@@ -272,7 +272,7 @@ const Login = ({navigation}) => {
             }}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
