@@ -38,4 +38,4 @@ Also please list issues if you find using the Application, give a detailed expli
 
 ## License
 
-This project is note currently licensed. See the [eSpark Consultanting Group](https://www.esparkconsultants.com) website for more information.
+This project is not currently licensed. See the [eSpark Consultanting Group](https://www.esparkconsultants.com) website for more information.
