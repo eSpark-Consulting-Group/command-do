@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
@@ -116,6 +117,7 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={colors.primary} />
       {isFocused && <BackButtonHandler />}
       <View style={styles.mainLogoContainer}>
         <Image source={Logo} style={styles.logo} />

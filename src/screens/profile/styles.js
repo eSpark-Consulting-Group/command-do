@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary + '50',
     borderWidth: moderateVerticalScale(2),
     borderRadius: height * 1,
-    bottom: moderateVerticalScale(55),
+    bottom: moderateVerticalScale(65),
   },
   profileImage: {
     height: moderateVerticalScale(30, 1),
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     height: moderateVerticalScale(130),
     width: moderateVerticalScale(130),
     backgroundColor: colors.background,
-    resizeMode: 'contain',
   },
   editProfileStyle: {
     height: moderateVerticalScale(35),
