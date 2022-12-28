@@ -45,6 +45,7 @@ export default function SearchItem({route}) {
         icon="magnify"
         onPressLeft={() => navigation.goBack()}
         onPressRight={() => updateSearch(search)}
+        onSubmit={() => updateSearch(search)}
         Loader={searchLoading}
       />
 
