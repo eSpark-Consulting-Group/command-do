@@ -35,6 +35,10 @@ export const SEARCH_ITEMS = gql`
         image
         name
         price
+        Category {
+          id
+          name
+        }
       }
     }
   }

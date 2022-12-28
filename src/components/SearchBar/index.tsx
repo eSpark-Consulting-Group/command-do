@@ -68,6 +68,7 @@ export default function SearchBar({
         handleChangeText={handleChangeText}
         onSubmit={onSubmit}
         clearInput={clearInput}
+        bordered={false}
       />
       {icon && !Loader && (
         <View
@@ -93,7 +94,6 @@ export default function SearchBar({
           />
         </View>
       )}
-
       {Loader && (
         <ActivityIndicator
           size={moderateVerticalScale(28)}
