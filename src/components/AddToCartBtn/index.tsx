@@ -14,7 +14,7 @@ export const AddToCartBtn = ({item}) => {
   const dispatch = useDispatch();
 
   const addQty = (item: any) => {
-    if (item?.quantity > 998) {
+    if (item?.quantity > 98) {
       showMessage({
         message: 'Warning',
         description: 'Woah! you have reached the limit!!!',
@@ -22,13 +22,13 @@ export const AddToCartBtn = ({item}) => {
         icon: 'auto',
       });
     } else {
-      useLayoutAnimation();
+      // useLayoutAnimation();
       addToCart((item?.quantity ?? 0) + 1, item);
     }
   };
 
   const removeQty = (item: any) => {
-    useLayoutAnimation();
+    // useLayoutAnimation();
     addToCart(item?.quantity - 1, item);
   };
 

@@ -13,6 +13,9 @@ import {
   OrderHistory,
   SearchItem,
   ChangePassword,
+  ForgotPassword,
+  OTPVerification,
+  NewPassword,
 } from '../screens';
 import AdminNavigator from './AdminNavigator';
 import RiderNavigator from './RiderNavigator';
@@ -62,7 +65,12 @@ function MainStackNavigator() {
           headerShown: false,
         }}>
         {!userData ? (
-          <Stack.Screen name="Login" component={Login} />
+          <>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="OTPVerification" component={OTPVerification} />
+            <Stack.Screen name="NewPassword" component={NewPassword} />
+          </>
         ) : (
           <>
             {userData?.selected == 'USER' && (

@@ -21,6 +21,7 @@ export default function SearchBar({
   leftIcon,
   onPressLeft,
   onPressRight,
+  clearInput,
   value,
   handleChangeText,
   onSubmit,
@@ -31,6 +32,7 @@ export default function SearchBar({
   leftIcon?: string;
   onPressLeft?: () => void;
   onPressRight?: () => void;
+  clearInput?: () => void;
   value?: string;
   handleChangeText?: (text: string) => void;
   onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
@@ -65,6 +67,7 @@ export default function SearchBar({
         value={value}
         handleChangeText={handleChangeText}
         onSubmit={onSubmit}
+        clearInput={clearInput}
       />
       {icon && !Loader && (
         <View

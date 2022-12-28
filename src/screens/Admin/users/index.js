@@ -4,6 +4,7 @@ import {Divider, FAB} from '@rneui/themed';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useLazyQuery} from '@apollo/client';
 import {useFocusEffect} from '@react-navigation/native';
 import {Icon as Icons} from '@rneui/themed';
@@ -129,9 +130,9 @@ export default function Users() {
                 onSelect={() => goToNavigation('Profile')}
                 children={
                   <>
-                    <Icon
-                      name="person"
-                      size={moderateVerticalScale(18)}
+                    <MCI
+                      name="account"
+                      size={moderateVerticalScale(20)}
                       color={colors.primary}
                       style={styles.btnIcon}
                     />
@@ -148,9 +149,9 @@ export default function Users() {
                 onSelect={logoutHandler}
                 children={
                   <>
-                    <Icon
-                      name="ios-exit"
-                      size={moderateVerticalScale(18)}
+                    <MCI
+                      name="exit-to-app"
+                      size={moderateVerticalScale(20)}
                       color={colors.primary}
                       style={styles.btnIcon}
                     />
@@ -182,6 +183,7 @@ export default function Users() {
                 }}>
                 <MyText
                   textStyle={styles.item}
+                  size={'title'}
                   label={item.firstName + ' ' + item.lastName}
                 />
               </TouchRipple>
@@ -233,8 +235,6 @@ const styles = StyleSheet.create({
   item: {
     color: colors.text_normal,
     padding: 10,
-    fontSize: 18,
-    height: 44,
   },
   modalInner: {
     width: moderateScale(150),

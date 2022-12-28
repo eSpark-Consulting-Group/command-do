@@ -208,7 +208,7 @@ function RiderNavigator({navigation}) {
                                 }}></TouchableOpacity>
                             )}
                             <MCI
-                              name="account-cash"
+                              name="cash-refund"
                               size={moderateVerticalScale(20)}
                               color={colors.primary}
                               style={styles.btnIcon}
@@ -257,7 +257,6 @@ function RiderNavigator({navigation}) {
 
 const styles = StyleSheet.create({
   modalInner: {
-    width: moderateScale(150),
     backgroundColor: colors.background,
     borderRadius: moderateVerticalScale(5),
     zIndex: 1,

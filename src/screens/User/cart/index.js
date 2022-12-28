@@ -84,7 +84,7 @@ function Cart({route, navigation}) {
       var changeData = {...item};
       changeData.quantity = value;
       setGetData(changeData);
-      useLayoutAnimation();
+      // useLayoutAnimation();
       if (count?.cart?.cartItems.length == 1 && index == 0 && value == 0) {
         showMessage({
           message: 'Warning',
@@ -259,7 +259,8 @@ function Cart({route, navigation}) {
                               flexDirection: 'row',
                               alignItems: 'center',
                               borderWidth: 1,
-                              borderColor: item.quantity != 1 ? '#00000050' : '#0000004f',
+                              borderColor:
+                                item.quantity != 1 ? '#00000050' : '#0000004f',
                               borderRadius: 5,
                               backgroundColor:
                                 item.quantity != 1
@@ -315,7 +316,6 @@ function Cart({route, navigation}) {
                                 height: moderateVerticalScale(45),
                                 width: moderateVerticalScale(60),
                                 borderRadius: height * 0.015,
-                                resizeMode: 'contain',
                               }}
                             />
                           </View>

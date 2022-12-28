@@ -1,3 +1,4 @@
+import {Icon} from '@rneui/themed';
 import React from 'react';
 import {
   NativeSyntheticEvent,
@@ -19,6 +20,7 @@ export default function MyInput({
   canEdit = true,
   handleChangeText,
   onSubmit,
+  clearInput,
 }: {
   label?: string;
   value?: string;
@@ -26,6 +28,7 @@ export default function MyInput({
   canEdit?: boolean;
   handleChangeText?: (text: string) => void;
   onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
+  clearInput?: () => void;
 }) {
   const containerStyles = {
     padding: label ? 10 : 0,
@@ -41,31 +44,59 @@ export default function MyInput({
           textStyle={{paddingBottom: 10}}
         />
       )}
-      <TextInput
-        value={value}
-        onSubmitEditing={onSubmit}
-        onChangeText={handleChangeText}
-        placeholder="Enter Text in TextInput"
-        keyboardType={numericKeyboard ? 'numeric' : 'default'}
-        editable={canEdit}
-        underlineColorAndroid="transparent"
-        style={styles.TextInputStyleClass}
-      />
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: colors.background,
+          borderRadius: 10,
+        }}>
+        <TextInput
+          value={value}
+          onSubmitEditing={onSubmit}
+          onChangeText={handleChangeText}
+          placeholder={`Search "Biryani"`}
+          keyboardType={numericKeyboard ? 'numeric' : 'default'}
+          editable={canEdit}
+          underlineColorAndroid="transparent"
+          style={styles.TextInputStyleClass}
+        />
+        {value && (
+          <Icon
+            name={'close-circle'}
+            size={moderateVerticalScale(22)}
+            type="material-community"
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            containerStyle={{
+              borderRadius: 100,
+              padding: moderateVerticalScale(5),
+              // alignSelf: 'center',
+            }}
+            pressableProps={{
+              android_ripple: {borderless: true, color: '#00000013'},
+            }}
+            color={colors.primary + 'bb'}
+            onPress={clearInput}
+          />
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   TextInputStyleClass: {
-    paddingHorizontal: 10,
-    backgroundColor: colors.background,
-    width: '100%',
+    flex: 1,
     fontSize: moderateVerticalScale(14),
-    height: moderateVerticalScale(40),
-    borderColor: colors.primary,
-    borderRadius: 10,
-    borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 0,
+    paddingHorizontal: 10,
+    backgroundColor: colors.background,
   },
 });

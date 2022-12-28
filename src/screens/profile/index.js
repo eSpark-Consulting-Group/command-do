@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useMutation} from '@apollo/client';
 
 import {MyText, CustomizeModal, OverlayLoader} from '../../components';
@@ -22,7 +23,8 @@ import {
   uploadImage,
 } from '../../utils/helperFunctions';
 import {colors} from '../../theme';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
+import {showMessage} from 'react-native-flash-message';
 
 const {width, height} = Dimensions.get('window');
 
@@ -53,16 +55,23 @@ function Profile({route, navigation}) {
   const [loader, setLoader] = useState(false);
   const [imgLoader, setImgLoader] = useState(true);
 
-  const [UpdateProfile] = useMutation(UPDATE_USER);
+  const [UpdateProfile, {loading}] = useMutation(UPDATE_USER);
 
   const editModeon = () => {
     setEditMode(true);
   };
 
   const saveModeon = async index => {
-    setEditMode(false);
-    console.log('Save mode');
     const profileUpdate = [...getData];
+    console.log('Save mode', profileUpdate);
+    if (!profileUpdate[0]?.value || !profileUpdate[1]?.value) {
+      showMessage({
+        message: 'First Name and Last Name is required',
+        type: 'danger',
+      });
+      return;
+    }
+    setEditMode(false);
     const data = {
       updateProfileId: userData?.id,
       role: userData?.role,
@@ -113,7 +122,7 @@ function Profile({route, navigation}) {
   };
   return (
     <View style={{flex: 1, backgroundColor: colors.background}}>
-      <OverlayLoader show={loader} />
+      <OverlayLoader show={loader || loading} />
       <CustomizeModal
         isVisible={isModal}
         setBackDrop={isModalVisible}
@@ -159,35 +168,77 @@ function Profile({route, navigation}) {
       />
 
       <View style={styles.profileContainer}>
-        <TouchableOpacity
-          style={styles.backButtonStyle}
-          onPress={() => navigation.goBack()}>
-          <View>
-            <Icon
-              name="ios-chevron-back-outline"
-              size={moderateVerticalScale(20)}
-              color={colors.text_inverse}
-            />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.profileBackground}>
+        <View
+          style={{
+            width: '100%',
+            height: verticalScale(130),
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            backgroundColor: colors.primary + '99',
+            padding: 5,
+            borderBottomWidth: height * 0.0005,
+            borderBottomColor: '#00000070',
+          }}>
           <TouchableOpacity
-            style={styles.profileImage}
-            onPress={() => setIsModal(!isModal)}>
+            style={styles.backButtonStyle}
+            onPress={() => navigation.goBack()}>
             <View>
               <Icon
-                name="ios-pencil"
-                size={moderateVerticalScale(12)}
+                name="arrow-back"
+                size={moderateVerticalScale(28)}
                 color={colors.text_inverse}
               />
             </View>
           </TouchableOpacity>
+          <View>
+            <MyText
+              label={editMode ? 'Edit Profile' : 'Profile'}
+              size={'subHeading'}
+              textStyle={{
+                fontFamily: 'Poppins-SemiBold',
+                color: colors.text_inverse,
+              }}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => (editMode ? saveModeon() : editModeon())}
+            style={{
+              padding: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <MyText
+              label={editMode ? 'Save' : 'Edit'}
+              textStyle={{
+                fontFamily: 'Poppins-Medium',
+                fontSize: moderateVerticalScale(18),
+                color: colors.text_inverse,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.profileBackground}>
+          {editMode && (
+            <TouchableOpacity
+              style={styles.profileImage}
+              onPress={() => setIsModal(!isModal)}>
+              <View>
+                <MCI
+                  name="camera-image"
+                  size={moderateVerticalScale(18)}
+                  color={colors.primary}
+                />
+              </View>
+            </TouchableOpacity>
+          )}
           <Image
             source={{
               uri:
                 userData?.avatar ??
                 'https://www.seekpng.com/png/detail/514-5147412_default-avatar-icon.png',
             }}
+            // resizeMode={'contain'}
             onLoadStart={() => setImgLoader(true)}
             onLoadEnd={() => setImgLoader(false)}
             style={styles.profileImageStyle}
@@ -197,17 +248,6 @@ function Profile({route, navigation}) {
             animating={imgLoader}
           />
         </View>
-        <TouchableOpacity
-          style={styles.editProfileStyle}
-          onPress={() => (editMode ? saveModeon() : editModeon())}>
-          <View>
-            <Icon
-              name={editMode ? 'save-sharp' : 'ios-pencil'}
-              size={moderateVerticalScale(18)}
-              color={colors.text_inverse}
-            />
-          </View>
-        </TouchableOpacity>
       </View>
       <ScrollView style={{backgroundColor: 'white'}}>
         <View style={styles.profileFormStyle}>
@@ -216,29 +256,34 @@ function Profile({route, navigation}) {
               <View key={index} style={styles.profileFormAlign}>
                 <MyText
                   label={item.name}
-                  subTitle
-                  textStyle={{color: '#00000060'}}
+                  textStyle={{
+                    color: '#00000060',
+                    fontFamily: 'Poppins-SemiBold',
+                  }}
                 />
-                {editMode && item.name != 'Email' ? (
-                  <TextInput
-                    style={styles.profileFormMobileNumber}
-                    maxLength={item.name == 'Mobile Number' ? 11 : 30}
-                    onChangeText={value => onChangeNumber(value, index)}
-                    value={item.value}
-                    keyboardType={
-                      item.name == 'Mobile Number' ? 'number-pad' : 'default'
-                    }
-                  />
-                ) : (
-                  <MyText
-                    label={item.value}
-                    title
-                    textStyle={{
-                      color: colors.primary,
-                      marginVertical: height * 0.015,
-                    }}
-                  />
-                )}
+                <TextInput
+                  style={{
+                    ...styles.profileFormMobileNumber,
+                    fontFamily: 'Poppins-Regular',
+                    borderBottomColor:
+                      editMode && item.name != 'Email'
+                        ? '#00000090'
+                        : '#00000060',
+                    color:
+                      editMode && item.name != 'Email'
+                        ? 'black'
+                        : colors.primary,
+                  }}
+                  editable={editMode && item.name != 'Email'}
+                  maxLength={item.name == 'Mobile Number' ? 11 : 30}
+                  onChangeText={value => onChangeNumber(value, index)}
+                  value={
+                    !editMode && index == 3 && !item.value ? 'N/A' : item.value
+                  }
+                  keyboardType={
+                    item.name == 'Mobile Number' ? 'number-pad' : 'default'
+                  }
+                />
               </View>
             ))}
         </View>

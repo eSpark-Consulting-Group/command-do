@@ -22,7 +22,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   quantityInput: {
-    marginHorizontal: moderateVerticalScale(5),
+    // backgroundColor: 'red',
+    width: moderateVerticalScale(30),
+    // marginHorizontal: moderateVerticalScale(5),
     justifyContent: 'center',
     alignItems: 'center',
   },

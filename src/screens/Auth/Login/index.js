@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useLazyQuery} from '@apollo/client';
@@ -22,6 +23,7 @@ import styles from './styles';
 import {sendFCMToken} from '../../../utils/helperFunctions';
 import {colors} from '../../../theme';
 import {BackButtonHandler} from '../../../components';
+import {SCREEN_WIDTH} from '../../../constants';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -115,6 +117,7 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={colors.primary} />
       {isFocused && <BackButtonHandler />}
       <View style={styles.mainLogoContainer}>
         <Image source={Logo} style={styles.logo} />
@@ -146,6 +149,18 @@ const Login = ({navigation}) => {
             <Icon
               name={showPass ? 'visibility' : 'visibility-off'}
               size={moderateVerticalScale(20)}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{width: SCREEN_WIDTH * 0.8, alignItems: 'flex-end'}}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ForgotPassword')}>
+            <MyText
+              label={'Forgot Password?'}
+              textStyle={{
+                color: colors.primary,
+                fontFamily: 'Poppins-SemiBold',
+              }}
             />
           </TouchableOpacity>
         </View>
@@ -241,6 +256,23 @@ const Login = ({navigation}) => {
           />
         </View>
       </View>
+      {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <MyText
+          label={'Not a Member? '}
+          textStyle={{
+            fontFamily: 'Poppins-Medium',
+          }}
+        />
+        <TouchableOpacity onPress={() => console.log('Not a Member?')}>
+          <MyText
+            label={'Contact Administrator'}
+            textStyle={{
+              color: colors.primary,
+              fontFamily: 'Poppins-SemiBold',
+            }}
+          />
+        </TouchableOpacity>
+      </View> */}
     </View>
   );
 };
