@@ -18,6 +18,7 @@ export default function MyInput({
   value,
   numericKeyboard = false,
   canEdit = true,
+  bordered = true,
   handleChangeText,
   onSubmit,
   clearInput,
@@ -26,6 +27,7 @@ export default function MyInput({
   value?: string;
   numericKeyboard?: boolean;
   canEdit?: boolean;
+  bordered?: boolean;
   handleChangeText?: (text: string) => void;
   onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
   clearInput?: () => void;
@@ -61,9 +63,9 @@ export default function MyInput({
           keyboardType={numericKeyboard ? 'numeric' : 'default'}
           editable={canEdit}
           underlineColorAndroid="transparent"
-          style={styles.TextInputStyleClass}
+          style={bordered ? styles.textInputBordered : styles.textInputSimple}
         />
-        {value && (
+        {value && !bordered && (
           <Icon
             name={'close-circle'}
             size={moderateVerticalScale(22)}
@@ -75,7 +77,6 @@ export default function MyInput({
             containerStyle={{
               borderRadius: 100,
               padding: moderateVerticalScale(5),
-              // alignSelf: 'center',
             }}
             pressableProps={{
               android_ripple: {borderless: true, color: '#00000013'},
@@ -90,7 +91,7 @@ export default function MyInput({
 }
 
 const styles = StyleSheet.create({
-  TextInputStyleClass: {
+  textInputSimple: {
     flex: 1,
     fontSize: moderateVerticalScale(14),
     alignItems: 'center',
@@ -98,5 +99,17 @@ const styles = StyleSheet.create({
     padding: 0,
     paddingHorizontal: 10,
     backgroundColor: colors.background,
+  },
+  textInputBordered: {
+    flex: 1,
+    fontSize: moderateVerticalScale(14),
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    paddingHorizontal: 10,
+    backgroundColor: colors.background,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: colors.primary,
   },
 });
