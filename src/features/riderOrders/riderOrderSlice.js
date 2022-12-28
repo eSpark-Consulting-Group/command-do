@@ -20,12 +20,12 @@ const riderOrderSlice = createSlice({
       state.orders = action.payload;
     },
     collectAmouunt: (state, action) => {
-      console.log('Action', action.payload);
       let index = state.orders.findIndex(obj => obj.id == action.payload.id);
       state.orders[index].status = 'PAID';
       state.orders[index].paidAmount = action.payload.amount;
       state.orders[index].riderId = action.payload.riderId;
       state.orders[index].amountCollected = true;
+      console.log('Action', action.payload, 'state.orders[index]', state.orders[index]);
     },
     revertCollection: (state, action) => {
       console.log('Action', action.payload);

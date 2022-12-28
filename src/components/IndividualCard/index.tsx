@@ -33,7 +33,7 @@ const IndividualCard = props => {
   useEffect(() => {
     console.log('data changed');
     //@ts-ignore
-    itemsList?.current?.scrollToOffset({animated: false, offset: 0});
+    // itemsList?.current?.scrollToOffset({animated: false, offset: 0});
   }, [data]);
 
   return (
