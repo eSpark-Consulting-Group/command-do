@@ -60,12 +60,20 @@ export default function CurrentOrders({navigation}) {
       getOrders(
         newOrders?.data?.getAllOrders?.data?.map(value => {
           var order = orders?.find(redOrder => redOrder?.id == value?.id);
+          console.log(' order: ', {
+            ...value,
+            status: order?.status,
+            paidAmount: order?.paidAmount,
+            riderId: order?.riderId,
+            amountCollected: order?.amountCollected
+          });
           if (order) {
             return {
               ...value,
               status: order?.status,
               paidAmount: order?.paidAmount,
               riderId: order?.riderId,
+              amountCollected: order?.amountCollected
             };
           } else {
             return value;

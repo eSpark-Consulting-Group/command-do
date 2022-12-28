@@ -5,9 +5,6 @@ import {
   FlatList,
   PermissionsAndroid,
   RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
