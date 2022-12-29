@@ -1,5 +1,5 @@
 // BooksScreen.js
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   TextInput,
@@ -8,24 +8,24 @@ import {
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
-import {useLazyQuery} from '@apollo/client';
-import {CheckBox, Icon} from '@rneui/themed';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {useIsFocused} from '@react-navigation/native';
-import {showMessage} from 'react-native-flash-message';
+import { useDispatch } from 'react-redux';
+import { useLazyQuery } from '@apollo/client';
+import { CheckBox, Icon } from '@rneui/themed';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
-import {Logo} from '../../../assets/images';
+import { Logo } from '../../../assets/images';
 import MyText from '../../../components/Text';
-import {LOGIN_USER} from '../../../graphQL/query/user.query';
-import {getUserDetails} from '../../../features/userInfo/userInfoSlice';
+import { LOGIN_USER } from '../../../graphQL/query/user.query';
+import { getUserDetails } from '../../../features/userInfo/userInfoSlice';
 import styles from './styles';
-import {sendFCMToken} from '../../../utils/helperFunctions';
-import {colors} from '../../../theme';
-import {BackButtonHandler} from '../../../components';
-import {SCREEN_WIDTH} from '../../../constants';
+import { sendFCMToken } from '../../../utils/helperFunctions';
+import { colors } from '../../../theme';
+import { BackButtonHandler, GapView } from '../../../components';
+import { SCREEN_WIDTH } from '../../../constants';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [selectedRole, setselectedRole] = useState('ADMIN');
@@ -36,7 +36,7 @@ const Login = ({navigation}) => {
   const emailRef = useRef('');
   const passRef = useRef('');
 
-  const [LoginUser, {loading: userLoader}] = useLazyQuery(LOGIN_USER, {
+  const [LoginUser, { loading: userLoader }] = useLazyQuery(LOGIN_USER, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
@@ -84,7 +84,7 @@ const Login = ({navigation}) => {
             fcmToken: tokenFCM,
           },
         });
-        const obj = {...userData.data.loginUser.data};
+        const obj = { ...userData.data.loginUser.data };
         if (userData.data?.loginUser?.status) {
           if (userData.data?.loginUser?.data?.role?.includes(selectedRole)) {
             obj.selected = selectedRole;
@@ -152,7 +152,7 @@ const Login = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{width: SCREEN_WIDTH * 0.8, alignItems: 'flex-end'}}>
+        <View style={{ width: SCREEN_WIDTH * 0.8, alignItems: 'flex-end' }}>
           <TouchableOpacity
             onPress={() => navigation.navigate('ForgotPassword')}>
             <MyText
@@ -173,11 +173,11 @@ const Login = ({navigation}) => {
             <MyText label={'Login'} textStyle={styles.loginButtonText} />
           )}
         </TouchableOpacity>
+        <GapView />
         <View style={styles.radioButtonContainer}>
           <MyText
             label="Select Role:"
-            textStyle={{textAlignVertical: 'center'}}
-            size="title"
+            // textStyle={{ textAlignVertical: 'center' }}
           />
           <CheckBox
             title="Admin"
@@ -189,7 +189,7 @@ const Login = ({navigation}) => {
                 type="material"
                 color={colors.primary}
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             }
             uncheckedIcon={
@@ -198,7 +198,7 @@ const Login = ({navigation}) => {
                 type="material"
                 color="grey"
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             }
             checked={selectedRole == 'ADMIN'}
@@ -214,7 +214,7 @@ const Login = ({navigation}) => {
                 type="material"
                 color={colors.primary}
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             }
             uncheckedIcon={
@@ -223,7 +223,7 @@ const Login = ({navigation}) => {
                 type="material"
                 color="grey"
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             }
             checked={selectedRole == 'USER'}
@@ -239,7 +239,7 @@ const Login = ({navigation}) => {
                 type="material"
                 color={colors.primary}
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             }
             uncheckedIcon={
@@ -248,7 +248,7 @@ const Login = ({navigation}) => {
                 type="material"
                 color="grey"
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             }
             checked={selectedRole == 'RIDER'}
@@ -256,7 +256,7 @@ const Login = ({navigation}) => {
           />
         </View>
       </View>
-      {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <MyText
           label={'Not a Member? '}
           textStyle={{

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Dimensions,
@@ -8,19 +8,22 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {MyText} from '..';
-import {NotFound} from '../../assets/images';
-import {colors} from '../../theme';
-import {AddToCartBtn} from '../AddToCartBtn';
-import {SCREEN_HEIGHT} from '../../constants';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
-import {useLayoutAnimation} from '../../utils/hooks/useUpdateEffect/useLayoutAnimation';
-const {width, height} = Dimensions.get('window');
+import { MyText } from '..';
+import { NotFound } from '../../assets/images';
+import { colors } from '../../theme';
+import { AddToCartBtn } from '../AddToCartBtn';
+import { SCREEN_HEIGHT } from '../../constants';
+import {
+  moderateScale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
+import { useLayoutAnimation } from '../../utils/hooks/useUpdateEffect/useLayoutAnimation';
+const { width, height } = Dimensions.get('window');
 
 const IndividualCard = props => {
-  const {label, data, navigation, fetchMoreOnEnd, loading, cursor, refVal} =
+  const { label, data, navigation, fetchMoreOnEnd, loading, cursor, refVal } =
     props;
   const [isLoading, setIsLoading] = useState(false);
   const cart = useSelector((store: any) => store.cart);
@@ -38,7 +41,7 @@ const IndividualCard = props => {
 
   return (
     isLoading && (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <MyText
           label={data?.length > 0 ? data[0].Category?.name : ''}
           textStyle={{
@@ -91,10 +94,10 @@ const IndividualCard = props => {
                   />
                 </View>
               ) : (
-                <View style={{height: moderateVerticalScale(55)}} />
+                <View style={{ height: moderateVerticalScale(55) }} />
               )
             }
-            renderItem={({item: dataItem, index: dataIndex}) => {
+            renderItem={({ item: dataItem, index: dataIndex }) => {
               var cartItem = cart?.cartItems?.find(
                 (value: any) => value?.id == dataItem?.id,
               );
@@ -122,7 +125,7 @@ const IndividualCard = props => {
                       borderRadius: height * 0.02,
                     }}>
                     <Image
-                      source={{uri: dataItem?.image}}
+                      source={{ uri: dataItem?.image }}
                       style={{
                         borderRadius: height * 0.02,
                         height: height * 0.25,
@@ -145,7 +148,7 @@ const IndividualCard = props => {
                       <MyText
                         label={dataItem?.name}
                         numberOfLines={2}
-                        textStyle={{marginVertical: moderateVerticalScale(2)}}
+                        textStyle={{ marginVertical: moderateVerticalScale(2) }}
                       />
                       <View
                         style={{
@@ -186,7 +189,7 @@ const IndividualCard = props => {
                             : Number(cartItem?.quantity).toString()
                         }
                         size={'subTitle'}
-                        textStyle={{color: colors.background}}
+                        textStyle={{ color: colors.background }}
                       />
                     </View>
                   )}
@@ -195,10 +198,10 @@ const IndividualCard = props => {
             }}
             ListEmptyComponent={
               !loading ? (
-                <View style={{alignItems: 'center'}}>
+                <View style={{ alignItems: 'center' }}>
                   <Image
                     source={NotFound}
-                    style={{height: height / 2.4, width: width - 30}}
+                    style={{ height: height / 2.4, width: width - 30 }}
                   />
                   <MyText label={'No Items Found'} size={'subHeading'} />
                 </View>

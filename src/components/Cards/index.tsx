@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import {
   View,
   Dimensions,
@@ -8,22 +8,22 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {useSelector} from 'react-redux';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { useSelector } from 'react-redux';
 
-import {MyText} from '..';
-import {NotFound} from '../../assets/images';
-import {SCREEN_WIDTH} from '../../constants';
-import {colors} from '../../theme';
-import {AddToCartBtn} from '../AddToCartBtn';
+import { MyText } from '..';
+import { NotFound } from '../../assets/images';
+import { SCREEN_WIDTH } from '../../constants';
+import { colors } from '../../theme';
+import { AddToCartBtn } from '../AddToCartBtn';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const Cards = props => {
-  const {label, data, navigation} = props;
+  const { label, data, navigation } = props;
   const cart = useSelector((store: any) => store.cart);
 
-  const renderList = ({item: dataItem, index: dataIndex}) => {
+  const renderList = ({ item: dataItem, index: dataIndex }) => {
     var cartItem = cart?.cartItems?.find(
       (value: any) => value?.id == dataItem?.id,
     );
@@ -36,6 +36,7 @@ const Cards = props => {
           elevation: moderateVerticalScale(2),
           backgroundColor: colors.background,
           borderRadius: height * 0.02,
+          width: width * 0.8,
         }}
         onPress={() =>
           navigation.navigate('Item', {
@@ -46,15 +47,15 @@ const Cards = props => {
         <View
           style={{
             height: moderateVerticalScale(150),
-            width: moderateVerticalScale(310),
+            // width: moderateVerticalScale(310),
             borderRadius: height * 0.02,
           }}>
           <Image
-            source={{uri: dataItem?.image}}
+            source={{ uri: dataItem?.image }}
             style={{
               borderRadius: height * 0.02,
               height: moderateVerticalScale(150),
-              width: moderateVerticalScale(310),
+              // width: moderateVerticalScale(310),
               backgroundColor: colors.background,
             }}
           />
@@ -91,7 +92,7 @@ const Cards = props => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            width: moderateVerticalScale(310),
+            // width: moderateVerticalScale(310),
           }}>
           <View
             style={{
@@ -114,7 +115,7 @@ const Cards = props => {
               }}>
               <MyText
                 label={`Rs.${dataItem?.price}`}
-                textStyle={{opacity: 1}}
+                textStyle={{ opacity: 1 }}
               />
             </View>
           </View>
@@ -132,7 +133,7 @@ const Cards = props => {
   };
 
   return (
-    <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       {data?.length > 0 &&
         data
           ?.filter(value => value?.Item?.length > 0)
@@ -163,7 +164,7 @@ const Cards = props => {
                     <View>
                       <Image
                         source={NotFound}
-                        style={{height: height / 2.7, width: width - 30}}
+                        style={{ height: height / 2.7, width: width - 30 }}
                       />
                     </View>
                   }
