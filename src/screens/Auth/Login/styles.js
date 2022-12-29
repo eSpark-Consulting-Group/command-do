@@ -1,7 +1,7 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
-import {colors} from '../../../theme';
+import { Dimensions, StyleSheet } from 'react-native';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { colors } from '../../../theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -65,8 +65,16 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
-  radioButtonText: {fontSize: 12, marginLeft: 0, marginRight: 5},
-  radioButtonInnerContainer: {padding: 0, alignSelf: 'center'},
+  radioButtonText: {
+    fontSize: 12,
+    marginLeft: 0,
+    marginRight: 5,
+    fontFamily: 'Poppins-Regular',
+  },
+  radioButtonInnerContainer: {
+    padding: 0,
+    alignSelf: 'center',
+  },
   blurViewStyle: {
     position: 'absolute',
     left: 0,

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,12 +6,12 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {useLazyQuery} from '@apollo/client';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLazyQuery } from '@apollo/client';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {showMessage} from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import NetInfo from '@react-native-community/netinfo';
 import {
   Menu,
@@ -20,8 +20,8 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-import {useIsFocused} from '@react-navigation/native';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { useIsFocused } from '@react-navigation/native';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 import {
   Cards,
@@ -31,8 +31,8 @@ import {
   BackButtonHandler,
   BlurBackground,
 } from '../../../components';
-import {profileData} from '../../../utils/data';
-import {initialDataUpdate} from '../../../features/profile/profileSlice';
+import { profileData } from '../../../utils/data';
+import { initialDataUpdate } from '../../../features/profile/profileSlice';
 import {
   GET_ALL_CATEGORIES,
   GET_ALL_CATEGORIES_WITH_ITEMS,
@@ -41,15 +41,19 @@ import {
   GET_CURRENT_REMAINING_AMOUNT,
   GET_USER_DETAIL,
 } from '../../../graphQL/query/user.query';
-import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
+import { GET_ALL_ITEMS } from '../../../graphQL/query/item.query';
 import styles from './styles';
-import {colors} from '../../../theme';
-import {getUserDetails, logout} from '../../../features/userInfo/userInfoSlice';
-import {greetMessage} from '../../../utils/helperFunctions';
-import {clearCart} from '../../../features/cart/cartSlice';
-import {useLayoutAnimation} from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
+import { colors } from '../../../theme';
+import {
+  getUserDetails,
+  logout,
+} from '../../../features/userInfo/userInfoSlice';
+import { greetMessage } from '../../../utils/helperFunctions';
+import { clearCart } from '../../../features/cart/cartSlice';
+import { useLayoutAnimation } from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
+import { SCREEN_WIDTH } from '../../../constants';
 
-function Home({navigation}) {
+function Home({ navigation }) {
   const reduxData = useSelector(store => store);
   const dispatch = useDispatch();
 
@@ -66,14 +70,14 @@ function Home({navigation}) {
 
   const [
     LoadCategories,
-    {data: categoriesData, loading: LoadCategoriesLoading},
+    { data: categoriesData, loading: LoadCategoriesLoading },
   ] = useLazyQuery(GET_ALL_CATEGORIES, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
   const [
     getRemainingAmount,
-    {data: remainingAmount, loading: LoadRemainingAmount},
+    { data: remainingAmount, loading: LoadRemainingAmount },
   ] = useLazyQuery(GET_CURRENT_REMAINING_AMOUNT, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
@@ -84,12 +88,12 @@ function Home({navigation}) {
 
   const [
     LoadCategoriesWithItem,
-    {data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading},
+    { data: categoriesWithItemData, loading: LoadCategoriesWithItemLoading },
   ] = useLazyQuery(GET_ALL_CATEGORIES_WITH_ITEMS, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
-  const [LoadItems, {data: itemData, loading: LoadItemsLoading, fetchMore}] =
+  const [LoadItems, { data: itemData, loading: LoadItemsLoading, fetchMore }] =
     useLazyQuery(GET_ALL_ITEMS, {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
@@ -170,7 +174,7 @@ function Home({navigation}) {
           cursor: itemData?.getAllItems?.pagination?.nextCursor,
         },
       },
-      updateQuery: (previousResult, {fetchMoreResult}) => {
+      updateQuery: (previousResult, { fetchMoreResult }) => {
         const newItems = fetchMoreResult.getAllItems.data;
         const updatedArr = [...previousResult?.getAllItems?.data, ...newItems];
         return {
@@ -253,7 +257,7 @@ function Home({navigation}) {
               <MenuTrigger
                 children={
                   <TouchableOpacity
-                    style={{zIndex: 2}}
+                    style={{ zIndex: 2 }}
                     onPress={() => setIsModal(!isModal)}>
                     <Icon
                       name="person-circle-outline"
@@ -263,7 +267,8 @@ function Home({navigation}) {
                   </TouchableOpacity>
                 }
               />
-              <MenuOptions customStyles={{optionsContainer: styles.modalInner}}>
+              <MenuOptions
+                customStyles={{ optionsContainer: styles.modalInner }}>
                 <MenuOption
                   style={styles.buttonContainer}
                   onSelect={() => goToNavigation('Profile')}
@@ -278,7 +283,7 @@ function Home({navigation}) {
                       <MyText
                         label={'Profile'}
                         size={'title'}
-                        textStyle={{color: colors.text_normal + '80'}}
+                        textStyle={{ color: colors.text_normal + '80' }}
                       />
                     </>
                   }
@@ -297,7 +302,7 @@ function Home({navigation}) {
                       <MyText
                         label={'Change Password'}
                         size={'title'}
-                        textStyle={{color: colors.text_normal + '80'}}
+                        textStyle={{ color: colors.text_normal + '80' }}
                       />
                     </>
                   }
@@ -316,7 +321,7 @@ function Home({navigation}) {
                       <MyText
                         label={'Orders'}
                         size={'title'}
-                        textStyle={{color: colors.text_normal + '80'}}
+                        textStyle={{ color: colors.text_normal + '80' }}
                       />
                     </>
                   }
@@ -335,7 +340,7 @@ function Home({navigation}) {
                       <MyText
                         label={'Log out'}
                         size={'title'}
-                        textStyle={{color: colors.text_normal + '80'}}
+                        textStyle={{ color: colors.text_normal + '80' }}
                       />
                     </>
                   }
@@ -352,7 +357,7 @@ function Home({navigation}) {
             </View>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('SearchItem', {navigateTo: 'Item'})
+                navigation.navigate('SearchItem', { navigateTo: 'Item' })
               }>
               <Icon
                 name="search"
@@ -388,7 +393,7 @@ function Home({navigation}) {
           <View style={styles.categoryContainer}>
             {categories && (
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {[{name: 'All', image: null, id: 0}, ...categories]?.map(
+                {[{ name: 'All', image: null, id: 0 }, ...categories]?.map(
                   (item, index) => (
                     <TouchableOpacity
                       key={index}
@@ -406,7 +411,7 @@ function Home({navigation}) {
                       <View>
                         {item.image && (
                           <Image
-                            source={{uri: item?.image}}
+                            source={{ uri: item?.image }}
                             style={styles.categoryImage}
                           />
                         )}
@@ -458,7 +463,7 @@ function Home({navigation}) {
                 name="shoppingcart"
                 size={moderateVerticalScale(25)}
                 color={colors.text_inverse}
-                style={{width: moderateVerticalScale(27)}}
+                style={{ width: moderateVerticalScale(27) }}
               />
               {reduxData?.cart?.amount != 0 && (
                 <View style={styles.cartAmountStyle}>
@@ -469,7 +474,7 @@ function Home({navigation}) {
                         : reduxData?.cart?.amount
                     }
                     size={'subTitle'}
-                    textStyle={{color: colors.text_normal}}
+                    textStyle={{ color: colors.text_normal }}
                   />
                 </View>
               )}
@@ -490,7 +495,7 @@ function Home({navigation}) {
               <MyText
                 label={'Checkout Cart'}
                 title
-                textStyle={{color: colors.text_inverse}}
+                textStyle={{ color: colors.text_inverse }}
               />
               {reduxData?.cart?.amount != 0 && (
                 <View style={styles.cartCountStyle}>
@@ -501,7 +506,7 @@ function Home({navigation}) {
                         : reduxData?.cart?.amount
                     }
                     size={'subTitle'}
-                    textStyle={{color: colors.text_inverse}}
+                    textStyle={{ color: colors.text_inverse }}
                   />
                 </View>
               )}
