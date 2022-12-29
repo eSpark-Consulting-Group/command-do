@@ -63,6 +63,7 @@ function RiderNavigator({ navigation }) {
 
   const logoutHandler = () => {
     setIsModal(false);
+    navigation?.navigate('Orders', { isModal: false })
     dispatch(logout());
   };
 
@@ -91,10 +92,7 @@ function RiderNavigator({ navigation }) {
                     opened={isModal}
                     onBackdropPress={() => {
                       setIsModal(false);
-                      // console.log(
-                      //   'setparam',
-                      //   navigation.navigate('Orders', { isModal: false }),
-                      // );
+                      navigation?.navigate('Orders', { isModal: false })
                     }}
                     renderer={renderers.Popover}
                     rendererProps={{
@@ -150,9 +148,9 @@ function RiderNavigator({ navigation }) {
                             color={colors.text_inverse}
                             onPress={() => {
                               setIsModal(true);
-                              // navigation.navigate('Orders', {
-                              //   isModal: true,
-                              // });
+                              navigation?.navigate('Orders', {
+                                isModal: true,
+                              });
                             }}
                           />
                         </>
