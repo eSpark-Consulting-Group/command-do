@@ -1,14 +1,17 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 
-import {SCREEN_HEIGHT} from '../../constants';
-import {colors} from '../../theme';
+import { SCREEN_HEIGHT } from '../../constants';
+import { colors } from '../../theme';
 import MyText from '../Text';
-import {GapView, TouchRipple} from '../';
-import {imagePicker} from '../../utils/helperFunctions';
+import { GapView, TouchRipple } from '../';
+import { imagePicker } from '../../utils/helperFunctions';
 import MyInput from '../MyInput';
-import {PicBack} from '../../assets/images';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import { PicBack } from '../../assets/images';
+import {
+  moderateScale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
 
 export default function ImageContainer({
   onImageChange = (image: object) => {},
@@ -51,11 +54,11 @@ export default function ImageContainer({
   }, [image?.uri]);
 
   return (
-    <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+    <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
       <MyText
         label="Image"
         size={SCREEN_HEIGHT * 0.028}
-        textStyle={{paddingBottom: 10}}
+        textStyle={{ paddingBottom: 10 }}
       />
       <View
         style={{
@@ -64,14 +67,14 @@ export default function ImageContainer({
         }}>
         <View
           style={{
-            height: moderateVerticalScale(80),
-            width: moderateVerticalScale(80),
+            height: moderateVerticalScale(80, 1),
+            width: moderateVerticalScale(80, 1),
             borderWidth: 2,
             borderColor: colors.primary,
           }}>
           <Image
-            source={load ? {uri: image?.uri} : PicBack}
-            style={{height: '100%', width: '100%'}}
+            source={load ? { uri: image?.uri } : PicBack}
+            style={{ height: '100%', width: '100%' }}
           />
         </View>
         <GapView mode="horizontal" />
@@ -89,7 +92,7 @@ export default function ImageContainer({
               <MyInput
                 value={imageHolder?.uri}
                 handleChangeText={text => {
-                  const Image = {uri: text};
+                  const Image = { uri: text };
                   setImageHolder(Image);
                 }}
               />
@@ -103,7 +106,7 @@ export default function ImageContainer({
                   onPress={() => {
                     setImage(imageHolder);
                     onImageChange(
-                      imageHolder == null ? {uri: ''} : imageHolder,
+                      imageHolder == null ? { uri: '' } : imageHolder,
                     );
                     setShowUrl(false);
                   }}
@@ -131,16 +134,19 @@ export default function ImageContainer({
                 flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
+                justifyContent: 'center',
               }}>
               <View style={styles.btnStyle}>
                 <TouchRipple onPress={onUploadImage} darkRipple>
                   <MyText
                     label={'Upload Image'}
                     // size={moderateVerticalScale(14, -0.2)}
-                    size={moderateScale(13)}
+                    numberOfLines={2}
+                    size={'subTitle'}
                     textStyle={{
                       padding: 5,
                       color: colors.text_normal,
+                      textAlign: 'center',
                       textAlignVertical: 'center',
                     }}
                   />
@@ -149,17 +155,19 @@ export default function ImageContainer({
               <MyText
                 label="Or"
                 size={moderateVerticalScale(10)}
-                textStyle={{marginHorizontal: 8, opacity: 0.6}}
+                textStyle={{ marginHorizontal: 8, opacity: 0.6 }}
               />
               <View style={styles.btnStyle}>
                 <TouchRipple onPress={() => setShowUrl(true)} darkRipple>
                   <MyText
                     label={'Set Image Url'}
                     // size={moderateVerticalScale(14, -0.2)}
-                    size={moderateScale(13)}
+                    numberOfLines={2}
+                    size={'subTitle'}
                     textStyle={{
                       padding: 5,
                       color: colors.text_normal,
+                      textAlign: 'center',
                       textAlignVertical: 'center',
                     }}
                   />
@@ -182,5 +190,6 @@ const styles = StyleSheet.create({
     elevation: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    width: moderateScale(100),
   },
 });
