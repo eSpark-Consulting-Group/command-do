@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, ScrollView, Alert} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {CheckBox} from '@rneui/themed';
-import {useLazyQuery, useMutation} from '@apollo/client';
-import {showMessage} from 'react-native-flash-message';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, Alert } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CheckBox } from '@rneui/themed';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { showMessage } from 'react-native-flash-message';
 
 import {
   BottomButton,
@@ -13,29 +13,29 @@ import {
   MyText,
   OverlayLoader,
 } from '../../../components';
-import {colors} from '../../../theme';
-import {SCREEN_HEIGHT} from '../../../constants';
-import {GET_USER_DETAIL} from '../../../graphQL/query/user.query';
+import { colors } from '../../../theme';
+import { SCREEN_HEIGHT } from '../../../constants';
+import { GET_USER_DETAIL } from '../../../graphQL/query/user.query';
 import {
   EDIT_USER,
   DELETE_USER,
   CREATE_USER,
 } from '../../../graphQL/mutation/user.mutation';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function AddForm() {
   const navigation = useNavigation();
   const route = useRoute();
   const {
     mode,
-    userInfo: {id},
+    userInfo: { id },
   } = route?.params;
 
-  const [EditUser, {loading: editLoader}] = useMutation(EDIT_USER);
-  const [DeleteUser, {loading: deleteLoader}] = useMutation(DELETE_USER);
-  const [AddUser, {loading: addLoader}] = useMutation(CREATE_USER);
+  const [EditUser, { loading: editLoader }] = useMutation(EDIT_USER);
+  const [DeleteUser, { loading: deleteLoader }] = useMutation(DELETE_USER);
+  const [AddUser, { loading: addLoader }] = useMutation(CREATE_USER);
 
-  const [LoadUserDetail, {loading: userLoader}] = useLazyQuery(
+  const [LoadUserDetail, { loading: userLoader }] = useLazyQuery(
     GET_USER_DETAIL,
     {
       notifyOnNetworkStatusChange: true,
@@ -109,14 +109,14 @@ export default function AddForm() {
     try {
       const getUserDetails = await LoadUserDetail({
         variables: {
-          id: userId,
+          getUserByIdId: userId,
         },
       });
-      const {email, firstName, lastName, role} =
+      const { email, firstName, lastName, role } =
         getUserDetails?.data?.getUserById?.data;
-      console.log(getUserDetails?.data?.getUserById?.data);
+      console.log('popopopopopopop', getUserDetails?.data?.getUserById?.data);
       handleRoleCheck(role);
-      setUserInfo({email, firstName, lastName, role});
+      setUserInfo({ email, firstName, lastName, role });
     } catch (e) {
       console.log('error while fetching', e);
     }
@@ -141,7 +141,7 @@ export default function AddForm() {
   };
 
   const handleAddUser = async () => {
-    const {firstName, lastName, email} = userInfo;
+    const { firstName, lastName, email } = userInfo;
     const data = {
       firstName: firstName,
       lastName: lastName,
@@ -164,7 +164,7 @@ export default function AddForm() {
   };
 
   const handleEditUser = async () => {
-    const {firstName, lastName} = userInfo;
+    const { firstName, lastName } = userInfo;
     const data = {
       updateProfileId: id,
       firstName: firstName,
@@ -188,41 +188,41 @@ export default function AddForm() {
 
   if (mode === 'add') {
     return (
-      <View style={{flex: 1, backgroundColor: colors.background}}>
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
         <OverlayLoader show={userLoader || addLoader} />
         <MyHeader
           title="Add New User"
           leftIcon="arrow-back"
           onPressLeft={() => navigation.goBack()}
         />
-        <ScrollView style={{paddingHorizontal: 10}}>
+        <ScrollView style={{ paddingHorizontal: 10 }}>
           <MySubHeader title="Add User Details" divider />
           <MyInput
             label="First Name"
             value={userInfo.firstName}
             handleChangeText={text =>
-              setUserInfo({...userInfo, firstName: text})
+              setUserInfo({ ...userInfo, firstName: text })
             }
           />
           <MyInput
             label="Last Name"
             value={userInfo.lastName}
             handleChangeText={text =>
-              setUserInfo({...userInfo, lastName: text})
+              setUserInfo({ ...userInfo, lastName: text })
             }
           />
           <MyInput
             label="Email Address"
             value={userInfo.email}
-            handleChangeText={text => setUserInfo({...userInfo, email: text})}
+            handleChangeText={text => setUserInfo({ ...userInfo, email: text })}
           />
-          <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+          <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
             <MyText
               label={'Roles'}
               size={SCREEN_HEIGHT * 0.028}
-              textStyle={{paddingBottom: 10}}
+              textStyle={{ paddingBottom: 10 }}
             />
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <CheckBox
                 title="Admin"
                 checked={check1}
@@ -233,7 +233,7 @@ export default function AddForm() {
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
                 }}
-                containerStyle={{padding: 0, alignSelf: 'center'}}
+                containerStyle={{ padding: 0, alignSelf: 'center' }}
                 onPress={() => setCheck1(!check1)}
               />
               <CheckBox
@@ -246,7 +246,7 @@ export default function AddForm() {
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
                 }}
-                containerStyle={{padding: 0, alignSelf: 'center'}}
+                containerStyle={{ padding: 0, alignSelf: 'center' }}
                 onPress={() => setCheck2(!check2)}
               />
               <CheckBox
@@ -259,13 +259,13 @@ export default function AddForm() {
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
                 }}
-                containerStyle={{padding: 0, alignSelf: 'center'}}
+                containerStyle={{ padding: 0, alignSelf: 'center' }}
                 onPress={() => setCheck3(!check3)}
               />
             </View>
           </View>
         </ScrollView>
-        <View style={{height: 60}}>
+        <View style={{ height: 60 }}>
           <BottomButton
             label="Add User"
             count={cond1 && cond2 ? 1 : 0}
@@ -279,7 +279,7 @@ export default function AddForm() {
   }
   if (mode === 'edit') {
     return (
-      <View style={{flex: 1, backgroundColor: colors.background}}>
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
         <OverlayLoader show={userLoader || editLoader || deleteLoader} />
         <MyHeader
           title="Edit User"
@@ -289,20 +289,20 @@ export default function AddForm() {
           icon="trash"
           onPressRight={() => handleDeleteUser()}
         />
-        <ScrollView style={{paddingHorizontal: 10}}>
+        <ScrollView style={{ paddingHorizontal: 10 }}>
           <MySubHeader title="Edit User Details" divider />
           <MyInput
             label="First Name"
             value={userInfo.firstName}
             handleChangeText={text =>
-              setUserInfo({...userInfo, firstName: text})
+              setUserInfo({ ...userInfo, firstName: text })
             }
           />
           <MyInput
             label="Last Name"
             value={userInfo.lastName}
             handleChangeText={text =>
-              setUserInfo({...userInfo, lastName: text})
+              setUserInfo({ ...userInfo, lastName: text })
             }
           />
           <MyInput
@@ -310,13 +310,13 @@ export default function AddForm() {
             value={userInfo.email}
             canEdit={false}
           />
-          <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+          <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
             <MyText
               label={'Roles'}
               size={SCREEN_HEIGHT * 0.028}
-              textStyle={{paddingBottom: 10}}
+              textStyle={{ paddingBottom: 10 }}
             />
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <CheckBox
                 title="Admin"
                 checked={check1}
@@ -327,7 +327,7 @@ export default function AddForm() {
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
                 }}
-                containerStyle={{padding: 0, alignSelf: 'center'}}
+                containerStyle={{ padding: 0, alignSelf: 'center' }}
                 onPress={() => setCheck1(!check1)}
               />
               <CheckBox
@@ -340,7 +340,7 @@ export default function AddForm() {
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
                 }}
-                containerStyle={{padding: 0, alignSelf: 'center'}}
+                containerStyle={{ padding: 0, alignSelf: 'center' }}
                 onPress={() => setCheck2(!check2)}
               />
               <CheckBox
@@ -353,13 +353,13 @@ export default function AddForm() {
                   marginRight: 5,
                   fontFamily: 'sans-serif-medium',
                 }}
-                containerStyle={{padding: 0, alignSelf: 'center'}}
+                containerStyle={{ padding: 0, alignSelf: 'center' }}
                 onPress={() => setCheck3(!check3)}
               />
             </View>
           </View>
         </ScrollView>
-        <View style={{height: 60}}>
+        <View style={{ height: 60 }}>
           <BottomButton
             label="Edit User"
             count={cond1 && cond2 ? 1 : 0}

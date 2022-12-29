@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, StyleSheet} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {MoneyReturn, Orders, PurchasingList} from '../screens';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { MoneyReturn, Orders, PurchasingList } from '../screens';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Icon as Icons} from '@rneui/themed';
+import { Icon as Icons } from '@rneui/themed';
 import {
   Menu,
   MenuOptions,
@@ -12,27 +12,29 @@ import {
   renderers,
 } from 'react-native-popup-menu';
 
-import {BlurBackground, MyHeader, MyText} from '../components';
-import {colors} from '../theme';
-import {logout} from '../features/userInfo/userInfoSlice';
-import {useDispatch, useSelector} from 'react-redux';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
-import {StatusBar} from 'react-native';
-import {useLazyQuery} from '@apollo/client';
-import {ALL_ORDERS} from '../graphQL/query/orders.query';
+import { BlurBackground, MyHeader, MyText } from '../components';
+import { colors } from '../theme';
+import { logout } from '../features/userInfo/userInfoSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  moderateScale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
+import { StatusBar } from 'react-native';
+import { useLazyQuery } from '@apollo/client';
+import { ALL_ORDERS } from '../graphQL/query/orders.query';
 
 const Stack = createStackNavigator();
 
-function RiderNavigator({navigation}) {
+function RiderNavigator({ navigation }) {
   const [isModal, setIsModal] = useState(false);
   var currDate = new Date().setUTCHours(0);
-  const [GetAllOrders, {data, loading: loadOrders}] = useLazyQuery(ALL_ORDERS);
+  const [GetAllOrders, { data, loading: loadOrders }] =
+    useLazyQuery(ALL_ORDERS);
   const finishedStatus = useSelector(
     store => store?.riderOrder.collectionFinished,
   );
-  const orderPurchased = useSelector(
-    store => store?.riderOrder.orderPurchased,
-  );
+  const orderPurchased = useSelector(store => store?.riderOrder.orderPurchased);
 
   useEffect(() => {
     GetAllOrders({
@@ -41,18 +43,16 @@ function RiderNavigator({navigation}) {
       },
     });
 
-    if(finishedStatus && !orderPurchased) {
-      navigation?.navigate('Purchasing_List')
-    }else if (finishedStatus && orderPurchased) {
-      navigation?.navigate('MoneyReturn')
+    if (finishedStatus && !orderPurchased) {
+      navigation?.navigate('Purchasing_List');
+    } else if (finishedStatus && orderPurchased) {
+      navigation?.navigate('MoneyReturn');
     }
   }, []);
 
   let order = data?.getAllOrders?.data?.filter(item => {
     return item?.returned == false && item?.status == 'PAID';
   });
-
-  
 
   const dispatch = useDispatch();
 
@@ -74,27 +74,27 @@ function RiderNavigator({navigation}) {
       <Stack.Screen
         name="Orders"
         component={Orders}
-        initialParams={{isModal: isModal}}
+        initialParams={{ isModal: isModal }}
         options={{
           headerShown: true,
-          header: ({navigation}) => (
+          header: ({ navigation }) => (
             <>
               <StatusBar
                 backgroundColor={isModal ? colors.text_normal : colors.primary}
               />
               <MyHeader
-                title="Today Orders"
+                title="Today's Orders"
                 onPressRight={() => setIsModal(true)}
-                titleStyle={{fontFamily: 'Poppins-Bold'}}
+                titleStyle={{ fontFamily: 'Poppins-Bold' }}
                 iconComponent={
                   <Menu
                     opened={isModal}
                     onBackdropPress={() => {
                       setIsModal(false);
-                      console.log(
-                        'setparam',
-                        navigation.navigate('Orders', {isModal: false}),
-                      );
+                      // console.log(
+                      //   'setparam',
+                      //   navigation.navigate('Orders', { isModal: false }),
+                      // );
                     }}
                     renderer={renderers.Popover}
                     rendererProps={{
@@ -108,12 +108,12 @@ function RiderNavigator({navigation}) {
                               activeOpacity={1}
                               onPress={() => {
                                 setIsModal(true);
-                                console.log(
-                                  'setparam',
-                                  navigation.navigate('Orders', {
-                                    isModal: true,
-                                  }),
-                                );
+                                // console.log(
+                                //   'setparam',
+                                //   navigation.navigate('Orders', {
+                                //     isModal: true,
+                                //   }),
+                                // );
                               }}
                               style={{
                                 backgroundColor: 'red',
@@ -150,23 +150,20 @@ function RiderNavigator({navigation}) {
                             color={colors.text_inverse}
                             onPress={() => {
                               setIsModal(true);
-                              console.log(
-                                'setparam',
-                                navigation.navigate('Orders', {
-                                  isModal: true,
-                                }),
-                              );
+                              // navigation.navigate('Orders', {
+                              //   isModal: true,
+                              // });
                             }}
                           />
                         </>
                       }
                     />
                     <MenuOptions
-                      customStyles={{optionsContainer: styles.modalInner}}>
+                      customStyles={{ optionsContainer: styles.modalInner }}>
                       <MenuOption
                         style={styles.buttonContainer}
                         onSelect={() => {
-                          navigation.navigate('Orders', {isModal: false});
+                          navigation.navigate('Orders', { isModal: false });
                           goToNavigation('Profile');
                         }}
                         children={
@@ -180,7 +177,7 @@ function RiderNavigator({navigation}) {
                             <MyText
                               label={'Profile'}
                               size={'title'}
-                              textStyle={{color: colors.text_normal + '80'}}
+                              textStyle={{ color: colors.text_normal + '80' }}
                             />
                           </>
                         }
@@ -188,7 +185,7 @@ function RiderNavigator({navigation}) {
                       <MenuOption
                         style={styles.buttonContainer}
                         onSelect={() => {
-                          navigation.navigate('Orders', {isModal: false});
+                          navigation.navigate('Orders', { isModal: false });
                           goToNavigation('MoneyReturn');
                         }}
                         children={
@@ -198,12 +195,12 @@ function RiderNavigator({navigation}) {
                                 activeOpacity={1}
                                 onPress={() => {
                                   setIsModal(true);
-                                  console.log(
-                                    'setparam',
-                                    navigation.navigate('Orders', {
-                                      isModal: true,
-                                    }),
-                                  );
+                                  // console.log(
+                                  //   'setparam',
+                                  //   navigation.navigate('Orders', {
+                                  //     isModal: true,
+                                  //   }),
+                                  // );
                                 }}
                                 style={{
                                   backgroundColor: 'red',
@@ -225,7 +222,7 @@ function RiderNavigator({navigation}) {
                             <MyText
                               label={'Return Amount'}
                               size={'title'}
-                              textStyle={{color: colors.text_normal + '80'}}
+                              textStyle={{ color: colors.text_normal + '80' }}
                             />
                           </>
                         }
@@ -244,7 +241,7 @@ function RiderNavigator({navigation}) {
                             <MyText
                               label={'Log out'}
                               size={'title'}
-                              textStyle={{color: colors.text_normal + '80'}}
+                              textStyle={{ color: colors.text_normal + '80' }}
                             />
                           </>
                         }

@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, SectionList} from 'react-native';
-import {Divider, FAB} from '@rneui/themed';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, SectionList, StatusBar } from 'react-native';
+import { Divider, FAB } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useLazyQuery} from '@apollo/client';
-import {useFocusEffect} from '@react-navigation/native';
-import {Icon as Icons} from '@rneui/themed';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import { useLazyQuery } from '@apollo/client';
+import { useFocusEffect } from '@react-navigation/native';
+import { Icon as Icons } from '@rneui/themed';
+import {
+  moderateScale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
 import {
   Menu,
   MenuOptions,
@@ -24,16 +26,16 @@ import {
   OverlayLoader,
   TouchRipple,
 } from '../../../components';
-import {colors} from '../../../theme';
-import {profileData} from '../../../utils/data';
-import {initialDataUpdate} from '../../../features/profile/profileSlice';
-import {GET_ALL_USERS} from '../../../graphQL/query/user.query';
-import {logout} from '../../../features/userInfo/userInfoSlice';
+import { colors } from '../../../theme';
+import { profileData } from '../../../utils/data';
+import { initialDataUpdate } from '../../../features/profile/profileSlice';
+import { GET_ALL_USERS } from '../../../graphQL/query/user.query';
+import { logout } from '../../../features/userInfo/userInfoSlice';
 
 export default function Users() {
   const navigation = useNavigation();
 
-  const [LoadAllUsers, {loading: userLoader, refetch, error}] = useLazyQuery(
+  const [LoadAllUsers, { loading: userLoader, refetch, error }] = useLazyQuery(
     GET_ALL_USERS,
     {
       notifyOnNetworkStatusChange: true,
@@ -87,6 +89,9 @@ export default function Users() {
   return (
     <View style={styles.container}>
       <OverlayLoader show={userLoader} />
+      <StatusBar
+        backgroundColor={isModal ? colors.text_normal : colors.primary}
+      />
       <MyHeader
         title="All Users"
         iconComponent={
@@ -124,7 +129,7 @@ export default function Users() {
                 />
               }
             />
-            <MenuOptions customStyles={{optionsContainer: styles.modalInner}}>
+            <MenuOptions customStyles={{ optionsContainer: styles.modalInner }}>
               <MenuOption
                 style={styles.buttonContainer}
                 onSelect={() => goToNavigation('Profile')}
@@ -139,7 +144,7 @@ export default function Users() {
                     <MyText
                       label={'Profile'}
                       size={'title'}
-                      textStyle={{color: colors.text_normal + '80'}}
+                      textStyle={{ color: colors.text_normal + '80' }}
                     />
                   </>
                 }
@@ -158,7 +163,7 @@ export default function Users() {
                     <MyText
                       label={'Log out'}
                       size={'title'}
-                      textStyle={{color: colors.text_normal + '80'}}
+                      textStyle={{ color: colors.text_normal + '80' }}
                     />
                   </>
                 }
@@ -169,8 +174,8 @@ export default function Users() {
       />
       <SectionList
         sections={userList ?? []}
-        style={{paddingTop: 3}}
-        renderItem={({item}) => {
+        style={{ paddingTop: 3 }}
+        renderItem={({ item }) => {
           return (
             <>
               <TouchRipple
@@ -178,7 +183,7 @@ export default function Users() {
                 onPress={() => {
                   navigation.navigate('Add_Form_User', {
                     mode: 'edit',
-                    userInfo: {id: item.id},
+                    userInfo: { id: item.id },
                   });
                 }}>
                 <MyText
@@ -192,7 +197,7 @@ export default function Users() {
           );
         }}
         SectionSeparatorComponent={() => <Divider width={1} />}
-        renderSectionHeader={({section: {title}}) => {
+        renderSectionHeader={({ section: { title } }) => {
           return <Text style={styles.sectionHeader}>{title}</Text>;
         }}
         keyExtractor={(item, index) => index}
@@ -201,7 +206,7 @@ export default function Users() {
         onPress={() =>
           navigation.navigate('Add_Form_User', {
             mode: 'add',
-            userInfo: {id: null},
+            userInfo: { id: null },
           })
         }
         icon={{
