@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Dimensions,
@@ -10,27 +10,28 @@ import {
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
-import {useMutation} from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
-import {addItem, clearCart, increase} from '../../../features/cart/cartSlice';
-import {Delivery} from '../../../assets/images';
-import {BlurBackground, MyText} from '../../../components';
-import {PLACE_ORDER} from '../../../graphQL/mutation/order.mutation';
-import {colors} from '../../../theme';
-import {moderateScale, moderateVerticalScale} from 'react-native-size-matters';
-import {isValidTimeToOrder} from '../../../utils/helperFunctions';
-import {showMessage} from 'react-native-flash-message';
-import {KeyboardAvoidingView} from 'react-native';
-import {SCREEN_WIDTH} from '../../../constants';
-import {useLayoutAnimation} from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
+import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
+import { Delivery } from '../../../assets/images';
+import { BlurBackground, MyText } from '../../../components';
+import { PLACE_ORDER } from '../../../graphQL/mutation/order.mutation';
+import { colors } from '../../../theme';
+import {
+  moderateScale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
+import { isValidTimeToOrder } from '../../../utils/helperFunctions';
+import { showMessage } from 'react-native-flash-message';
+import { useLayoutAnimation } from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-function Cart({route, navigation}) {
+function Cart({ route, navigation }) {
   const timer = useRef();
   const [isEditQty, setIsEditQty] = useState(false);
   const [showAlert, isShowAlert] = useState(false);
@@ -41,7 +42,7 @@ function Cart({route, navigation}) {
   const dispatch = useDispatch();
   const count = useSelector(store => store);
   const userData = useSelector(store => store?.userInfo?.userData);
-  const [CreateOrder, {loading, error}] = useMutation(PLACE_ORDER);
+  const [CreateOrder, { loading, error }] = useMutation(PLACE_ORDER);
 
   useEffect(() => {
     var makeTotal = 0;
@@ -81,7 +82,7 @@ function Cart({route, navigation}) {
       });
       setIsEditQty(false);
     } else {
-      var changeData = {...item};
+      var changeData = { ...item };
       changeData.quantity = value;
       setGetData(changeData);
       // useLayoutAnimation();
@@ -98,7 +99,7 @@ function Cart({route, navigation}) {
   };
 
   const removefromCart = (item, value, index) => {
-    var changeData = {...item};
+    var changeData = { ...item };
     changeData.quantity = value;
     setGetData(changeData);
     if (count?.cart?.cartItems.length == 1 && index == 0) {
@@ -147,9 +148,9 @@ function Cart({route, navigation}) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colors?.background}}>
+    <View style={{ flex: 1, backgroundColor: colors?.background }}>
       <StatusBar backgroundColor={colors.primary} />
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon
@@ -162,11 +163,11 @@ function Cart({route, navigation}) {
             <MyText
               label={'Cart'}
               size={'subHeading'}
-              textStyle={{fontFamily: 'Poppins-Medium'}}
+              textStyle={{ fontFamily: 'Poppins-Medium' }}
             />
             <MyText
               label={'Check your menu'}
-              textStyle={{color: '#00000060'}}
+              textStyle={{ color: '#00000060' }}
             />
           </View>
         </View>
@@ -190,22 +191,22 @@ function Cart({route, navigation}) {
               <MyText
                 label={`We are waiting for your order!`}
                 size="subTitle"
-                textStyle={{color: '#00000060'}}
+                textStyle={{ color: '#00000060' }}
               />
             </View>
           </View>
         </View>
         <View style={styles.cartItemContainer}>
           <ScrollView
-            style={{flex: 1}}
-            contentContainerStyle={{alignItems: 'center'}}
+            style={{ flex: 1 }}
+            contentContainerStyle={{ alignItems: 'center' }}
             showsVerticalScrollIndicator={false}>
             <TouchableWithoutFeedback onPress={() => setIsEditQty(false)}>
               <View>
                 {count?.cart?.cartItems &&
                   count?.cart?.cartItems.map((item, index) => (
                     <View style={styles.cartItemInner} key={index}>
-                      <View style={{alignItems: 'center'}}>
+                      <View style={{ alignItems: 'center' }}>
                         {isEditQty && isIndexSame == index && (
                           <TouchableOpacity
                             style={{
@@ -240,7 +241,7 @@ function Cart({route, navigation}) {
                           onPress={() => onHandleEditQty(index)}>
                           <MyText
                             label={item.quantity}
-                            textStyle={{margin: moderateVerticalScale(1)}}
+                            textStyle={{ margin: moderateVerticalScale(1) }}
                           />
                           {!(isEditQty && isIndexSame == index) && (
                             <Icon
@@ -276,7 +277,7 @@ function Cart({route, navigation}) {
                               name="caret-down"
                               size={moderateVerticalScale(15)}
                               color={colors.primary}
-                              style={{opacity: item.quantity != 1 ? 1 : 0.3}}
+                              style={{ opacity: item.quantity != 1 ? 1 : 0.3 }}
                             />
                           </TouchableOpacity>
                         )}
@@ -311,7 +312,7 @@ function Cart({route, navigation}) {
                               marginHorizontal: moderateVerticalScale(5),
                             }}>
                             <Image
-                              source={{uri: item.image}}
+                              source={{ uri: item.image }}
                               style={{
                                 height: moderateVerticalScale(45),
                                 width: moderateVerticalScale(60),
@@ -319,7 +320,7 @@ function Cart({route, navigation}) {
                               }}
                             />
                           </View>
-                          <View style={{flex: 1}}>
+                          <View style={{ flex: 1 }}>
                             <MyText
                               label={item.name}
                               numberOfLines={2}
@@ -370,12 +371,12 @@ function Cart({route, navigation}) {
             <MyText
               label={'Total'}
               size={moderateVerticalScale(20)}
-              textStyle={{fontFamily: 'Poppins-SemiBold'}}
+              textStyle={{ fontFamily: 'Poppins-SemiBold' }}
             />
             <MyText
               label={`Rs. ${total}`}
               size={moderateVerticalScale(20)}
-              textStyle={{fontFamily: 'Poppins-SemiBold'}}
+              textStyle={{ fontFamily: 'Poppins-SemiBold' }}
             />
           </View>
           <View style={styles.ProceedToCheckOut}>
@@ -392,14 +393,14 @@ function Cart({route, navigation}) {
                 marginVertical: moderateVerticalScale(10),
               }}
               onPress={() => {
-                // if (!isValidTimeToOrder()) {
-                //   showMessage({
-                //     message: 'Alas! Time is over for placing order😬',
-                //     icon: 'auto',
-                //     type: 'info',
-                //   });
-                //   return;
-                // }
+                if (!isValidTimeToOrder()) {
+                  showMessage({
+                    message: 'Alas! Time is over for placing order😬',
+                    icon: 'auto',
+                    type: 'info',
+                  });
+                  return;
+                }
                 isShowAlert(true);
               }}>
               {!loading ? (
@@ -410,7 +411,7 @@ function Cart({route, navigation}) {
                       : 'Please add item into cart'
                   }
                   title
-                  textStyle={{color: colors.background}}
+                  textStyle={{ color: colors.background }}
                 />
               ) : (
                 <ActivityIndicator size="large" color={colors.text_inverse} />
