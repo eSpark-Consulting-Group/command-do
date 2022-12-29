@@ -1,0 +1,211 @@
+import React, {useState} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Icon} from '@rneui/themed';
+import DatePicker from 'react-native-date-ranges';
+import moment from 'moment';
+
+import {GapView, MyHeader, MyText, TouchRipple} from '../../../components';
+import {colors} from '../../../theme';
+import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
+import {moderateVerticalScale} from 'react-native-size-matters';
+
+export default function FilterScreen() {
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const [date, setDate] = useState(moment());
+  const [show, setShow] = useState(false);
+  const [selectDate, setSelectDate] = useState({
+    startDate: null,
+    endDate: null,
+  });
+  const [orderFilterFields, setOrderFilterFields] = useState([
+    {
+      label: 'Select Date/Range',
+      onPress: () => {
+        setShow(!show);
+      },
+    },
+    {
+      label: 'Select User',
+      onPress: () => handleSecondField(),
+    },
+  ]);
+
+  useUpdateEffect(() => {
+    if (route.params !== undefined) {
+      console.log('kuch ha', route.params);
+      getUserSelected(route.params);
+    }
+  }, [route.params]);
+
+  const getUserSelected = ({userList, userId}) => {
+    let tempArr = [...orderFilterFields];
+    console.log('userList ka bta', userList, userId);
+    let newArr = userList.filter(item => (item.id === userId ? item : null));
+    console.log('xxx=>>', newArr);
+    console.log('zzzz===>><<>>', tempArr);
+    if (newArr.length === 0) {
+      tempArr[1].label = 'Select User';
+    } else {
+      tempArr[1].label = newArr[0].firstName + ' ' + newArr[0].lastName;
+    }
+    setOrderFilterFields(tempArr);
+  };
+
+  const setSelectedDate = dateString => {
+    let tempArr = [...orderFilterFields];
+    tempArr[0].label = dateString;
+    setOrderFilterFields(tempArr);
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    console.log('Selected date is:', currentDate);
+    console.log(
+      '🚀 ~ file: Filters.js ~ line 54 ~ onChange ~ currentDate.toLocaleString',
+      currentDate.toDateString(),
+    );
+    setSelectedDate(currentDate.toDateString());
+    setDate(currentDate);
+  };
+
+  const handleSecondField = () => {
+    navigation.navigate('UserList');
+  };
+
+  const handleRangeDates = ({startDate, endDate}) => {
+    if (startDate !== undefined || endDate !== undefined) {
+      const endDateFormat = moment(endDate).utc(true);
+      const startDateFormat = moment(startDate).utc(true);
+      setSelectDate({startDate: startDateFormat, endDate: endDateFormat});
+      console.log(endDateFormat);
+      console.log(startDateFormat);
+      handleChangeLabel(startDateFormat, endDateFormat);
+    }
+    setShow(false);
+  };
+
+  const handleChangeLabel = (sd, ed) => {
+    const startD = moment(sd).utc(true).toISOString().split('T');
+    const endD = moment(ed).utc(true).toISOString().split('T');
+    let tempArr = [...orderFilterFields];
+    console.log('sd', startD[0]);
+    console.log('ed', endD[0]);
+    tempArr[0]['label'] = `${startD[0].toString()} - ${endD[0].toString()}`;
+    setOrderFilterFields(tempArr);
+  };
+
+  return (
+    <View style={styles.container}>
+      <MyHeader
+        title="Filters"
+        icon="checkmark"
+        rightIconType="ionicon"
+        leftIcon="filter-remove-outline"
+        leftIconType="material-community"
+        onPressLeft={() => {
+          navigation.navigate('OrderList', {
+            filterInfo: {
+              dateRange: {
+                startDate: null,
+                endDate: null,
+              },
+              userInfo: null,
+            },
+          });
+        }}
+        onPressRight={() => {
+          navigation.navigate('OrderList', {
+            filterInfo: {
+              dateRange: selectDate,
+              userInfo: route?.params?.userId ?? null,
+            },
+          });
+        }}
+      />
+      <DatePicker
+        isVisible={show}
+        onConfirm={value => handleRangeDates(value)}
+        closeModal={() => setShow(false)}
+        markText={'Select Date Range'}
+        ButtonText={'Confirm'}
+        ButtonTextStyle={{
+          color: colors.text_inverse,
+          fontWeight: 'bold',
+          fontSize: moderateVerticalScale(18),
+        }}
+        ButtonStyle={{
+          backgroundColor: colors.primary,
+          alignItems: 'center',
+          paddingVertical: moderateVerticalScale(10),
+          borderRadius: moderateVerticalScale(5),
+          elevation: 2,
+        }}
+        selectedBgColor={colors.primary}
+        customStyles={{
+          placeholderText: {fontSize: 20}, // placeHolder style
+          headerStyle: {
+            backgroundColor: colors.primary,
+          }, // title container style
+          headerMarkTitle: {
+            fontSize: 26,
+            color: colors.background,
+            opacity: 1,
+          }, // title mark style
+          headerDateTitle: {}, // title Date style
+          contentInput: {}, //content text container style
+          contentText: {}, //after selected text Style
+        }} // optional
+        // centerAlign // optional text will align center or not
+        // allowFontScaling={false} // optional
+        mode={'range'}
+      />
+
+      <FlatList
+        data={orderFilterFields}
+        style={styles.listContainer}
+        renderItem={({item}) => (
+          <View style={styles.listItem}>
+            <TouchRipple
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                padding: 10,
+                paddingVertical: 20,
+              }}
+              darkRipple
+              onPress={item.onPress}>
+              <MyText
+                label={item.label}
+                textStyle={{textAlignVertical: 'center'}}
+                size={16}
+              />
+              <Icon
+                name={'chevron-right'}
+                color={colors.primary}
+                size={20}
+                iconStyle={{marginRight: 5}}
+              />
+            </TouchRipple>
+          </View>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  listContainer: {},
+  listItem: {
+    backgroundColor: '#fff',
+    elevation: 2,
+    marginVertical: 8,
+  },
+});

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "769256657465",
+    "project_id": "espark-lunch-app",
+    "storage_bucket": "espark-lunch-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769256657465:android:9c9eea1bb8689d154b73e8",
+        "android_client_info": {
+          "package_name": "com.commanddo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769256657465-l0r3n9jjfdc80keae6edcco3qn2p6g1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCurGWk2AxTIo-eO2uWqPMzfaG8C16v6w0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769256657465-l0r3n9jjfdc80keae6edcco3qn2p6g1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769256657465:android:6a9944430e269b634b73e8",
+        "android_client_info": {
+          "package_name": "com.espark_lunch_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769256657465-l0r3n9jjfdc80keae6edcco3qn2p6g1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCurGWk2AxTIo-eO2uWqPMzfaG8C16v6w0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769256657465-l0r3n9jjfdc80keae6edcco3qn2p6g1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,62 @@
+diff --git a/node_modules/react-native-date-ranges/src/ComposePicker.js b/node_modules/react-native-date-ranges/src/ComposePicker.js
+index f349b97..0272e6f 100644
+--- a/node_modules/react-native-date-ranges/src/ComposePicker.js
++++ b/node_modules/react-native-date-ranges/src/ComposePicker.js
+@@ -61,7 +61,7 @@ export default class ComposePicker extends Component {
+     this.setState({ modalVisible: visible });
+   };
+   onConfirm = () => {
+-    const returnFormat = this.props.returnFormat || 'YYYY/MM/DD';
++    const returnFormat = this.props.returnFormat || 'MM-DD-YYYY';
+     const outFormat = this.props.outFormat || 'LL';
+     if (!this.props.mode || this.props.mode === 'single') {
+       this.setState({
+@@ -71,7 +71,8 @@ export default class ComposePicker extends Component {
+       this.setModalVisible(false);
+       if (typeof this.props.onConfirm === 'function') {
+         this.props.onConfirm({
+-          currentDate: this.state.currentDate.format(returnFormat)
++          currentDate: moment(this.state.currentDate.format,returnFormat)
++          // currentDate: this.state.currentDate.format(returnFormat)
+         });
+       }
+       return;
+@@ -88,8 +89,10 @@ export default class ComposePicker extends Component {
+ 
+       if (typeof this.props.onConfirm === 'function') {
+         this.props.onConfirm({
+-          startDate: this.state.startDate.format(returnFormat),
+-          endDate: this.state.endDate.format(returnFormat)
++          startDate: moment(this.state.startDate,returnFormat),
++          endDate: moment(this.state.endDate,returnFormat),
++          // startDate: this.state.startDate.format(returnFormat),
++          // endDate: this.state.endDate.format(returnFormat)
+         });
+       }
+     } else {
+@@ -154,22 +157,14 @@ export default class ComposePicker extends Component {
+         onPress={() => {
+           this.setModalVisible(true);
+         }}
+-        style={[
+-          { width: '100%', height: '100%', justifyContent: 'center' },
+-          style
+-        ]}
+       >
+         <View>
+-          <View>
+-            <View style={[customStyles.contentInput, styles.contentInput]}>
+-              {this.getTitleElement()}
+-            </View>
+-          </View>
++
+           <Modal
+             animationType="slide"
+-            onRequestClose={() => this.setModalVisible(false)}
++            onRequestClose={this.props.closeModal}
+             transparent={false}
+-            visible={this.state.modalVisible}
++            visible={this.props.isVisible}
+           >
+             <View stlye={{ flex: 1, flexDirection: 'column' }}>
+               <View style={{ height: '90%' }}>

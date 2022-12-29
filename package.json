@@ -1,5 +1,5 @@
 {
-  "name": "eSpark_Lunch_App",
+  "name": "Commanddo",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,32 +7,54 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "patch-package",
+    "emulate": "react-native run-android --deviceId=emulator-5554"
   },
   "dependencies": {
-    "@rneui/base": "^4.0.0-rc.6",
-    "@rneui/themed": "^4.0.0-rc.6",
+    "@apollo/client": "^3.5.6",
+    "@react-native-async-storage/async-storage": "^1.17.10",
+    "@react-native-community/blur": "^4.3.0",
+    "@react-native-community/netinfo": "^9.3.7",
+    "@react-native-firebase/app": "^16.4.5",
+    "@react-native-firebase/messaging": "^16.4.3",
+    "@react-native-firebase/storage": "^16.4.5",
+    "@react-navigation/bottom-tabs": "^6.4.0",
+    "@react-navigation/material-top-tabs": "^6.3.0",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/stack": "^6.2.1",
     "@reduxjs/toolkit": "^1.7.0-rc.0",
+    "@rneui/base": "^4.0.0-rc.6",
+    "@rneui/themed": "^4.0.0-rc.6",
     "axios": "^0.27.2",
-    "image-picker": "^0.3.1",
+    "graphql": "^16.6.0",
+    "moment": "^2.29.4",
+    "patch-package": "^6.5.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.0.0",
     "react-native": "^0.69.2",
-    "react-native-animated-numbers": "^0.4.1",
     "react-native-awesome-alerts": "^2.0.0",
-    "react-native-dropdownalert": "^4.5.1",
+    "react-native-confirmation-code-field": "^7.3.1",
+    "react-native-date-ranges": "^2.5.0",
+    "react-native-flash-message": "^0.3.1",
     "react-native-gesture-handler": "^2.5.0",
+    "react-native-html-to-pdf": "^0.12.0",
     "react-native-image-picker": "^4.8.4",
-    "react-native-numeric-input": "^1.9.1",
-    "react-native-progress": "^5.0.0",
+    "react-native-pager-view": "^6.1.2",
+    "react-native-popup-menu": "^0.16.1",
+    "react-native-push-notification": "^8.1.1",
     "react-native-reanimated": "^2.9.1",
+    "react-native-rename": "^2.9.0",
     "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.14.0",
+    "react-native-size-matters": "^0.4.0",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^12.4.0",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-tab-view": "^3.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.2",
+    "redux-persist": "^6.0.0",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
@@ -47,5 +69,8 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "resolutions": {
+    "react-native-gesture-handler": "^2.5.0"
   }
 }

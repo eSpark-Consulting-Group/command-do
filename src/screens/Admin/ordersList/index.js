@@ -1,0 +1,297 @@
+import React, {useState} from 'react';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  SectionList,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {useLazyQuery} from '@apollo/client';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {
+  GapView,
+  MyCard,
+  MyHeader,
+  MyText,
+  TouchRipple,
+} from '../../../components';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
+import {colors} from '../../../theme';
+import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
+import {useEffect} from 'react';
+import {ALL_ORDERS, ORDERS_BY_DATE} from '../../../graphQL/query/orders.query';
+
+export default function OrdersList() {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const [GetOrdersByDate, {loading: loadingByDate}] =
+    useLazyQuery(ORDERS_BY_DATE);
+  const [GetAllUserOrders, {loading}] = useLazyQuery(ALL_ORDERS);
+  const dispatch = useDispatch();
+
+  const [ordersByDate, setOrdersByDate] = useState([]);
+  const condition =
+    route?.params?.filterInfo?.userInfo === undefined ||
+    route?.params?.filterInfo?.userInfo === null;
+
+  useEffect(() => {
+    fetchOrders({endDate: null, startDate: null});
+  }, []);
+
+  const getSortedOrders = orders => {
+    let order = [];
+    orders?.map(item => {
+      order.push({
+        title: new Date(item.createdAt).toString().slice(0, 15),
+        data: [item],
+      });
+    });
+    return order;
+  };
+
+  const fetchOrders = async ({endDate, startDate}) => {
+    const currDate = new Date().setUTCHours(0);
+    const theDate = {
+      startDate: startDate ?? currDate,
+      endDate: endDate ?? new Date(),
+    };
+    console.log('Date', new Date(currDate));
+    const orders = await GetOrdersByDate({
+      variables: theDate,
+    });
+    console.log('bta Date kia ha', theDate);
+    const tempArr = [...orders?.data?.getOrderOverviewByDate?.data];
+    const sortedArr = tempArr?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    );
+
+    console.log('ordersByDate=??>>', tempArr);
+    console.log(
+      'kia ha sorted',
+      tempArr?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    );
+    setOrdersByDate(getSortedOrders(sortedArr));
+  };
+
+  const fetchUserOrders = async userId => {
+    console.log('User ID', userId);
+    const orders = await GetAllUserOrders({
+      variables: {
+        getOrderInput: {
+          userId: userId,
+        },
+      },
+    });
+
+    const tempArr = [...orders?.data?.getAllOrders?.data];
+    const sortedArr = tempArr?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    );
+    console.log('ordersByUser=??>>', orders?.data?.getAllOrders?.data);
+    setOrdersByDate(getSortedOrders(sortedArr));
+  };
+
+  useUpdateEffect(() => {
+    if (route.params !== undefined) {
+      console.log('qqqqqq', route.params.filterInfo);
+      condition
+        ? fetchOrders(route.params.filterInfo.dateRange)
+        : fetchUserOrders(route.params.filterInfo.userInfo);
+    }
+  }, [route.params]);
+
+  const RenderDatewise = ({item}) => {
+    return (
+      <MyCard cardStyle={styles.item}>
+        <TouchRipple
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+          darkRipple
+          onPress={() =>
+            navigation.navigate('Order_Details', {
+              mode: 'date',
+              data: {
+                date: new Date(new Date(item?.createdAt).setUTCHours(0)),
+              },
+            })
+          }>
+          <View>
+            <MyText
+              label="Rider"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText
+              label={item.rider ? item.rider?.firstName : 'In Progress'}
+              textStyle={{textAlign: 'center'}}
+            />
+          </View>
+          <View>
+            <MyText
+              label="Orders Placed"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText
+              label={item.totalOrders}
+              textStyle={{textAlign: 'center'}}
+            />
+          </View>
+          <View>
+            <MyText
+              label="Lunch Amount"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText
+              label={item.totalAmount}
+              textStyle={{textAlign: 'center'}}
+            />
+          </View>
+        </TouchRipple>
+      </MyCard>
+    );
+  };
+
+  const RenderUserwise = ({item}) => {
+    return (
+      <MyCard cardStyle={styles.item}>
+        <TouchRipple
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+          darkRipple
+          onPress={() =>
+            navigation.navigate('Order_Details', {
+              mode: condition ? 'date' : 'user',
+              data: {
+                userId: route?.params?.filterInfo?.userInfo,
+                createdAt: new Date(item?.createdAt).setUTCHours(0),
+              },
+            })
+          }>
+          <View>
+            <MyText
+              label="Order Holder"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <MyText
+              label={item?.User?.firstName}
+              textStyle={{textAlign: 'center'}}
+            />
+          </View>
+          <View>
+            <MyText
+              label="Paid/Lunch"
+              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+            />
+            <View style={{flexDirection: 'row'}}>
+              <MyText
+                label={`Rs. ${item?.paidAmount}`}
+                textStyle={{textAlign: 'center'}}
+              />
+              <MyText label={`/`} textStyle={{textAlign: 'center'}} />
+              <MyText
+                label={`${item?.totalAmount}`}
+                textStyle={{textAlign: 'center'}}
+              />
+            </View>
+          </View>
+        </TouchRipple>
+      </MyCard>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <MyHeader
+        title="All Orders"
+        icon="filter"
+        rightIconType="antdesign"
+        onPressRight={() => {
+          navigation.navigate('Filters');
+        }}
+      />
+      <GapView length={4} mode="vertical" />
+      <SectionList
+        sections={ordersByDate}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => fetchOrders({endDate: null, startDate: null})}
+          />
+        }
+        renderItem={({item}) =>
+          loadingByDate || loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : condition ? (
+            <RenderDatewise item={item} />
+          ) : (
+            <RenderUserwise item={item} />
+          )
+        }
+        SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
+        renderSectionHeader={({section}) =>
+          !loadingByDate &&
+          !loading && (
+            <MyText textStyle={styles.sectionHeader} label={section.title} />
+          )
+        }
+        keyExtractor={(item, index) => index}
+        ListEmptyComponent={
+          loadingByDate || loading ? (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                height: SCREEN_HEIGHT * 0.6,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MyText label={'No Orders'} size={'subHeading'} />
+            </View>
+          )
+        }
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: colors.text_inverse,
+    backgroundColor: colors.primary,
+    elevation: 1,
+  },
+  item: {
+    marginVertical: 10,
+    marginHorizontal: 2,
+  },
+});

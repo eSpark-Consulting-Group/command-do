@@ -1,411 +1,297 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, Dimensions, TouchableWithoutFeedback, TouchableOpacity, StatusBar, ScrollView, Image, Pressable, StyleSheet, Animated } from 'react-native';
-import { Fonts } from '../../utils/fonts';
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import * as Progress from 'react-native-progress';
-import { Delievey } from "../../assets/images";
-import NumericInput from 'react-native-numeric-input'
-import AwesomeAlert from 'react-native-awesome-alerts';
-import { MyText, CustomizeModal } from "../../components";
-import { ProfileImage } from "../../assets/images";
-import { updateProfile } from '../../features/profile/profileSlice';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useMutation} from '@apollo/client';
 
+import {MyText, CustomizeModal, OverlayLoader} from '../../components';
+import styles from './styles';
+import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
+import {UPDATE_USER} from '../../graphQL/mutation/user.mutation';
+import {
+  cameraPicker,
+  imagePicker,
+  uploadImage,
+} from '../../utils/helperFunctions';
+import {colors} from '../../theme';
+import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
+import {showMessage} from 'react-native-flash-message';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-function Profile({ route, navigation }) {
+function Profile({route, navigation}) {
+  const reduxData = useSelector(store => store);
+  const userData = reduxData?.userInfo?.userData;
   const [getData, setGetData] = useState([
     {
-      name: 'Name',
-      value: reduxData?.profile?.name,
+      name: 'First Name',
+      value: userData?.firstName,
+    },
+    {
+      name: 'Last Name',
+      value: userData?.lastName,
     },
     {
       name: 'Email',
-      value: reduxData?.profile?.email,
-    },
-    {
-      name: 'Shift',
-      value: reduxData?.profile?.shift,
+      value: userData?.email,
     },
     {
       name: 'Mobile Number',
-      value: reduxData?.profile?.phone,
+      value: userData?.phoneNumber ?? 'N/A',
     },
-
   ]);
   const dispatch = useDispatch();
-  const reduxData = useSelector(store => store);
-  // const [press, setPress] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [isModal, setIsModal] = useState(false);
-  const [filePath, setFilePath] = useState('');
-  const [fileData, setFileData] = useState('');
-  const [fileUri, setFileUri] = useState('');
+  const [loader, setLoader] = useState(false);
+  const [imgLoader, setImgLoader] = useState(true);
 
-  useEffect(() => {
-    // console.log("timer--->",timer);
-    const profileUpdate = [...getData];
-    profileUpdate[0].value = reduxData?.profile?.name;
-    profileUpdate[1].value = reduxData?.profile?.email;
-    profileUpdate[2].value = reduxData?.profile?.shift;
-    profileUpdate[3].value = reduxData?.profile?.phone;
-    setGetData(profileUpdate)
-  }, [reduxData?.profile])
+  const [UpdateProfile, {loading}] = useMutation(UPDATE_USER);
 
   const editModeon = () => {
-    setEditMode(true)
-  }
+    setEditMode(true);
+  };
 
-  const saveModeon = (index) => {
-    setEditMode(false)
+  const saveModeon = async index => {
     const profileUpdate = [...getData];
-    const profileChangeData = {
-      name: profileUpdate[0].value,
-      shift: profileUpdate[2].value,
-      phone: profileUpdate[3].value,
+    console.log('Save mode', profileUpdate);
+    if (!profileUpdate[0]?.value || !profileUpdate[1]?.value) {
+      showMessage({
+        message: 'First Name and Last Name is required',
+        type: 'danger',
+      });
+      return;
     }
-    dispatch(updateProfile(profileChangeData))
-    // setIndex(5)
-  }
+    setEditMode(false);
+    const data = {
+      updateProfileId: userData?.id,
+      role: userData?.role,
+      firstName: profileUpdate[0].value,
+      lastName: profileUpdate[1].value,
+      phoneNumber: profileUpdate[3].value,
+      avatar: userData?.avatar,
+    };
+    const updateUser = await UpdateProfile({
+      variables: data,
+    });
+    const updatedData = updateUser.data.updateProfile.data;
+    dispatch(updateUserDetails({selected: userData?.selected, ...updatedData}));
+  };
 
   const onChangeNumber = (value, index) => {
-    // console.log('value---->', value);
-
     var changeData = [...getData];
     changeData[index].value = value;
     setGetData(changeData);
-  }
+  };
 
   const isModalVisible = () => {
+    setIsModal(!isModal);
+  };
 
-    setIsModal(!isModal)
-  }
-
-  async function chooseImage() {
-    let options = {
-      title: 'Select Image',
-      customButtons: [
-        { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    const result = await launchCamera(options);
-
-    console.log('Response = ', result);
-    // ImagePicker.showImagePicker(options, (response) => {
-
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //   } else if (response.customButton) {
-    //     console.log('User tapped custom button: ', response.customButton);
-    //     alert(response.customButton);
-    //   } else {
-    //     const source = { uri: response.uri };
-
-    //     // You can also display the image using data:
-    //     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-    //     // alert(JSON.stringify(response));s
-    //     console.log('response', JSON.stringify(response));
-    //     // this.setState({
-    //     //   filePath: response,
-    //     //   fileData: response.data,
-    //     //   fileUri: response.uri
-    //     // });
-    //     setFilePath(response);
-    //     setFileData(response.data);
-    //     setFileUri(response.uri);
-    //   }
-    // });
-  }
-
-  // const launchCamera = () => {
-  //   let options = {
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images',
-  //     },
-  //   };
-  //   ImagePicker.launchCamera(options, (response) => {
-  //     console.log('Response = ', response);
-
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else if (response.customButton) {
-  //       console.log('User tapped custom button: ', response.customButton);
-  //       alert(response.customButton);
-  //     } else {
-  //       const source = { uri: response.uri };
-  //       console.log('response', JSON.stringify(response));
-  //       setFilePath(response);
-  //       setFileData(response.data);
-  //       setFileUri(response.uri);
-  //       // this.setState({
-  //       //   filePath: response,
-  //       //   fileData: response.data,
-  //       //   fileUri: response.uri
-  //       // });
-  //     }
-  //   });
-
-  // }
-  // const launchImageLibrary = () => {
-  //   let options = {
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images',
-  //     },
-  //   };
-  //   ImagePicker.launchImageLibrary(options, (response) => {
-  //     console.log('Response = ', response);
-
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else if (response.customButton) {
-  //       console.log('User tapped custom button: ', response.customButton);
-  //       alert(response.customButton);
-  //     } else {
-  //       const source = { uri: response.uri };
-  //       console.log('response', JSON.stringify(response));
-  //       // this.setState({
-  //       //   filePath: response,
-  //       //   fileData: response.data,
-  //       //   fileUri: response.uri
-  //       // });
-  //       setFilePath(response);
-  //       setFileData(response.data);
-  //       setFileUri(response.uri);
-  //     }
-  //   });
-
-  // }
-
+  const onImagePicker = async (pickerFunc = imagePicker) => {
+    try {
+      const image = await pickerFunc();
+      setLoader(true);
+      isModalVisible();
+      const url = await uploadImage(image);
+      const updateUser = await UpdateProfile({
+        variables: {
+          updateProfileId: userData?.id,
+          avatar: url,
+        },
+      });
+      const updatedData = updateUser.data.updateProfile.data;
+      dispatch(
+        updateUserDetails({selected: userData?.selected, ...updatedData}),
+      );
+      setLoader(false);
+    } catch (error) {
+      isModalVisible();
+      setLoader(false);
+      console.log('error error error', error);
+    }
+  };
   return (
-    <ScrollView style={{ height: height * 1, backgroundColor: 'white' }} >
+    <View style={{flex: 1, backgroundColor: colors.background}}>
+      <OverlayLoader show={loader || loading} />
       <CustomizeModal
         isVisible={isModal}
         setBackDrop={isModalVisible}
         navigation={navigation}
         renderData={
           <View style={styles.modalInner}>
-            <TouchableOpacity style={{
-              height: height * .07,
-              width: width * .6,
-              backgroundColor: "#11a79c",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .01,
-              padding: height * .02,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}
-              onPress={chooseImage}
-            >
-              <Icon name="md-file-tray-outline" size={height * .03} color='#fff' />
-              <MyText label={"Choose File"} title style={{ color: "#fff", marginLeft: height * .01 }} />
+            <TouchableOpacity
+              style={styles.chooseImageButton}
+              onPress={() => onImagePicker(cameraPicker)}>
+              <Icon
+                name="camera-outline"
+                size={height * 0.03}
+                color={colors.text_inverse}
+              />
+              <MyText
+                label={'Launch Camera'}
+                title
+                textStyle={{
+                  color: colors.text_inverse,
+                  marginLeft: height * 0.01,
+                }}
+              />
             </TouchableOpacity>
-            <TouchableOpacity style={{
-              height: height * .07,
-              width: width * .6,
-              backgroundColor: "#11a79c",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .01,
-              padding: height * .02,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-
-            }}
-              onPress={launchCamera}
-            >
-              <Icon name="camera-outline" size={height * .03} color='#fff' />
-              <MyText label={"Launch Camera"} title style={{ color: "#fff", marginLeft: height * .01 }} />
-            </TouchableOpacity>
-            <TouchableOpacity style={{
-              height: height * .07,
-              width: width * .6,
-              backgroundColor: "#11a79c",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .01,
-              padding: height * .02,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-
-            }}
-              onPress={launchImageLibrary}
-            >
-              <Icon name="image-outline" size={height * .03} color='#fff' />
-              <MyText label={"Choose in gallery"} title style={{ color: "#fff", marginLeft: height * .01 }} />
-
+            <TouchableOpacity
+              style={styles.chooseImageButton}
+              onPress={() => onImagePicker(imagePicker)}>
+              <Icon
+                name="image-outline"
+                size={height * 0.03}
+                color={colors.text_inverse}
+              />
+              <MyText
+                label={'Choose in gallery'}
+                title
+                textStyle={{
+                  color: colors.text_inverse,
+                  marginLeft: height * 0.01,
+                }}
+              />
             </TouchableOpacity>
           </View>
-        } />
+        }
+      />
 
-
-      <View style={{
-        height: height * .25,
-        width: width * 1,
-        // backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: height * .0005,
-        borderBottomColor: '#00000070'
-      }}>
-        <TouchableOpacity style={{
-          height: height * .05,
-          elevation: height * .003,
-          width: height * .05,
-          backgroundColor: '#11a79c',
-          borderRadius: height * 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          zIndex: 1,
-          left: height * .02,
-          top: height * .02
-        }}
-          onPress={() => navigation.goBack()}>
-          <View>
-            <Icon name="ios-chevron-back-outline" size={height * .03} color='#fff' />
-          </View>
-        </TouchableOpacity>
-        <View style={{
-          height: height * .15,
-          width: height * .15,
-          backgroundColor: "white",
-          borderRadius: height * 1,
-          elevation: height * .01,
-        }}>
-          <TouchableOpacity style={{
-            height: height * .03,
-            elevation: height * .003,
-            width: height * .03,
-            margin: height * .015,
-            backgroundColor: '#11a79c',
-            borderRadius: height * 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            zIndex: 1,
-            right: height * -.005,
-            top: height * -.005,
-
-          }}
-            onPress={() => setIsModal(!isModal)}>
+      <View style={styles.profileContainer}>
+        <View
+          style={{
+            width: '100%',
+            height: verticalScale(130),
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            backgroundColor: colors.primary + '99',
+            padding: 5,
+            borderBottomWidth: height * 0.0005,
+            borderBottomColor: '#00000070',
+          }}>
+          <TouchableOpacity
+            style={styles.backButtonStyle}
+            onPress={() => navigation.goBack()}>
             <View>
-              <Icon name="ios-pencil" size={height * .018} color='#fff' />
+              <Icon
+                name="arrow-back"
+                size={moderateVerticalScale(28)}
+                color={colors.text_inverse}
+              />
             </View>
           </TouchableOpacity>
-          <Image source={reduxData?.profile?.image} style={{
-            borderRadius: height * 1,
-            height: height * .15,
-            width: height * .15,
-            backgroundColor: 'white',
-            resizeMode: "contain",
-          }} />
-        </View>
-        <TouchableOpacity style={{
-          height: height * .05,
-          elevation: height * .003,
-          width: height * .05,
-          margin: height * .015,
-          backgroundColor: '#11a79c',
-          borderRadius: height * 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          zIndex: 1,
-          right: height * .0,
-          bottom: height * .0,
-        }}
-          onPress={() => editMode ? saveModeon() : editModeon()}
-        >
           <View>
-            <Icon name={editMode ? "save-sharp" : "ios-pencil"} size={height * .025} color='#fff' />
-            {/* <Icon name={"ios-pencil"} size={height * .025} color='#fff' /> */}
-
+            <MyText
+              label={editMode ? 'Edit Profile' : 'Profile'}
+              size={'subHeading'}
+              textStyle={{
+                fontFamily: 'Poppins-SemiBold',
+                color: colors.text_inverse,
+              }}
+            />
           </View>
-        </TouchableOpacity>
-      </View>
-      <View style={{
-        height: height * .75,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center'
-
-      }}>
-        {getData &&
-          getData.map((item, index) =>
-            <View key={index} style={{
-              height: height * .15,
-              width: width * .9,
-              backgroundColor: "white",
-              borderRadius: height * .005,
-              elevation: height * .005,
-              marginVertical: height * .015,
-              padding: height * .02,
-              justifyContent: 'center'
+          <TouchableOpacity
+            onPress={() => (editMode ? saveModeon() : editModeon())}
+            style={{
+              padding: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-
-              {/* item.name != "Email" && */}
-              <MyText label={item.name} subTitle style={{ color: "#00000060", }} />
-              {
-                editMode && item.name != "Email" ?
-                  <TextInput style={{
-                    height: height * .057,
-                    maxWidth: width * .75,
-                    fontFamily: Fonts.Roboto_Medium,
-                    color: 'black',
-                    fontSize: height * .02,
-                    // backgroundColor: 'red'
-                  }}
-                    maxLength={item.name == "Mobile Number" ? 11 : 30}
-                    onChangeText={(value) => onChangeNumber(value, index)}
-                    value={item.value}
-                    keyboardType={item.name == "Mobile Number" ? "number-pad" : "default"}
-                  />
-                  :
-                  <MyText label={item.value} title style={{ color: "#11a79c", marginVertical: height * .015 }} />
-              }
-
-
-            </View>
-          )
-
-        }
-
+            <MyText
+              label={editMode ? 'Save' : 'Edit'}
+              textStyle={{
+                fontFamily: 'Poppins-Medium',
+                fontSize: moderateVerticalScale(18),
+                color: colors.text_inverse,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.profileBackground}>
+          {editMode && (
+            <TouchableOpacity
+              style={styles.profileImage}
+              onPress={() => setIsModal(!isModal)}>
+              <View>
+                <MCI
+                  name="camera-image"
+                  size={moderateVerticalScale(18)}
+                  color={colors.primary}
+                />
+              </View>
+            </TouchableOpacity>
+          )}
+          <Image
+            source={{
+              uri:
+                userData?.avatar ??
+                'https://www.seekpng.com/png/detail/514-5147412_default-avatar-icon.png',
+            }}
+            // resizeMode={'contain'}
+            onLoadStart={() => setImgLoader(true)}
+            onLoadEnd={() => setImgLoader(false)}
+            style={styles.profileImageStyle}
+          />
+          <ActivityIndicator
+            style={styles.activityIndicator}
+            animating={imgLoader}
+          />
+        </View>
       </View>
-    </ScrollView >
+      <ScrollView style={{backgroundColor: 'white'}}>
+        <View style={styles.profileFormStyle}>
+          {getData &&
+            getData.map((item, index) => (
+              <View key={index} style={styles.profileFormAlign}>
+                <MyText
+                  label={item.name}
+                  textStyle={{
+                    color: '#00000060',
+                    fontFamily: 'Poppins-SemiBold',
+                  }}
+                />
+                <TextInput
+                  style={{
+                    ...styles.profileFormMobileNumber,
+                    fontFamily: 'Poppins-Regular',
+                    borderBottomColor:
+                      editMode && item.name != 'Email'
+                        ? '#00000090'
+                        : '#00000060',
+                    color:
+                      editMode && item.name != 'Email'
+                        ? 'black'
+                        : colors.primary,
+                  }}
+                  editable={editMode && item.name != 'Email'}
+                  maxLength={item.name == 'Mobile Number' ? 11 : 30}
+                  onChangeText={value => onChangeNumber(value, index)}
+                  value={
+                    !editMode && index == 3 && !item.value ? 'N/A' : item.value
+                  }
+                  keyboardType={
+                    item.name == 'Mobile Number' ? 'number-pad' : 'default'
+                  }
+                />
+              </View>
+            ))}
+        </View>
+      </ScrollView>
+    </View>
   );
-};
+}
 
 // trash-outline
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  modalInner: {
-    height: height * .3,
-    width: width * .8,
-    backgroundColor: '#fff',
-    borderRadius: height * .005,
-    elevation: height * .003,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
-})
