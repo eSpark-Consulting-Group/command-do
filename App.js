@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
-import {Provider} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { Provider } from 'react-redux';
 import FlashMessage from 'react-native-flash-message';
-import {ApolloProvider} from '@apollo/client';
-import {PersistGate} from 'redux-persist/integration/react';
-import {MenuProvider} from 'react-native-popup-menu';
+import { ApolloProvider } from '@apollo/client';
+import { PersistGate } from 'redux-persist/integration/react';
+import { MenuProvider } from 'react-native-popup-menu';
 import NetInfo from '@react-native-community/netinfo';
 
 import MainStackNavigator from './src/navigation/AppNavigator';
 import Store from './src/app/store';
-import {colors} from './src/theme/index';
+import { colors } from './src/theme/index';
 import AppStatusBar from './src/components/AppStatusBar';
-import {client} from './src/graphQL';
-import {requestCameraPermission} from './src/utils/helperFunctions';
-import {BlurBackground, NoInternetModal} from './src/components';
-import {BlurView} from '@react-native-community/blur';
+import { client } from './src/graphQL';
+import { requestCameraPermission } from './src/utils/helperFunctions';
+import { BlurBackground, NoInternetModal } from './src/components';
+import { BlurView } from '@react-native-community/blur';
 
 export default function App() {
   const [isConnected, setIsConnected] = useState(null);
