@@ -27,6 +27,12 @@ function RiderNavigator({navigation}) {
   const [isModal, setIsModal] = useState(false);
   var currDate = new Date().setUTCHours(0);
   const [GetAllOrders, {data, loading: loadOrders}] = useLazyQuery(ALL_ORDERS);
+  const finishedStatus = useSelector(
+    store => store?.riderOrder.collectionFinished,
+  );
+  const orderPurchased = useSelector(
+    store => store?.riderOrder.orderPurchased,
+  );
 
   useEffect(() => {
     GetAllOrders({
@@ -34,21 +40,24 @@ function RiderNavigator({navigation}) {
         getOrderInput: {},
       },
     });
+
+    if(finishedStatus && !orderPurchased) {
+      navigation?.navigate('Purchasing_List')
+    }else if (finishedStatus && orderPurchased) {
+      navigation?.navigate('MoneyReturn')
+    }
   }, []);
 
   let order = data?.getAllOrders?.data?.filter(item => {
     return item?.returned == false && item?.status == 'PAID';
   });
 
-  const finishedStatus = useSelector(
-    store => store?.riderOrder.collectionFinished,
-  );
+  
 
   const dispatch = useDispatch();
-  console.log('Finished Status', finishedStatus);
 
   const goToNavigation = navigate => {
-    navigation.navigate(navigate);
+    navigation?.navigate(navigate);
     setIsModal(!isModal);
   };
 
