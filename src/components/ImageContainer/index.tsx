@@ -110,6 +110,7 @@ export default function ImageContainer({
                     );
                     setShowUrl(false);
                   }}
+                  borderless
                   darkRipple
                   style={{
                     height: 'auto',
@@ -137,7 +138,16 @@ export default function ImageContainer({
                 justifyContent: 'center',
               }}>
               <View style={styles.btnStyle}>
-                <TouchRipple onPress={onUploadImage} darkRipple>
+                <TouchRipple
+                  onPress={onUploadImage}
+                  style={{
+                    height: 'auto',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  darkRipple
+                  borderless>
                   <MyText
                     label={'Upload Image'}
                     // size={moderateVerticalScale(14, -0.2)}
@@ -158,10 +168,18 @@ export default function ImageContainer({
                 textStyle={{ marginHorizontal: 8, opacity: 0.6 }}
               />
               <View style={styles.btnStyle}>
-                <TouchRipple onPress={() => setShowUrl(true)} darkRipple>
+                <TouchRipple
+                  onPress={() => setShowUrl(true)}
+                  style={{
+                    height: 'auto',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  darkRipple
+                  borderless>
                   <MyText
                     label={'Set Image Url'}
-                    // size={moderateVerticalScale(14, -0.2)}
                     numberOfLines={2}
                     size={'subTitle'}
                     textStyle={{

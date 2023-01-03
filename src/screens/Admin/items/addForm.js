@@ -1,6 +1,10 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, ScrollView, Alert} from 'react-native';
-import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { StyleSheet, View, ScrollView, Alert } from 'react-native';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 
 import {
   BottomButton,
@@ -11,17 +15,17 @@ import {
   MySubHeader,
   OverlayLoader,
 } from '../../../components';
-import {colors} from '../../../theme';
-import {uploadImage} from '../../../utils/helperFunctions';
-import {GET_ALL_CATEGORIES} from '../../../graphQL/query/categories.query';
-import {useEffect} from 'react';
-import {useLazyQuery, useMutation} from '@apollo/client';
+import { colors } from '../../../theme';
+import { uploadImage } from '../../../utils/helperFunctions';
+import { GET_ALL_CATEGORIES } from '../../../graphQL/query/categories.query';
+import { useEffect } from 'react';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import {
   ADD_ITEM,
   DELETE_ITEM,
   UPDATE_ITEM,
 } from '../../../graphQL/mutation/item.mutation';
-import {showMessage} from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import {
   ADD_NEW_CATEGORY,
   DELETE_CATEGORY,
@@ -32,7 +36,7 @@ export default function AddForm() {
   const navigation = useNavigation();
   const route = useRoute();
   const isFocused = useIsFocused();
-  const {mode, type, itemData} = route?.params;
+  const { mode, type, itemData } = route?.params;
 
   const [catToggle, setCatToggle] = useState(false);
   const [fields, setFields] = useState({
@@ -51,7 +55,7 @@ export default function AddForm() {
     itemData?.Category?.id == selectedCategory?.id &&
     !imageUploaded;
 
-  const [LoadCategories, {data: categoryData}] = useLazyQuery(
+  const [LoadCategories, { data: categoryData }] = useLazyQuery(
     GET_ALL_CATEGORIES,
     {
       notifyOnNetworkStatusChange: true,
@@ -59,15 +63,15 @@ export default function AddForm() {
     },
   );
 
-  const [AddNewItem, {loading: addItemLoading}] = useMutation(ADD_ITEM);
-  const [UpdateItem, {loading: updateItemLoading}] = useMutation(UPDATE_ITEM);
-  const [DeleteItem, {loading: deleteItemLoading}] = useMutation(DELETE_ITEM);
+  const [AddNewItem, { loading: addItemLoading }] = useMutation(ADD_ITEM);
+  const [UpdateItem, { loading: updateItemLoading }] = useMutation(UPDATE_ITEM);
+  const [DeleteItem, { loading: deleteItemLoading }] = useMutation(DELETE_ITEM);
 
-  const [AddNewCategory, {loading: addCategoryLoading}] =
+  const [AddNewCategory, { loading: addCategoryLoading }] =
     useMutation(ADD_NEW_CATEGORY);
-  const [UpdateCategory, {loading: updateCategoryLoading}] =
+  const [UpdateCategory, { loading: updateCategoryLoading }] =
     useMutation(UPDATE_CATEGORY);
-  const [DeleteCategory, {loading: deleteCategoryLoading}] =
+  const [DeleteCategory, { loading: deleteCategoryLoading }] =
     useMutation(DELETE_CATEGORY);
 
   useEffect(() => {
@@ -108,7 +112,7 @@ export default function AddForm() {
 
   const addItem = async () => {
     if (!selectedCategory) {
-      showMessage({message: 'Please select a category', type: 'error'});
+      showMessage({ message: 'Please select a category', type: 'error' });
       return;
     }
     if (fields?.image?.uri?.slice(0, 4) == 'file') {
@@ -119,12 +123,12 @@ export default function AddForm() {
       image:
         fields?.image?.uri?.slice(0, 4) == 'file'
           ? await uploadImage(fields?.image)
-          : fields?.image,
+          : fields?.image?.uri,
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
     console.log('kia ja raha ha', obj);
-    AddNewItem({variables: obj})
+    AddNewItem({ variables: obj })
       .then(res => {
         if (fields?.image?.uri?.slice(0, 4) == 'file') {
           setUploadLoader(false);
@@ -162,7 +166,7 @@ export default function AddForm() {
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
-    UpdateItem({variables: obj})
+    UpdateItem({ variables: obj })
       .then(res => {
         if (theImage?.slice(0, 4) == 'file') {
           setUploadLoader(false);
@@ -172,7 +176,7 @@ export default function AddForm() {
             message: res?.data?.updateItem?.message,
             type: 'success',
           });
-          navigation?.navigate('ItemList', {edit: true});
+          navigation?.navigate('ItemList', { edit: true });
         } else {
           showMessage({
             message: res?.data?.updateItem?.message,
@@ -270,7 +274,7 @@ export default function AddForm() {
             message: res?.data?.updateCategory?.message,
             type: 'success',
           });
-          navigation?.navigate('ItemList', {edit: true, categoryList: true});
+          navigation?.navigate('ItemList', { edit: true, categoryList: true });
         } else {
           showMessage({
             message: res?.data?.updateCategory?.message,
@@ -319,29 +323,29 @@ export default function AddForm() {
     }
     if (type === 'category') {
       return (
-        <View style={{flex: 1, backgroundColor: colors.background}}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
           <OverlayLoader show={addCategoryLoading || uploadLoader} />
           <MyHeader
             title="Add Category"
             leftIcon="arrow-back"
             onPressLeft={() => navigation.goBack()}
           />
-          <ScrollView style={{paddingHorizontal: 10}}>
+          <ScrollView style={{ paddingHorizontal: 10 }}>
             <MySubHeader title="Add Category Details" />
             <MyInput
               label="Name"
               handleChangeText={text => {
-                setFields({...fields, name: text});
+                setFields({ ...fields, name: text });
               }}
             />
             <ImageContainer
               load={fields?.image ? true : false}
               onImageChange={image => {
-                setFields({...fields, image: image});
+                setFields({ ...fields, image: image });
               }}
             />
           </ScrollView>
-          <View style={{height: 60}}>
+          <View style={{ height: 60 }}>
             <BottomButton
               label="Add Category"
               count={Object.values(fields).filter(val => Boolean(val))?.length}
@@ -360,14 +364,14 @@ export default function AddForm() {
     }
     if (type === 'item') {
       return (
-        <View style={{flex: 1, backgroundColor: colors.background}}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
           <OverlayLoader show={addItemLoading || uploadLoader} />
           <MyHeader
             title="Add Item"
             leftIcon="arrow-back"
             onPressLeft={() => navigation.goBack()}
           />
-          <ScrollView style={{paddingHorizontal: 10}}>
+          <ScrollView style={{ paddingHorizontal: 10 }}>
             <MySubHeader title="Select Category" divider />
             <CstmDropDown
               dataSource={categories}
@@ -380,23 +384,23 @@ export default function AddForm() {
             <MyInput
               label="Name"
               handleChangeText={text => {
-                setFields({...fields, name: text});
+                setFields({ ...fields, name: text });
               }}
             />
             <MyInput
               label="Price"
               numericKeyboard
               handleChangeText={text => {
-                setFields({...fields, price: text});
+                setFields({ ...fields, price: text });
               }}
             />
             <ImageContainer
               onImageChange={image => {
-                setFields({...fields, image: image});
+                setFields({ ...fields, image: image });
               }}
             />
           </ScrollView>
-          <View style={{height: 60}}>
+          <View style={{ height: 60 }}>
             <BottomButton
               label="Add An Item"
               count={Object.values(fields).filter(val => Boolean(val))?.length}
@@ -419,7 +423,7 @@ export default function AddForm() {
   if (mode === 'edit') {
     if (type === 'category') {
       return (
-        <View style={{flex: 1, backgroundColor: colors.background}}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
           <OverlayLoader
             show={
               updateCategoryLoading || deleteCategoryLoading || uploadLoader
@@ -433,24 +437,24 @@ export default function AddForm() {
             icon="trash"
             onPressRight={() => handleDeleteCategory()}
           />
-          <ScrollView style={{paddingHorizontal: 10}}>
+          <ScrollView style={{ paddingHorizontal: 10 }}>
             <MySubHeader title="Edit Category Details" />
             <MyInput
               label="Name"
               value={fields.name}
               handleChangeText={text => {
-                setFields({...fields, name: text});
+                setFields({ ...fields, name: text });
               }}
             />
             <ImageContainer
-              url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
+              url={fields?.image?.uri ? fields?.image : { uri: fields?.image }}
               onImageChange={image => {
-                setFields({...fields, image: image});
+                setFields({ ...fields, image: image });
                 setImageUploaded(true);
               }}
             />
           </ScrollView>
-          <View style={{height: 60}}>
+          <View style={{ height: 60 }}>
             <BottomButton
               label="Edit Category"
               count={Object.values(fields).filter(val => Boolean(val))?.length}
@@ -470,7 +474,7 @@ export default function AddForm() {
     }
     if (type === 'item') {
       return (
-        <View style={{flex: 1, backgroundColor: colors.background}}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
           <OverlayLoader
             show={updateItemLoading || deleteItemLoading || uploadLoader}
           />
@@ -482,7 +486,7 @@ export default function AddForm() {
             icon="trash"
             onPressRight={() => handleDeleteItem()}
           />
-          <ScrollView style={{paddingHorizontal: 10}}>
+          <ScrollView style={{ paddingHorizontal: 10 }}>
             <MySubHeader title="Select Category" divider />
             <CstmDropDown
               defaultValue={itemData?.Category}
@@ -497,25 +501,25 @@ export default function AddForm() {
               label="Name"
               value={fields.name}
               handleChangeText={text => {
-                setFields({...fields, name: text});
+                setFields({ ...fields, name: text });
               }}
             />
             <MyInput
               label="Price"
               value={fields.price}
               numericKeyboard
-              handleChangeText={text => setFields({...fields, price: text})}
+              handleChangeText={text => setFields({ ...fields, price: text })}
             />
             <ImageContainer
-              url={fields?.image?.uri ? fields?.image : {uri: fields?.image}}
+              url={fields?.image?.uri ? fields?.image : { uri: fields?.image }}
               onImageChange={image => {
                 console.log('kia mil raha ha', image);
-                setFields({...fields, image: image});
+                setFields({ ...fields, image: image });
                 setImageUploaded(true);
               }}
             />
           </ScrollView>
-          <View style={{height: 60}}>
+          <View style={{ height: 60 }}>
             <BottomButton
               label="Edit Item"
               count={Object.values(fields).filter(val => Boolean(val))?.length}
