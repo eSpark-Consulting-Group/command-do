@@ -393,14 +393,15 @@ function Cart({ route, navigation }) {
                 marginVertical: moderateVerticalScale(10),
               }}
               onPress={() => {
-                if (!isValidTimeToOrder()) {
-                  showMessage({
-                    message: 'Alas! Time is over for placing order😬',
-                    icon: 'auto',
-                    type: 'info',
-                  });
-                  return;
-                }
+                // //! Uncomment when need to apply restriction
+                // if (!isValidTimeToOrder()) {
+                //   showMessage({
+                //     message: 'Alas! Time is over for placing order😬',
+                //     icon: 'auto',
+                //     type: 'info',
+                //   });
+                //   return;
+                // }
                 isShowAlert(true);
               }}>
               {!loading ? (
