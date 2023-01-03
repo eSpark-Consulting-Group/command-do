@@ -334,6 +334,7 @@ export default function AddForm() {
             <MySubHeader title="Add Category Details" />
             <MyInput
               label="Name"
+              placeholderValue="Category Name"
               handleChangeText={text => {
                 setFields({ ...fields, name: text });
               }}
@@ -383,12 +384,14 @@ export default function AddForm() {
             <MySubHeader title="Add Item Details" divider />
             <MyInput
               label="Name"
+              placeholderValue="Item Name"
               handleChangeText={text => {
                 setFields({ ...fields, name: text });
               }}
             />
             <MyInput
               label="Price"
+              placeholderValue="Price"
               numericKeyboard
               handleChangeText={text => {
                 setFields({ ...fields, price: text });
@@ -441,6 +444,7 @@ export default function AddForm() {
             <MySubHeader title="Edit Category Details" />
             <MyInput
               label="Name"
+              placeholderValue="Category Name..."
               value={fields.name}
               handleChangeText={text => {
                 setFields({ ...fields, name: text });
@@ -499,6 +503,7 @@ export default function AddForm() {
             <MySubHeader title="Edit Item Details" divider />
             <MyInput
               label="Name"
+              placeholderValue="Item Name..."
               value={fields.name}
               handleChangeText={text => {
                 setFields({ ...fields, name: text });
@@ -506,6 +511,7 @@ export default function AddForm() {
             />
             <MyInput
               label="Price"
+              placeholderValue="Price..."
               value={fields.price}
               numericKeyboard
               handleChangeText={text => setFields({ ...fields, price: text })}

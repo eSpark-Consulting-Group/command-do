@@ -394,14 +394,14 @@ function Cart({ route, navigation }) {
               }}
               onPress={() => {
                 // //! Uncomment when need to apply restriction
-                // if (!isValidTimeToOrder()) {
-                //   showMessage({
-                //     message: 'Alas! Time is over for placing order😬',
-                //     icon: 'auto',
-                //     type: 'info',
-                //   });
-                //   return;
-                // }
+                if (!isValidTimeToOrder()) {
+                  showMessage({
+                    message: 'Alas! Time is over for placing order😬',
+                    icon: 'auto',
+                    type: 'info',
+                  });
+                  return;
+                }
                 isShowAlert(true);
               }}>
               {!loading ? (

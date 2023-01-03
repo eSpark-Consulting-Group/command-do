@@ -18,14 +18,14 @@ export default function Rider({ route }) {
     now >= '13:01:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   return (
     <>
-      {/* {state ? ( */}
-      <Orders />
-      {/* ) : (
+      {state ? (
+        <Orders />
+      ) : (
         <>
           {isFocused && <BackButtonHandler />}
           <Empty />
         </>
-      )} */}
+      )}
       <BlurBackground show={route?.params?.isModal} />
     </>
   );

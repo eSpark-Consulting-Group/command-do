@@ -91,6 +91,7 @@ export default function ImageContainer({
               }}>
               <MyInput
                 value={imageHolder?.uri}
+                placeholderValue={'Enter a valid image url...'}
                 handleChangeText={text => {
                   const Image = { uri: text };
                   setImageHolder(Image);
