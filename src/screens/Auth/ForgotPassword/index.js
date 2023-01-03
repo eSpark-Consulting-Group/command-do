@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -6,17 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useMutation} from '@apollo/client';
-import {showMessage} from 'react-native-flash-message';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { useMutation } from '@apollo/client';
+import { showMessage } from 'react-native-flash-message';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
-import {MyHeader, MyText} from '../../../components';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
-import {colors} from '../../../theme';
-import {FORGOT_PASS} from '../../../graphQL/mutation/user.mutation';
+import { MyHeader, MyText } from '../../../components';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { colors } from '../../../theme';
+import { FORGOT_PASS } from '../../../graphQL/mutation/user.mutation';
 
-export default function ForgotPassword({navigation}) {
-  const [forgotPassword, {loading}] = useMutation(FORGOT_PASS);
+export default function ForgotPassword({ navigation }) {
+  const [forgotPassword, { loading }] = useMutation(FORGOT_PASS);
   const [email, setEmail] = useState('');
 
   function ValidateEmail(mail) {
@@ -42,37 +42,39 @@ export default function ForgotPassword({navigation}) {
   }
 
   const handleNavigate = async () => {
-    navigation.navigate('OTPVerification', {email: email.toLowerCase()});
-    // if (ValidateEmail(email.toLowerCase())) {
-    //   try {
-    //     const userData = await forgotPassword({
-    //       variables: {
-    //         email: email.toLowerCase(),
-    //       },
-    //     });
-    //     if (userData.data?.forgotPassword?.status) {
-    //       setEmail('');
-    //       showMessage({
-    //         message: userData.data?.forgotPassword?.message,
-    //         type: 'success',
-    //         icon: 'auto',
-    //       });
-    //       navigation.navigate('OTPVerification', {email: email.toLowerCase()});
-    //     } else {
-    //       showMessage({
-    //         message: userData.data?.forgotPassword?.message,
-    //         type: 'danger',
-    //         icon: 'auto',
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.log('email error', error);
-    //   }
-    // }
+    // navigation.navigate('OTPVerification', {email: email.toLowerCase()});
+    if (ValidateEmail(email.toLowerCase())) {
+      try {
+        const userData = await forgotPassword({
+          variables: {
+            email: email.toLowerCase(),
+          },
+        });
+        if (userData.data?.forgotPassword?.status) {
+          setEmail('');
+          showMessage({
+            message: userData.data?.forgotPassword?.message,
+            type: 'success',
+            icon: 'auto',
+          });
+          navigation.navigate('OTPVerification', {
+            email: email.toLowerCase(),
+          });
+        } else {
+          showMessage({
+            message: userData.data?.forgotPassword?.message,
+            type: 'danger',
+            icon: 'auto',
+          });
+        }
+      } catch (error) {
+        console.log('email error', error);
+      }
+    }
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center' }}>
       <MyHeader
         onPressLeft={() => navigation?.navigate('Login')}
         leftIcon="arrow-back"
@@ -87,7 +89,7 @@ export default function ForgotPassword({navigation}) {
           flex: 1,
           marginTop: moderateVerticalScale(35),
         }}>
-        <View style={{marginVertical: 5}}>
+        <View style={{ marginVertical: 5 }}>
           <MyText label={'Enter Email Address'} />
           <View style={styles.inputStyle}>
             <TextInput
@@ -110,7 +112,7 @@ export default function ForgotPassword({navigation}) {
             <MyText
               label={'Send OTP'}
               size={'title'}
-              textStyle={{color: colors.text_inverse}}
+              textStyle={{ color: colors.text_inverse }}
             />
           )}
         </TouchableOpacity>
