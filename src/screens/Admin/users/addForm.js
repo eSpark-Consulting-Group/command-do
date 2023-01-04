@@ -200,6 +200,7 @@ export default function AddForm() {
           <MyInput
             label="First Name"
             value={userInfo.firstName}
+            placeholderValue={'Enter First Name...'}
             handleChangeText={text =>
               setUserInfo({ ...userInfo, firstName: text })
             }
@@ -207,6 +208,7 @@ export default function AddForm() {
           <MyInput
             label="Last Name"
             value={userInfo.lastName}
+            placeholderValue={'Enter Last Name...'}
             handleChangeText={text =>
               setUserInfo({ ...userInfo, lastName: text })
             }
@@ -214,6 +216,7 @@ export default function AddForm() {
           <MyInput
             label="Email Address"
             value={userInfo.email}
+            placeholderValue={'Enter Email Address...'}
             handleChangeText={text => setUserInfo({ ...userInfo, email: text })}
           />
           <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
@@ -293,6 +296,7 @@ export default function AddForm() {
           <MySubHeader title="Edit User Details" divider />
           <MyInput
             label="First Name"
+            placeholderValue="First Name..."
             value={userInfo.firstName}
             handleChangeText={text =>
               setUserInfo({ ...userInfo, firstName: text })
@@ -301,12 +305,14 @@ export default function AddForm() {
           <MyInput
             label="Last Name"
             value={userInfo.lastName}
+            placeholderValue="Last Name..."
             handleChangeText={text =>
               setUserInfo({ ...userInfo, lastName: text })
             }
           />
           <MyInput
             label="Email Address"
+            placeholderValue="Enter Email Address..."
             value={userInfo.email}
             canEdit={false}
           />

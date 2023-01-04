@@ -1,4 +1,5 @@
-import {Icon} from '@rneui/themed';
+import { placeholder } from '@babel/types';
+import { Icon } from '@rneui/themed';
 import React from 'react';
 import {
   NativeSyntheticEvent,
@@ -7,10 +8,10 @@ import {
   TextInputSubmitEditingEventData,
   View,
 } from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
-import {SCREEN_HEIGHT} from '../../constants';
-import {colors} from '../../theme';
+import { SCREEN_HEIGHT } from '../../constants';
+import { colors } from '../../theme';
 import MyText from '../Text';
 
 export default function MyInput({
@@ -19,6 +20,7 @@ export default function MyInput({
   numericKeyboard = false,
   canEdit = true,
   bordered = true,
+  placeholderValue,
   handleChangeText,
   onSubmit,
   clearInput,
@@ -28,6 +30,7 @@ export default function MyInput({
   numericKeyboard?: boolean;
   canEdit?: boolean;
   bordered?: boolean;
+  placeholderValue?: string;
   handleChangeText?: (text: string) => void;
   onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
   clearInput?: () => void;
@@ -43,7 +46,7 @@ export default function MyInput({
         <MyText
           label={label}
           size={SCREEN_HEIGHT * 0.028}
-          textStyle={{paddingBottom: 10}}
+          textStyle={{ paddingBottom: 10 }}
         />
       )}
       <View
@@ -59,7 +62,7 @@ export default function MyInput({
           value={value}
           onSubmitEditing={onSubmit}
           onChangeText={handleChangeText}
-          placeholder={`Search "Biryani"`}
+          placeholder={placeholderValue ?? `Search "Biryani...`}
           keyboardType={numericKeyboard ? 'numeric' : 'default'}
           editable={canEdit}
           underlineColorAndroid="transparent"
@@ -79,7 +82,7 @@ export default function MyInput({
               padding: moderateVerticalScale(5),
             }}
             pressableProps={{
-              android_ripple: {borderless: true, color: '#00000013'},
+              android_ripple: { borderless: true, color: '#00000013' },
             }}
             color={colors.primary + 'bb'}
             onPress={clearInput}

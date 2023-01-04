@@ -393,6 +393,7 @@ function Cart({ route, navigation }) {
                 marginVertical: moderateVerticalScale(10),
               }}
               onPress={() => {
+                // //! Uncomment when need to apply restriction
                 if (!isValidTimeToOrder()) {
                   showMessage({
                     message: 'Alas! Time is over for placing order😬',

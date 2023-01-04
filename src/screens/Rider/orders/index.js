@@ -15,7 +15,7 @@ export default function Rider({ route }) {
   const isFocused = useIsFocused();
   const now = new Date().toTimeString();
   const state =
-    now >= '12:30:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
+    now >= '13:01:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   return (
     <>
       {state ? (
