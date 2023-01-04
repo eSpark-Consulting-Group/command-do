@@ -5,6 +5,7 @@ import {
   ScrollView,
   Image,
   StatusBar,
+  FlatList,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
@@ -30,6 +31,7 @@ import {
   OverlayLoader,
   BackButtonHandler,
   BlurBackground,
+  GapView,
 } from '../../../components';
 import { profileData } from '../../../utils/data';
 import { initialDataUpdate } from '../../../features/profile/profileSlice';
@@ -392,46 +394,102 @@ function Home({ navigation }) {
           )}
           <View style={styles.categoryContainer}>
             {categories && (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {[{ name: 'All', image: null, id: 0 }, ...categories]?.map(
-                  (item, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={{
-                        ...styles.categoryButton,
-                        backgroundColor:
-                          selectedCategory?.id == item?.id
-                            ? colors.primary
-                            : colors.background,
-                        paddingHorizontal: item.logo
-                          ? moderateVerticalScale(7)
-                          : moderateVerticalScale(14),
-                      }}
-                      onPress={() => isSelect(item)}>
-                      <View>
-                        {item.image && (
-                          <Image
-                            source={{ uri: item?.image }}
-                            style={styles.categoryImage}
-                          />
-                        )}
-                      </View>
-                      <View>
-                        <MyText
-                          label={item?.name}
-                          size={'title'}
-                          textStyle={{
-                            color:
-                              selectedCategory?.id == item?.id
-                                ? colors.text_inverse
-                                : colors.text_normal,
-                          }}
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={[{ name: 'All', image: null, id: 0 }, ...categories]}
+                ListHeaderComponent={
+                  <GapView
+                    length={moderateVerticalScale(12)}
+                    mode={'horizontal'}
+                  />
+                }
+                ListFooterComponent={
+                  <GapView
+                    length={moderateVerticalScale(12)}
+                    mode={'horizontal'}
+                  />
+                }
+                renderItem={({ item, index }) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={{
+                      ...styles.categoryButton,
+                      backgroundColor:
+                        selectedCategory?.id == item?.id
+                          ? colors.primary
+                          : colors.background,
+                      paddingHorizontal: item.logo
+                        ? moderateVerticalScale(7)
+                        : moderateVerticalScale(14),
+                    }}
+                    onPress={() => isSelect(item)}>
+                    <View>
+                      {item.image && (
+                        <Image
+                          source={{ uri: item?.image }}
+                          style={styles.categoryImage}
                         />
-                      </View>
-                    </TouchableOpacity>
-                  ),
+                      )}
+                    </View>
+                    <View>
+                      <MyText
+                        label={item?.name}
+                        size={'title'}
+                        textStyle={{
+                          color:
+                            selectedCategory?.id == item?.id
+                              ? colors.text_inverse
+                              : colors.text_normal,
+                        }}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 )}
-              </ScrollView>
+              />
+              // <ScrollView
+              //   horizontal
+              //   showsHorizontalScrollIndicator={false}
+              //   style={{ paddingHorizontal: 15 }}>
+              //   {[{ name: 'All', image: null, id: 0 }, ...categories]?.map(
+              //     (item, index) => (
+              //       <TouchableOpacity
+              //         key={index}
+              //         style={{
+              //           ...styles.categoryButton,
+              //           backgroundColor:
+              //             selectedCategory?.id == item?.id
+              //               ? colors.primary
+              //               : colors.background,
+              //           paddingHorizontal: item.logo
+              //             ? moderateVerticalScale(7)
+              //             : moderateVerticalScale(14),
+              //         }}
+              //         onPress={() => isSelect(item)}>
+              //         <View>
+              //           {item.image && (
+              //             <Image
+              //               source={{ uri: item?.image }}
+              //               style={styles.categoryImage}
+              //             />
+              //           )}
+              //         </View>
+              //         <View>
+              //           <MyText
+              //             label={item?.name}
+              //             size={'title'}
+              //             textStyle={{
+              //               color:
+              //                 selectedCategory?.id == item?.id
+              //                   ? colors.text_inverse
+              //                   : colors.text_normal,
+              //             }}
+              //           />
+              //         </View>
+              //       </TouchableOpacity>
+              //     ),
+              //   )}
+              // </ScrollView>
             )}
           </View>
           {categories && (

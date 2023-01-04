@@ -7,13 +7,13 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {Icon} from '@rneui/themed';
+import { Icon } from '@rneui/themed';
 
-import {SCREEN_WIDTH} from '../../constants';
-import {colors} from '../../theme';
+import { SCREEN_WIDTH } from '../../constants';
+import { colors } from '../../theme';
 import GapView from '../GapView';
 import MyInput from '../MyInput';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function SearchBar({
   headerStyle,
@@ -26,6 +26,7 @@ export default function SearchBar({
   handleChangeText,
   onSubmit,
   Loader,
+  placeholder,
 }: {
   headerStyle?: ViewStyle;
   icon?: string;
@@ -37,6 +38,7 @@ export default function SearchBar({
   handleChangeText?: (text: string) => void;
   onSubmit?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
   Loader: boolean;
+  placeholder: string;
 }) {
   return (
     <View
@@ -50,7 +52,7 @@ export default function SearchBar({
           name={leftIcon!!}
           size={moderateVerticalScale(28)}
           color={colors.text_inverse}
-          style={{padding: moderateVerticalScale(5)}}
+          style={{ padding: moderateVerticalScale(5) }}
           onPress={onPressLeft}
           containerStyle={{
             borderRadius: 100,
@@ -58,13 +60,14 @@ export default function SearchBar({
             right: 5,
           }}
           pressableProps={{
-            android_ripple: {borderless: true, color: '#f5f5f533'},
+            android_ripple: { borderless: true, color: '#f5f5f533' },
           }}
         />
       )}
       {!leftIcon && <GapView mode="horizontal" length={1} />}
       <MyInput
         value={value}
+        placeholderValue={placeholder}
         handleChangeText={handleChangeText}
         onSubmit={onSubmit}
         clearInput={clearInput}
@@ -80,14 +83,14 @@ export default function SearchBar({
             name={icon!!}
             size={moderateVerticalScale(28)}
             type="material-community"
-            style={{justifyContent: 'center', alignItems: 'center'}}
+            style={{ justifyContent: 'center', alignItems: 'center' }}
             containerStyle={{
               borderRadius: 100,
               padding: moderateVerticalScale(5),
               alignSelf: 'center',
             }}
             pressableProps={{
-              android_ripple: {borderless: true, color: '#f5f5f533'},
+              android_ripple: { borderless: true, color: '#f5f5f533' },
             }}
             color={colors.text_inverse}
             onPress={onPressRight}
@@ -97,7 +100,7 @@ export default function SearchBar({
       {Loader && (
         <ActivityIndicator
           size={moderateVerticalScale(28)}
-          style={{padding: moderateVerticalScale(5)}}
+          style={{ padding: moderateVerticalScale(5) }}
           color={colors.text_inverse}
         />
       )}

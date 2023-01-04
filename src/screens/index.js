@@ -12,6 +12,7 @@ import Cart from './User/cart';
 import OrderConfirm from './User/orderConfirm';
 import SearchItem from './SearchItem/SearchItem';
 import ChangePassword from './User/ChangePassword';
+import OrderHistory from './User/OrderHistory';
 
 import Profile from './profile';
 
@@ -26,7 +27,7 @@ import CollectedOrders from './Rider/orders/CollectedOrders';
 import CurrentOrders from './Rider/orders/CurrentOrders';
 import PurchasingList from './Rider/PurchasingList';
 import MoneyReturn from './Rider/MoneyReturn';
-import OrderHistory from './User/OrderHistory';
+import PurchasedOrders from './Rider/PurchasedOrders';
 
 export {
   Home,
@@ -51,4 +52,5 @@ export {
   OrderHistory,
   SearchItem,
   ChangePassword,
+  PurchasedOrders,
 };

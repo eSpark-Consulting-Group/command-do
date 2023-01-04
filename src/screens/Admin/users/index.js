@@ -151,6 +151,25 @@ export default function Users() {
               />
               <MenuOption
                 style={styles.buttonContainer}
+                onSelect={() => goToNavigation('ChangePassword')}
+                children={
+                  <>
+                    <MCI
+                      name="shield-lock"
+                      size={moderateVerticalScale(20)}
+                      color={colors.primary}
+                      style={styles.btnIcon}
+                    />
+                    <MyText
+                      label={'Change Password'}
+                      size={'title'}
+                      textStyle={{ color: colors.text_normal + '80' }}
+                    />
+                  </>
+                }
+              />
+              <MenuOption
+                style={styles.buttonContainer}
                 onSelect={logoutHandler}
                 children={
                   <>
@@ -242,7 +261,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   modalInner: {
-    width: moderateScale(150),
     backgroundColor: colors.background,
     borderRadius: moderateVerticalScale(5),
     zIndex: 1,
