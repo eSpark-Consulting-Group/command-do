@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -6,21 +6,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useMutation} from '@apollo/client';
-import {useSelector} from 'react-redux';
-import {Icon} from '@rneui/themed';
-import {showMessage} from 'react-native-flash-message';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { useMutation } from '@apollo/client';
+import { useSelector } from 'react-redux';
+import { Icon } from '@rneui/themed';
+import { showMessage } from 'react-native-flash-message';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
-import {MyHeader, MyText} from '../../../components';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
-import {colors} from '../../../theme';
+import { MyHeader, MyText } from '../../../components';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { colors } from '../../../theme';
 
-import {CHANGE_PASS} from '../../../graphQL/mutation/user.mutation';
+import { CHANGE_PASS } from '../../../graphQL/mutation/user.mutation';
 
-export default function ChangePassword({navigation}) {
+export default function ChangePassword({ navigation }) {
   const userId = useSelector(store => store.userInfo?.userData.id);
-  const [ChangePassword, {loading}] = useMutation(CHANGE_PASS);
+  const [ChangePassword, { loading }] = useMutation(CHANGE_PASS);
   const [currPass, setCurrPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [currShow, setCurrShow] = useState(false);
@@ -52,9 +52,9 @@ export default function ChangePassword({navigation}) {
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center' }}>
       <MyHeader
-        onPressLeft={() => navigation?.navigate('Home')}
+        onPressLeft={() => navigation?.goBack()}
         leftIcon="arrow-back"
         title="Change Password"
         titleStyle={{
@@ -68,7 +68,7 @@ export default function ChangePassword({navigation}) {
           justifyContent: 'center',
           marginBottom: SCREEN_HEIGHT * 0.05,
         }}>
-        <View style={{marginVertical: 5}}>
+        <View style={{ marginVertical: 5 }}>
           <MyText label={'Enter Your Current Password'} />
           <View style={styles.inputStyle}>
             <TextInput
@@ -86,12 +86,12 @@ export default function ChangePassword({navigation}) {
             />
             <TouchableOpacity
               onPress={() => setCurrShow(!currShow)}
-              style={{paddingHorizontal: SCREEN_HEIGHT * 0.015}}>
+              style={{ paddingHorizontal: SCREEN_HEIGHT * 0.015 }}>
               <Icon name={currShow ? 'visibility' : 'visibility-off'} />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{marginVertical: 5}}>
+        <View style={{ marginVertical: 5 }}>
           <MyText label={'Enter Your New Password'} />
           <View style={styles.inputStyle}>
             <TextInput
@@ -109,7 +109,7 @@ export default function ChangePassword({navigation}) {
             />
             <TouchableOpacity
               onPress={() => setNewShow(!newShow)}
-              style={{paddingHorizontal: SCREEN_HEIGHT * 0.015}}>
+              style={{ paddingHorizontal: SCREEN_HEIGHT * 0.015 }}>
               <Icon name={newShow ? 'visibility' : 'visibility-off'} />
             </TouchableOpacity>
           </View>
@@ -130,7 +130,7 @@ export default function ChangePassword({navigation}) {
             <MyText
               label={'Change Password'}
               size={'title'}
-              textStyle={{color: colors.text_inverse}}
+              textStyle={{ color: colors.text_inverse }}
             />
           )}
         </TouchableOpacity>
