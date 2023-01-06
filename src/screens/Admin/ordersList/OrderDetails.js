@@ -1,7 +1,11 @@
-import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
-import {useLazyQuery} from '@apollo/client';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import { useLazyQuery } from '@apollo/client';
 
 import {
   GapView,
@@ -10,7 +14,7 @@ import {
   MyText,
   OverlayLoader,
 } from '../../../components';
-import {colors} from '../../../theme';
+import { colors } from '../../../theme';
 import {
   ALL_ORDERS,
   COLLECTED_ORDERS,
@@ -20,8 +24,8 @@ import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
 export default function OrderDetails() {
   const navigation = useNavigation();
   const route = useRoute();
-  const {mode, data} = route?.params;
-  const [GetAllOrders, {data: OrderData, loading: allLoading}] = useLazyQuery(
+  const { mode, data } = route?.params;
+  const [GetAllOrders, { data: OrderData, loading: allLoading }] = useLazyQuery(
     ALL_ORDERS,
     {
       fetchPolicy: 'cache-and-network',
@@ -33,7 +37,7 @@ export default function OrderDetails() {
   );
   const [
     GetCollectedOrder,
-    {data: CollectedOrderData, loading: collectedLoading},
+    { data: CollectedOrderData, loading: collectedLoading },
   ] = useLazyQuery(COLLECTED_ORDERS, {
     fetchPolicy: 'cache-and-network',
     notifyOnNetworkStatusChange: true,
@@ -71,14 +75,14 @@ export default function OrderDetails() {
           onPressLeft={() => navigation.goBack()}
         />
         <MyCard cardStyle={styles.item}>
-          <View style={{paddingHorizontal: 10}}>
+          <View style={{ paddingHorizontal: 10 }}>
             <View style={styles.rowSpacer}>
               <MyText label="Details" />
               <MyText
                 label={`Rider/ ${
                   OrderDetails?.Rider?.firstName ?? 'Order Not Picked'
                 }`}
-                textStyle={{color: 'grey'}}
+                textStyle={{ color: 'grey' }}
               />
             </View>
             <GapView mode="vertical" length={8} />
@@ -88,11 +92,11 @@ export default function OrderDetails() {
                   'Date: ' +
                   new Date(OrderDetails?.createdAt).toString().slice(0, 15)
                 }
-                textStyle={{color: 'grey'}}
+                textStyle={{ color: 'grey' }}
               />
               <MyText
                 label={`Order #${OrderDetails?.id}`}
-                textStyle={{color: 'grey'}}
+                textStyle={{ color: 'grey' }}
               />
             </View>
           </View>
@@ -100,12 +104,12 @@ export default function OrderDetails() {
             <MyText
               label="Order"
               size={'subHeading'}
-              textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
+              textStyle={{ color: colors.text_inverse, fontWeight: 'bold' }}
             />
             <MyText
               label="Quantity"
               size={'subHeading'}
-              textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
+              textStyle={{ color: colors.text_inverse, fontWeight: 'bold' }}
             />
           </View>
           <FlatList
@@ -114,7 +118,7 @@ export default function OrderDetails() {
                 ? OrderDetails?.OrderItems
                 : OrderDetails?.summary || []
             }
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <View style={styles.listContent}>
                 <MyText
                   label={data.userId ? item.Item?.name : item.item?.name}
@@ -143,12 +147,12 @@ export default function OrderDetails() {
             <MyText
               label="Total"
               size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
+              textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
             />
             <MyText
               label={`Rs. ${OrderDetails?.totalAmount}`}
               size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
+              textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
             />
           </View>
           {data.userId && (
@@ -157,12 +161,12 @@ export default function OrderDetails() {
                 <MyText
                   label="Recieved"
                   size={'subHeading'}
-                  textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
+                  textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
                 />
                 <MyText
                   label={`Rs. ${OrderDetails?.paidAmount}`}
                   size={'subHeading'}
-                  textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
+                  textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
                 />
               </View>
               <View
@@ -175,7 +179,7 @@ export default function OrderDetails() {
                 <MyText
                   label="Returned"
                   size={'subHeading'}
-                  textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
+                  textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
                 />
                 <MyText
                   label={`Rs. ${
@@ -184,112 +188,11 @@ export default function OrderDetails() {
                       : 0
                   }`}
                   size={'subHeading'}
-                  textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
+                  textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
                 />
               </View>
             </>
           )}
-        </MyCard>
-      </>
-    );
-  };
-
-  const renderUserOrder = () => {
-    return (
-      <>
-        <MyHeader
-          title="Order Details"
-          leftIcon="arrow-back"
-          onPressLeft={() => navigation.goBack()}
-        />
-        <MyCard cardStyle={styles.item}>
-          <View style={{paddingHorizontal: 10}}>
-            <View style={styles.rowSpacer}>
-              <MyText label={data?.userId?.firstName} />
-              <MyText label="Rider/ Harrison" textStyle={{color: 'grey'}} />
-            </View>
-            <GapView mode="vertical" length={8} />
-            <View style={styles.rowSpacer}>
-              <MyText label="Dated: 2 Nov, 14:00" textStyle={{color: 'grey'}} />
-              <MyText label="Order #10" textStyle={{color: 'grey'}} />
-            </View>
-          </View>
-          <View style={styles.listHeader}>
-            <MyText
-              label="Order"
-              size={'subHeading'}
-              textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
-            />
-            <MyText
-              label="Quantity"
-              size={'subHeading'}
-              textStyle={{color: colors.text_inverse, fontWeight: 'bold'}}
-            />
-          </View>
-          <FlatList
-            data={[
-              {item: 'Bhatti Naan', quantity: '3'},
-              {item: 'Salad', quantity: '1'},
-              {item: 'Pepsi (200ml)', quantity: '1'},
-            ]}
-            renderItem={({item, index}) => (
-              <View style={styles.listContent}>
-                <MyText label={item.item} size={18} />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <MyText label={`x ${item.quantity}`} size={18} />
-                </View>
-              </View>
-            )}
-          />
-          <View style={styles.listFooter}>
-            <MyText
-              label="Paid"
-              size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
-            />
-            <MyText
-              label={'Rs. 500'}
-              size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
-            />
-          </View>
-
-          <View style={styles.listFooter}>
-            <MyText
-              label="Total"
-              size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
-            />
-            <MyText
-              label={'Rs. 200'}
-              size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
-            />
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'white',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-            }}
-          />
-          <View style={styles.listFooter}>
-            <MyText
-              label="Money Returned"
-              size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
-            />
-            <MyText
-              label={'Rs. 300'}
-              size={'subHeading'}
-              textStyle={{fontWeight: 'bold', color: colors.text_inverse}}
-            />
-          </View>
         </MyCard>
       </>
     );

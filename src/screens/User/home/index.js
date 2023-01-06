@@ -372,11 +372,11 @@ function Home({ navigation }) {
           <View style={styles.greetingMsgContainer}>
             <MyText
               label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
+              textStyle={{ textTransform: 'capitalize' }}
               size={'subHeading'}
             />
             <MyText label={greetMessage()} />
           </View>
-
           {remainingAmount?.getCurrentRemainingAmount?.data?.remainingAmount >
             0 && (
             <View style={styles.remainingAmountAlertContainer}>
@@ -447,49 +447,6 @@ function Home({ navigation }) {
                   </TouchableOpacity>
                 )}
               />
-              // <ScrollView
-              //   horizontal
-              //   showsHorizontalScrollIndicator={false}
-              //   style={{ paddingHorizontal: 15 }}>
-              //   {[{ name: 'All', image: null, id: 0 }, ...categories]?.map(
-              //     (item, index) => (
-              //       <TouchableOpacity
-              //         key={index}
-              //         style={{
-              //           ...styles.categoryButton,
-              //           backgroundColor:
-              //             selectedCategory?.id == item?.id
-              //               ? colors.primary
-              //               : colors.background,
-              //           paddingHorizontal: item.logo
-              //             ? moderateVerticalScale(7)
-              //             : moderateVerticalScale(14),
-              //         }}
-              //         onPress={() => isSelect(item)}>
-              //         <View>
-              //           {item.image && (
-              //             <Image
-              //               source={{ uri: item?.image }}
-              //               style={styles.categoryImage}
-              //             />
-              //           )}
-              //         </View>
-              //         <View>
-              //           <MyText
-              //             label={item?.name}
-              //             size={'title'}
-              //             textStyle={{
-              //               color:
-              //                 selectedCategory?.id == item?.id
-              //                   ? colors.text_inverse
-              //                   : colors.text_normal,
-              //             }}
-              //           />
-              //         </View>
-              //       </TouchableOpacity>
-              //     ),
-              //   )}
-              // </ScrollView>
             )}
           </View>
           {categories && (

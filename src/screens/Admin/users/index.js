@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
   item: {
     color: colors.text_normal,
     padding: 10,
+    textTransform: 'capitalize',
   },
   modalInner: {
     backgroundColor: colors.background,

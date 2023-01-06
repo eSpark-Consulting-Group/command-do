@@ -19,6 +19,7 @@ import {
 import { UPDATE_ORDER } from '../../../graphQL/mutation/order.mutation';
 import { ALL_ORDERS } from '../../../graphQL/query/orders.query';
 import { colors } from '../../../theme';
+import { RefreshControl } from 'react-native';
 
 export default function PurchasedOrders({ navigation }) {
   const dispatch = useDispatch();
@@ -123,6 +124,14 @@ export default function PurchasedOrders({ navigation }) {
       }}>
       <MyHeader
         title="Purchased Orders"
+        leftIcon="arrow-back"
+        icon="search"
+        onPressLeft={() => navigation.goBack()}
+        onPressRight={() =>
+          navigation.navigate('SearchItem', {
+            navigateTo: 'Add_Form',
+          })
+        }
         titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
       {/* <SearchBar
@@ -139,6 +148,14 @@ export default function PurchasedOrders({ navigation }) {
         data={order}
         style={{ width: '100%' }}
         contentContainerStyle={{ alignItems: 'center' }}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => {
+              fetchOrders();
+            }}
+          />
+        }
         renderItem={({ item }) =>
           loadOrders ? (
             <View
