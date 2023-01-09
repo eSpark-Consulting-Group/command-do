@@ -48,7 +48,9 @@ export default function ChangePassword({ navigation }) {
       type: status ? 'success' : 'danger',
       icon: 'auto',
     });
-    navigation?.navigate('Home');
+    if (status) {
+      navigation?.goBack();
+    }
   };
 
   return (

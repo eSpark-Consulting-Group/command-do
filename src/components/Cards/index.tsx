@@ -100,11 +100,13 @@ const Cards = props => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 paddingHorizontal: moderateVerticalScale(10),
-                paddingVertical: moderateVerticalScale(5),
+                paddingBottom: moderateVerticalScale(8),
                 backgroundColor: colors.background + 'ab',
                 borderColor: '#00000022',
                 borderTopWidth: moderateVerticalScale(0.5),
                 borderBottomWidth: moderateVerticalScale(0.5),
+                // borderBottomLeftRadius: moderateVerticalScale(14),
+                // borderBottomRightRadius: moderateVerticalScale(14),
               }}>
               <View
                 style={{
@@ -115,11 +117,12 @@ const Cards = props => {
                   label={dataItem?.name}
                   numberOfLines={2}
                   textStyle={{
-                    textShadowColor: colors.text_normal,
-                    textShadowOffset: { width: 1, height: 1 },
-                    textShadowRadius: 4,
+                    // textShadowColor: colors.text_normal,
+                    // textShadowOffset: { width: 1, height: 1 },
+                    // textShadowRadius: 1,
+                    fontFamily: 'Poppins-SemiBold',
                     fontSize: moderateVerticalScale(20),
-                    color: '#fff',
+                    color: '#000',
                     top: 0,
                   }}
                 />
@@ -132,7 +135,14 @@ const Cards = props => {
                   }}>
                   <MyText
                     label={`Rs.${dataItem?.price}`}
-                    textStyle={{ opacity: 1 }}
+                    textStyle={{
+                      opacity: 1,
+                      fontFamily: 'Poppins-SemiBold',
+                      // textShadowColor: colors.text_normal,
+                      //   textShadowOffset: { width: 1, height: 1 },
+                      //   textShadowRadius: 1,
+                      //   color: '#000',
+                    }}
                   />
                 </View>
               </View>
