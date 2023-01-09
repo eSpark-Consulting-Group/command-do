@@ -392,11 +392,9 @@ function Cart({ route, navigation }) {
                 elevation: 2,
                 marginVertical: moderateVerticalScale(10),
               }}
-              onPress={async () => {
-                let val = await isValidTimeToOrder();
-                console.log('Time', val);
+              onPress={() => {
                 // //! Uncomment when need to apply restriction
-                if (!val) {
+                if (!isValidTimeToOrder()) {
                   showMessage({
                     message: 'Alas! Time is over for placing order😬',
                     icon: 'auto',
