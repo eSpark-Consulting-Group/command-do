@@ -57,7 +57,7 @@ export default function SearchBar({
           containerStyle={{
             borderRadius: 100,
             alignSelf: 'center',
-            right: 5,
+            marginHorizontal: moderateVerticalScale(5),
           }}
           pressableProps={{
             android_ripple: { borderless: true, color: '#f5f5f533' },
@@ -88,6 +88,7 @@ export default function SearchBar({
               borderRadius: 100,
               padding: moderateVerticalScale(5),
               alignSelf: 'center',
+              marginHorizontal: moderateVerticalScale(5),
             }}
             pressableProps={{
               android_ripple: { borderless: true, color: '#f5f5f533' },
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
   header: {
     width: SCREEN_WIDTH,
     backgroundColor: '#fafafa',
-    padding: 10,
+    paddingVertical: 10,
     elevation: 5,
     flexDirection: 'row',
     alignItems: 'center',

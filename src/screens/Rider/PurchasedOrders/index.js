@@ -8,6 +8,7 @@ import {
   CollectionModal,
   MoneyReturnCard,
   MyHeader,
+  MyText,
   OrderHistoryCard,
   SearchBar,
 } from '../../../components';
@@ -21,7 +22,7 @@ import { ALL_ORDERS } from '../../../graphQL/query/orders.query';
 import { colors } from '../../../theme';
 import { RefreshControl } from 'react-native';
 
-export default function PurchasedOrders({ navigation }) {
+export default function PurchasedOrders({ navigation, route }) {
   const dispatch = useDispatch();
   const currDate = new Date().setUTCHours(0);
 
@@ -33,15 +34,22 @@ export default function PurchasedOrders({ navigation }) {
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
   const [search, setSearch] = useState('');
+  const [userId, setUserId] = useState(route?.params?.userId);
+  const Id = route?.params?.userId;
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    fetchOrders(userId);
+  }, [userId]);
 
-  const fetchOrders = async () => {
+  useEffect(() => {
+    setUserId(Id);
+  }, [Id]);
+
+  const fetchOrders = async id => {
+    console.log('id', id);
     GetAllOrders({
       variables: {
-        getOrderInput: { createdAt: currDate },
+        getOrderInput: { createdAt: currDate, userId: id },
       },
     });
   };
@@ -53,10 +61,6 @@ export default function PurchasedOrders({ navigation }) {
       }),
     [data?.getAllOrders?.data],
   );
-
-  const updateSearch = async text => {
-    setSearch(text);
-  };
 
   // useEffect(() => {
   //   if (order?.length < 1 && order !== undefined) {
@@ -125,25 +129,18 @@ export default function PurchasedOrders({ navigation }) {
       <MyHeader
         title="Purchased Orders"
         leftIcon="arrow-back"
-        icon="search"
+        icon={userId ? 'search-off' : 'person-search'}
         onPressLeft={() => navigation.goBack()}
         onPressRight={() =>
-          navigation.navigate('SearchItem', {
-            navigateTo: 'Add_Form',
-          })
+          userId
+            ? setUserId(undefined)
+            : navigation.navigate('SearchItem', {
+                navigateTo: 'PurchasedOrders',
+              })
         }
         titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
-      {/* <SearchBar
-        value={search}
-        placeholder={`Search "Aliali"`}
-        clearInput={() => setSearch('')}
-        handleChangeText={text => setSearch(text)}
-        icon="magnify"
-        onPressLeft={() => navigation.goBack()}
-        onPressRight={() => updateSearch(search)}
-        onSubmit={() => updateSearch(search)}
-      /> */}
+
       <FlatList
         data={order}
         style={{ width: '100%' }}
@@ -179,13 +176,22 @@ export default function PurchasedOrders({ navigation }) {
           )
         }
         ListEmptyComponent={
-          loadOrders && (
+          loadOrders ? (
             <View
               style={{
                 height: SCREEN_HEIGHT * 0.8,
                 justifyContent: 'center',
               }}>
               <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.6,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MyText label={'No Orders Received'} size={'heading'} />
             </View>
           )
         }
