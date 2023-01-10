@@ -74,7 +74,11 @@ export default function SearchItem({ route }) {
         handleChangeText={text => updateUserSearch(text)}
         leftIcon="arrow-back"
         icon="magnify"
-        placeholder={navigateTo == 'PurchasedOrders' && `Search "Ali..`}
+        placeholder={
+          navigateTo == 'PurchasedOrders'
+            ? `Search "Ali..`
+            : `Search "Biryani..`
+        }
         onPressLeft={() => navigation.goBack()}
         onPressRight={() =>
           navigateTo == 'PurchasedOrders'
