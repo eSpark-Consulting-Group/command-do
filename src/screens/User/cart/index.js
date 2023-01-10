@@ -15,6 +15,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import { useMutation } from '@apollo/client';
+import moment from 'moment';
 
 import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
 import { Delivery } from '../../../assets/images';
@@ -38,11 +39,24 @@ function Cart({ route, navigation }) {
   const [getData, setGetData] = useState({});
   const [isIndexSame, setIsIndexSame] = useState(0);
   const [total, setTotal] = useState(0);
+  const [currentTime, setCurrentTime] = useState(null);
 
   const dispatch = useDispatch();
   const count = useSelector(store => store);
   const userData = useSelector(store => store?.userInfo?.userData);
   const [CreateOrder, { loading, error }] = useMutation(PLACE_ORDER);
+
+  async function getCurrentTime() {
+    try {
+      const response = await fetch('https://www.google.com/search?q=time');
+      const data = response;
+      const currentTime = data.headers?.map.date;
+      setCurrentTime(currentTime);
+      return new Date(moment(currentTime));
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     var makeTotal = 0;
@@ -392,9 +406,11 @@ function Cart({ route, navigation }) {
                 elevation: 2,
                 marginVertical: moderateVerticalScale(10),
               }}
-              onPress={() => {
+              onPress={async () => {
                 // //! Uncomment when need to apply restriction
-                if (!isValidTimeToOrder()) {
+                const time = await getCurrentTime();
+
+                if (!isValidTimeToOrder(time)) {
                   showMessage({
                     message: 'Alas! Time is over for placing order😬',
                     icon: 'auto',
