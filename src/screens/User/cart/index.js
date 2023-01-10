@@ -343,7 +343,7 @@ function Cart({ route, navigation }) {
                         style={styles.deleteItem}
                         onPress={() => removefromCart(item, 0, index)}>
                         <AD
-                          name="delete"
+                          name="minus"
                           size={moderateVerticalScale(15)}
                           color="#fff"
                         />
