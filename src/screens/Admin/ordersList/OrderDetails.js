@@ -24,7 +24,7 @@ import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
 export default function OrderDetails() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { mode, data } = route?.params;
+  const { mode, data, orderInfo } = route?.params;
   const [GetAllOrders, { data: OrderData, loading: allLoading }] = useLazyQuery(
     ALL_ORDERS,
     {
@@ -35,6 +35,9 @@ export default function OrderDetails() {
       },
     },
   );
+
+  console.log('Order Dataxxxxxxxxxxxxxx', orderInfo?.OrderItems);
+
   const [
     GetCollectedOrder,
     { data: CollectedOrderData, loading: collectedLoading },
@@ -57,9 +60,9 @@ export default function OrderDetails() {
       : GetCollectedOrder({
           variables: data,
         });
-  }, []);
+  }, [data]);
 
-  console.log('getORderData', OrderData?.getAllOrders?.data);
+  console.log('getORderData', orderInfo?.getAllOrders?.data);
 
   const OrderDetails = !data.userId
     ? CollectedOrderData?.getCollectedOrder?.data
@@ -80,7 +83,9 @@ export default function OrderDetails() {
               <MyText label="Details" />
               <MyText
                 label={`Rider/ ${
-                  OrderDetails?.Rider?.firstName ?? 'Order Not Picked'
+                  data.userId
+                    ? orderInfo?.Rider?.firstName
+                    : OrderDetails?.Rider?.firstName ?? 'Order Not Picked'
                 }`}
                 textStyle={{ color: 'grey' }}
               />
@@ -90,12 +95,20 @@ export default function OrderDetails() {
               <MyText
                 label={
                   'Date: ' +
-                  new Date(OrderDetails?.createdAt).toString().slice(0, 15)
+                  new Date(
+                    data.userId
+                      ? orderInfo?.createdAt
+                      : OrderDetails?.createdAt,
+                  )
+                    .toString()
+                    .slice(0, 15)
                 }
                 textStyle={{ color: 'grey' }}
               />
               <MyText
-                label={`Order #${OrderDetails?.id}`}
+                label={`Order #${
+                  data.userId ? orderInfo?.id : OrderDetails?.id
+                }`}
                 textStyle={{ color: 'grey' }}
               />
             </View>
@@ -114,9 +127,7 @@ export default function OrderDetails() {
           </View>
           <FlatList
             data={
-              data.userId
-                ? OrderDetails?.OrderItems
-                : OrderDetails?.summary || []
+              data.userId ? orderInfo?.OrderItems : OrderDetails?.summary || []
             }
             renderItem={({ item, index }) => (
               <View style={styles.listContent}>
@@ -150,7 +161,9 @@ export default function OrderDetails() {
               textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
             />
             <MyText
-              label={`Rs. ${OrderDetails?.totalAmount}`}
+              label={`Rs. ${
+                data.userId ? orderInfo?.totalAmount : OrderDetails?.totalAmount
+              }`}
               size={'subHeading'}
               textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
             />
@@ -164,7 +177,7 @@ export default function OrderDetails() {
                   textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
                 />
                 <MyText
-                  label={`Rs. ${OrderDetails?.paidAmount}`}
+                  label={`Rs. ${orderInfo?.paidAmount}`}
                   size={'subHeading'}
                   textStyle={{ fontWeight: 'bold', color: colors.text_inverse }}
                 />
@@ -183,8 +196,8 @@ export default function OrderDetails() {
                 />
                 <MyText
                   label={`Rs. ${
-                    OrderDetails?.remainingAmount > 0
-                      ? OrderDetails?.remainingAmount
+                    orderInfo?.remainingAmount > 0
+                      ? orderInfo?.remainingAmount
                       : 0
                   }`}
                   size={'subHeading'}
