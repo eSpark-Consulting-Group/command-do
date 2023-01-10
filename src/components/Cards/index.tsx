@@ -49,17 +49,6 @@ const Cards = props => {
           style={{
             height: moderateVerticalScale(200),
           }}>
-          {/* <Image
-            source={{ uri: dataItem?.image }}
-            style={{
-              borderRadius: height * 0.02,
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-              height: moderateVerticalScale(150),
-              // width: moderateVerticalScale(310),
-              backgroundColor: colors.background,
-            }}
-          /> */}
           <ImageBackground
             source={{ uri: dataItem?.image }}
             borderRadius={moderateVerticalScale(14)}
@@ -105,8 +94,6 @@ const Cards = props => {
                 borderColor: '#00000022',
                 borderTopWidth: moderateVerticalScale(0.5),
                 borderBottomWidth: moderateVerticalScale(0.5),
-                // borderBottomLeftRadius: moderateVerticalScale(14),
-                // borderBottomRightRadius: moderateVerticalScale(14),
               }}>
               <View
                 style={{
@@ -117,9 +104,6 @@ const Cards = props => {
                   label={dataItem?.name}
                   numberOfLines={2}
                   textStyle={{
-                    // textShadowColor: colors.text_normal,
-                    // textShadowOffset: { width: 1, height: 1 },
-                    // textShadowRadius: 1,
                     fontFamily: 'Poppins-SemiBold',
                     fontSize: moderateVerticalScale(20),
                     color: '#000',
@@ -138,10 +122,6 @@ const Cards = props => {
                     textStyle={{
                       opacity: 1,
                       fontFamily: 'Poppins-SemiBold',
-                      // textShadowColor: colors.text_normal,
-                      //   textShadowOffset: { width: 1, height: 1 },
-                      //   textShadowRadius: 1,
-                      //   color: '#000',
                     }}
                   />
                 </View>
