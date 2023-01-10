@@ -101,7 +101,10 @@ export default function SearchBar({
       {Loader && (
         <ActivityIndicator
           size={moderateVerticalScale(28)}
-          style={{ padding: moderateVerticalScale(5) }}
+          style={{
+            padding: moderateVerticalScale(5),
+            marginHorizontal: moderateVerticalScale(5),
+          }}
           color={colors.text_inverse}
         />
       )}
