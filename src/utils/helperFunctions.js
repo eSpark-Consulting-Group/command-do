@@ -78,11 +78,11 @@ export const requestCameraPermission = async () => {
   }
 };
 
-export const isValidTimeToOrder = () => {
+export const isValidTimeToOrder = time => {
   var format = 'hh:mm:ss';
 
   // var time = moment() gives you current time. no format required.
-  var time = moment(new Date().toLocaleTimeString(), format),
+  var time = moment(new Date(time).toLocaleTimeString(), format),
     startTime = moment('09:00:00', format),
     endTime = moment('13:00:00', format);
   return time.isBetween(startTime, endTime);
