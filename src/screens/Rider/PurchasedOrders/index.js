@@ -1,39 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, View } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 
-import {
-  BlurBackground,
-  CollectionModal,
-  MoneyReturnCard,
-  MyHeader,
-  MyText,
-  OrderHistoryCard,
-  SearchBar,
-} from '../../../components';
+import { useLazyQuery } from '@apollo/client';
+
+import { MyHeader, MyText, OrderHistoryCard } from '../../../components';
 import { SCREEN_HEIGHT } from '../../../constants';
-import {
-  toggleFinishCollection,
-  toggleOrderPurchased,
-} from '../../../features/riderOrders/riderOrderSlice';
-import { UPDATE_ORDER } from '../../../graphQL/mutation/order.mutation';
+
 import { ALL_ORDERS } from '../../../graphQL/query/orders.query';
 import { colors } from '../../../theme';
 import { RefreshControl } from 'react-native';
 
 export default function PurchasedOrders({ navigation, route }) {
-  const dispatch = useDispatch();
   const currDate = new Date().setUTCHours(0);
 
   const [GetAllOrders, { data, loading: loadOrders }] =
     useLazyQuery(ALL_ORDERS);
 
-  const [UpdateOrder, { loading }] = useMutation(UPDATE_ORDER);
-  const [showModal, setShowModal] = useState(false);
-  const [amount, setAmount] = useState('');
-  const [id, setId] = useState(null);
-  const [search, setSearch] = useState('');
   const [userId, setUserId] = useState(route?.params?.userId);
   const Id = route?.params?.userId;
 
@@ -62,63 +44,6 @@ export default function PurchasedOrders({ navigation, route }) {
     [data?.getAllOrders?.data],
   );
 
-  // useEffect(() => {
-  //   if (order?.length < 1 && order !== undefined) {
-  //     Alert.alert('No Orders', 'No return orders left.!', [
-  //       {
-  //         text: 'Back to Orders',
-  //         onPress: () => navigateToOrders(),
-  //       },
-  //     ]);
-  //   }
-  // }, [order?.length]);
-
-  const navigateToOrders = () => {
-    navigation.navigate('Orders');
-    dispatch(toggleOrderPurchased(false));
-    dispatch(toggleFinishCollection(false));
-  };
-
-  const openOverlay = item => {
-    setShowModal(true);
-    setAmount(item.remainingAmount);
-    setId(item.id);
-  };
-
-  const closeOverlay = () => {
-    setShowModal(false);
-    setAmount('');
-    setId(null);
-  };
-
-  const onCollection = async amount => {
-    let returnMoneyOrder = {};
-    order.filter(item => {
-      if (item.id == id) {
-        returnMoneyOrder = item;
-      }
-    });
-    console.log('returnMoneyOrder', returnMoneyOrder);
-    const update = await UpdateOrder({
-      variables: {
-        input: [
-          {
-            id: returnMoneyOrder.id,
-            paidAmount: returnMoneyOrder.paidAmount,
-            riderId: returnMoneyOrder.riderId,
-            status: returnMoneyOrder.status,
-          },
-        ],
-        returnAmount: Number(amount),
-        type: 'RETURN',
-      },
-    });
-    console.log('Retun Order', update);
-    fetchOrders();
-    setShowModal(false);
-    setAmount('');
-  };
-
   return (
     <View
       style={{
@@ -140,18 +65,19 @@ export default function PurchasedOrders({ navigation, route }) {
         }
         titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
-
       <FlatList
         data={order}
         style={{ width: '100%' }}
         contentContainerStyle={{ alignItems: 'center' }}
         refreshControl={
-          <RefreshControl
-            refreshing={false}
-            onRefresh={() => {
-              fetchOrders();
-            }}
-          />
+          !userId ? (
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => {
+                fetchOrders();
+              }}
+            />
+          ) : null
         }
         renderItem={({ item }) =>
           loadOrders ? (
@@ -196,15 +122,6 @@ export default function PurchasedOrders({ navigation, route }) {
           )
         }
       />
-      {/* <CollectionModal
-        type={'return'}
-        isVisible={showModal}
-        totAmount={amount}
-        closeModal={closeOverlay}
-        isLoading={loading}
-        onCollected={amount => onCollection(amount)}
-      />
-      <BlurBackground show={showModal} /> */}
     </View>
   );
 }
