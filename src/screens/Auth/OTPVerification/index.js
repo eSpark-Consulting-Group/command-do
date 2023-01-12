@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useMutation} from '@apollo/client';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {showMessage} from 'react-native-flash-message';
+import { useMutation } from '@apollo/client';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { showMessage } from 'react-native-flash-message';
+import CountDown from 'react-native-countdown-component';
 import {
   CodeField,
   Cursor,
@@ -15,16 +16,21 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-import {MyHeader, MyText} from '../../../components';
-import {SCREEN_WIDTH} from '../../../constants';
-import {colors} from '../../../theme';
-import {OTP_VERIFY, RESEND_OTP} from '../../../graphQL/mutation/user.mutation';
+import { MyHeader, MyText } from '../../../components';
+import { SCREEN_WIDTH } from '../../../constants';
+import { colors } from '../../../theme';
+import {
+  OTP_VERIFY,
+  RESEND_OTP,
+} from '../../../graphQL/mutation/user.mutation';
 
-export default function OTPVerification({navigation, route}) {
-  const [VerifyOtp, {loading}] = useMutation(OTP_VERIFY);
+export default function OTPVerification({ navigation, route }) {
+  const [VerifyOtp, { loading }] = useMutation(OTP_VERIFY);
   const [resendOtp] = useMutation(RESEND_OTP);
   const [code, setCode] = useState('');
-  const ref = useBlurOnFulfill({value: code, cellCount: 4});
+  const [expTime, setExpTime] = useState(false);
+  const [time, setTime] = useState(60);
+  const ref = useBlurOnFulfill({ value: code, cellCount: 4 });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: code,
     setValue: setCode,
@@ -43,7 +49,16 @@ export default function OTPVerification({navigation, route}) {
           type: 'success',
           icon: 'auto',
         });
+        setTime(prevState => {
+          if (prevState == 60) {
+            setTime(59);
+          } else {
+            setTime(60);
+          }
+        });
+        setExpTime(false);
       } else {
+        navigation.goBack();
         showMessage({
           message: userData.data?.resendOtp?.message,
           type: 'danger',
@@ -65,7 +80,7 @@ export default function OTPVerification({navigation, route}) {
       });
       console.log('userData.data?.verifyOtp?', userData.data?.verifyOtp);
       if (userData.data?.verifyOtp?.status) {
-        navigation.navigate('NewPassword', {email: route?.params?.email});
+        navigation.navigate('NewPassword', { email: route?.params?.email });
         return true;
       } else {
         showMessage({
@@ -80,7 +95,7 @@ export default function OTPVerification({navigation, route}) {
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center' }}>
       <MyHeader
         onPressLeft={() => navigation?.goBack()}
         leftIcon="arrow-back"
@@ -118,7 +133,7 @@ export default function OTPVerification({navigation, route}) {
             }}
             keyboardType="number-pad"
             textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
+            renderCell={({ index, symbol, isFocused }) => (
               <View
                 key={index}
                 style={[styles.cell, isFocused && styles.focusCell]}>
@@ -147,11 +162,11 @@ export default function OTPVerification({navigation, route}) {
               fontFamily: 'Poppins-Medium',
             }}
           />
-          <TouchableOpacity onPress={resendOTP}>
+          <TouchableOpacity disabled={!expTime} onPress={resendOTP}>
             <MyText
               label={'Resend'}
               textStyle={{
-                color: colors.primary,
+                color: expTime ? colors.primary : '#ccc',
                 fontFamily: 'Poppins-SemiBold',
               }}
             />
@@ -170,21 +185,36 @@ export default function OTPVerification({navigation, route}) {
             <MyText
               label={'Verify'}
               size={'title'}
-              textStyle={{color: colors.text_inverse}}
+              textStyle={{ color: colors.text_inverse }}
             />
           )}
         </TouchableOpacity>
         <View
           style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
             alignItems: 'center',
             marginVertical: moderateVerticalScale(10),
           }}>
           <MyText
-            label={'Verfication code will expire in 2 mins '}
+            label={'Verfication code will expire in '}
             textStyle={{
               fontFamily: 'Poppins-Medium',
               justifyContent: 'center',
             }}
+          />
+          <CountDown
+            until={time}
+            onFinish={() => {
+              setExpTime(true);
+            }}
+            size={moderateVerticalScale(10)}
+            showSeparator
+            separatorStyle={{ color: colors.text_normal, fontSize: 20 }}
+            timeToShow={['M', 'S']}
+            timeLabels={{ m: null, s: null }}
+            digitStyle={{ marginHorizontal: moderateVerticalScale(1) }}
+            digitTxtStyle={{ fontSize: 20, color: colors.primary }}
           />
         </View>
       </View>
