@@ -14,7 +14,6 @@ import AppStatusBar from './src/components/AppStatusBar';
 import { client } from './src/graphQL';
 import { requestCameraPermission } from './src/utils/helperFunctions';
 import { BlurBackground, NoInternetModal } from './src/components';
-import { BlurView } from '@react-native-community/blur';
 
 export default function App() {
   const [isConnected, setIsConnected] = useState(null);
