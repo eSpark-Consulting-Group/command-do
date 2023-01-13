@@ -16,18 +16,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import { useMutation } from '@apollo/client';
 import moment from 'moment';
-
-import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
-import { Delivery } from '../../../assets/images';
-import { BlurBackground, MyText } from '../../../components';
-import { PLACE_ORDER } from '../../../graphQL/mutation/order.mutation';
-import { colors } from '../../../theme';
 import {
   moderateScale,
   moderateVerticalScale,
 } from 'react-native-size-matters';
-import { isValidTimeToOrder } from '../../../utils/helperFunctions';
 import { showMessage } from 'react-native-flash-message';
+
+import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
+import { Delivery } from '../../../assets/images';
+import { BlurBackground, MyText, OverlayLoader } from '../../../components';
+import { PLACE_ORDER } from '../../../graphQL/mutation/order.mutation';
+import { colors } from '../../../theme';
+import { isValidTimeToOrder } from '../../../utils/helperFunctions';
 import { useLayoutAnimation } from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
 const { width, height } = Dimensions.get('window');
@@ -45,16 +45,20 @@ function Cart({ route, navigation }) {
   const count = useSelector(store => store);
   const userData = useSelector(store => store?.userInfo?.userData);
   const [CreateOrder, { loading, error }] = useMutation(PLACE_ORDER);
+  const [load, setLoad] = useState(false);
 
   async function getCurrentTime() {
+    setLoad(true);
     try {
       const response = await fetch('https://www.google.com/search?q=time');
       const data = response;
       const currentTime = data.headers?.map.date;
       setCurrentTime(currentTime);
+      setLoad(false);
       return new Date(moment(currentTime));
     } catch (error) {
       console.error(error);
+      setLoad(false);
     }
   }
 
@@ -161,8 +165,25 @@ function Cart({ route, navigation }) {
     }
   };
 
+  const handleOrderValidation = async () => {
+    try {
+      const time = await getCurrentTime();
+      if (!isValidTimeToOrder(time)) {
+        showMessage({
+          message: 'Alas! Time is over for placing order😬',
+          icon: 'auto',
+          type: 'info',
+        });
+        return true;
+      }
+    } catch (e) {
+      console.log('Error for Validation', e);
+    }
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: colors?.background }}>
+      <OverlayLoader show={load} />
       <StatusBar backgroundColor={colors.primary} />
       <View style={{ flex: 1 }}>
         <View style={styles.headerContainer}>
@@ -408,16 +429,7 @@ function Cart({ route, navigation }) {
               }}
               onPress={async () => {
                 // //! Uncomment when need to apply restriction
-                const time = await getCurrentTime();
-
-                if (!isValidTimeToOrder(time)) {
-                  showMessage({
-                    message: 'Alas! Time is over for placing order😬',
-                    icon: 'auto',
-                    type: 'info',
-                  });
-                  return;
-                }
+                // if (!(await handleOrderValidation()))
                 isShowAlert(true);
               }}>
               {!loading ? (
