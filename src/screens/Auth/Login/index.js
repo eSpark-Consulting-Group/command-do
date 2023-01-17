@@ -76,12 +76,12 @@ const Login = ({ navigation }) => {
   const handleNavigate = async () => {
     if (ValidateEmail(emailRef.current.toLowerCase(), passRef.current)) {
       try {
-        const tokenFCM = await sendFCMToken();
+        // const tokenFCM = await sendFCMToken();
         const userData = await LoginUser({
           variables: {
             email: emailRef.current.toLowerCase(),
             password: passRef.current,
-            fcmToken: tokenFCM,
+            // fcmToken: tokenFCM,
           },
         });
         const obj = { ...userData.data.loginUser.data };

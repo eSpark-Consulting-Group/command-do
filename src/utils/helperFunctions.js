@@ -1,7 +1,7 @@
-import storage from '@react-native-firebase/storage';
+// import storage from '@react-native-firebase/storage';
 import { PermissionsAndroid, Platform } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import moment from 'moment';
 
 export const uploadImage = async image => {
