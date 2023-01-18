@@ -54,9 +54,9 @@ export default function OrderCard({
         <MyText
           label={name}
           textStyle={{
-            ...styles.cardDataText,
-            fontSize: moderateVerticalScale(20),
-            maxWidth: SCREEN_WIDTH * 0.7,
+            fontFamily: 'Poppins-Bold',
+            fontSize: moderateVerticalScale(18),
+            flex: 1,
           }}
         />
         <TouchableOpacity

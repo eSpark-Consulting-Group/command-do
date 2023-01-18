@@ -59,10 +59,7 @@ export default function ChangePassword({ navigation }) {
         onPressLeft={() => navigation?.goBack()}
         leftIcon="arrow-back"
         title="Change Password"
-        titleStyle={{
-          fontFamily: 'Poppins-Bold',
-          fontSize: moderateVerticalScale(28),
-        }}
+        titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
       <View
         style={{

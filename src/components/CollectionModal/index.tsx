@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,13 +8,13 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import {Overlay} from '@rneui/themed';
+import { Overlay } from '@rneui/themed';
 import FA from 'react-native-vector-icons/FontAwesome';
 
 import MyText from '../Text';
-import {colors} from '../../theme';
-import {SCREEN_HEIGHT} from '../../constants';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { colors } from '../../theme';
+import { SCREEN_HEIGHT } from '../../constants';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function CollectionModal({
   closeModal,
@@ -54,13 +54,15 @@ export default function CollectionModal({
           alignItems: 'center',
           backgroundColor: '#efefef',
         }}>
-        <View style={{width: '100%', alignItems: 'flex-end', padding: 5}}>
+        <View style={{ width: '100%', alignItems: 'flex-end', padding: 5 }}>
           <TouchableOpacity onPress={closeModal}>
             <FA name="close" size={moderateVerticalScale(25)} />
           </TouchableOpacity>
         </View>
-        <View style={{alignItems: 'center', marginVertical: 10}}>
-          <MyText label={'Amount to be Pay:'} />
+        <View style={{ alignItems: 'center', marginVertical: 10 }}>
+          <MyText
+            label={`Amount to be ${type == 'return' ? 'Return' : 'Pay'}:`}
+          />
           <MyText
             label={'Rs. ' + totAmount}
             textStyle={{
