@@ -61,7 +61,6 @@ export default function ChangePassword({ navigation }) {
         title="Change Password"
         titleStyle={{
           fontFamily: 'Poppins-Bold',
-          fontSize: moderateVerticalScale(28),
         }}
       />
       <View
@@ -161,6 +160,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
 });

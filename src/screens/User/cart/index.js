@@ -233,7 +233,14 @@ function Cart({ route, navigation }) {
                               borderRadius: 5,
                               backgroundColor: colors.background,
                               padding: moderateVerticalScale(3),
-                              elevation: 2,
+                              elevation: moderateVerticalScale(2),
+                              shadowColor: "#000",
+                              shadowOffset: {
+                                width: 0,
+                                height: moderateVerticalScale(1),
+                              },
+                              shadowOpacity: moderateVerticalScale(0.20),
+                              shadowRadius: moderateVerticalScale(1.41),
                             }}
                             onPress={() => addToCart(item, item.quantity + 1)}>
                             <Icon
@@ -282,7 +289,14 @@ function Cart({ route, navigation }) {
                                   ? colors.background
                                   : colors.disabledBackground,
                               padding: moderateVerticalScale(3),
-                              elevation: item.quantity != 1 ? 2 : 0,
+                              elevation: item.quantity != 1 ? moderateVerticalScale(2) : 0,
+                              shadowColor: "#000",
+                              shadowOffset: {
+                                width: 0,
+                                height: moderateVerticalScale(1),
+                              },
+                              shadowOpacity: item.quantity != 1 ? moderateVerticalScale(0.20) : 0,
+                              shadowRadius: item.quantity != 1 ? moderateVerticalScale(1.41) : 0,
                             }}
                             onPress={() =>
                               addToCart(item, item.quantity - 1, index)
@@ -322,8 +336,15 @@ function Cart({ route, navigation }) {
                               width: moderateVerticalScale(60),
                               backgroundColor: colors.background,
                               borderRadius: height * 0.015,
-                              elevation: 2,
                               marginHorizontal: moderateVerticalScale(5),
+                              elevation: moderateVerticalScale(2),
+                              shadowColor: "#000",
+                              shadowOffset: {
+                                width: 0,
+                                height: moderateVerticalScale(1),
+                              },
+                              shadowOpacity: moderateVerticalScale(0.20),
+                              shadowRadius: moderateVerticalScale(1.41),
                             }}>
                             <Image
                               source={{ uri: item.image }}
@@ -403,8 +424,15 @@ function Cart({ route, navigation }) {
                 paddingLeft: height * 0.015,
                 justifyContent: 'center',
                 alignItems: 'center',
-                elevation: 2,
                 marginVertical: moderateVerticalScale(10),
+                elevation: moderateVerticalScale(2),
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: moderateVerticalScale(1),
+                },
+                shadowOpacity: moderateVerticalScale(0.20),
+                shadowRadius: moderateVerticalScale(1.41),
               }}
               onPress={async () => {
                 // //! Uncomment when need to apply restriction
@@ -495,7 +523,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     height: moderateVerticalScale(80),
     backgroundColor: colors.background,
-    elevation: moderateVerticalScale(2),
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: height * 0.02,
@@ -513,11 +540,18 @@ const styles = StyleSheet.create({
   deliveryOptionContainer: {
     height: moderateVerticalScale(80),
     backgroundColor: colors.background,
-    elevation: moderateVerticalScale(2),
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: moderateVerticalScale(15),
     marginHorizontal: moderateVerticalScale(15),
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   // Cart Item Container
   cartItemContainer: {
@@ -535,6 +569,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: moderateVerticalScale(5),
     elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   addMoreItemContainer: {
     width: '97%',
@@ -554,7 +595,6 @@ const styles = StyleSheet.create({
   deleteItem: {
     height: moderateVerticalScale(22),
     width: moderateVerticalScale(22),
-    elevation: moderateVerticalScale(2),
     backgroundColor: colors.primary,
     borderRadius: height * 1,
     justifyContent: 'center',
@@ -562,6 +602,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: moderateVerticalScale(-5),
     top: moderateVerticalScale(-4),
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   // Footer Container
   footerContainer: {

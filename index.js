@@ -14,7 +14,7 @@ import Notification from './src/utils/Notification';
 // });
 
 async function requestUserPermission() {
-    if (Platform == 'android') {
+    if (Platform.OS === 'android') {
 
         const authStatus = await messaging().requestPermission();
         const enabled =

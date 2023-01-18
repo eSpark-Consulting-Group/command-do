@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {SCREEN_WIDTH} from '../../constants';
-import {colors} from '../../theme';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { SCREEN_WIDTH } from '../../constants';
+import { colors } from '../../theme';
 
 import MyText from '../Text';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 type itemData = {
   name: string;
   price: number;
@@ -46,11 +46,11 @@ export default function MoneyReturnCard({
           borderBottomWidth: 1,
         }}>
         <MyText
-          label={name}
+          label={name + ' asdasd'}
           textStyle={{
-            ...styles.cardDataText,
-            fontSize: moderateVerticalScale(20),
-            maxWidth: SCREEN_WIDTH * 0.7,
+            fontFamily: 'Poppins-Bold',
+            fontSize: moderateVerticalScale(18),
+            flex: 1
           }}
         />
         <TouchableOpacity
@@ -59,12 +59,19 @@ export default function MoneyReturnCard({
             ...styles.cardDataContainer2,
             borderRadius: 5,
             backgroundColor: colors.primary,
-            elevation: 2,
             padding: 5,
+            elevation: moderateVerticalScale(2),
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: moderateVerticalScale(1),
+            },
+            shadowOpacity: moderateVerticalScale(0.20),
+            shadowRadius: moderateVerticalScale(1.41),
           }}>
           <MyText
             label={'Return'}
-            textStyle={{...styles.cardDataText, color: colors.background}}
+            textStyle={{ ...styles.cardDataText, color: colors.background }}
           />
         </TouchableOpacity>
       </View>
@@ -76,7 +83,7 @@ export default function MoneyReturnCard({
         <MyText
           label={'Amount To Be Return'}
           size={'title'}
-          textStyle={{fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontFamily: 'Poppins-Bold' }}
         />
         <MyText
           label={'Rs. ' + amount}
@@ -98,8 +105,15 @@ const styles = StyleSheet.create({
     borderRadius: moderateVerticalScale(5),
     paddingHorizontal: width * 0.02,
     backgroundColor: colors.background,
-    elevation: 2,
     marginVertical: 5,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   cardInnerContainer: {
     flexDirection: 'row',

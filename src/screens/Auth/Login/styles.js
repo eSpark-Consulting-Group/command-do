@@ -53,7 +53,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: SCREEN_HEIGHT * 0.003,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   loginButtonText: {
     fontSize: moderateVerticalScale(20),

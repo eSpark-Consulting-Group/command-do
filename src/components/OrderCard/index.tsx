@@ -54,9 +54,9 @@ export default function OrderCard({
         <MyText
           label={name}
           textStyle={{
-            ...styles.cardDataText,
-            fontSize: moderateVerticalScale(20),
-            maxWidth: SCREEN_WIDTH * 0.7,
+            fontFamily: 'Poppins-Bold',
+            fontSize: moderateVerticalScale(18),
+            flex: 1,
           }}
         />
         <TouchableOpacity
@@ -65,8 +65,15 @@ export default function OrderCard({
             ...styles.cardDataContainer2,
             borderRadius: 5,
             backgroundColor: colors.primary,
-            elevation: 2,
             padding: 5,
+            elevation: moderateVerticalScale(2),
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: moderateVerticalScale(1),
+            },
+            shadowOpacity: moderateVerticalScale(0.20),
+            shadowRadius: moderateVerticalScale(1.41),
           }}>
           <MyText
             label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
@@ -169,8 +176,15 @@ const styles = StyleSheet.create({
     borderRadius: moderateVerticalScale(5),
     paddingHorizontal: width * 0.02,
     backgroundColor: colors.background,
-    elevation: 2,
     marginVertical: 5,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   cardInnerContainer: {
     flexDirection: 'row',

@@ -236,8 +236,8 @@ function RiderNavigator({ navigation }) {
                                   height: moderateVerticalScale(8),
                                   borderRadius: 40,
                                   position: 'absolute',
-                                  top: moderateVerticalScale(9),
-                                  left: moderateVerticalScale(10),
+                                  top: moderateVerticalScale(8),
+                                  left: moderateVerticalScale(8),
                                   zIndex: 1,
                                 }}></TouchableOpacity>
                             )}

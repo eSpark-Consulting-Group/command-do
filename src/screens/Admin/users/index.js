@@ -254,7 +254,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.text_inverse,
     backgroundColor: colors.primary,
-    elevation: 1,
+    elevation: moderateVerticalScale(1),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   item: {
     color: colors.text_normal,

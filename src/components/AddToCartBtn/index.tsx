@@ -1,16 +1,16 @@
 import React from 'react';
-import {View, TouchableOpacity, TextInput} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {addItem, increase} from '../../features/cart/cartSlice';
+import { View, TouchableOpacity, TextInput } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addItem, increase } from '../../features/cart/cartSlice';
 import AD from 'react-native-vector-icons/AntDesign';
-import {styles} from './styles';
-import {colors} from '../../theme';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {showMessage} from 'react-native-flash-message';
-import {useLayoutAnimation} from '../../utils/hooks/useUpdateEffect/useLayoutAnimation';
+import { styles } from './styles';
+import { colors } from '../../theme';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { showMessage } from 'react-native-flash-message';
+import { useLayoutAnimation } from '../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 import MyText from '../Text';
 
-export const AddToCartBtn = ({item}) => {
+export const AddToCartBtn = ({ item }) => {
   const dispatch = useDispatch();
 
   const addQty = (item: any) => {
@@ -33,7 +33,7 @@ export const AddToCartBtn = ({item}) => {
   };
 
   const addToCart = (updatedQuantity: any, item: any) => {
-    var changeData = {...item};
+    var changeData = { ...item };
     changeData.quantity = updatedQuantity;
     dispatch(addItem(changeData));
     // @ts-ignore
@@ -83,11 +83,18 @@ export const AddToCartBtn = ({item}) => {
             style={{
               borderRadius: moderateVerticalScale(20),
               backgroundColor: colors.primary,
-              elevation: 2,
               height: moderateVerticalScale(30),
               width: moderateVerticalScale(30),
               justifyContent: 'center',
               alignItems: 'center',
+              elevation: moderateVerticalScale(2),
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: moderateVerticalScale(1),
+              },
+              shadowOpacity: moderateVerticalScale(0.20),
+              shadowRadius: moderateVerticalScale(1.41),
             }}
             onPress={() => addQty(item)}>
             <AD

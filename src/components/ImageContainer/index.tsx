@@ -14,7 +14,7 @@ import {
 } from 'react-native-size-matters';
 
 export default function ImageContainer({
-  onImageChange = (image: object) => {},
+  onImageChange = (image: object) => { },
   url = null,
 }) {
   const [imageHolder, setImageHolder] = useState<any>(url);
@@ -37,7 +37,7 @@ export default function ImageContainer({
       setImage(result);
       onImageChange(result);
       setLoad(true);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -206,7 +206,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: colors.primary,
-    elevation: 2,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
     alignItems: 'center',
     justifyContent: 'center',
     width: moderateScale(100),

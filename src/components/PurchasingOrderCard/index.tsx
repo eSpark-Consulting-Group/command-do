@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../constants';
 import MyText from '../Text';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function PurchasingOrderCard({
   itemName,
@@ -39,11 +39,18 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 5,
     borderRadius: 10,
-    elevation: 2,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
-  cardDataContainer: {width: '48%', paddingLeft: '2%'},
-  cardDataContainer1: {width: '12%', alignItems: 'center'},
-  cardDataContainer2: {width: '25%', alignItems: 'center'},
+  cardDataContainer: { width: '48%', paddingLeft: '2%' },
+  cardDataContainer1: { width: '12%', alignItems: 'center' },
+  cardDataContainer2: { width: '25%', alignItems: 'center' },
   cardDataText: {
     fontWeight: '600',
   },

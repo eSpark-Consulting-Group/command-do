@@ -1,9 +1,9 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { StyleSheet, Dimensions } from 'react-native';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
-import {colors} from '../../../theme';
+import { colors } from '../../../theme';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   topCurveView: {
@@ -59,8 +59,15 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
     position: 'absolute',
     bottom: height * 0.03,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
 });

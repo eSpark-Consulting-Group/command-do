@@ -1,10 +1,10 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
+import { Dimensions, StyleSheet } from 'react-native';
+import { moderateVerticalScale, verticalScale } from 'react-native-size-matters';
 
-import {colors} from '../../../theme';
-import {Fonts} from '../../../utils/fonts';
+import { colors } from '../../../theme';
+import { Fonts } from '../../../utils/fonts';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -24,13 +24,20 @@ export const styles = StyleSheet.create({
   },
   itemImageBackIcon: {
     height: moderateVerticalScale(35),
-    elevation: 2,
     width: moderateVerticalScale(35),
     margin: height * 0.015,
     backgroundColor: colors.background,
     borderRadius: height * 1,
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   numericBtnContainer: {
     flexDirection: 'row-reverse',
@@ -40,11 +47,18 @@ export const styles = StyleSheet.create({
   removeNumericButton: {
     borderRadius: height * 1,
     backgroundColor: colors.primary,
-    elevation: 2,
     height: moderateVerticalScale(35),
     width: moderateVerticalScale(35),
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   quantityInput: {
     height: moderateVerticalScale(50),
@@ -55,11 +69,18 @@ export const styles = StyleSheet.create({
   addNumericButton: {
     borderRadius: height * 1,
     backgroundColor: colors.primary,
-    elevation: 2,
     height: moderateVerticalScale(35),
     width: moderateVerticalScale(35),
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   itemDetailContainer: {
     backgroundColor: colors.background,

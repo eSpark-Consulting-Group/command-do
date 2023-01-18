@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   RefreshControl,
@@ -6,9 +6,9 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {useLazyQuery} from '@apollo/client';
-import {useDispatch, useSelector} from 'react-redux';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useLazyQuery } from '@apollo/client';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   GapView,
@@ -17,18 +17,19 @@ import {
   MyText,
   TouchRipple,
 } from '../../../components';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
-import {colors} from '../../../theme';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { colors } from '../../../theme';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
-import {useEffect} from 'react';
-import {ALL_ORDERS, ORDERS_BY_DATE} from '../../../graphQL/query/orders.query';
+import { useEffect } from 'react';
+import { ALL_ORDERS, ORDERS_BY_DATE } from '../../../graphQL/query/orders.query';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function OrdersList() {
   const navigation = useNavigation();
   const route = useRoute();
-  const [GetOrdersByDate, {loading: loadingByDate}] =
+  const [GetOrdersByDate, { loading: loadingByDate }] =
     useLazyQuery(ORDERS_BY_DATE);
-  const [GetAllUserOrders, {loading}] = useLazyQuery(ALL_ORDERS);
+  const [GetAllUserOrders, { loading }] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
 
   const [ordersByDate, setOrdersByDate] = useState([]);
@@ -37,7 +38,7 @@ export default function OrdersList() {
     route?.params?.filterInfo?.userInfo === null;
 
   useEffect(() => {
-    fetchOrders({endDate: null, startDate: null});
+    fetchOrders({ endDate: null, startDate: null });
   }, []);
 
   const getSortedOrders = orders => {
@@ -51,7 +52,7 @@ export default function OrdersList() {
     return order;
   };
 
-  const fetchOrders = async ({endDate, startDate}) => {
+  const fetchOrders = async ({ endDate, startDate }) => {
     const currDate = new Date().setUTCHours(0);
     const theDate = {
       startDate: startDate ?? currDate,
@@ -102,7 +103,7 @@ export default function OrdersList() {
     }
   }, [route.params]);
 
-  const RenderDatewise = ({item}) => {
+  const RenderDatewise = ({ item }) => {
     return (
       <MyCard cardStyle={styles.item}>
         <TouchRipple
@@ -123,31 +124,31 @@ export default function OrdersList() {
           <View>
             <MyText
               label="Rider"
-              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+              textStyle={{ textAlign: 'center', fontWeight: 'bold' }}
             />
             <MyText
               label={item.rider ? item.rider?.firstName : 'In Progress'}
-              textStyle={{textAlign: 'center'}}
+              textStyle={{ textAlign: 'center' }}
             />
           </View>
           <View>
             <MyText
               label="Orders Placed"
-              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+              textStyle={{ textAlign: 'center', fontWeight: 'bold' }}
             />
             <MyText
               label={item.totalOrders}
-              textStyle={{textAlign: 'center'}}
+              textStyle={{ textAlign: 'center' }}
             />
           </View>
           <View>
             <MyText
               label="Lunch Amount"
-              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+              textStyle={{ textAlign: 'center', fontWeight: 'bold' }}
             />
             <MyText
               label={item.totalAmount}
-              textStyle={{textAlign: 'center'}}
+              textStyle={{ textAlign: 'center' }}
             />
           </View>
         </TouchRipple>
@@ -155,7 +156,7 @@ export default function OrdersList() {
     );
   };
 
-  const RenderUserwise = ({item}) => {
+  const RenderUserwise = ({ item }) => {
     return (
       <MyCard cardStyle={styles.item}>
         <TouchRipple
@@ -177,27 +178,27 @@ export default function OrdersList() {
           <View>
             <MyText
               label="Order Holder"
-              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+              textStyle={{ textAlign: 'center', fontWeight: 'bold' }}
             />
             <MyText
               label={item?.User?.firstName}
-              textStyle={{textAlign: 'center'}}
+              textStyle={{ textAlign: 'center' }}
             />
           </View>
           <View>
             <MyText
               label="Paid/Lunch"
-              textStyle={{textAlign: 'center', fontWeight: 'bold'}}
+              textStyle={{ textAlign: 'center', fontWeight: 'bold' }}
             />
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <MyText
                 label={`Rs. ${item?.paidAmount}`}
-                textStyle={{textAlign: 'center'}}
+                textStyle={{ textAlign: 'center' }}
               />
-              <MyText label={`/`} textStyle={{textAlign: 'center'}} />
+              <MyText label={`/`} textStyle={{ textAlign: 'center' }} />
               <MyText
                 label={`${item?.totalAmount}`}
-                textStyle={{textAlign: 'center'}}
+                textStyle={{ textAlign: 'center' }}
               />
             </View>
           </View>
@@ -222,10 +223,10 @@ export default function OrdersList() {
         refreshControl={
           <RefreshControl
             refreshing={false}
-            onRefresh={() => fetchOrders({endDate: null, startDate: null})}
+            onRefresh={() => fetchOrders({ endDate: null, startDate: null })}
           />
         }
-        renderItem={({item}) =>
+        renderItem={({ item }) =>
           loadingByDate || loading ? (
             <View
               style={{
@@ -241,7 +242,7 @@ export default function OrdersList() {
           )
         }
         SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
-        renderSectionHeader={({section}) =>
+        renderSectionHeader={({ section }) =>
           !loadingByDate &&
           !loading && (
             <MyText textStyle={styles.sectionHeader} label={section.title} />
@@ -288,7 +289,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.text_inverse,
     backgroundColor: colors.primary,
-    elevation: 1,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   item: {
     marginVertical: 10,

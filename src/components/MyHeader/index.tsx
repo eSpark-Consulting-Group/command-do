@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, TextStyle, View, ViewStyle} from 'react-native';
-import {Icon} from '@rneui/themed';
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Icon } from '@rneui/themed';
 
-import {SCREEN_WIDTH} from '../../constants';
-import {colors} from '../../theme';
+import { SCREEN_WIDTH } from '../../constants';
+import { colors } from '../../theme';
 import MyText from '../Text';
 import GapView from '../GapView';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function MyHeader({
   headerStyle,
@@ -47,50 +47,48 @@ export default function MyHeader({
         <Icon
           name={leftIcon!!}
           type={leftIconType}
-          size={moderateVerticalScale(28)}
+          size={moderateVerticalScale(24)}
           color={colors.text_inverse}
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-            height: 50,
-            width: 50,
+           padding: moderateVerticalScale(5)
           }}
           onPress={onPressLeft}
           containerStyle={{
             borderRadius: 100,
             alignSelf: 'center',
-            right: 5,
+            right: moderateVerticalScale(5),
           }}
           pressableProps={{
-            android_ripple: {borderless: true, color: '#f5f5f533'},
+            android_ripple: { borderless: true, color: '#f5f5f533' },
           }}
         />
       )}
       {!leftIcon && <GapView mode="horizontal" length={1} />}
       <MyText
         label={title}
-        size={'heading'}
         textStyle={{
           textAlignVertical: 'center',
           color: colors.text_inverse,
+          fontSize: moderateVerticalScale(22),
           ...titleStyle,
         }}
       />
       {icon && (
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
+        <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
           <Icon
             name={icon!!}
-            size={moderateVerticalScale(28)}
+            size={moderateVerticalScale(24)}
             type={rightIconType}
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              height: 50,
-              width: 50,
+              padding: moderateVerticalScale(5)
             }}
-            containerStyle={{borderRadius: 100, alignSelf: 'center'}}
+            containerStyle={{ borderRadius: 100, alignSelf: 'center' }}
             pressableProps={{
-              android_ripple: {borderless: true, color: '#f5f5f533'},
+              android_ripple: { borderless: true, color: '#f5f5f533' },
             }}
             color={colors.text_inverse}
             onPress={onPressRight}
@@ -98,7 +96,7 @@ export default function MyHeader({
         </View>
       )}
       {iconComponent && (
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
+        <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
           {iconComponent}
         </View>
       )}
@@ -110,7 +108,15 @@ const styles = StyleSheet.create({
   header: {
     width: SCREEN_WIDTH,
     padding: 10,
-    elevation: 5,
     flexDirection: 'row',
+    alignItems: 'center',
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
 });

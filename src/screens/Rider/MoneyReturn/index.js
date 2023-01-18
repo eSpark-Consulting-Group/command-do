@@ -113,6 +113,8 @@ export default function MoneyReturn({ navigation }) {
       }}>
       <MyHeader
         title="Return Money"
+        leftIcon="arrow-back"
+        onPressLeft={() => navigation?.goBack()}
         titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
       <FlatList

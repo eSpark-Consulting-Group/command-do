@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {Icon} from '@rneui/themed';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Icon } from '@rneui/themed';
 import DatePicker from 'react-native-date-ranges';
 import moment from 'moment';
 
-import {GapView, MyHeader, MyText, TouchRipple} from '../../../components';
-import {colors} from '../../../theme';
+import { GapView, MyHeader, MyText, TouchRipple } from '../../../components';
+import { colors } from '../../../theme';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function FilterScreen() {
   const navigation = useNavigation();
@@ -40,7 +40,7 @@ export default function FilterScreen() {
     }
   }, [route.params]);
 
-  const getUserSelected = ({userList, userId}) => {
+  const getUserSelected = ({ userList, userId }) => {
     let tempArr = [...orderFilterFields];
     console.log('userList ka bta', userList, userId);
     let newArr = userList.filter(item => (item.id === userId ? item : null));
@@ -76,11 +76,11 @@ export default function FilterScreen() {
     navigation.navigate('UserList');
   };
 
-  const handleRangeDates = ({startDate, endDate}) => {
+  const handleRangeDates = ({ startDate, endDate }) => {
     if (startDate !== undefined || endDate !== undefined) {
       const endDateFormat = moment(endDate).utc(true);
       const startDateFormat = moment(startDate).utc(true);
-      setSelectDate({startDate: startDateFormat, endDate: endDateFormat});
+      setSelectDate({ startDate: startDateFormat, endDate: endDateFormat });
       console.log(endDateFormat);
       console.log(startDateFormat);
       handleChangeLabel(startDateFormat, endDateFormat);
@@ -142,11 +142,18 @@ export default function FilterScreen() {
           alignItems: 'center',
           paddingVertical: moderateVerticalScale(10),
           borderRadius: moderateVerticalScale(5),
-          elevation: 2,
+          elevation: moderateVerticalScale(2),
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: moderateVerticalScale(1),
+          },
+          shadowOpacity: moderateVerticalScale(0.20),
+          shadowRadius: moderateVerticalScale(1.41),
         }}
         selectedBgColor={colors.primary}
         customStyles={{
-          placeholderText: {fontSize: 20}, // placeHolder style
+          placeholderText: { fontSize: 20 }, // placeHolder style
           headerStyle: {
             backgroundColor: colors.primary,
           }, // title container style
@@ -167,7 +174,7 @@ export default function FilterScreen() {
       <FlatList
         data={orderFilterFields}
         style={styles.listContainer}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View style={styles.listItem}>
             <TouchRipple
               style={{
@@ -180,14 +187,14 @@ export default function FilterScreen() {
               onPress={item.onPress}>
               <MyText
                 label={item.label}
-                textStyle={{textAlignVertical: 'center'}}
+                textStyle={{ textAlignVertical: 'center' }}
                 size={16}
               />
               <Icon
                 name={'chevron-right'}
                 color={colors.primary}
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             </TouchRipple>
           </View>
@@ -205,7 +212,14 @@ const styles = StyleSheet.create({
   listContainer: {},
   listItem: {
     backgroundColor: '#fff',
-    elevation: 2,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
     marginVertical: 8,
   },
 });

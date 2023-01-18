@@ -10,6 +10,7 @@ import { SCREEN_HEIGHT } from '../../constants';
 import { GET_ALL_USERS } from '../../graphQL/query/user.query';
 import { colors } from '../../theme';
 import { ActivityIndicator } from 'react-native';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function SearchItem({ route }) {
   const navigation = useNavigation();
@@ -166,6 +167,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.text_inverse,
     backgroundColor: colors.primary,
-    elevation: 1,
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
 });

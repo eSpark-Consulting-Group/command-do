@@ -34,7 +34,14 @@ const Cards = props => {
         style={{
           margin: moderateVerticalScale(5),
           marginVertical: moderateVerticalScale(10),
-          elevation: moderateVerticalScale(2),
+          elevation: moderateVerticalScale(3),
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: moderateVerticalScale(1),
+          },
+          shadowOpacity: moderateVerticalScale(0.22),
+          shadowRadius: moderateVerticalScale(2.22),
           backgroundColor: colors.background,
           borderRadius: moderateVerticalScale(14),
           width: width * 0.8,
@@ -51,7 +58,6 @@ const Cards = props => {
           }}>
           <ImageBackground
             source={{ uri: dataItem?.image }}
-            resizeMode={'contain'}
             borderRadius={moderateVerticalScale(14)}
             style={{
               height: '100%',

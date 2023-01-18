@@ -107,7 +107,14 @@ const IndividualCard = props => {
                   key={dataIndex}
                   style={{
                     margin: moderateVerticalScale(12),
-                    elevation: 2,
+                    elevation: moderateVerticalScale(3),
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: moderateVerticalScale(1),
+                    },
+                    shadowOpacity: moderateVerticalScale(0.22),
+                    shadowRadius: moderateVerticalScale(2.22),
                     backgroundColor: colors.background,
                     borderRadius: height * 0.02,
                     width: width * 0.9,
@@ -140,7 +147,14 @@ const IndividualCard = props => {
                             top: moderateVerticalScale(-10),
                             justifyContent: 'center',
                             alignItems: 'center',
-                            elevation: moderateVerticalScale(2),
+                            elevation: moderateVerticalScale(3),
+                            shadowColor: "#000",
+                            shadowOffset: {
+                              width: 0,
+                              height: moderateVerticalScale(1),
+                            },
+                            shadowOpacity: moderateVerticalScale(0.22),
+                            shadowRadius: moderateVerticalScale(2.22),
                           }}>
                           <MyText
                             label={

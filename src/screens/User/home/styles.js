@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     // marginLeft: 15,
   },
   categoryButton: {
-    elevation: moderateVerticalScale(3),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -68,6 +67,15 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateVerticalScale(4),
     borderRadius: moderateVerticalScale(7),
     marginVertical: moderateVerticalScale(10),
+
+    elevation: moderateVerticalScale(3),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.22),
+    shadowRadius: moderateVerticalScale(2.22),
   },
   categoryImage: {
     height: moderateVerticalScale(35),
@@ -88,6 +96,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: moderateVerticalScale(3),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.22),
+    shadowRadius: moderateVerticalScale(2.22),
   },
   cartAmountStyle: {
     height: moderateVerticalScale(25),
@@ -100,6 +115,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: moderateVerticalScale(3),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.22),
+    shadowRadius: moderateVerticalScale(2.22),
   },
   cartButtonStyle: {
     position: 'absolute',

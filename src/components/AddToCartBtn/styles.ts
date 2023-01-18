@@ -1,9 +1,9 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {colors} from '../../theme';
-import {Fonts} from '../../utils/fonts';
+import { Dimensions, StyleSheet } from 'react-native';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { colors } from '../../theme';
+import { Fonts } from '../../utils/fonts';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   numericBtnContainer: {
@@ -15,11 +15,18 @@ export const styles = StyleSheet.create({
   removeNumericButton: {
     borderRadius: moderateVerticalScale(20),
     backgroundColor: colors.primary,
-    elevation: 2,
     height: moderateVerticalScale(30),
     width: moderateVerticalScale(30),
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
   quantityInput: {
     // backgroundColor: 'red',
@@ -31,10 +38,17 @@ export const styles = StyleSheet.create({
   addNumericButton: {
     borderRadius: moderateVerticalScale(20),
     backgroundColor: colors.primary,
-    elevation: 2,
     height: moderateVerticalScale(30),
     width: moderateVerticalScale(30),
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
 });

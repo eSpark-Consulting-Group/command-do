@@ -117,8 +117,15 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     backgroundColor: '#fafafa',
     paddingVertical: 10,
-    elevation: 5,
     flexDirection: 'row',
     alignItems: 'center',
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
   },
 });

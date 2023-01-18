@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -8,20 +8,21 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {useLazyQuery, useMutation} from '@apollo/client';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
-import {GapView, MyHeader, MyText, OrderHistoryCard} from '../../../components';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
-import {getOrderHistory} from '../../../features/userInfo/userInfoSlice';
-import {ALL_ORDERS} from '../../../graphQL/query/orders.query';
-import {colors} from '../../../theme';
-import {DELETE_ORDER} from '../../../graphQL/mutation/order.mutation';
-import {showMessage} from 'react-native-flash-message';
+import { GapView, MyHeader, MyText, OrderHistoryCard } from '../../../components';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
+import { getOrderHistory } from '../../../features/userInfo/userInfoSlice';
+import { ALL_ORDERS } from '../../../graphQL/query/orders.query';
+import { colors } from '../../../theme';
+import { DELETE_ORDER } from '../../../graphQL/mutation/order.mutation';
+import { showMessage } from 'react-native-flash-message';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function OrderHistory() {
-  const [GetAllOrders, {loading, refetch, data}] = useLazyQuery(ALL_ORDERS);
-  const [DeleteOrder, {loading: delLoader, data: delData}] =
+  const [GetAllOrders, { loading, refetch, data }] = useLazyQuery(ALL_ORDERS);
+  const [DeleteOrder, { loading: delLoader, data: delData }] =
     useMutation(DELETE_ORDER);
   const [ordersData, setOrdersData] = useState([]);
   const dispatch = useDispatch();
@@ -42,8 +43,8 @@ export default function OrderHistory() {
 
   const delAlert = id => {
     Alert.alert('Delete Order', 'Are you sure you want to Delete', [
-      {onPress: () => DelOrder(id), text: 'Yes'},
-      {text: 'No'},
+      { onPress: () => DelOrder(id), text: 'Yes' },
+      { text: 'No' },
     ]);
   };
 
@@ -94,14 +95,14 @@ export default function OrderHistory() {
   }, [data?.getAllOrders?.data]);
 
   return (
-    <View style={{alignItems: 'center'}}>
+    <View style={{ alignItems: 'center' }}>
       <SectionList
         sections={loading || delLoader ? [] : ordersData}
         contentContainerStyle={{
           paddingVertical: 5,
           alignItems: 'center',
         }}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <OrderHistoryCard
             name={item.User.firstName + ' ' + item.User.lastName}
             amount={item.totalAmount}
@@ -114,7 +115,7 @@ export default function OrderHistory() {
           />
         )}
         SectionSeparatorComponent={() => <GapView mode="vertical" length={2} />}
-        renderSectionHeader={({section}) => (
+        renderSectionHeader={({ section }) => (
           <MyText
             textStyle={{
               width: SCREEN_WIDTH * 1,
@@ -122,7 +123,14 @@ export default function OrderHistory() {
               fontSize: 22,
               color: colors.text_inverse,
               backgroundColor: colors.primary,
-              elevation: 1,
+              elevation: moderateVerticalScale(2),
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: moderateVerticalScale(1),
+              },
+              shadowOpacity: moderateVerticalScale(0.20),
+              shadowRadius: moderateVerticalScale(1.41),
             }}
             label={section.title}
           />

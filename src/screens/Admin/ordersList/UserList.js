@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -6,20 +6,21 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {CheckBox, Icon} from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
+import { CheckBox, Icon } from '@rneui/themed';
 
-import {MyHeader, MyText, TouchRipple} from '../../../components';
-import {colors} from '../../../theme';
-import {GET_ALL_USERS} from '../../../graphQL/query/user.query';
-import {useLazyQuery} from '@apollo/client';
-import {useDispatch, useSelector} from 'react-redux';
-import {SCREEN_HEIGHT} from '../../../constants';
+import { MyHeader, MyText, TouchRipple } from '../../../components';
+import { colors } from '../../../theme';
+import { GET_ALL_USERS } from '../../../graphQL/query/user.query';
+import { useLazyQuery } from '@apollo/client';
+import { useDispatch, useSelector } from 'react-redux';
+import { SCREEN_HEIGHT } from '../../../constants';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function UserList() {
   const navigation = useNavigation();
 
-  const [GetAllUsers, {loading}] = useLazyQuery(GET_ALL_USERS);
+  const [GetAllUsers, { loading }] = useLazyQuery(GET_ALL_USERS);
   const dispatch = useDispatch();
   const ordersByDate = useSelector(store => store.adminOrder.ordersByDate);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -41,7 +42,7 @@ export default function UserList() {
     setSelectedId(item.id);
   };
 
-  const MyCheckBox = ({selected}) => {
+  const MyCheckBox = ({ selected }) => {
     return (
       <CheckBox
         containerStyle={{
@@ -56,7 +57,7 @@ export default function UserList() {
             type="material"
             color={colors.primary}
             size={20}
-            iconStyle={{marginRight: 5}}
+            iconStyle={{ marginRight: 5 }}
           />
         }
         uncheckedIcon={
@@ -65,7 +66,7 @@ export default function UserList() {
             type="material"
             color="grey"
             size={20}
-            iconStyle={{marginRight: 5}}
+            iconStyle={{ marginRight: 5 }}
           />
         }
         textStyle={{
@@ -101,14 +102,14 @@ export default function UserList() {
         onPress={() => setSelectedId(null)}>
         <MyText
           label={'No User'}
-          textStyle={{textAlignVertical: 'center'}}
+          textStyle={{ textAlignVertical: 'center' }}
           size={16}
         />
         <MyCheckBox selected={!selectedId} />
       </TouchRipple>
       <FlatList
         data={orderFilterFields}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <View style={styles.listItem}>
             <TouchRipple
               style={styles.listContainer}
@@ -116,7 +117,7 @@ export default function UserList() {
               onPress={() => handlePressUser(item, index)}>
               <MyText
                 label={item.firstName + ' ' + item.lastName}
-                textStyle={{textAlignVertical: 'center'}}
+                textStyle={{ textAlignVertical: 'center' }}
                 size={16}
               />
               <MyCheckBox selected={item.id == selectedId} />
@@ -165,8 +166,14 @@ const styles = StyleSheet.create({
   },
   listItem: {
     backgroundColor: '#fff',
-    elevation: 3,
-
+    elevation: moderateVerticalScale(2),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: moderateVerticalScale(1),
+    },
+    shadowOpacity: moderateVerticalScale(0.20),
+    shadowRadius: moderateVerticalScale(1.41),
     marginVertical: 8,
   },
 });

@@ -1,26 +1,26 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Dimensions,
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 
-import {MyText, GapView} from '../../../components';
-import {addItem, increase} from '../../../features/cart/cartSlice';
-import {styles} from './styles';
-import {colors} from '../../../theme';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {showMessage} from 'react-native-flash-message';
-import {useKeyboard} from '../../../utils/hooks/useUpdateEffect/useKeyBoard';
-import {useLayoutAnimation} from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
+import { MyText, GapView } from '../../../components';
+import { addItem, increase } from '../../../features/cart/cartSlice';
+import { styles } from './styles';
+import { colors } from '../../../theme';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { showMessage } from 'react-native-flash-message';
+import { useKeyboard } from '../../../utils/hooks/useUpdateEffect/useKeyBoard';
+import { useLayoutAnimation } from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-function Items({route, navigation}) {
+function Items({ route, navigation }) {
   const getRouteData = route.params;
   const count = useSelector(store => store);
   const cartItems = count?.cart?.cartItems;
@@ -49,7 +49,7 @@ function Items({route, navigation}) {
   };
 
   const addToCart = value => {
-    var changeData = {...getData};
+    var changeData = { ...getData };
     changeData.quantity = value;
     setGetData(changeData);
     dispatch(addItem(changeData));
@@ -74,7 +74,7 @@ function Items({route, navigation}) {
     <View style={styles.mainContainer}>
       <View style={[styles.itemImageContainer]}>
         <ImageBackground
-          source={{uri: getData?.image}}
+          source={{ uri: getData?.image }}
           style={styles.imageBackground}>
           <TouchableOpacity
             style={styles?.itemImageBackIcon}
@@ -89,7 +89,7 @@ function Items({route, navigation}) {
       </View>
       <View style={styles.itemDetailContainer}>
         <View style={styles.subHeadingContainer}>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <MyText
               numberOfLines={2}
               label={getData?.name}
@@ -98,7 +98,7 @@ function Items({route, navigation}) {
               }}
             />
           </View>
-          <View style={{marginLeft: 5}}>
+          <View style={{ marginLeft: 5 }}>
             {data?.length != 0 ? (
               <View style={styles.numericBtnContainer}>
                 <TouchableOpacity
@@ -143,11 +143,18 @@ function Items({route, navigation}) {
                   style={{
                     borderRadius: height * 1,
                     backgroundColor: colors.primary,
-                    elevation: 2,
                     height: moderateVerticalScale(35),
                     width: moderateVerticalScale(35),
                     justifyContent: 'center',
                     alignItems: 'center',
+                    elevation: moderateVerticalScale(2),
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: moderateVerticalScale(1),
+                    },
+                    shadowOpacity: moderateVerticalScale(0.20),
+                    shadowRadius: moderateVerticalScale(1.41),
                   }}
                   onPress={() => {
                     addQty(data?.length > 0 ? data[0]?.quantity + 1 : 1);
@@ -170,16 +177,23 @@ function Items({route, navigation}) {
             justifyContent: 'space-between',
           }}>
           <MyText label={'Price'} size="title" />
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <MyText label={'Rs.  '} size="title" />
             <View
               style={{
                 backgroundColor: '#ffffff',
-                elevation: 1,
                 borderWidth: 0.7,
                 borderColor: '#c2c2c2',
                 borderRadius: 5,
                 paddingHorizontal: 10,
+                elevation: moderateVerticalScale(1),
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: moderateVerticalScale(1),
+                },
+                shadowOpacity: moderateVerticalScale(0.18),
+                shadowRadius: moderateVerticalScale(1.00),
               }}>
               <MyText label={getData?.price} size="title" />
             </View>
@@ -203,12 +217,12 @@ function Items({route, navigation}) {
           <MyText
             label={'Checkout Cart'}
             title
-            textStyle={{color: colors.text_inverse}}
+            textStyle={{ color: colors.text_inverse }}
           />
           <View style={styles.cartCountStyle}>
             <MyText
               label={count?.cart?.amount > 99 ? '99+' : count?.cart?.amount}
-              textStyle={{color: colors.text_inverse}}
+              textStyle={{ color: colors.text_inverse }}
             />
           </View>
         </TouchableOpacity>
