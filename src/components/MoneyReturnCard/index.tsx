@@ -47,7 +47,6 @@ export default function MoneyReturnCard({
         }}>
         <MyText
           label={name}
-          size={'title'}
           textStyle={{
             fontFamily: 'Poppins-Bold',
             fontSize: moderateVerticalScale(18),
