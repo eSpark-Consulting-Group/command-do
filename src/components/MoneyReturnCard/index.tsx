@@ -46,7 +46,7 @@ export default function MoneyReturnCard({
           borderBottomWidth: 1,
         }}>
         <MyText
-          label={name + ' asdasd'}
+          label={name}
           textStyle={{
             fontFamily: 'Poppins-Bold',
             fontSize: moderateVerticalScale(18),

@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
   },
   profileImageStyle: {
     borderRadius: height * 1,
-    borderWidth: 2,
     height: moderateVerticalScale(130),
     width: moderateVerticalScale(130),
     backgroundColor: colors.background,

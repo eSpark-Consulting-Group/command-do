@@ -39,7 +39,7 @@ function Cart({ route, navigation }) {
   const [getData, setGetData] = useState({});
   const [isIndexSame, setIsIndexSame] = useState(0);
   const [total, setTotal] = useState(0);
-  const [currentTime, setCurrentTime] = useState(null);
+  const [checkoutLoader, setCheckoutLoader] = useState(false);
 
   const dispatch = useDispatch();
   const count = useSelector(store => store);
@@ -51,7 +51,6 @@ function Cart({ route, navigation }) {
       const response = await fetch('https://www.google.com/search?q=time');
       const data = response;
       const currentTime = data.headers?.map.date;
-      setCurrentTime(currentTime);
       return new Date(moment(currentTime));
     } catch (error) {
       console.error(error);
@@ -435,8 +434,10 @@ function Cart({ route, navigation }) {
                 shadowRadius: moderateVerticalScale(1.41),
               }}
               onPress={async () => {
+                setCheckoutLoader(true)
                 // //! Uncomment when need to apply restriction
                 const time = await getCurrentTime();
+                setCheckoutLoader(false)
 
                 if (!isValidTimeToOrder(time)) {
                   showMessage({
@@ -448,18 +449,18 @@ function Cart({ route, navigation }) {
                 }
                 isShowAlert(true);
               }}>
-              {!loading ? (
+              {loading || checkoutLoader ? (
+                <ActivityIndicator size={30} color={colors.text_inverse} />
+              ) : (
                 <MyText
                   label={
                     count?.cart?.cartItems?.length != 0
                       ? 'Proceed to checkout'
                       : 'Please add item into cart'
                   }
-                  title
+                  size={'title'}
                   textStyle={{ color: colors.background }}
                 />
-              ) : (
-                <ActivityIndicator size="large" color={colors.text_inverse} />
               )}
             </TouchableOpacity>
             <AwesomeAlert

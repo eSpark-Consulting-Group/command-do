@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, TextStyle} from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { Platform, Text, TextStyle } from 'react-native';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
-import {colors} from '../../theme';
+import { colors } from '../../theme';
 
 const FontSize = {
   heading: moderateVerticalScale(30),
@@ -31,7 +31,7 @@ const MyText = ({
           fontSize: FontSize[size!!] ?? size,
           color: colors.text_normal,
           fontFamily: 'Poppins-Regular',
-          top: 2.5,
+          top: Platform.OS == 'ios' ? 0 : 2.5,
         },
         textStyle,
       ]}>

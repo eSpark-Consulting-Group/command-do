@@ -24,7 +24,6 @@ export default function Rider({ route }) {
         <>
           {isFocused && <BackButtonHandler />}
           <Orders />
-          {/* <Empty /> */}
         </>
       )}
       <BlurBackground show={route?.params?.isModal} />

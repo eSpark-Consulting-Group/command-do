@@ -1,39 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   Alert,
   FlatList,
   PermissionsAndroid,
+  Platform,
   RefreshControl,
   TouchableOpacity,
   View,
 } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {Icon, SpeedDial} from '@rneui/themed';
-import {showMessage} from 'react-native-flash-message';
-import {useDispatch} from 'react-redux';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {useLazyQuery} from '@apollo/client';
+import { Icon, SpeedDial } from '@rneui/themed';
+import { showMessage } from 'react-native-flash-message';
+import { useDispatch } from 'react-redux';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { useLazyQuery } from '@apollo/client';
+import FileViewer from 'react-native-file-viewer';
 
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
 import {
   MyHeader,
   MyText,
   PurchasingListHeader,
   PurchasingOrderCard,
 } from '../../../components';
-import {colors} from '../../../theme';
-import {pdfHtml} from '../../../utils/purchasingpdf';
+import { colors } from '../../../theme';
+import { pdfHtml } from '../../../utils/purchasingpdf';
 import {
   ORDERS_PURCHASED,
   ORDERS_SUMMARY,
 } from '../../../graphQL/query/orders.query';
-import {toggleOrderPurchased} from '../../../features/riderOrders/riderOrderSlice';
-import {BackHandler} from 'react-native';
+import { toggleOrderPurchased } from '../../../features/riderOrders/riderOrderSlice';
+import { BackHandler } from 'react-native';
 
-export default function PurchasingList({navigation}) {
-  const [GetOrderSummary, {loading}] = useLazyQuery(ORDERS_SUMMARY);
-  const [getPurchasedOrders, {loading: loadPurchased}] =
+export default function PurchasingList({ navigation }) {
+  const [GetOrderSummary, { loading }] = useLazyQuery(ORDERS_SUMMARY);
+  const [getPurchasedOrders, { loading: loadPurchased }] =
     useLazyQuery(ORDERS_PURCHASED);
   const dispatch = useDispatch();
   const [filePath, setFilePath] = useState('');
@@ -55,6 +57,41 @@ export default function PurchasingList({navigation}) {
 
   const backAction = () => {
     return true;
+  };
+
+  const viewPDF = (path, pathiOS) => {
+    if (Platform.OS == 'android') {
+      FileViewer.open('/storage/emulated/0' + path)
+        .then(() => {
+          // success
+        })
+        .catch(error => {
+          // error
+          console.log('err view error', error);
+          // showMessage({
+          //   message: 'PDF Generated Successfully',
+          //   description: 'to: ' + file.filePath.slice(19),
+          //   type: 'success',
+          //   icon: 'auto',
+          // });
+        });
+    } else {
+      FileViewer.open(pathiOS)
+        .then(() => {
+          // success
+        })
+        .catch(error => {
+          // error
+          console.log('err view error', error);
+          // showMessage({
+          //   message: 'PDF Generated Successfully',
+          //   description: 'to: ' + file.filePath.slice(19),
+          //   type: 'success',
+          //   icon: 'auto',
+          // });
+        });
+
+    }
   };
 
   const getSummary = async () => {
@@ -137,12 +174,16 @@ export default function PurchasingList({navigation}) {
       };
       try {
         let file = await RNHTMLtoPDF.convert(options);
+        console.log('FIle', file);
+        console.log('fileName + currDateTime', fileName + currDateTime + ".pdf");
         showMessage({
           message: 'PDF Generated Successfully',
           description: 'to: ' + file.filePath.slice(19),
           type: 'success',
           icon: 'auto',
           autoHide: false,
+          // hideOnPress: true,
+          onPress: () => viewPDF(file.filePath.slice(19), fileName + currDateTime + ".pdf"),
         });
         console.log(file.filePath.slice(19));
         setFilePath(file.filePath);
@@ -161,13 +202,13 @@ export default function PurchasingList({navigation}) {
       }}>
       <MyHeader
         title="Purchasing List"
-        titleStyle={{fontFamily: 'Poppins-Bold'}}
+        titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
       <PurchasingListHeader />
       <FlatList
         data={summary}
         showsVerticalScrollIndicator={false}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <PurchasingOrderCard
             itemName={item.item.name}
             quantity={item.quantity}
@@ -203,11 +244,11 @@ export default function PurchasingList({navigation}) {
         }}>
         <MyText
           label={'Total'}
-          textStyle={{fontWeight: '600', fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontWeight: '600', fontFamily: 'Poppins-Bold' }}
         />
         <MyText
           label={`Rs. ${totalAmount}`}
-          textStyle={{fontWeight: '600', fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontWeight: '600', fontFamily: 'Poppins-Bold' }}
         />
       </View>
       <View
