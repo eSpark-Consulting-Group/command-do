@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {SCREEN_WIDTH} from '../../constants';
-import {colors} from '../../theme';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { SCREEN_WIDTH } from '../../constants';
+import { colors } from '../../theme';
 
 import MyText from '../Text';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 type itemData = {
   name: string;
   price: number;
@@ -48,9 +48,9 @@ export default function MoneyReturnCard({
         <MyText
           label={name}
           textStyle={{
-            ...styles.cardDataText,
-            fontSize: moderateVerticalScale(20),
-            maxWidth: SCREEN_WIDTH * 0.7,
+            fontFamily: 'Poppins-Bold',
+            fontSize: moderateVerticalScale(18),
+            flex: 1,
           }}
         />
         <TouchableOpacity
@@ -64,7 +64,7 @@ export default function MoneyReturnCard({
           }}>
           <MyText
             label={'Return'}
-            textStyle={{...styles.cardDataText, color: colors.background}}
+            textStyle={{ ...styles.cardDataText, color: colors.background }}
           />
         </TouchableOpacity>
       </View>
@@ -76,7 +76,7 @@ export default function MoneyReturnCard({
         <MyText
           label={'Amount To Be Return'}
           size={'title'}
-          textStyle={{fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontFamily: 'Poppins-Bold' }}
         />
         <MyText
           label={'Rs. ' + amount}

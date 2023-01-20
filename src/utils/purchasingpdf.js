@@ -1,4 +1,4 @@
-export const pdfHtml = order => {
+export const pdfHtml = (order, date) => {
   return `<div
         style="
           display: flex;
@@ -8,8 +8,11 @@ export const pdfHtml = order => {
           align-items: center;
         ">
         <div style="width: 100vw; background-color: #00a099">
-          <p style="font-weight: bold; color: #fff; font-size: x-large">
+          <p style="font-weight: bold; color: #fff; font-size: xx-large">
             Purchasing List
+          </p>
+          <p style="font-weight: bold; color: #fff; font-size: x-large; text-decoration: underline;">
+            Dated: ${date}
           </p>
         </div>
         <div style="display: flex; flex-direction: row; width: 90vw">

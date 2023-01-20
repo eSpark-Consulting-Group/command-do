@@ -1,9 +1,12 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
-import {colors} from '../../theme';
-import {Fonts} from '../../utils/fonts';
+import { Dimensions, StyleSheet } from 'react-native';
+import {
+  moderateVerticalScale,
+  verticalScale,
+} from 'react-native-size-matters';
+import { colors } from '../../theme';
+import { Fonts } from '../../utils/fonts';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   modalInner: {
@@ -62,7 +65,6 @@ const styles = StyleSheet.create({
   },
   profileImageStyle: {
     borderRadius: height * 1,
-    borderWidth: 2,
     height: moderateVerticalScale(130),
     width: moderateVerticalScale(130),
     backgroundColor: colors.background,

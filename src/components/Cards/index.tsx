@@ -51,7 +51,6 @@ const Cards = props => {
           }}>
           <ImageBackground
             source={{ uri: dataItem?.image }}
-            resizeMode={'contain'}
             borderRadius={moderateVerticalScale(14)}
             style={{
               height: '100%',
