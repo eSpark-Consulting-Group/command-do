@@ -1,21 +1,21 @@
-import {useMutation} from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React from 'react';
-import {Text, View, TouchableOpacity, Alert, FlatList} from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {useDispatch, useSelector} from 'react-redux';
+import { Text, View, TouchableOpacity, Alert, FlatList } from 'react-native';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {MyText, OrderCard} from '../../../../components';
-import {SCREEN_HEIGHT} from '../../../../constants';
+import { MyText, OrderCard } from '../../../../components';
+import { SCREEN_HEIGHT } from '../../../../constants';
 import {
   getReturnMoneyData,
   revertCollection,
   toggleFinishCollection,
 } from '../../../../features/riderOrders/riderOrderSlice';
-import {UPDATE_ORDER} from '../../../../graphQL/mutation/order.mutation';
-import {colors} from '../../../../theme';
+import { UPDATE_ORDER } from '../../../../graphQL/mutation/order.mutation';
+import { colors } from '../../../../theme';
 
-export default function CollectedOrders({navigation}) {
-  const [UpdateOrder, {loading}] = useMutation(UPDATE_ORDER);
+export default function CollectedOrders({ navigation }) {
+  const [UpdateOrder, { loading }] = useMutation(UPDATE_ORDER);
   const reduxData = useSelector(store => store);
   let orders = reduxData.riderOrder.orders;
   const dispatch = useDispatch();
@@ -45,8 +45,8 @@ export default function CollectedOrders({navigation}) {
       }
     });
     Alert.alert('Confirmation', 'Are you sure you want to Finish Collection?', [
-      {text: 'Yes', onPress: () => updateOrder(finalOrders)},
-      {text: 'No', style: 'cancel'},
+      { text: 'Yes', onPress: () => updateOrder(finalOrders) },
+      { text: 'No', style: 'cancel' },
     ]);
   };
 
@@ -71,21 +71,21 @@ export default function CollectedOrders({navigation}) {
     );
   };
 
-  console.log("orders orders", orders[1]);
+  console.log('orders orders', orders[1]);
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center' }}>
       <FlatList
         data={
           orders?.some(
             val =>
               val.status == 'PAID' &&
               val.returned == false &&
-              val?.amountCollected
+              val?.amountCollected,
           )
             ? orders
             : []
         }
-        renderItem={({item}) =>
+        renderItem={({ item }) =>
           item.status == 'PAID' &&
           item.returned == false &&
           item?.amountCollected && (

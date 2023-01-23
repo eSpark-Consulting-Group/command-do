@@ -39,7 +39,7 @@ function Cart({ route, navigation }) {
   const [getData, setGetData] = useState({});
   const [isIndexSame, setIsIndexSame] = useState(0);
   const [total, setTotal] = useState(0);
-  const [currentTime, setCurrentTime] = useState(null);
+  const [checkoutLoader, setCheckoutLoader] = useState(false);
 
   const dispatch = useDispatch();
   const count = useSelector(store => store);
@@ -428,22 +428,23 @@ function Cart({ route, navigation }) {
                 marginVertical: moderateVerticalScale(10),
               }}
               onPress={async () => {
+                setCheckoutLoader(true);
                 // //! Uncomment when need to apply restriction
-                // if (!(await handleOrderValidation()))
+                if (!(await handleOrderValidation()))
                 isShowAlert(true);
               }}>
-              {!loading ? (
+              {loading || checkoutLoader ? (
+                <ActivityIndicator size={30} color={colors.text_inverse} />
+              ) : (
                 <MyText
                   label={
                     count?.cart?.cartItems?.length != 0
                       ? 'Proceed to checkout'
                       : 'Please add item into cart'
                   }
-                  title
+                  size={'title'}
                   textStyle={{ color: colors.background }}
                 />
-              ) : (
-                <ActivityIndicator size="large" color={colors.text_inverse} />
               )}
             </TouchableOpacity>
             <AwesomeAlert
