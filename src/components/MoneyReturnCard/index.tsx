@@ -9,6 +9,7 @@ import {
 import { moderateVerticalScale } from 'react-native-size-matters';
 import { SCREEN_WIDTH } from '../../constants';
 import { colors } from '../../theme';
+import GapView from '../GapView';
 
 import MyText from '../Text';
 
@@ -47,12 +48,14 @@ export default function MoneyReturnCard({
         }}>
         <MyText
           label={name}
+          numberOfLines={2}
           textStyle={{
             fontFamily: 'Poppins-Bold',
             fontSize: moderateVerticalScale(18),
             flex: 1,
           }}
         />
+        <GapView mode="horizontal" length={moderateVerticalScale(10)} />
         <TouchableOpacity
           onPress={onReturn}
           style={{
