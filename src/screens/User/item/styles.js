@@ -1,10 +1,13 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
+import { Dimensions, StyleSheet } from 'react-native';
+import {
+  moderateVerticalScale,
+  verticalScale,
+} from 'react-native-size-matters';
 
-import {colors} from '../../../theme';
-import {Fonts} from '../../../utils/fonts';
+import { colors } from '../../../theme';
+import { Fonts } from '../../../utils/fonts';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   mainContainer: {
@@ -48,7 +51,8 @@ export const styles = StyleSheet.create({
   },
   quantityInput: {
     height: moderateVerticalScale(50),
-    marginHorizontal: moderateVerticalScale(5),
+    // marginHorizontal: moderateVerticalScale(5),
+    width: moderateVerticalScale(30),
     justifyContent: 'center',
     alignItems: 'center',
   },

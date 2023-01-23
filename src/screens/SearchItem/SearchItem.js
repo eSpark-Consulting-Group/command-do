@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
   userItem: {
     color: colors.text_normal,
     padding: 10,
-    textTransform: 'capitalize',
   },
   sectionHeader: {
     paddingTop: 2,

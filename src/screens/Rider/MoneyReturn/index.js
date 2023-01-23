@@ -132,7 +132,7 @@ export default function MoneyReturn({ navigation }) {
             </View>
           ) : (
             <MoneyReturnCard
-              name={item?.User?.firstName}
+              name={item?.User?.firstName + ' ' + item?.User?.lastName}
               amount={item?.remainingAmount}
               onReturn={() => openOverlay(item)}
             />

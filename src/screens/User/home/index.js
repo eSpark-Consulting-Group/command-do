@@ -373,10 +373,8 @@ function Home({ navigation }) {
             <MyText
               label={`Hi, ${reduxData?.userInfo?.userData?.firstName}`}
               textStyle={{
-                textTransform: 'capitalize',
                 fontSize: moderateVerticalScale(22),
               }}
-              // size={'subHeading'}
             />
             <MyText label={greetMessage()} />
           </View>
