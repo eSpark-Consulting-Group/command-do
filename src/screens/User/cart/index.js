@@ -16,18 +16,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import { useMutation } from '@apollo/client';
 import moment from 'moment';
-
-import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
-import { Delivery } from '../../../assets/images';
-import { BlurBackground, MyText } from '../../../components';
-import { PLACE_ORDER } from '../../../graphQL/mutation/order.mutation';
-import { colors } from '../../../theme';
 import {
   moderateScale,
   moderateVerticalScale,
 } from 'react-native-size-matters';
-import { isValidTimeToOrder } from '../../../utils/helperFunctions';
 import { showMessage } from 'react-native-flash-message';
+
+import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
+import { Delivery } from '../../../assets/images';
+import { BlurBackground, MyText, OverlayLoader } from '../../../components';
+import { PLACE_ORDER } from '../../../graphQL/mutation/order.mutation';
+import { colors } from '../../../theme';
+import { isValidTimeToOrder } from '../../../utils/helperFunctions';
 import { useLayoutAnimation } from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
 const { width, height } = Dimensions.get('window');
@@ -157,6 +157,23 @@ function Cart({ route, navigation }) {
       navigation.navigate('OrderConfirm');
     } catch (error) {
       console.log('CreateOrder error', error);
+    }
+  };
+
+  const handleOrderValidation = async () => {
+    try {
+      const time = await getCurrentTime();
+      if (!isValidTimeToOrder(time)) {
+        setCheckoutLoader(false);
+        showMessage({
+          message: 'Alas! Time is over for placing order😬',
+          icon: 'auto',
+          type: 'info',
+        });
+        return true;
+      }
+    } catch (e) {
+      console.log('Error for Validation', e);
     }
   };
 
@@ -407,19 +424,8 @@ function Cart({ route, navigation }) {
               }}
               onPress={async () => {
                 setCheckoutLoader(true);
-                // //! Uncomment when need to apply restriction
-                const time = await getCurrentTime();
-                setCheckoutLoader(false);
-
-                if (!isValidTimeToOrder(time)) {
-                  showMessage({
-                    message: 'Alas! Time is over for placing order😬',
-                    icon: 'auto',
-                    type: 'info',
-                  });
-                  return;
-                }
-                isShowAlert(true);
+                //! Uncomment when need to apply restriction
+                if (!(await handleOrderValidation())) isShowAlert(true);
               }}>
               {loading || checkoutLoader ? (
                 <ActivityIndicator size={30} color={colors.text_inverse} />

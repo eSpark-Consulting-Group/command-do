@@ -85,6 +85,7 @@ const Login = ({ navigation }) => {
           },
         });
         const obj = { ...userData.data.loginUser.data };
+        console.log('kiaas', userData?.data);
         if (userData.data?.loginUser?.status) {
           if (userData.data?.loginUser?.data?.role?.includes(selectedRole)) {
             obj.selected = selectedRole;

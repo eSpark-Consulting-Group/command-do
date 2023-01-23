@@ -1,13 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useIsFocused } from '@react-navigation/native';
 
 import CollectedOrders from './CollectedOrders';
 import CurrentOrders from './CurrentOrders';
 import { colors } from '../../../theme';
 import { BackButtonHandler, BlurBackground, MyText } from '../../../components';
 import { SCREEN_WIDTH } from '../../../constants';
-import { useIsFocused } from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -18,17 +18,26 @@ export default function Rider({ route }) {
     now >= '13:01:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   return (
     <>
-      {state ? (
-        <Orders />
-      ) : (
-        <>
-          {isFocused && <BackButtonHandler />}
-          <Empty />
-        </>
-      )}
+      <OrdersComp bypass={true} isFocused={isFocused} />
       <BlurBackground show={route?.params?.isModal} />
     </>
   );
+}
+
+function OrdersComp(bypass, isFocused) {
+  if (bypass) {
+    return <Orders />;
+  }
+  {
+    state ? (
+      <Orders />
+    ) : (
+      <>
+        {isFocused && <BackButtonHandler />}
+        <Empty />
+      </>
+    );
+  }
 }
 
 function Empty() {
