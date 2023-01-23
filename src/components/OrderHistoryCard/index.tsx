@@ -1,4 +1,4 @@
-import {Icon} from '@rneui/themed';
+import { Icon } from '@rneui/themed';
 import React from 'react';
 import {
   Dimensions,
@@ -7,13 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {colors} from '../../theme';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { SCREEN_WIDTH } from '../../constants';
+import { colors } from '../../theme';
 import GapView from '../GapView';
 
 import MyText from '../Text';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 type itemData = {
   name: string;
   price: number;
@@ -53,18 +54,25 @@ export default function OrderHistoryCard({
           padding: 5,
           borderBottomWidth: 1,
         }}>
-        <MyText label={name} size={'title'} textStyle={styles.cardDataText} />
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <MyText
+          label={name}
+          size={'title'}
+          textStyle={{ fontFamily: 'Poppins-Bold', flex: 1 }}
+        />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {paidAmount == 0 && (
-            <TouchableOpacity onPress={onDelete}>
-              <Icon
-                size={moderateVerticalScale(24)}
-                name="trash"
-                type="foundation"
-              />
-            </TouchableOpacity>
+            <>
+              <TouchableOpacity onPress={onDelete}>
+                <Icon
+                  size={moderateVerticalScale(24)}
+                  name="trash"
+                  type="foundation"
+                />
+              </TouchableOpacity>
+              <GapView mode="horizontal" length={moderateVerticalScale(10)} />
+            </>
           )}
-          <GapView mode="horizontal" length={moderateVerticalScale(20)} />
+          <GapView mode="horizontal" length={moderateVerticalScale(10)} />
           <View
             style={{
               ...styles.cardDataContainer2,
@@ -86,22 +94,29 @@ export default function OrderHistoryCard({
                   ? 'Not Received'
                   : 'Received'
               }
-              textStyle={{...styles.cardDataText, color: '#fff'}}
+              size={'subTitle'}
+              textStyle={{ ...styles.cardDataText, color: '#fff' }}
             />
           </View>
         </View>
       </View>
-      <View style={{borderBottomWidth: 1, padding: 5}}>
-        <View style={{...styles.cardInnerContainer, marginBottom: 4}}>
+      <View style={{ borderBottomWidth: 1, padding: 5 }}>
+        <View style={{ ...styles.cardInnerContainer, marginBottom: 4 }}>
           <MyText
             label={'Order'}
             size={'title'}
-            textStyle={{fontFamily: 'Poppins-Bold'}}
+            textStyle={{
+              fontFamily: 'Poppins-Bold',
+              textDecorationLine: 'underline',
+            }}
           />
           <MyText
             label={'Quantity'}
             size={'title'}
-            textStyle={{fontFamily: 'Poppins-Bold'}}
+            textStyle={{
+              fontFamily: 'Poppins-Bold',
+              textDecorationLine: 'underline',
+            }}
           />
         </View>
         {order.length > 0 &&
@@ -115,7 +130,7 @@ export default function OrderHistoryCard({
               <MyText
                 label={item.Item.name}
                 size={'subTitle'}
-                textStyle={{fontFamily: 'Poppins-Bold'}}
+                textStyle={{ fontFamily: 'Poppins-Bold' }}
               />
               <MyText
                 label={item.quantity}
@@ -137,7 +152,7 @@ export default function OrderHistoryCard({
         <MyText
           label={'Total Amount'}
           size={'title'}
-          textStyle={{fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontFamily: 'Poppins-Bold' }}
         />
         <MyText
           label={'Rs. ' + amount}
@@ -156,7 +171,7 @@ export default function OrderHistoryCard({
         <MyText
           label={'Paid Amount'}
           size={'title'}
-          textStyle={{fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontFamily: 'Poppins-Bold' }}
         />
         <MyText
           label={'Rs. ' + paidAmount}
@@ -175,7 +190,7 @@ export default function OrderHistoryCard({
         <MyText
           label={'Remaining Amount'}
           size={'title'}
-          textStyle={{fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontFamily: 'Poppins-Bold' }}
         />
         <MyText
           label={'Rs. ' + remainingAmount}

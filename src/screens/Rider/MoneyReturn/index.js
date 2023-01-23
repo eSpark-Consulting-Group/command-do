@@ -113,6 +113,8 @@ export default function MoneyReturn({ navigation }) {
       }}>
       <MyHeader
         title="Return Money"
+        leftIcon="arrow-back"
+        onPressLeft={() => navigation.goBack()}
         titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
       <FlatList
@@ -130,7 +132,7 @@ export default function MoneyReturn({ navigation }) {
             </View>
           ) : (
             <MoneyReturnCard
-              name={item?.User?.firstName}
+              name={item?.User?.firstName + ' ' + item?.User?.lastName}
               amount={item?.remainingAmount}
               onReturn={() => openOverlay(item)}
             />

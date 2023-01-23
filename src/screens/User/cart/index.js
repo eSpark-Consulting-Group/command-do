@@ -15,18 +15,19 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AD from 'react-native-vector-icons/AntDesign';
 import { useMutation } from '@apollo/client';
-
-import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
-import { Delivery } from '../../../assets/images';
-import { BlurBackground, MyText } from '../../../components';
-import { PLACE_ORDER } from '../../../graphQL/mutation/order.mutation';
-import { colors } from '../../../theme';
+import moment from 'moment';
 import {
   moderateScale,
   moderateVerticalScale,
 } from 'react-native-size-matters';
-import { isValidTimeToOrder } from '../../../utils/helperFunctions';
 import { showMessage } from 'react-native-flash-message';
+
+import { addItem, clearCart, increase } from '../../../features/cart/cartSlice';
+import { Delivery } from '../../../assets/images';
+import { BlurBackground, MyText, OverlayLoader } from '../../../components';
+import { PLACE_ORDER } from '../../../graphQL/mutation/order.mutation';
+import { colors } from '../../../theme';
+import { isValidTimeToOrder } from '../../../utils/helperFunctions';
 import { useLayoutAnimation } from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
 
 const { width, height } = Dimensions.get('window');
@@ -38,11 +39,23 @@ function Cart({ route, navigation }) {
   const [getData, setGetData] = useState({});
   const [isIndexSame, setIsIndexSame] = useState(0);
   const [total, setTotal] = useState(0);
+  const [checkoutLoader, setCheckoutLoader] = useState(false);
 
   const dispatch = useDispatch();
   const count = useSelector(store => store);
   const userData = useSelector(store => store?.userInfo?.userData);
   const [CreateOrder, { loading, error }] = useMutation(PLACE_ORDER);
+
+  async function getCurrentTime() {
+    try {
+      const response = await fetch('https://www.google.com/search?q=time');
+      const data = response;
+      const currentTime = data.headers?.map.date;
+      return new Date(moment(currentTime));
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     var makeTotal = 0;
@@ -144,6 +157,23 @@ function Cart({ route, navigation }) {
       navigation.navigate('OrderConfirm');
     } catch (error) {
       console.log('CreateOrder error', error);
+    }
+  };
+
+  const handleOrderValidation = async () => {
+    try {
+      const time = await getCurrentTime();
+      if (!isValidTimeToOrder(time)) {
+        setCheckoutLoader(false);
+        showMessage({
+          message: 'Alas! Time is over for placing order😬',
+          icon: 'auto',
+          type: 'info',
+        });
+        return true;
+      }
+    } catch (e) {
+      console.log('Error for Validation', e);
     }
   };
 
@@ -343,7 +373,7 @@ function Cart({ route, navigation }) {
                         style={styles.deleteItem}
                         onPress={() => removefromCart(item, 0, index)}>
                         <AD
-                          name="delete"
+                          name="minus"
                           size={moderateVerticalScale(15)}
                           color="#fff"
                         />
@@ -392,29 +422,23 @@ function Cart({ route, navigation }) {
                 elevation: 2,
                 marginVertical: moderateVerticalScale(10),
               }}
-              onPress={() => {
-                if (!isValidTimeToOrder()) {
-                  showMessage({
-                    message: 'Alas! Time is over for placing order😬',
-                    icon: 'auto',
-                    type: 'info',
-                  });
-                  return;
-                }
-                isShowAlert(true);
+              onPress={async () => {
+                setCheckoutLoader(true);
+                //! Uncomment when need to apply restriction
+                if (!(await handleOrderValidation())) isShowAlert(true);
               }}>
-              {!loading ? (
+              {loading || checkoutLoader ? (
+                <ActivityIndicator size={30} color={colors.text_inverse} />
+              ) : (
                 <MyText
                   label={
                     count?.cart?.cartItems?.length != 0
                       ? 'Proceed to checkout'
                       : 'Please add item into cart'
                   }
-                  title
+                  size={'title'}
                   textStyle={{ color: colors.background }}
                 />
-              ) : (
-                <ActivityIndicator size="large" color={colors.text_inverse} />
               )}
             </TouchableOpacity>
             <AwesomeAlert

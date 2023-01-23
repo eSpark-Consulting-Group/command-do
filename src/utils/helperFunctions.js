@@ -1,12 +1,12 @@
 import storage from '@react-native-firebase/storage';
-import {PermissionsAndroid, Platform} from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { PermissionsAndroid, Platform } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import messaging from '@react-native-firebase/messaging';
 import moment from 'moment';
 
 export const uploadImage = async image => {
   var url;
-  const {uri: path, sourceURL} = image;
+  const { uri: path, sourceURL } = image;
   const filename = path.substring(path.lastIndexOf('/') + 1);
   const uploadUri = Platform.OS === 'ios' ? path.replace('file://', '') : path;
   const storageRef = storage().ref(`images/${filename}`);
@@ -78,25 +78,25 @@ export const requestCameraPermission = async () => {
   }
 };
 
-export const isValidTimeToOrder = () => {
+export const isValidTimeToOrder = time => {
   var format = 'hh:mm:ss';
 
   // var time = moment() gives you current time. no format required.
-  var time = moment(new Date().toLocaleTimeString(), format),
+  var time = moment(new Date(time).toLocaleTimeString(), format),
     startTime = moment('09:00:00', format),
-    endTime = moment('12:30:00', format);
-  return time.isBetween(startTime, endTime)
+    endTime = moment('13:00:00', format);
+  return time.isBetween(startTime, endTime);
 };
 
 export const greetMessage = () => {
-  var today = new Date()
-  var curHr = today.getHours()
+  var today = new Date();
+  var curHr = today.getHours();
 
   if (curHr < 12) {
-    return 'Good Morning! 🙋‍♂️'
+    return 'Good Morning! 🙋‍♂️';
   } else if (curHr < 18) {
-    return 'Good Afternoon! 🙋‍♂️'
+    return 'Good Afternoon! 🙋‍♂️';
   } else {
-    return 'Good Evening! 🙋‍♂️'
+    return 'Good Evening! 🙋‍♂️';
   }
-}
+};

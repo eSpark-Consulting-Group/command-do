@@ -7,6 +7,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -105,11 +106,11 @@ const IndividualCard = props => {
                 <Pressable
                   key={dataIndex}
                   style={{
-                    margin: moderateVerticalScale(5),
-                    padding: moderateVerticalScale(10),
+                    margin: moderateVerticalScale(12),
                     elevation: 2,
                     backgroundColor: colors.background,
                     borderRadius: height * 0.02,
+                    width: width * 0.9,
                   }}
                   onPress={() =>
                     navigation.navigate('Item', {
@@ -120,79 +121,96 @@ const IndividualCard = props => {
                   <View
                     style={{
                       height: height * 0.25,
-                      width: width * 0.9,
-                      backgroundColor: colors.background,
-                      borderRadius: height * 0.02,
                     }}>
-                    <Image
+                    <ImageBackground
                       source={{ uri: dataItem?.image }}
+                      borderRadius={moderateVerticalScale(14)}
                       style={{
-                        borderRadius: height * 0.02,
-                        height: height * 0.25,
-                        width: width * 0.9,
-                        backgroundColor: colors.background,
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        alignItems: 'flex-start',
+                        height: '100%',
                       }}>
-                      <MyText
-                        label={dataItem?.name}
-                        numberOfLines={2}
-                        textStyle={{ marginVertical: moderateVerticalScale(2) }}
-                      />
+                      {cartItem != undefined && cartItem?.quantity != 0 && (
+                        <View
+                          style={{
+                            height: moderateVerticalScale(28),
+                            width: moderateVerticalScale(28),
+                            backgroundColor: colors.primary,
+                            borderRadius: moderateVerticalScale(40),
+                            position: 'absolute',
+                            right: moderateVerticalScale(-10),
+                            top: moderateVerticalScale(-10),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            elevation: moderateVerticalScale(2),
+                          }}>
+                          <MyText
+                            label={
+                              cartItem?.quantity > 99
+                                ? '99+'
+                                : Number(cartItem?.quantity).toString()
+                            }
+                            size={'subTitle'}
+                            textStyle={{
+                              color: colors.background,
+                            }}
+                          />
+                        </View>
+                      )}
                       <View
                         style={{
-                          borderColor: '#00000030',
-                          borderWidth: height * 0.001,
-                          paddingHorizontal: 5,
-                          borderRadius: height * 0.005,
+                          position: 'absolute',
+                          bottom: moderateVerticalScale(20),
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: moderateVerticalScale(10),
+                          paddingBottom: moderateVerticalScale(8),
+                          backgroundColor: colors.background + 'ab',
+                          borderColor: '#00000022',
+                          borderTopWidth: moderateVerticalScale(0.5),
+                          borderBottomWidth: moderateVerticalScale(0.5),
                         }}>
-                        <MyText label={`Rs.${dataItem?.price}`} />
+                        <View
+                          style={{
+                            flex: 1,
+                            alignItems: 'flex-start',
+                          }}>
+                          <MyText
+                            label={dataItem?.name}
+                            numberOfLines={2}
+                            textStyle={{
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: moderateVerticalScale(20),
+                              color: '#000',
+                              top: 0,
+                            }}
+                          />
+                          <View
+                            style={{
+                              borderColor: '#000000',
+                              borderWidth: moderateVerticalScale(1),
+                              paddingHorizontal: 5,
+                              borderRadius: height * 0.005,
+                            }}>
+                            <MyText
+                              label={`Rs.${dataItem?.price}`}
+                              textStyle={{
+                                opacity: 1,
+                                fontFamily: 'Poppins-SemiBold',
+                              }}
+                            />
+                          </View>
+                        </View>
+                        <TouchableOpacity activeOpacity={1}>
+                          <AddToCartBtn
+                            item={{
+                              ...dataItem,
+                              quantity: Number(cartItem?.quantity || 0),
+                            }}
+                          />
+                        </TouchableOpacity>
                       </View>
-                    </View>
-                    <TouchableOpacity activeOpacity={1}>
-                      <AddToCartBtn
-                        item={{
-                          ...dataItem,
-                          quantity: Number(cartItem?.quantity || 0),
-                        }}
-                      />
-                    </TouchableOpacity>
+                    </ImageBackground>
                   </View>
-                  {cartItem != undefined && cartItem?.quantity != 0 && (
-                    <View
-                      style={{
-                        height: moderateVerticalScale(28),
-                        width: moderateVerticalScale(28),
-                        backgroundColor: colors.primary,
-                        borderRadius: height * 1,
-                        position: 'absolute',
-                        right: moderateVerticalScale(-4),
-                        top: moderateVerticalScale(-4),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <MyText
-                        label={
-                          cartItem?.quantity > 99
-                            ? '99+'
-                            : Number(cartItem?.quantity).toString()
-                        }
-                        size={'subTitle'}
-                        textStyle={{ color: colors.background }}
-                      />
-                    </View>
-                  )}
                 </Pressable>
               );
             }}

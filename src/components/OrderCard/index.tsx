@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
-import {SCREEN_WIDTH} from '../../constants';
-import {colors} from '../../theme';
+import { moderateVerticalScale } from 'react-native-size-matters';
+import { SCREEN_WIDTH } from '../../constants';
+import { colors } from '../../theme';
 import GapView from '../GapView';
 
 import MyText from '../Text';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 type itemData = {
   name: string;
@@ -54,9 +54,9 @@ export default function OrderCard({
         <MyText
           label={name}
           textStyle={{
-            ...styles.cardDataText,
-            fontSize: moderateVerticalScale(20),
-            maxWidth: SCREEN_WIDTH * 0.7,
+            fontFamily: 'Poppins-Bold',
+            fontSize: moderateVerticalScale(18),
+            flex: 1,
           }}
         />
         <TouchableOpacity
@@ -70,12 +70,12 @@ export default function OrderCard({
           }}>
           <MyText
             label={paid == 'UNPAID' ? 'Collect' : 'Revert'}
-            textStyle={{...styles.cardDataText, color: '#fff'}}
+            textStyle={{ ...styles.cardDataText, color: '#fff' }}
           />
         </TouchableOpacity>
       </View>
-      <View style={{borderBottomWidth: 1, padding: 5}}>
-        <View style={{...styles.cardInnerContainer, marginBottom: 4}}>
+      <View style={{ borderBottomWidth: 1, padding: 5 }}>
+        <View style={{ ...styles.cardInnerContainer, marginBottom: 4 }}>
           <MyText
             label={'Order'}
             size={'title'}
@@ -104,7 +104,7 @@ export default function OrderCard({
               <MyText
                 label={item.Item.name}
                 size={'subTitle'}
-                textStyle={{fontFamily: 'Poppins-Bold'}}
+                textStyle={{ fontFamily: 'Poppins-Bold' }}
               />
               <MyText
                 label={item.quantity}
@@ -126,7 +126,7 @@ export default function OrderCard({
         <MyText
           label={'Total Amount'}
           size={'title'}
-          textStyle={{fontFamily: 'Poppins-Bold'}}
+          textStyle={{ fontFamily: 'Poppins-Bold' }}
         />
         <MyText
           label={'Rs. ' + amount}
@@ -146,7 +146,7 @@ export default function OrderCard({
           <MyText
             label={'Paid Amount'}
             size={'title'}
-            textStyle={{fontFamily: 'Poppins-Bold'}}
+            textStyle={{ fontFamily: 'Poppins-Bold' }}
           />
           <MyText
             label={'Rs. ' + paidAmount}

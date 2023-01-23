@@ -1,9 +1,9 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { Dimensions, StyleSheet } from 'react-native';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
-import {colors} from '../../../theme';
+import { colors } from '../../../theme';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: height * 0.015,
     marginTop: moderateVerticalScale(5),
   },
-  headerCenterComponentStyle: {flexDirection: 'row'},
+  headerCenterComponentStyle: { flexDirection: 'row' },
   greetingMsgContainer: {
     justifyContent: 'center',
     paddingHorizontal: 15,
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
     width: width * 0.9,
     paddingVertical: 5,
   },
-  remainingAmountText: {justifyContent: 'center', textAlign: 'center'},
+  remainingAmountText: { justifyContent: 'center', textAlign: 'center' },
   categoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: 15,
+    // marginLeft: 15,
   },
   categoryButton: {
     elevation: moderateVerticalScale(3),

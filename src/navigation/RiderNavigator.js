@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { MoneyReturn, Orders, PurchasingList } from '../screens';
+import {
+  MoneyReturn,
+  Orders,
+  PurchasedOrders,
+  PurchasingList,
+} from '../screens';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Icon as Icons } from '@rneui/themed';
 import {
@@ -57,13 +62,14 @@ function RiderNavigator({ navigation }) {
   const dispatch = useDispatch();
 
   const goToNavigation = navigate => {
+    navigation.navigate('Orders', { isModal: false });
     navigation?.navigate(navigate);
     setIsModal(!isModal);
   };
 
   const logoutHandler = () => {
     setIsModal(false);
-    navigation?.navigate('Orders', { isModal: false })
+    navigation?.navigate('Orders', { isModal: false });
     dispatch(logout());
   };
 
@@ -92,7 +98,7 @@ function RiderNavigator({ navigation }) {
                     opened={isModal}
                     onBackdropPress={() => {
                       setIsModal(false);
-                      navigation?.navigate('Orders', { isModal: false })
+                      navigation?.navigate('Orders', { isModal: false });
                     }}
                     renderer={renderers.Popover}
                     rendererProps={{
@@ -106,12 +112,6 @@ function RiderNavigator({ navigation }) {
                               activeOpacity={1}
                               onPress={() => {
                                 setIsModal(true);
-                                // console.log(
-                                //   'setparam',
-                                //   navigation.navigate('Orders', {
-                                //     isModal: true,
-                                //   }),
-                                // );
                               }}
                               style={{
                                 backgroundColor: 'red',
@@ -161,7 +161,6 @@ function RiderNavigator({ navigation }) {
                       <MenuOption
                         style={styles.buttonContainer}
                         onSelect={() => {
-                          navigation.navigate('Orders', { isModal: false });
                           goToNavigation('Profile');
                         }}
                         children={
@@ -182,8 +181,45 @@ function RiderNavigator({ navigation }) {
                       />
                       <MenuOption
                         style={styles.buttonContainer}
+                        onSelect={() => goToNavigation('ChangePassword')}
+                        children={
+                          <>
+                            <MCI
+                              name="shield-lock"
+                              size={moderateVerticalScale(20)}
+                              color={colors.primary}
+                              style={styles.btnIcon}
+                            />
+                            <MyText
+                              label={'Change Password'}
+                              size={'title'}
+                              textStyle={{ color: colors.text_normal + '80' }}
+                            />
+                          </>
+                        }
+                      />
+                      <MenuOption
+                        style={styles.buttonContainer}
+                        onSelect={() => goToNavigation('PurchasedOrders')}
+                        children={
+                          <>
+                            <MCI
+                              name="newspaper-variant-multiple-outline"
+                              size={moderateVerticalScale(20)}
+                              color={colors.primary}
+                              style={styles.btnIcon}
+                            />
+                            <MyText
+                              label={'Purchased Orders'}
+                              size={'title'}
+                              textStyle={{ color: colors.text_normal + '80' }}
+                            />
+                          </>
+                        }
+                      />
+                      <MenuOption
+                        style={styles.buttonContainer}
                         onSelect={() => {
-                          navigation.navigate('Orders', { isModal: false });
                           goToNavigation('MoneyReturn');
                         }}
                         children={
@@ -193,12 +229,6 @@ function RiderNavigator({ navigation }) {
                                 activeOpacity={1}
                                 onPress={() => {
                                   setIsModal(true);
-                                  // console.log(
-                                  //   'setparam',
-                                  //   navigation.navigate('Orders', {
-                                  //     isModal: true,
-                                  //   }),
-                                  // );
                                 }}
                                 style={{
                                   backgroundColor: 'red',
@@ -206,8 +236,8 @@ function RiderNavigator({ navigation }) {
                                   height: moderateVerticalScale(8),
                                   borderRadius: 40,
                                   position: 'absolute',
-                                  top: moderateVerticalScale(9),
-                                  left: moderateVerticalScale(10),
+                                  top: moderateVerticalScale(8),
+                                  left: moderateVerticalScale(8),
                                   zIndex: 1,
                                 }}></TouchableOpacity>
                             )}
@@ -255,6 +285,7 @@ function RiderNavigator({ navigation }) {
       />
       <Stack.Screen name="Purchasing_List" component={PurchasingList} />
       <Stack.Screen name="MoneyReturn" component={MoneyReturn} />
+      <Stack.Screen name="PurchasedOrders" component={PurchasedOrders} />
     </Stack.Navigator>
   );
 }

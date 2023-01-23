@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   TextInput,
@@ -8,27 +8,30 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useMutation} from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
-import {MyText, CustomizeModal, OverlayLoader} from '../../components';
+import { MyText, CustomizeModal, OverlayLoader } from '../../components';
 import styles from './styles';
-import {updateUserDetails} from '../../features/userInfo/userInfoSlice';
-import {UPDATE_USER} from '../../graphQL/mutation/user.mutation';
+import { updateUserDetails } from '../../features/userInfo/userInfoSlice';
+import { UPDATE_USER } from '../../graphQL/mutation/user.mutation';
 import {
   cameraPicker,
   imagePicker,
   uploadImage,
 } from '../../utils/helperFunctions';
-import {colors} from '../../theme';
-import {moderateVerticalScale, verticalScale} from 'react-native-size-matters';
-import {showMessage} from 'react-native-flash-message';
+import { colors } from '../../theme';
+import {
+  moderateVerticalScale,
+  verticalScale,
+} from 'react-native-size-matters';
+import { showMessage } from 'react-native-flash-message';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-function Profile({route, navigation}) {
+function Profile({ route, navigation }) {
   const reduxData = useSelector(store => store);
   const userData = reduxData?.userInfo?.userData;
   const [getData, setGetData] = useState([
@@ -55,7 +58,7 @@ function Profile({route, navigation}) {
   const [loader, setLoader] = useState(false);
   const [imgLoader, setImgLoader] = useState(true);
 
-  const [UpdateProfile, {loading}] = useMutation(UPDATE_USER);
+  const [UpdateProfile, { loading }] = useMutation(UPDATE_USER);
 
   const editModeon = () => {
     setEditMode(true);
@@ -84,7 +87,9 @@ function Profile({route, navigation}) {
       variables: data,
     });
     const updatedData = updateUser.data.updateProfile.data;
-    dispatch(updateUserDetails({selected: userData?.selected, ...updatedData}));
+    dispatch(
+      updateUserDetails({ selected: userData?.selected, ...updatedData }),
+    );
   };
 
   const onChangeNumber = (value, index) => {
@@ -111,7 +116,7 @@ function Profile({route, navigation}) {
       });
       const updatedData = updateUser.data.updateProfile.data;
       dispatch(
-        updateUserDetails({selected: userData?.selected, ...updatedData}),
+        updateUserDetails({ selected: userData?.selected, ...updatedData }),
       );
       setLoader(false);
     } catch (error) {
@@ -121,7 +126,7 @@ function Profile({route, navigation}) {
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: colors.background}}>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <OverlayLoader show={loader || loading} />
       <CustomizeModal
         isVisible={isModal}
@@ -249,7 +254,7 @@ function Profile({route, navigation}) {
           />
         </View>
       </View>
-      <ScrollView style={{backgroundColor: 'white'}}>
+      <ScrollView style={{ backgroundColor: 'white' }}>
         <View style={styles.profileFormStyle}>
           {getData &&
             getData.map((item, index) => (
