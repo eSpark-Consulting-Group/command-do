@@ -45,20 +45,15 @@ function Cart({ route, navigation }) {
   const count = useSelector(store => store);
   const userData = useSelector(store => store?.userInfo?.userData);
   const [CreateOrder, { loading, error }] = useMutation(PLACE_ORDER);
-  const [load, setLoad] = useState(false);
 
   async function getCurrentTime() {
-    setLoad(true);
     try {
       const response = await fetch('https://www.google.com/search?q=time');
       const data = response;
       const currentTime = data.headers?.map.date;
-      setCurrentTime(currentTime);
-      setLoad(false);
       return new Date(moment(currentTime));
     } catch (error) {
       console.error(error);
-      setLoad(false);
     }
   }
 
@@ -169,6 +164,7 @@ function Cart({ route, navigation }) {
     try {
       const time = await getCurrentTime();
       if (!isValidTimeToOrder(time)) {
+        setCheckoutLoader(false);
         showMessage({
           message: 'Alas! Time is over for placing order😬',
           icon: 'auto',
@@ -183,7 +179,6 @@ function Cart({ route, navigation }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors?.background }}>
-      <OverlayLoader show={load} />
       <StatusBar backgroundColor={colors.primary} />
       <View style={{ flex: 1 }}>
         <View style={styles.headerContainer}>
@@ -429,9 +424,8 @@ function Cart({ route, navigation }) {
               }}
               onPress={async () => {
                 setCheckoutLoader(true);
-                // //! Uncomment when need to apply restriction
-                if (!(await handleOrderValidation()))
-                isShowAlert(true);
+                //! Uncomment when need to apply restriction
+                if (!(await handleOrderValidation())) isShowAlert(true);
               }}>
               {loading || checkoutLoader ? (
                 <ActivityIndicator size={30} color={colors.text_inverse} />
