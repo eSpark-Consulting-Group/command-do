@@ -13,9 +13,6 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function Rider({ route }) {
   const isFocused = useIsFocused();
-  const now = new Date().toTimeString();
-  const state =
-    now >= '13:01:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   return (
     <>
       <OrdersComp bypass={false} isFocused={isFocused} />
@@ -25,6 +22,9 @@ export default function Rider({ route }) {
 }
 
 function OrdersComp(bypass, isFocused) {
+  const now = new Date().toTimeString();
+  const state =
+    now >= '13:01:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   if (bypass) {
     return <Orders />;
   }
