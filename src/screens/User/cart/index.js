@@ -163,8 +163,8 @@ function Cart({ route, navigation }) {
   const handleOrderValidation = async () => {
     try {
       const time = await getCurrentTime();
+      setCheckoutLoader(false);
       if (!isValidTimeToOrder(time)) {
-        setCheckoutLoader(false);
         showMessage({
           message: 'Alas! Time is over for placing order😬',
           icon: 'auto',

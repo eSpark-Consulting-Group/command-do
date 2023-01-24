@@ -18,7 +18,7 @@ export default function Rider({ route }) {
     now >= '13:01:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   return (
     <>
-      <OrdersComp bypass={true} isFocused={isFocused} />
+      <OrdersComp bypass={false} isFocused={isFocused} />
       <BlurBackground show={route?.params?.isModal} />
     </>
   );
