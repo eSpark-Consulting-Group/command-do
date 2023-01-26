@@ -71,7 +71,6 @@ export default function CollectedOrders({ navigation }) {
     );
   };
 
-  console.log('orders orders', orders[1]);
   return (
     <View style={{ flex: 1, alignItems: 'center' }}>
       <FlatList

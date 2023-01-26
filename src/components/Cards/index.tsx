@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
+import { RefreshControl } from 'react-native';
 import {
   View,
   Dimensions,
@@ -21,7 +22,7 @@ import GapView from '../GapView';
 const { width, height } = Dimensions.get('window');
 
 const Cards = props => {
-  const { label, data, navigation } = props;
+  const { label, data, navigation, onRefresh } = props;
   const cart = useSelector((store: any) => store.cart);
 
   const renderList = ({ item: dataItem, index: dataIndex }) => {
@@ -142,7 +143,12 @@ const Cards = props => {
   };
 
   return (
-    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={{ flex: 1 }}
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={false} onRefresh={() => onRefresh()} />
+      }>
       {data?.length > 0 &&
         data
           ?.filter(value => value?.Item?.length > 0)

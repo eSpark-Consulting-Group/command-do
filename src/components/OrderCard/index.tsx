@@ -53,6 +53,7 @@ export default function OrderCard({
         }}>
         <MyText
           label={name}
+          numberOfLines={2}
           textStyle={{
             fontFamily: 'Poppins-Bold',
             fontSize: moderateVerticalScale(18),

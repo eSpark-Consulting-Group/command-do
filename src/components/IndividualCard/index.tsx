@@ -21,11 +21,20 @@ import {
   moderateVerticalScale,
 } from 'react-native-size-matters';
 import { useLayoutAnimation } from '../../utils/hooks/useUpdateEffect/useLayoutAnimation';
+import { RefreshControl } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 const IndividualCard = props => {
-  const { label, data, navigation, fetchMoreOnEnd, loading, cursor, refVal } =
-    props;
+  const {
+    label,
+    data,
+    navigation,
+    fetchMoreOnEnd,
+    loading,
+    cursor,
+    refVal,
+    onRefresh,
+  } = props;
   const [isLoading, setIsLoading] = useState(false);
   const cart = useSelector((store: any) => store.cart);
   const itemsList = useRef(null);
@@ -60,6 +69,12 @@ const IndividualCard = props => {
             data={data || []}
             ref={itemsList}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => onRefresh()}
+              />
+            }
             onScroll={event => {
               useLayoutAnimation();
               if (
@@ -81,7 +96,7 @@ const IndividualCard = props => {
               }
             }}
             ListFooterComponent={
-              loading && data.length > 0 ? (
+              loading && data.length > 4 ? (
                 <View
                   style={{
                     height: moderateVerticalScale(55),

@@ -56,8 +56,12 @@ export default function OrderHistoryCard({
         }}>
         <MyText
           label={name}
-          size={'title'}
-          textStyle={{ fontFamily: 'Poppins-Bold', flex: 1 }}
+          numberOfLines={2}
+          textStyle={{
+            fontFamily: 'Poppins-Bold',
+            fontSize: moderateVerticalScale(18),
+            flex: 1,
+          }}
         />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {paidAmount == 0 && (
