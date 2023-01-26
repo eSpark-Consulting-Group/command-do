@@ -108,12 +108,12 @@ function Home({ navigation }) {
       : itemData?.getAllItems?.data;
 
   useEffect(() => {
-    LoadCategories();
-    getRemainingAmount();
-    LoadCategoriesWithItem();
-  }, []);
-
-  console.log('reduxData?.cart?.amount', reduxData?.cart?.amount);
+    if (isConnected) {
+      LoadCategories();
+      getRemainingAmount();
+      LoadCategoriesWithItem();
+    }
+  }, [isConnected]);
 
   useEffect(() => {
     if (!LoadItemsLoading) {
@@ -190,6 +190,34 @@ function Home({ navigation }) {
         };
       },
     });
+  };
+
+  const loadNew = () => {
+    if (selectedCategory?.id == 0) {
+      LoadItems({
+        variables: {
+          where: {
+            categoryId: undefined,
+          },
+        },
+      });
+    } else {
+      LoadItems({
+        variables: {
+          pagination: {
+            cursor: null,
+            limit: 20,
+          },
+          where: {
+            categoryId: selectedCategory?.id,
+          },
+          pagination: {
+            limit: 20,
+            cursor: null,
+          },
+        },
+      });
+    }
   };
 
   const _onSelect = () => {
@@ -456,10 +484,15 @@ function Home({ navigation }) {
                 flex: 1,
               }}>
               {selectedCategory?.id == 0 ? (
-                <Cards data={items || []} navigation={navigation} />
+                <Cards
+                  data={items || []}
+                  navigation={navigation}
+                  onRefresh={loadNew}
+                />
               ) : (
                 <IndividualCard
                   fetchMoreOnEnd={onLoadMore}
+                  onRefresh={loadNew}
                   cursor={itemData?.getAllItems?.pagination?.nextCursor}
                   data={items || []}
                   loading={LoadItemsLoading}

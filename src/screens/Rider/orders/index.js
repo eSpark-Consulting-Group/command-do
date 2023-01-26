@@ -8,6 +8,7 @@ import CurrentOrders from './CurrentOrders';
 import { colors } from '../../../theme';
 import { BackButtonHandler, BlurBackground, MyText } from '../../../components';
 import { SCREEN_WIDTH } from '../../../constants';
+import AppStatusBar from '../../../components/AppStatusBar';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,21 +16,26 @@ export default function Rider({ route }) {
   const isFocused = useIsFocused();
   return (
     <>
+      <AppStatusBar
+        backgroundColor={
+          route?.params?.isModal == true ? '#000' : colors.primary
+        }
+        barStyle="light-content"
+      />
       <OrdersComp bypass={false} isFocused={isFocused} />
       <BlurBackground show={route?.params?.isModal} />
     </>
   );
 }
 
-function OrdersComp(bypass, isFocused) {
+function OrdersComp({ bypass, isFocused }) {
   const now = new Date().toTimeString();
   const state =
     now >= '13:01:00 GMT+0500 (PKT)' && now <= '16:30:00 GMT+0500 (PKT)';
   if (bypass) {
     return <Orders />;
-  }
-  {
-    state ? (
+  } else {
+    return state ? (
       <Orders />
     ) : (
       <>

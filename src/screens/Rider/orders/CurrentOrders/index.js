@@ -1,9 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {useLazyQuery} from '@apollo/client';
-import {FlatList, View, ActivityIndicator, RefreshControl} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import {
+  FlatList,
+  View,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import {
   BackButtonHandler,
@@ -12,16 +17,16 @@ import {
   MyText,
   OrderCard,
 } from '../../../../components';
-import {SCREEN_HEIGHT} from '../../../../constants';
+import { SCREEN_HEIGHT } from '../../../../constants';
 import {
   collectAmouunt,
   getOrders,
 } from '../../../../features/riderOrders/riderOrderSlice';
-import {ALL_ORDERS} from '../../../../graphQL/query/orders.query';
-import {colors} from '../../../../theme';
+import { ALL_ORDERS } from '../../../../graphQL/query/orders.query';
+import { colors } from '../../../../theme';
 
-export default function CurrentOrders({navigation}) {
-  const [GetAllOrders, {loading}] = useLazyQuery(ALL_ORDERS);
+export default function CurrentOrders({ navigation }) {
+  const [GetAllOrders, { loading }] = useLazyQuery(ALL_ORDERS);
   const dispatch = useDispatch();
   const riderOrder = useSelector(store => store.riderOrder);
   const userData = useSelector(store => store.userInfo?.userData);
@@ -65,7 +70,7 @@ export default function CurrentOrders({navigation}) {
             status: order?.status,
             paidAmount: order?.paidAmount,
             riderId: order?.riderId,
-            amountCollected: order?.amountCollected
+            amountCollected: order?.amountCollected,
           });
           if (order) {
             return {
@@ -73,7 +78,7 @@ export default function CurrentOrders({navigation}) {
               status: order?.status,
               paidAmount: order?.paidAmount,
               riderId: order?.riderId,
-              amountCollected: order?.amountCollected
+              amountCollected: order?.amountCollected,
             };
           } else {
             return value;
@@ -85,35 +90,35 @@ export default function CurrentOrders({navigation}) {
 
   const openOverlay = (val, id) => {
     setShowModal(true);
-    navigation.navigate('Orders', {isModal: true});
+    navigation.navigate('Orders', { isModal: true });
     setAmount(val);
     setId(id);
   };
   const closeOverlay = () => {
     setShowModal(false);
-    navigation.navigate('Orders', {isModal: false});
+    navigation.navigate('Orders', { isModal: false });
     setAmount('');
     setId(null);
   };
 
   const onCollection = amount => {
-    dispatch(collectAmouunt({id, amount, riderId}));
-    navigation.navigate('Orders', {isModal: false});
+    dispatch(collectAmouunt({ id, amount, riderId }));
+    navigation.navigate('Orders', { isModal: false });
     setShowModal(false);
     setAmount('');
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center' }}>
       {isFocused && <BackButtonHandler />}
       <FlatList
         data={orders?.some(val => val.status == 'UNPAID') ? orders : []}
-        style={{width: '100%'}}
-        contentContainerStyle={{alignItems: 'center'}}
+        style={{ width: '100%' }}
+        contentContainerStyle={{ alignItems: 'center' }}
         refreshControl={
           <RefreshControl refreshing={false} onRefresh={fetchOrders} />
         }
-        renderItem={({item}) =>
+        renderItem={({ item }) =>
           loading ? (
             <View
               style={{
