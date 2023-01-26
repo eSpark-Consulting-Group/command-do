@@ -14,6 +14,7 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function Rider({ route }) {
   const isFocused = useIsFocused();
+  const runDev = __DEV__ ? true : false;
   return (
     <>
       <AppStatusBar
@@ -22,7 +23,7 @@ export default function Rider({ route }) {
         }
         barStyle="light-content"
       />
-      <OrdersComp bypass={false} isFocused={isFocused} />
+      <OrdersComp bypass={runDev} isFocused={isFocused} />
       <BlurBackground show={route?.params?.isModal} />
     </>
   );
