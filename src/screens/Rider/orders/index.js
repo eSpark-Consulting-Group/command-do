@@ -15,7 +15,7 @@ export default function Rider({ route }) {
   const isFocused = useIsFocused();
   return (
     <>
-      <OrdersComp bypass={false} isFocused={isFocused} />
+      <OrdersComp bypass={__DEV__ ? true : false} isFocused={isFocused} />
       <BlurBackground show={route?.params?.isModal} />
     </>
   );
