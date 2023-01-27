@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 import { useLazyQuery } from '@apollo/client';
 
@@ -17,11 +18,21 @@ export default function PurchasedOrders({ navigation, route }) {
     useLazyQuery(ALL_ORDERS);
 
   const [userId, setUserId] = useState(route?.params?.userId);
+  const [isConnected, setIsConnected] = useState(null);
   const Id = route?.params?.userId;
 
   useEffect(() => {
-    fetchOrders(userId);
-  }, [userId]);
+    if (isConnected) {
+      fetchOrders(userId);
+    }
+  }, [isConnected, userId]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     setUserId(Id);

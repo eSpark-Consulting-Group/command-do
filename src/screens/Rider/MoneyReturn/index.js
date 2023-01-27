@@ -1,7 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  RefreshControl,
+  View,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useLazyQuery, useMutation } from '@apollo/client';
+import NetInfo from '@react-native-community/netinfo';
 
 import {
   BlurBackground,
@@ -23,12 +30,22 @@ export default function MoneyReturn({ navigation }) {
   const [GetAllOrders, { data, loading: loadOrders }] =
     useLazyQuery(ALL_ORDERS);
   const [UpdateOrder, { loading }] = useMutation(UPDATE_ORDER);
+  const [isConnected, setIsConnected] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState('');
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    fetchOrders();
+    if (isConnected) {
+      fetchOrders();
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+    return () => unsubscribe();
   }, []);
 
   const fetchOrders = async () => {
@@ -121,6 +138,9 @@ export default function MoneyReturn({ navigation }) {
         data={order}
         style={{ width: '100%' }}
         contentContainerStyle={{ alignItems: 'center' }}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={() => fetchOrders()} />
+        }
         renderItem={({ item }) =>
           loadOrders ? (
             <View

@@ -172,8 +172,9 @@ function Cart({ route, navigation }) {
             icon: 'auto',
             type: 'info',
           });
-          isShowAlert(true);
+          return true;
         }
+        isShowAlert(true);
       } catch (e) {
         console.log('Error for Validation', e);
       }
