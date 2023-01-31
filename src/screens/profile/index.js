@@ -107,7 +107,7 @@ function Profile({ route, navigation }) {
       const image = await pickerFunc();
       setLoader(true);
       isModalVisible();
-      const url = await uploadImage(image);
+      const url = await uploadImage(image, userData?.avatar);
       const updateUser = await UpdateProfile({
         variables: {
           updateProfileId: userData?.id,
