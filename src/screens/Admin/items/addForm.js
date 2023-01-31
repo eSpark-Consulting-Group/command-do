@@ -161,7 +161,7 @@ export default function AddForm() {
       name: fields?.name,
       image:
         theImage?.slice(0, 4) == 'file'
-          ? await uploadImage(fields?.image)
+          ? await uploadImage(fields?.image, itemData?.image)
           : theImage,
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
@@ -261,7 +261,7 @@ export default function AddForm() {
         name: fields?.name,
         image:
           theImage?.slice(0, 4) == 'file'
-            ? await uploadImage(fields?.image)
+            ? await uploadImage(fields?.image, itemData?.image)
             : theImage,
       },
     })
@@ -317,6 +317,7 @@ export default function AddForm() {
   const cond2 =
     fields?.name !== '' && fields?.price !== '' && fields?.image?.uri !== '';
 
+  console.log(" itemData?.image ", itemData?.image);
   if (mode === 'add') {
     {
       //! Add Category

@@ -4,18 +4,33 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import messaging from '@react-native-firebase/messaging';
 import moment from 'moment';
 
-export const uploadImage = async image => {
+export const deleteImage = async url => {
+  try {
+    const urlForDelete = url;
+    const fileNameForDelete = urlForDelete?.split('%2F')[1]?.split('?')[0];
+    const storageDelete = storage().ref(`images/${fileNameForDelete}`);
+    await storageDelete.delete();
+  } catch (e) {
+    console.error('Upload Image Error', e);
+  }
+};
+
+export const uploadImage = async (image, previousImage = '') => {
   var url;
   const { uri: path, sourceURL } = image;
   const filename = path.substring(path.lastIndexOf('/') + 1);
   const uploadUri = Platform.OS === 'ios' ? path.replace('file://', '') : path;
   const storageRef = storage().ref(`images/${filename}`);
-  console.log('storageRef', uploadUri);
+
   try {
-    //  url = await storageRef.getDownloadURL()
-    console.log('aya ha kuch');
     const task = await storageRef.putFile(uploadUri);
     url = await storageRef.getDownloadURL();
+    if (
+      previousImage != '' &&
+      previousImage?.includes('https://firebasestorage')
+    ) {
+      await deleteImage(previousImage);
+    }
   } catch (e) {
     console.error('Upload Image Error', e);
   }
@@ -26,7 +41,7 @@ export const sendFCMToken = async () => {
   await messaging().registerDeviceForRemoteMessages();
 
   // Get the token
-  fcmToken = await messaging().getToken();
+  const fcmToken = await messaging().getToken();
 
   console.log('fcmToken fcmToken', fcmToken);
 
@@ -78,13 +93,13 @@ export const requestCameraPermission = async () => {
   }
 };
 
-export const isValidTimeToOrder = time => {
+export const isValidTimeToOrder = () => {
   var format = 'hh:mm:ss';
 
   // var time = moment() gives you current time. no format required.
-  var time = moment(new Date(time).toLocaleTimeString(), format),
+  var time = moment(new Date().toLocaleTimeString(), format),
     startTime = moment('09:00:00', format),
-    endTime = moment('13:00:00', format);
+    endTime = moment('12:30:00', format);
   return time.isBetween(startTime, endTime);
 };
 
