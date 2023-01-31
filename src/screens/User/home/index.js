@@ -123,7 +123,7 @@ function Home({ navigation }) {
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
-      setIsConnected(state.isConnected);
+      setIsConnected(state.isInternetReachable);
     });
     return () => unsubscribe();
   }, []);
