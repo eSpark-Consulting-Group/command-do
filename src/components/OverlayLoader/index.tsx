@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, StyleSheet, Modal, ActivityIndicator} from 'react-native';
-import {colors} from '../../theme';
+import { View, StyleSheet, Modal, ActivityIndicator } from 'react-native';
 
-const OverlayLoader = ({show}: {show: boolean}) => {
+import { colors } from '../../theme';
+
+const OverlayLoader = ({ show }: { show: boolean }) => {
   return (
     <Modal
       visible={show}

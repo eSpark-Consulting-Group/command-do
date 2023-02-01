@@ -1,9 +1,10 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   userData: null,
   orders: null,
   users: [],
+  loadedCatergories: [],
 };
 
 const userInfoSlice = createSlice({
@@ -32,6 +33,12 @@ const userInfoSlice = createSlice({
       });
       state.orders = order?.reverse();
     },
+    saveLoadedCats: (state, action) => {
+      state.loadedCatergories.push({
+        category_Id: action.payload,
+      });
+      console.log('category_saved', state.loadedCatergories);
+    },
     logout: (state, action) => {
       state.userData = null;
       state.orders = null;
@@ -46,6 +53,7 @@ export const {
   createUser,
   getAllUsers,
   getOrderHistory,
+  saveLoadedCats,
   logout,
 } = userInfoSlice.actions;
 
