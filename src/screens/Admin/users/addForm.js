@@ -22,6 +22,7 @@ import {
   CREATE_USER,
 } from '../../../graphQL/mutation/user.mutation';
 import { moderateVerticalScale } from 'react-native-size-matters';
+import { deleteImage } from '../../../utils/helperFunctions';
 
 export default function AddForm() {
   const navigation = useNavigation();
@@ -35,13 +36,11 @@ export default function AddForm() {
   const [DeleteUser, { loading: deleteLoader }] = useMutation(DELETE_USER);
   const [AddUser, { loading: addLoader }] = useMutation(CREATE_USER);
 
-  const [LoadUserDetail, { loading: userLoader }] = useLazyQuery(
-    GET_USER_DETAIL,
-    {
+  const [LoadUserDetail, { loading: userLoader, data: userData }] =
+    useLazyQuery(GET_USER_DETAIL, {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
-    },
-  );
+    });
 
   const [userInfo, setUserInfo] = useState({
     firstName: '',
@@ -290,7 +289,16 @@ export default function AddForm() {
           onPressLeft={() => navigation.goBack()}
           rightIconType="foundation"
           icon="trash"
-          onPressRight={() => handleDeleteUser()}
+          onPressRight={() => {
+            handleDeleteUser();
+            if (
+              userData?.getUserById?.data?.avatar.includes(
+                'https://firebasestorage',
+              )
+            ) {
+              deleteImage(userData?.getUserById?.data?.avatar);
+            }
+          }}
         />
         <ScrollView style={{ paddingHorizontal: 10 }}>
           <MySubHeader title="Edit User Details" divider />
