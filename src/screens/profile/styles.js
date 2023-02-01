@@ -37,7 +37,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   backButtonStyle: {
-    padding: 5,
+    position: 'absolute',
+    left: 0,
+    padding: moderateVerticalScale(10),
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -92,6 +92,28 @@ function Profile({ route, navigation }) {
     );
   };
 
+  const cancelUpdate = () => {
+    setEditMode(false);
+    setGetData([
+      {
+        name: 'First Name',
+        value: userData?.firstName,
+      },
+      {
+        name: 'Last Name',
+        value: userData?.lastName,
+      },
+      {
+        name: 'Email',
+        value: userData?.email,
+      },
+      {
+        name: 'Mobile Number',
+        value: userData?.phoneNumber ?? 'N/A',
+      },
+    ]);
+  };
+
   const onChangeNumber = (value, index) => {
     var changeData = [...getData];
     changeData[index].value = value;
@@ -179,7 +201,7 @@ function Profile({ route, navigation }) {
             height: verticalScale(130),
             flexDirection: 'row',
             alignItems: 'flex-start',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             backgroundColor: colors.primary + '99',
             padding: 5,
             borderBottomWidth: height * 0.0005,
@@ -187,13 +209,31 @@ function Profile({ route, navigation }) {
           }}>
           <TouchableOpacity
             style={styles.backButtonStyle}
-            onPress={() => navigation.goBack()}>
+            onPress={() => {
+              if (editMode) {
+                cancelUpdate();
+              } else {
+                navigation.goBack();
+              }
+            }}>
             <View>
-              <Icon
-                name="arrow-back"
-                size={moderateVerticalScale(28)}
-                color={colors.text_inverse}
-              />
+              {editMode ? (
+                <MyText
+                  label={'Cancel'}
+                  size={'subHeading'}
+                  textStyle={{
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: moderateVerticalScale(18),
+                    color: colors.text_inverse,
+                  }}
+                />
+              ) : (
+                <Icon
+                  name="arrow-back"
+                  size={moderateVerticalScale(28)}
+                  color={colors.text_inverse}
+                />
+              )}
             </View>
           </TouchableOpacity>
           <View>
@@ -209,7 +249,9 @@ function Profile({ route, navigation }) {
           <TouchableOpacity
             onPress={() => (editMode ? saveModeon() : editModeon())}
             style={{
-              padding: 5,
+              position: 'absolute',
+              right: 0,
+              padding: moderateVerticalScale(10),
               justifyContent: 'center',
               alignItems: 'center',
             }}>

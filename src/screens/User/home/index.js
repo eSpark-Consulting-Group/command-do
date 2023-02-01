@@ -49,6 +49,7 @@ import { colors } from '../../../theme';
 import {
   getUserDetails,
   logout,
+  saveLoadedCats,
 } from '../../../features/userInfo/userInfoSlice';
 import { greetMessage } from '../../../utils/helperFunctions';
 import { clearCart } from '../../../features/cart/cartSlice';
@@ -69,6 +70,9 @@ function Home({ navigation }) {
     id: 0,
   });
   const userData = useSelector(store => store?.userInfo?.userData);
+  const loadedCatergories = useSelector(
+    store => store?.userInfo?.loadedCatergories,
+  );
 
   const [
     LoadCategories,
@@ -123,7 +127,7 @@ function Home({ navigation }) {
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
-      setIsConnected(state.isConnected);
+      setIsConnected(state.isInternetReachable);
     });
     return () => unsubscribe();
   }, []);
@@ -131,33 +135,42 @@ function Home({ navigation }) {
   const isFocused = useIsFocused();
 
   const isSelect = item => {
-    onScrollToTopStart();
-    // useLayoutAnimation();
+    let goAhead = true;
     setSelectedCategory(item);
-    if (item?.id == 0) {
-      LoadItems({
-        variables: {
-          where: {
-            categoryId: undefined,
+    loadedCatergories.map(lItem => {
+      if (lItem.category_Id == item?.id) {
+        goAhead = false;
+      }
+    });
+    if (goAhead) {
+      dispatch(saveLoadedCats(item?.id));
+
+      onScrollToTopStart();
+      if (item?.id == 0) {
+        LoadItems({
+          variables: {
+            where: {
+              categoryId: undefined,
+            },
           },
-        },
-      });
-    } else {
-      LoadItems({
-        variables: {
-          pagination: {
-            cursor: null,
-            limit: 20,
+        });
+      } else {
+        LoadItems({
+          variables: {
+            pagination: {
+              cursor: null,
+              limit: 20,
+            },
+            where: {
+              categoryId: item?.id,
+            },
+            pagination: {
+              limit: 20,
+              cursor: null,
+            },
           },
-          where: {
-            categoryId: item?.id,
-          },
-          pagination: {
-            limit: 20,
-            cursor: null,
-          },
-        },
-      });
+        });
+      }
     }
   };
 

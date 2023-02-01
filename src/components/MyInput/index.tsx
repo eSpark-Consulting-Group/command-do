@@ -57,6 +57,7 @@ export default function MyInput({
           justifyContent: 'space-between',
           backgroundColor: colors.background,
           borderRadius: 10,
+          padding: 1,
         }}>
         <TextInput
           value={value}
