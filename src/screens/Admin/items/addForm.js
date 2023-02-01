@@ -16,7 +16,7 @@ import {
   OverlayLoader,
 } from '../../../components';
 import { colors } from '../../../theme';
-import { uploadImage } from '../../../utils/helperFunctions';
+import { deleteImage, uploadImage } from '../../../utils/helperFunctions';
 import { GET_ALL_CATEGORIES } from '../../../graphQL/query/categories.query';
 import { useEffect } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
@@ -85,7 +85,12 @@ export default function AddForm() {
       {
         text: 'Ok',
         style: 'default',
-        onPress: () => deleteCategory(),
+        onPress: () => {
+          deleteCategory()
+          if(itemData?.image.includes('https://firebasestorage')) {
+              deleteImage(itemData.image)
+          }
+        },
       },
       {
         text: 'Cancel',
@@ -99,7 +104,12 @@ export default function AddForm() {
       {
         text: 'Ok',
         style: 'default',
-        onPress: () => deleteItem(itemData?.id),
+        onPress: () => {
+          deleteItem(itemData?.id)
+          if(itemData?.image.includes('https://firebasestorage')) {
+              deleteImage(itemData.image)
+          }
+        }
       },
       {
         text: 'Cancel',
@@ -317,7 +327,6 @@ export default function AddForm() {
   const cond2 =
     fields?.name !== '' && fields?.price !== '' && fields?.image?.uri !== '';
 
-  console.log(" itemData?.image ", itemData?.image);
   if (mode === 'add') {
     {
       //! Add Category
