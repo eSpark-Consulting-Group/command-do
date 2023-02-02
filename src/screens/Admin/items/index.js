@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -9,12 +9,12 @@ import {
   StatusBar,
   RefreshControl,
 } from 'react-native';
-import {useNavigation, useIsFocused} from '@react-navigation/native';
-import {Icon, SpeedDial} from '@rneui/themed';
-import {useLazyQuery} from '@apollo/client';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { Icon, SpeedDial } from '@rneui/themed';
+import { useLazyQuery } from '@apollo/client';
 import NetInfo from '@react-native-community/netinfo';
 
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../constants';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../constants';
 import {
   GapView,
   MyHeader,
@@ -23,27 +23,27 @@ import {
   MyCard,
   BackButtonHandler,
 } from '../../../components';
-import {colors} from '../../../theme';
+import { colors } from '../../../theme';
 import OverlayLoader from '../../../components/OverlayLoader';
-import {GET_CATEGORIES_WITH_ID} from '../../../graphQL/query/categories.query';
-import {GET_ALL_ITEMS} from '../../../graphQL/query/item.query';
-import {PicBack} from '../../../assets/images';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { GET_CATEGORIES_WITH_ID } from '../../../graphQL/query/categories.query';
+import { GET_ALL_ITEMS } from '../../../graphQL/query/item.query';
+import { PicBack } from '../../../assets/images';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
-export default function Items({route}) {
+export default function Items({ route }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const itemsList = useRef(null);
 
   const [
     LoadCategories,
-    {data: categoryData, loading: categoryLoader, refetch},
+    { data: categoryData, loading: categoryLoader, refetch },
   ] = useLazyQuery(GET_CATEGORIES_WITH_ID, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   });
 
-  const [LoadItems, {data: itemData, loading: itemsLoading, fetchMore}] =
+  const [LoadItems, { data: itemData, loading: itemsLoading, fetchMore }] =
     useLazyQuery(GET_ALL_ITEMS, {
       notifyOnNetworkStatusChange: true,
       fetchPolicy: 'cache-and-network',
@@ -86,7 +86,7 @@ export default function Items({route}) {
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
-      setIsConnected(state.isConnected);
+      setIsConnected(state.isInternetReachable);
     });
     return () => unsubscribe();
   }, []);
@@ -122,7 +122,7 @@ export default function Items({route}) {
           cursor: itemData?.getAllItems?.pagination?.nextCursor,
         },
       },
-      updateQuery: (previousResult, {fetchMoreResult}) => {
+      updateQuery: (previousResult, { fetchMoreResult }) => {
         const newItems = fetchMoreResult.getAllItems.data;
         const updatedArr = [...previousResult?.getAllItems?.data, ...newItems];
         return {
@@ -140,7 +140,7 @@ export default function Items({route}) {
 
   const handlePress = id => {
     setSelectedCategoryId(id);
-    itemsList.current.scrollToOffset({animated: false, offset: 0});
+    itemsList.current.scrollToOffset({ animated: false, offset: 0 });
     setCursor(null);
     fetchItems(id, 1);
   };
@@ -164,11 +164,11 @@ export default function Items({route}) {
           })
         }
       />
-      <View style={{...styles.subHeader}}>
+      <View style={{ ...styles.subHeader }}>
         <MyText
           label={'Categories'}
           size={'subHeading'}
-          textStyle={{alignSelf: 'center', paddingVertical: 10}}
+          textStyle={{ alignSelf: 'center', paddingVertical: 10 }}
         />
         <View
           style={{
@@ -179,16 +179,16 @@ export default function Items({route}) {
           {categoryData?.getAllCategories?.data?.length !== 0 &&
             selectedCategoryId > 0 && (
               <>
-                <MyCard cardStyle={{borderRadius: 100}}>
+                <MyCard cardStyle={{ borderRadius: 100 }}>
                   <Icon
                     name="edit"
                     style={{
                       textAlignVertical: 'center',
                       padding: moderateVerticalScale(10),
                     }}
-                    containerStyle={{borderRadius: 100}}
+                    containerStyle={{ borderRadius: 100 }}
                     pressableProps={{
-                      android_ripple: {borderless: true, color: '#8f8f8f33'},
+                      android_ripple: { borderless: true, color: '#8f8f8f33' },
                     }}
                     onPress={() =>
                       navigation.navigate('Add_Form', {
@@ -205,12 +205,15 @@ export default function Items({route}) {
             )}
         </View>
       </View>
-      <View style={{width: SCREEN_WIDTH}}>
+      <View style={{ width: SCREEN_WIDTH }}>
         {!categoryLoader && categoryData?.getAllCategories && (
           <FlatList
             data={
               categoryData.getAllCategories.data.length > 0
-                ? [{name: 'All', id: 0}, ...categoryData.getAllCategories.data]
+                ? [
+                    { name: 'All', id: 0 },
+                    ...categoryData.getAllCategories.data,
+                  ]
                 : []
             }
             horizontal
@@ -226,7 +229,7 @@ export default function Items({route}) {
               </View>
             }
             contentContainerStyle={styles.categoryContainer}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <MyCard
                 key={item.id}
                 cardStyle={{
@@ -263,11 +266,11 @@ export default function Items({route}) {
         <MyText
           label={'Items'}
           size={'subHeading'}
-          textStyle={{alignSelf: 'center', paddingVertical: 10}}
+          textStyle={{ alignSelf: 'center', paddingVertical: 10 }}
         />
       </View>
       {!categoryLoader && categoryData?.getAllCategories && (
-        <View style={{flex: 1, width: '100%', paddingHorizontal: 10}}>
+        <View style={{ flex: 1, width: '100%', paddingHorizontal: 10 }}>
           <FlatList
             data={items || []}
             ref={itemsList}
@@ -331,7 +334,7 @@ export default function Items({route}) {
                 </View>
               )
             }
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <MyCard key={item.id} cardStyle={styles.item}>
                 <TouchRipple
                   borderless
@@ -348,9 +351,9 @@ export default function Items({route}) {
                       itemData: item,
                     })
                   }>
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{ flexDirection: 'row' }}>
                     <Image
-                      source={load ? {uri: item?.image} : PicBack}
+                      source={load ? { uri: item?.image } : PicBack}
                       onLoad={() => setLoad(true)}
                       style={{
                         height: moderateVerticalScale(50),
@@ -363,24 +366,24 @@ export default function Items({route}) {
                       }}
                     />
                     <GapView mode="horizontal" />
-                    <View style={{alignSelf: 'center'}}>
+                    <View style={{ alignSelf: 'center' }}>
                       <MyText
                         label={item?.name}
                         size={'title'}
-                        textStyle={{width: SCREEN_WIDTH / 2}}
+                        textStyle={{ width: SCREEN_WIDTH / 2 }}
                       />
                       <MyText
                         label={item?.Category?.name}
                         size={'title'}
-                        textStyle={{opacity: 0.6}}
+                        textStyle={{ opacity: 0.6 }}
                       />
                     </View>
                   </View>
-                  <View style={{alignSelf: 'center', flexDirection: 'row'}}>
+                  <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
                     <MyText
                       label={`Rs. ${item?.price}`}
                       size={'title'}
-                      textStyle={{alignSelf: 'center'}}
+                      textStyle={{ alignSelf: 'center' }}
                     />
                     <GapView mode="horizontal" length={15} />
                   </View>
@@ -393,25 +396,25 @@ export default function Items({route}) {
       <SpeedDial
         isOpen={visible}
         color={colors.primary}
-        icon={{name: 'add', color: colors.text_inverse}}
-        openIcon={{name: 'close', color: colors.text_inverse}}
+        icon={{ name: 'add', color: colors.text_inverse }}
+        openIcon={{ name: 'close', color: colors.text_inverse }}
         onOpen={() => setVisible(!visible)}
         onClose={() => setVisible(!visible)}>
         <SpeedDial.Action
-          icon={{name: 'add', color: colors.text_inverse}}
+          icon={{ name: 'add', color: colors.text_inverse }}
           color={colors.primary}
           title="Add Category"
           onPress={() => {
-            navigation.navigate('Add_Form', {mode: 'add', type: 'category'});
+            navigation.navigate('Add_Form', { mode: 'add', type: 'category' });
             setVisible(false);
           }}
         />
         <SpeedDial.Action
-          icon={{name: 'add', color: colors.text_inverse}}
+          icon={{ name: 'add', color: colors.text_inverse }}
           color={colors.primary}
           title="Add Item"
           onPress={() => {
-            navigation.navigate('Add_Form', {mode: 'add', type: 'item'});
+            navigation.navigate('Add_Form', { mode: 'add', type: 'item' });
             setVisible(false);
           }}
         />
