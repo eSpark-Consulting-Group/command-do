@@ -4,7 +4,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import messaging from '@react-native-firebase/messaging';
 import moment from 'moment';
 import { Image } from 'react-native-compressor';
-
+import RNFetchBlob from 'rn-fetch-blob';
 
 export const deleteImage = async url => {
   try {
@@ -17,24 +17,23 @@ export const deleteImage = async url => {
   }
 };
 
-export const imageCompressor = async (url) => {
-    try {
-      const result = await Image.compress(url, {
-        compressionMethod: 'auto',
-      });
-      console.log(" imageCompressor result ", result);
-      return result;
-    } catch (error) {
-      console.log(" imageCompressor error ", error);
-    }
-}
+export const imageCompressor = async url => {
+  try {
+    const result = await Image.compress(url, {
+      compressionMethod: 'auto',
+    });
+    return result;
+  } catch (error) {
+    console.log(' imageCompressor error ', error);
+  }
+};
 
 export const uploadImage = async (image, previousImage = '') => {
   var url;
-  const { uri: path, sourceURL } = image;
+  const { uri: path } = image;
   const filename = path.substring(path.lastIndexOf('/') + 1);
   const uri = Platform.OS === 'ios' ? path.replace('file://', '') : path;
-  const uploadUri = await imageCompressor(uri)
+  const uploadUri = await imageCompressor(uri);
   const storageRef = storage().ref(`images/${filename}`);
 
   try {
@@ -47,9 +46,22 @@ export const uploadImage = async (image, previousImage = '') => {
       await deleteImage(previousImage);
     }
   } catch (e) {
-    console.error('Upload Image Error', e);
+    console.error('Upload Image Error', e.message);
   }
   return url;
+};
+
+export const uploadOnlineImage = async (imageUrl, previousImage = '') => {
+  try {
+    const result = await RNFetchBlob.config({
+      path: RNFetchBlob.fs.dirs.DocumentDir + `/${imageUrl?.split('/').pop()}`,
+    }).fetch('GET', imageUrl);
+    const compressUrl = await imageCompressor(`file://${result.data}`);
+    return await uploadImage({uri: compressUrl}, previousImage);
+  } catch (error) {
+    console.error('uploadOnlineImage', error);
+    throw error;
+  }
 };
 
 export const sendFCMToken = async () => {

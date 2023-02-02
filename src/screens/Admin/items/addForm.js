@@ -16,7 +16,7 @@ import {
   OverlayLoader,
 } from '../../../components';
 import { colors } from '../../../theme';
-import { deleteImage, uploadImage } from '../../../utils/helperFunctions';
+import { deleteImage, uploadImage, uploadOnlineImage } from '../../../utils/helperFunctions';
 import { GET_ALL_CATEGORIES } from '../../../graphQL/query/categories.query';
 import { useEffect } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
@@ -125,15 +125,15 @@ export default function AddForm() {
       showMessage({ message: 'Please select a category', type: 'error' });
       return;
     }
-    if (fields?.image?.uri?.slice(0, 4) == 'file') {
+    // if (fields?.image?.uri?.slice(0, 4) == 'file') {
       setUploadLoader(true);
-    }
+    // }
     const obj = {
       name: fields?.name,
       image:
         fields?.image?.uri?.slice(0, 4) == 'file'
           ? await uploadImage(fields?.image)
-          : fields?.image?.uri,
+          : await uploadOnlineImage(fields?.image?.uri, itemData?.image),
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
@@ -163,16 +163,16 @@ export default function AddForm() {
 
   const updateItem = async () => {
     const theImage = fields?.image?.uri ?? itemData?.image;
-    if (theImage.slice(0, 4) == 'file') {
+    // if (theImage.slice(0, 4) == 'file') {
       setUploadLoader(true);
-    }
+    // }
     const obj = {
       updateItemId: itemData?.id,
       name: fields?.name,
       image:
         theImage?.slice(0, 4) == 'file'
           ? await uploadImage(fields?.image, itemData?.image)
-          : theImage,
+          : await uploadOnlineImage(theImage, itemData?.image),
       price: Number(fields?.price),
       categoryId: selectedCategory?.id,
     };
@@ -226,16 +226,16 @@ export default function AddForm() {
 
   // CATEGORIES ACTIONS
   const addCategory = async () => {
-    if (fields?.image?.uri?.slice(0, 4) == 'file') {
+    // if (fields?.image?.uri?.slice(0, 4) == 'file') {
       setUploadLoader(true);
-    }
+    // }
     AddNewCategory({
       variables: {
         name: fields?.name,
         image:
           fields?.image?.uri?.slice(0, 4) == 'file'
             ? await uploadImage(fields?.image)
-            : fields?.image?.uri,
+            : await uploadOnlineImage(fields?.image?.uri, itemData?.image),
       },
     })
       .then(res => {
@@ -262,9 +262,9 @@ export default function AddForm() {
 
   const updateCategory = async () => {
     const theImage = fields?.image?.uri ?? itemData?.image;
-    if (theImage?.slice(0, 4) == 'file') {
+    // if (theImage?.slice(0, 4) == 'file') {
       setUploadLoader(true);
-    }
+    // }
     UpdateCategory({
       variables: {
         updateCategoryId: itemData?.id,
@@ -272,7 +272,7 @@ export default function AddForm() {
         image:
           theImage?.slice(0, 4) == 'file'
             ? await uploadImage(fields?.image, itemData?.image)
-            : theImage,
+            : await uploadOnlineImage(theImage, itemData?.image),
       },
     })
       .then(res => {
