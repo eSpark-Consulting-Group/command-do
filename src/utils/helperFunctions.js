@@ -3,6 +3,8 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import messaging from '@react-native-firebase/messaging';
 import moment from 'moment';
+import { Image } from 'react-native-compressor';
+
 
 export const deleteImage = async url => {
   try {
@@ -15,11 +17,24 @@ export const deleteImage = async url => {
   }
 };
 
+export const imageCompressor = async (url) => {
+    try {
+      const result = await Image.compress(url, {
+        compressionMethod: 'auto',
+      });
+      console.log(" imageCompressor result ", result);
+      return result;
+    } catch (error) {
+      console.log(" imageCompressor error ", error);
+    }
+}
+
 export const uploadImage = async (image, previousImage = '') => {
   var url;
   const { uri: path, sourceURL } = image;
   const filename = path.substring(path.lastIndexOf('/') + 1);
-  const uploadUri = Platform.OS === 'ios' ? path.replace('file://', '') : path;
+  const uri = Platform.OS === 'ios' ? path.replace('file://', '') : path;
+  const uploadUri = await imageCompressor(uri)
   const storageRef = storage().ref(`images/${filename}`);
 
   try {
