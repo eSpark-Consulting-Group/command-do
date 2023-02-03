@@ -1,8 +1,9 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import cartReducer from '../features/cart/cartSlice';
 import profileReducer from '../features/profile/profileSlice';
 import riderOrderSlice from '../features/riderOrders/riderOrderSlice';
 import userInfoSlice from '../features/userInfo/userInfoSlice';
+import userItemsSlice from '../features/userItems/userItemsSlice';
 import {
   persistStore,
   persistReducer,
@@ -20,6 +21,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
+  // blacklist: ['userItems'],
 };
 
 const rootReducer = combineReducers({
@@ -28,6 +30,7 @@ const rootReducer = combineReducers({
   riderOrder: riderOrderSlice,
   userInfo: userInfoSlice,
   adminOrder: adminOrderSlice,
+  userItems: userItemsSlice,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
