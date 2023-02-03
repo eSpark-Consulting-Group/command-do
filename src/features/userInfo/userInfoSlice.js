@@ -33,16 +33,11 @@ const userInfoSlice = createSlice({
       });
       state.orders = order?.reverse();
     },
-    saveLoadedCats: (state, action) => {
-      state.loadedCatergories.push({
-        category_Id: action.payload,
-      });
-      console.log('category_saved', state.loadedCatergories);
-    },
     logout: (state, action) => {
       state.userData = null;
       state.orders = null;
       state.users = [];
+      state.loadedCatergories = [];
     },
   },
 });
@@ -53,7 +48,6 @@ export const {
   createUser,
   getAllUsers,
   getOrderHistory,
-  saveLoadedCats,
   logout,
 } = userInfoSlice.actions;
 

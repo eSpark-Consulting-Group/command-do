@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
-  ScrollView,
   Image,
   StatusBar,
   FlatList,
@@ -33,28 +32,24 @@ import {
   BlurBackground,
   GapView,
 } from '../../../components';
-import { profileData } from '../../../utils/data';
-import { initialDataUpdate } from '../../../features/profile/profileSlice';
+
 import {
   GET_ALL_CATEGORIES,
   GET_ALL_CATEGORIES_WITH_ITEMS,
 } from '../../../graphQL/query/categories.query';
-import {
-  GET_CURRENT_REMAINING_AMOUNT,
-  GET_USER_DETAIL,
-} from '../../../graphQL/query/user.query';
+import { GET_CURRENT_REMAINING_AMOUNT } from '../../../graphQL/query/user.query';
 import { GET_ALL_ITEMS } from '../../../graphQL/query/item.query';
 import styles from './styles';
 import { colors } from '../../../theme';
+import { logout } from '../../../features/userInfo/userInfoSlice';
 import {
-  getUserDetails,
-  logout,
+  clearOnLogout,
   saveLoadedCats,
-} from '../../../features/userInfo/userInfoSlice';
+  saveLoadedCatsItems,
+  updateCatItems,
+} from '../../../features/userItems/userItemsSlice';
 import { greetMessage } from '../../../utils/helperFunctions';
 import { clearCart } from '../../../features/cart/cartSlice';
-import { useLayoutAnimation } from '../../../utils/hooks/useUpdateEffect/useLayoutAnimation';
-import { SCREEN_WIDTH } from '../../../constants';
 
 function Home({ navigation }) {
   const reduxData = useSelector(store => store);
@@ -64,6 +59,7 @@ function Home({ navigation }) {
   const [reachedEnd, setReachedEnd] = useState(false);
   const [isConnected, setIsConnected] = useState(null);
   const [loadMore, setLoadMore] = useState(true);
+  const [categoryItems, setCategoryItems] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({
     name: 'All',
     image: null,
@@ -71,7 +67,10 @@ function Home({ navigation }) {
   });
   const userData = useSelector(store => store?.userInfo?.userData);
   const loadedCatergories = useSelector(
-    store => store?.userInfo?.loadedCatergories,
+    store => store?.userItems?.loadedCatergories,
+  );
+  const loadedCatergoriesItems = useSelector(
+    store => store?.userItems?.loadedCatergoriesItems,
   );
 
   const [
@@ -109,7 +108,16 @@ function Home({ navigation }) {
   const items =
     selectedCategory?.id == 0
       ? categoriesWithItemData?.getAllCategories?.data
-      : itemData?.getAllItems?.data;
+      : // : itemData?.getAllItems?.data;
+        categoryItems;
+
+  const catItems = id => {
+    loadedCatergoriesItems.map(item => {
+      if (item.id == id) {
+        setCategoryItems(item.items);
+      }
+    });
+  };
 
   useEffect(() => {
     if (isConnected) {
@@ -134,28 +142,22 @@ function Home({ navigation }) {
 
   const isFocused = useIsFocused();
 
-  const isSelect = item => {
+  const isSelect = async item => {
     let goAhead = true;
     setSelectedCategory(item);
+    onScrollToTopStart();
     loadedCatergories.map(lItem => {
       if (lItem.category_Id == item?.id) {
+        catItems(item?.id);
         goAhead = false;
       }
     });
     if (goAhead) {
       dispatch(saveLoadedCats(item?.id));
-
-      onScrollToTopStart();
       if (item?.id == 0) {
-        LoadItems({
-          variables: {
-            where: {
-              categoryId: undefined,
-            },
-          },
-        });
+        LoadCategoriesWithItem();
       } else {
-        LoadItems({
+        const items = await LoadItems({
           variables: {
             pagination: {
               cursor: null,
@@ -170,6 +172,13 @@ function Home({ navigation }) {
             },
           },
         });
+        const itemsData = items?.data?.getAllItems?.data;
+        setCategoryItems(itemsData);
+        let obj = {
+          id: item.id,
+          items: itemsData,
+        };
+        dispatch(saveLoadedCatsItems(obj));
       }
     }
   };
@@ -205,17 +214,11 @@ function Home({ navigation }) {
     });
   };
 
-  const loadNew = () => {
+  const loadNew = async () => {
     if (selectedCategory?.id == 0) {
-      LoadItems({
-        variables: {
-          where: {
-            categoryId: undefined,
-          },
-        },
-      });
+      LoadCategoriesWithItem();
     } else {
-      LoadItems({
+      const items = await LoadItems({
         variables: {
           pagination: {
             cursor: null,
@@ -230,6 +233,9 @@ function Home({ navigation }) {
           },
         },
       });
+      const itemsData = items?.data?.getAllItems?.data;
+      setCategoryItems(itemsData);
+      dispatch(updateCatItems({ id: selectedCategory?.id, items: itemsData }));
     }
   };
 
@@ -262,6 +268,7 @@ function Home({ navigation }) {
   const logoutHandler = () => {
     setIsModal(false);
     dispatch(logout());
+    dispatch(clearOnLogout());
     dispatch(clearCart());
   };
 

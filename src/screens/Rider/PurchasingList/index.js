@@ -40,6 +40,7 @@ export default function PurchasingList({ navigation }) {
   const [filePath, setFilePath] = useState('');
   const [riderSummary, setRiderSummary] = useState([]);
   const [summary, setSummary] = useState([]);
+
   const [totalAmount, setTotalAmount] = useState(0);
   const fileName = 'PurchasingList';
   useEffect(() => {
@@ -84,7 +85,15 @@ export default function PurchasingList({ navigation }) {
     });
     let orders = getOrderSummary.data.getOrderSummary.data;
     setRiderSummary(getOrderSummary.data.getOrderSummary);
-    setSummary(orders);
+    let summaryOrders = [];
+    orders.map((item, index) => {
+      let obj = { ...orders[index] };
+      console.log('Summary Item', item);
+      obj['check'] = false;
+      summaryOrders.push(obj);
+      console.log('orders Item', summaryOrders);
+    });
+    setSummary(summaryOrders);
     let TotalAmount = 0;
 
     orders.map(item => {
@@ -187,7 +196,16 @@ export default function PurchasingList({ navigation }) {
         title="Purchasing List"
         titleStyle={{ fontFamily: 'Poppins-Bold' }}
       />
-      <PurchasingListHeader />
+      <PurchasingListHeader
+        checked={!summary.some(item => item.check == false)}
+        onAllCheck={val => {
+          summary.map((item, index) => {
+            let update = [...summary];
+            update[index].check = !val;
+            setSummary(update);
+          });
+        }}
+      />
       <FlatList
         data={summary}
         showsVerticalScrollIndicator={false}
@@ -196,6 +214,12 @@ export default function PurchasingList({ navigation }) {
             itemName={item.item.name}
             quantity={item.quantity}
             totalAmount={item.amount}
+            checked={item.check}
+            onCheck={() => {
+              let update = [...summary];
+              update[index].check = !update[index].check;
+              setSummary(update);
+            }}
           />
         )}
         ListEmptyComponent={
