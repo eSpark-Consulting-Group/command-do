@@ -4,7 +4,9 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import messaging from '@react-native-firebase/messaging';
 import moment from 'moment';
 import { Image } from 'react-native-compressor';
-import RNFetchBlob from 'rn-fetch-blob';
+import { NativeModules } from 'react-native';
+
+const RNFetchBlob = NativeModules.RNFetchBlob;
 
 export const deleteImage = async url => {
   try {
@@ -57,7 +59,7 @@ export const uploadOnlineImage = async (imageUrl, previousImage = '') => {
       path: RNFetchBlob.fs.dirs.DocumentDir + `/${imageUrl?.split('/').pop()}`,
     }).fetch('GET', imageUrl);
     const compressUrl = await imageCompressor(`file://${result.data}`);
-    return await uploadImage({uri: compressUrl}, previousImage);
+    return await uploadImage({ uri: compressUrl }, previousImage);
   } catch (error) {
     console.error('uploadOnlineImage', error);
     throw error;

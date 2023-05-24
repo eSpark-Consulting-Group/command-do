@@ -76,21 +76,6 @@ const IndividualCard = props => {
             }
             onScroll={event => {
               useLayoutAnimation();
-              console.log(
-                'event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1',
-                event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1,
-              );
-              console.log(
-                'event?.nativeEvent?.contentSize?.height',
-                event?.nativeEvent?.contentSize?.height,
-              );
-              console.log(
-                `event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1 <
-                event?.nativeEvent?.contentSize?.height`,
-                event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1 <
-                  event?.nativeEvent?.contentSize?.height,
-              );
-
               if (
                 event?.nativeEvent?.contentOffset?.y + SCREEN_HEIGHT * 1 <
                 event?.nativeEvent?.contentSize?.height

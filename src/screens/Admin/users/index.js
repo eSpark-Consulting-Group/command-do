@@ -63,7 +63,6 @@ export default function Users() {
   const getUsers = async () => {
     try {
       const getUsers = await LoadAllUsers();
-      console.log('===>>', JSON.stringify(getUsers?.data?.getAllUsers?.data));
       const userData = getUsers?.data?.getAllUsers?.data.reduce((acc, curr) => {
         acc.push({
           title: curr.alphabet,

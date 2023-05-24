@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {Icon} from '@rneui/themed';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Icon } from '@rneui/themed';
 import DatePicker from 'react-native-date-ranges';
 import moment from 'moment';
 
-import {GapView, MyHeader, MyText, TouchRipple} from '../../../components';
-import {colors} from '../../../theme';
+import { GapView, MyHeader, MyText, TouchRipple } from '../../../components';
+import { colors } from '../../../theme';
 import useUpdateEffect from '../../../utils/hooks/useUpdateEffect';
-import {moderateVerticalScale} from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 
 export default function FilterScreen() {
   const navigation = useNavigation();
@@ -40,12 +40,11 @@ export default function FilterScreen() {
     }
   }, [route.params]);
 
-  const getUserSelected = ({userList, userId}) => {
+  const getUserSelected = ({ userList, userId }) => {
     let tempArr = [...orderFilterFields];
     console.log('userList ka bta', userList, userId);
     let newArr = userList.filter(item => (item.id === userId ? item : null));
-    console.log('xxx=>>', newArr);
-    console.log('zzzz===>><<>>', tempArr);
+
     if (newArr.length === 0) {
       tempArr[1].label = 'Select User';
     } else {
@@ -76,11 +75,11 @@ export default function FilterScreen() {
     navigation.navigate('UserList');
   };
 
-  const handleRangeDates = ({startDate, endDate}) => {
+  const handleRangeDates = ({ startDate, endDate }) => {
     if (startDate !== undefined || endDate !== undefined) {
       const endDateFormat = moment(endDate).utc(true);
       const startDateFormat = moment(startDate).utc(true);
-      setSelectDate({startDate: startDateFormat, endDate: endDateFormat});
+      setSelectDate({ startDate: startDateFormat, endDate: endDateFormat });
       console.log(endDateFormat);
       console.log(startDateFormat);
       handleChangeLabel(startDateFormat, endDateFormat);
@@ -146,7 +145,7 @@ export default function FilterScreen() {
         }}
         selectedBgColor={colors.primary}
         customStyles={{
-          placeholderText: {fontSize: 20}, // placeHolder style
+          placeholderText: { fontSize: 20 }, // placeHolder style
           headerStyle: {
             backgroundColor: colors.primary,
           }, // title container style
@@ -167,7 +166,7 @@ export default function FilterScreen() {
       <FlatList
         data={orderFilterFields}
         style={styles.listContainer}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View style={styles.listItem}>
             <TouchRipple
               style={{
@@ -180,14 +179,14 @@ export default function FilterScreen() {
               onPress={item.onPress}>
               <MyText
                 label={item.label}
-                textStyle={{textAlignVertical: 'center'}}
+                textStyle={{ textAlignVertical: 'center' }}
                 size={16}
               />
               <Icon
                 name={'chevron-right'}
                 color={colors.primary}
                 size={20}
-                iconStyle={{marginRight: 5}}
+                iconStyle={{ marginRight: 5 }}
               />
             </TouchRipple>
           </View>

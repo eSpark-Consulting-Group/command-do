@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
+  Share,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -28,6 +29,7 @@ import {
   verticalScale,
 } from 'react-native-size-matters';
 import { showMessage } from 'react-native-flash-message';
+import { SCREEN_HEIGHT } from '../../constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -59,6 +61,19 @@ function Profile({ route, navigation }) {
   const [imgLoader, setImgLoader] = useState(true);
 
   const [UpdateProfile, { loading }] = useMutation(UPDATE_USER);
+
+  const shareApp = async () => {
+    try {
+      await Share.share({
+        title: 'Commandدو',
+        message:
+          'Please install this app for Ordering Lunch, AppLink:https://play.google.com/store/apps/details?id=com.commanddo&hl=en',
+        url: 'https://play.google.com/store/apps/details?id=com.commanddo&hl=en',
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const editModeon = () => {
     setEditMode(true);
@@ -296,7 +311,14 @@ function Profile({ route, navigation }) {
           />
         </View>
       </View>
-      <ScrollView style={{ backgroundColor: 'white' }}>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical: 5,
+        }}
+        style={{ backgroundColor: 'white' }}>
         <View style={styles.profileFormStyle}>
           {getData &&
             getData.map((item, index) => (
@@ -334,6 +356,18 @@ function Profile({ route, navigation }) {
               </View>
             ))}
         </View>
+        <TouchableOpacity
+          style={styles.sharingButtonContainer}
+          onPress={shareApp}>
+          <View style={styles.sharingButton}>
+            <MyText
+              label={'Share App with Others'}
+              size={20}
+              textStyle={styles.sharingButtonText}
+            />
+            <MCI name="share" size={28} color={colors.background} />
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

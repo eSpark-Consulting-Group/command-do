@@ -115,6 +115,26 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
+  sharingButtonContainer: {
+    width: '95%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    backgroundColor: colors.primary,
+  },
+  sharingButton: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    bottom: 2,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  sharingButtonText: {
+    color: colors.text_inverse,
+    fontWeight: 'bold',
+    textAlignVertical: 'center',
+  },
 });
 
 export default styles;
