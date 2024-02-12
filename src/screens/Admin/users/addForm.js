@@ -291,8 +291,12 @@ export default function AddForm() {
           icon="trash"
           onPressRight={() => {
             handleDeleteUser();
+            console.log(
+              'userData?.getUserById?.data?.avatar',
+              userData?.getUserById?.data?.avatar,
+            );
             if (
-              userData?.getUserById?.data?.avatar.includes(
+              userData?.getUserById?.data?.avatar?.includes(
                 'https://firebasestorage',
               )
             ) {
