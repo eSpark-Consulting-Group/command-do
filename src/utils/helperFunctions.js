@@ -128,7 +128,7 @@ export const isValidTimeToOrder = () => {
   // var time = moment() gives you current time. no format required.
   var time = moment(new Date().toLocaleTimeString(), format),
     startTime = moment('09:00:00', format),
-    endTime = moment('12:30:00', format);
+    endTime = moment('13:00:00', format);
   return time.isBetween(startTime, endTime);
 };
 

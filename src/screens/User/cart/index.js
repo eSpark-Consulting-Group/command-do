@@ -164,9 +164,9 @@ function Cart({ route, navigation }) {
     } else {
       setCheckoutLoader(true);
       try {
-        const time = await getCurrentTime();
+        // const time = await getCurrentTime();
         setCheckoutLoader(false);
-        if (!isValidTimeToOrder(time)) {
+        if (!isValidTimeToOrder()) {
           showMessage({
             message: 'Alas! Time is over for placing order😬',
             icon: 'auto',
