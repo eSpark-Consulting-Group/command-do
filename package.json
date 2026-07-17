@@ -40,7 +40,7 @@
     "react-native-dotenv": "^3.4.7",
     "react-native-file-viewer": "^2.1.5",
     "react-native-flash-message": "^0.3.1",
-    "react-native-gesture-handler": "^2.5.0",
+    "react-native-gesture-handler": "^3.1.0",
     "react-native-html-to-pdf": "^0.12.0",
     "react-native-image-picker": "^4.8.4",
     "react-native-pager-view": "^6.1.2",
@@ -74,6 +74,6 @@
     "preset": "react-native"
   },
   "resolutions": {
-    "react-native-gesture-handler": "^2.5.0"
+    "react-native-gesture-handler": "^3.1.0"
   }
 }
