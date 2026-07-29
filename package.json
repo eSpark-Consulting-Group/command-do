@@ -17,7 +17,7 @@
     "@react-native-community/blur": "^4.3.0",
     "@react-native-community/netinfo": "^9.3.7",
     "@react-native-firebase/app": "^16.4.5",
-    "@react-native-firebase/messaging": "^16.4.3",
+    "@react-native-firebase/messaging": "^26.0.0",
     "@react-native-firebase/storage": "^16.4.5",
     "@react-navigation/bottom-tabs": "^6.5.2",
     "@react-navigation/material-top-tabs": "^6.3.0",
