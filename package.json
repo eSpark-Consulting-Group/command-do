@@ -12,7 +12,7 @@
     "emulate": "react-native run-android --deviceId=emulator-5554"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.6",
+    "@apollo/client": "^4.3.3",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-community/blur": "^4.3.0",
     "@react-native-community/netinfo": "^9.3.7",
